@@ -6,5 +6,4 @@ namespace Prometee\PayumStripeCheckoutSession\Request\Api\Resource;
 
 final class CreateCustomer extends AbstractCreate
 {
-
 }

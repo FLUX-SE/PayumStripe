@@ -5,16 +5,32 @@ declare(strict_types=1);
 namespace Prometee\PayumStripeCheckoutSession\Request\Api\WebhookEvent;
 
 use Payum\Core\Request\Generic;
-use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapper;
+use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapperInterface;
 
-/**
- * @method null|EventWrapper getModel()
- * @method void setModel(EventWrapper $model)()
- */
 final class WebhookEvent extends Generic
 {
-    public function __construct(EventWrapper $model)
+    public function __construct(EventWrapperInterface $model)
     {
         parent::__construct($model);
+    }
+
+    /**
+     * @param EventWrapperInterface $eventWrapper
+     */
+    public function setEventWrapper(EventWrapperInterface $eventWrapper): void
+    {
+        parent::setModel($eventWrapper);
+    }
+
+    /**
+     * @return EventWrapperInterface|null
+     */
+    public function getEventWrapper(): ?EventWrapperInterface
+    {
+        if ($this->getModel() instanceof EventWrapperInterface) {
+            return $this->getModel();
+        }
+
+        return null;
     }
 }

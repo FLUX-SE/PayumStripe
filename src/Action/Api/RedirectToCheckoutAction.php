@@ -43,11 +43,12 @@ final class RedirectToCheckoutAction implements ActionInterface, ApiAwareInterfa
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        $this->gateway->execute($renderTemplate = new RenderTemplate($this->templateName, array(
+        $renderTemplate = new RenderTemplate($this->templateName, [
             'model' => $request->getModel(),
             'publishable_key' => $this->api->getPublishableKey(),
-            'actionUrl' => $request->getToken() ? $request->getToken()->getTargetUrl() : null,
-        )));
+        ]);
+
+        $this->gateway->execute($renderTemplate);
 
         throw new HttpResponse($renderTemplate->getResult());
     }

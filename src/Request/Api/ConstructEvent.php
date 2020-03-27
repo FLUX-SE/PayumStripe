@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Prometee\PayumStripeCheckoutSession\Request\Api;
 
 use Payum\Core\Request\Generic;
-use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapper;
+use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapperInterface;
 
 class ConstructEvent extends Generic
 {
@@ -46,18 +46,22 @@ class ConstructEvent extends Generic
     }
 
     /**
-     * @param EventWrapper $eventWrapper
+     * @param EventWrapperInterface $eventWrapper
      */
-    public function setEventWrapper(EventWrapper $eventWrapper): void
+    public function setEventWrapper(EventWrapperInterface $eventWrapper): void
     {
         parent::setModel($eventWrapper);
     }
 
     /**
-     * @return EventWrapper|null
+     * @return EventWrapperInterface|null
      */
-    public function getEventWrapper(): ?EventWrapper
+    public function getEventWrapper(): ?EventWrapperInterface
     {
-        return $this->getModel();
+        if ($this->getModel() instanceof EventWrapperInterface) {
+            return $this->getModel();
+        }
+
+        return null;
     }
 }

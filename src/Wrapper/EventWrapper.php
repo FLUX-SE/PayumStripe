@@ -6,7 +6,7 @@ namespace Prometee\PayumStripeCheckoutSession\Wrapper;
 
 use Stripe\Event;
 
-class EventWrapper
+class EventWrapper implements EventWrapperInterface
 {
     /** @var string */
     protected $usedWebhookSecretKey;
@@ -24,7 +24,7 @@ class EventWrapper
     }
 
     /**
-     * @return string
+     * {@inheritDoc}
      */
     public function getUsedWebhookSecretKey(): string
     {
@@ -32,7 +32,7 @@ class EventWrapper
     }
 
     /**
-     * @return Event
+     * {@inheritDoc}
      */
     public function getEvent(): Event
     {

@@ -29,8 +29,12 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         RequestNotSupportedException::assertSupports($this, $request);
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        if (empty($model['id'])) return;
-        if (empty($model['object'])) return;
+        if (empty($model['id'])) {
+            return;
+        }
+        if (empty($model['object'])) {
+            return;
+        }
 
         $paymentIntentId = null;
         $objectName = $model->offsetGet('object');
@@ -41,7 +45,9 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
             $paymentIntentId = $model->offsetGet('payment_intent');
         }
 
-        if (null === $paymentIntentId) return;
+        if (null === $paymentIntentId) {
+            return;
+        }
 
         $retrievePaymentIntent = new RetrievePaymentIntent($paymentIntentId);
         $this->gateway->execute($retrievePaymentIntent);

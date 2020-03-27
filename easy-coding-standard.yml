@@ -1,5 +1,5 @@
 imports:
-    - { resource: 'vendor/symplify/easy-coding-standard/config/set/php71.yaml' }
+    - { resource: 'vendor/symplify/easy-coding-standard/config/set/psr12.yaml' }
 
 services:
     PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer: ~

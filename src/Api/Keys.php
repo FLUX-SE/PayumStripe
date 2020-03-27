@@ -4,26 +4,48 @@ declare(strict_types=1);
 
 namespace Prometee\PayumStripeCheckoutSession\Api;
 
-use Payum\Stripe\Keys as BaseKeys;
-
-class Keys extends BaseKeys
+final class Keys implements KeysInterface
 {
     /** @var string[] */
-    protected $webhookSecretKeys;
+    private $webhookSecretKeys;
+    /** @var string */
+    private $publishable;
+    /** @var string */
+    private $secret;
 
     /**
-     * @param $publishable
-     * @param $secret
+     * @param string $publishable
+     * @param string $secret
      * @param string[] $webhookSecretKeys
      */
-    public function __construct($publishable, $secret, array $webhookSecretKeys = [])
-    {
+    public function __construct(
+        string $publishable,
+        string $secret,
+        array $webhookSecretKeys = []
+    ) {
+        $this->publishable = $publishable;
+        $this->secret = $secret;
         $this->webhookSecretKeys = $webhookSecretKeys;
-        parent::__construct($publishable, $secret);
     }
 
     /**
-     * @return string[]
+     * {@inheritDoc}
+     */
+    public function getSecretKey(): string
+    {
+        return $this->secret;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPublishableKey(): string
+    {
+        return $this->publishable;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public function getWebhookSecretKeys(): array
     {
@@ -31,9 +53,7 @@ class Keys extends BaseKeys
     }
 
     /**
-     * @param string $webhookSecretKey
-     *
-     * @return bool
+     * {@inheritDoc}
      */
     public function hasWebhookSecretKey(string $webhookSecretKey): bool
     {
@@ -41,7 +61,7 @@ class Keys extends BaseKeys
     }
 
     /**
-     * @param string $webhookSecretKey
+     * {@inheritDoc}
      */
     public function addWebhookSecretKey(string $webhookSecretKey): void
     {
@@ -51,7 +71,7 @@ class Keys extends BaseKeys
     }
 
     /**
-     * @param string[] $webhookSecretKeys
+     * {@inheritDoc}
      */
     public function setWebhookSecretKeys(array $webhookSecretKeys): void
     {

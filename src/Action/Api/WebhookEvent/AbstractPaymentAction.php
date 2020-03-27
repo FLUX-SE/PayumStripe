@@ -30,7 +30,7 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        $eventWrapper = $request->getModel();
+        $eventWrapper = $request->getEventWrapper();
         $event = $eventWrapper->getEvent();
 
         /** @var Session|PaymentIntent $sessionOrPaymentIntent */

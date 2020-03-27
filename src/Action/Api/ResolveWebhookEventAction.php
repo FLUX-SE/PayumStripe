@@ -13,7 +13,7 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\GetHttpRequest;
 use Prometee\PayumStripeCheckoutSession\Request\Api\ConstructEvent;
 use Prometee\PayumStripeCheckoutSession\Request\Api\ResolveWebhookEvent;
-use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapper;
+use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapperInterface;
 use Stripe\Event;
 use Stripe\Stripe;
 
@@ -55,7 +55,7 @@ class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterfac
             RequestNotSupportedException::create($request);
         }
 
-        $request->setResult($eventWrapper);
+        $request->setEventWrapper($eventWrapper);
     }
 
     /**
@@ -94,9 +94,9 @@ class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterfac
      * @param string $payload
      * @param string $sigHeader
      *
-     * @return EventWrapper|null
+     * @return EventWrapperInterface|null
      */
-    protected function constructEvent(string $payload, string $sigHeader): ?EventWrapper
+    protected function constructEvent(string $payload, string $sigHeader): ?EventWrapperInterface
     {
         foreach ($this->api->getWebhookSecretKeys() as $webhookSecretKey) {
             $eventRequest = new ConstructEvent($payload, $sigHeader, $webhookSecretKey);

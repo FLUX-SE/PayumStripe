@@ -6,13 +6,9 @@ namespace Prometee\PayumStripeCheckoutSession\Request\Api;
 
 use Payum\Core\Request\Convert;
 use Payum\Core\Security\TokenInterface;
-use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapper;
+use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapperInterface;
 use Stripe\Event;
 
-
-/**
- * @method EventWrapper|null getResult()
- */
 final class ResolveWebhookEvent extends Convert
 {
     /**
@@ -21,5 +17,25 @@ final class ResolveWebhookEvent extends Convert
     public function __construct(TokenInterface $token = null)
     {
         parent::__construct(null, Event::class, $token);
+    }
+
+    /**
+     * @return EventWrapperInterface|null
+     */
+    public function getEventWrapper(): ?EventWrapperInterface
+    {
+        if ($this->getResult() instanceof EventWrapperInterface) {
+            return $this->getResult();
+        }
+
+        return null;
+    }
+
+    /**
+     * @param EventWrapperInterface $eventWrapper
+     */
+    public function setEventWrapper(EventWrapperInterface $eventWrapper): void
+    {
+        $this->setResult($eventWrapper);
     }
 }

@@ -6,9 +6,10 @@ namespace Prometee\PayumStripeCheckoutSession\Action\Api;
 
 use Payum\Core\ApiAwareTrait;
 use Prometee\PayumStripeCheckoutSession\Api\Keys;
+use Prometee\PayumStripeCheckoutSession\Api\KeysInterface;
 
 /**
- * @property Keys $api
+ * @property KeysInterface $api
  */
 trait StripeApiAwareTrait
 {

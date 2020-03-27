@@ -48,9 +48,6 @@ class StripeCheckoutSessionGatewayFactory extends GatewayFactory
             'payum.action.redirect_to_checkout' => function (ArrayObject $config) {
                 return new RedirectToCheckoutAction($config['payum.template.redirect_to_checkout']);
             },
-            'payum.action.delete_webhook_token' => function (ArrayObject $config) {
-                return new DeleteWebhookTokenAction($config['payum.security.token_storage']);
-            },
 
             // API Resources
             'payum.action.create_session' => new CreateSessionAction(),
@@ -66,6 +63,12 @@ class StripeCheckoutSessionGatewayFactory extends GatewayFactory
             'payum.action.checkout_session_completed' => new CheckoutSessionCompletedAction(),
             'payum.action.payment_intent_canceled' => new PaymentIntentCanceledAction(),
         ]);
+
+        if (true !== empty($config['payum.security.token_storage'])) {
+            $config['payum.action.delete_webhook_token'] = function (ArrayObject $config) {
+                return new DeleteWebhookTokenAction($config['payum.security.token_storage']);
+            };
+        }
 
         if (false == $config['payum.api']) {
             $config['payum.default_options'] = [
@@ -92,7 +95,7 @@ class StripeCheckoutSessionGatewayFactory extends GatewayFactory
         }
 
         $config['payum.paths'] = array_replace([
-            'PrometeePayumStripeCheckoutSession' => __DIR__.'/Resources/views',
+            'PrometeePayumStripeCheckoutSession' => __DIR__ . '/Resources/views',
         ], $config['payum.paths'] ?: []);
     }
 }

@@ -9,5 +9,4 @@ use Payum\Core\ApiAwareInterface;
 
 interface StripeApiActionInterface extends ActionInterface, ApiAwareInterface
 {
-
 }

@@ -6,7 +6,7 @@ namespace Prometee\PayumStripeCheckoutSession\Action\Api\WebhookEvent;
 
 use Payum\Core\Action\ActionInterface;
 use Prometee\PayumStripeCheckoutSession\Request\Api\WebhookEvent\WebhookEvent;
-use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapper;
+use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapperInterface;
 use Stripe\Event;
 
 abstract class AbstractWebhookEventAction implements ActionInterface
@@ -24,8 +24,8 @@ abstract class AbstractWebhookEventAction implements ActionInterface
     public function supports($request)
     {
         return $request instanceof WebhookEvent
-            && $request->getModel() instanceof EventWrapper
-            && $request->getModel()->getEvent() instanceof Event
+            && $request->getEventWrapper() instanceof EventWrapperInterface
+            && $request->getEventWrapper()->getEvent() instanceof Event
             && $this->supportsTypes($request)
         ;
     }
@@ -37,6 +37,6 @@ abstract class AbstractWebhookEventAction implements ActionInterface
      */
     protected function supportsTypes(WebhookEvent $request): bool
     {
-        return in_array($request->getModel()->getEvent()->type, $this->getSupportedEventTypes());
+        return in_array($request->getEventWrapper()->getEvent()->type, $this->getSupportedEventTypes());
     }
 }
