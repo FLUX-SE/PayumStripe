@@ -1,0 +1,32 @@
+{
+    "name": "prometee/payum-stripe-checkout-session",
+    "description": "Payum Stripe checkout session gateway",
+    "type": "library",
+    "require": {
+        "php": "^7.2",
+        "payum/core": "^1.6",
+        "stripe/stripe-php": "^7"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^8.5",
+        "symplify/easy-coding-standard": "^6.0"
+    },
+    "autoload": {
+        "psr-4": { "Prometee\\PayumStripeCheckoutSession\\": "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "Tests\\Prometee\\PayumStripeCheckoutSession\\": "tests/" }
+    },
+    "license": "MIT",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "authors": [
+        {
+            "name": "Francis HILAIRE",
+            "email": "Prometee@users.noreply.github.com"
+        }
+    ]
+}
