@@ -11,9 +11,9 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\GetHttpRequest;
-use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapper;
 use Prometee\PayumStripeCheckoutSession\Request\Api\ConstructEvent;
 use Prometee\PayumStripeCheckoutSession\Request\Api\ResolveWebhookEvent;
+use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapper;
 use Stripe\Event;
 use Stripe\Stripe;
 

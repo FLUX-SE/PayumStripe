@@ -15,9 +15,6 @@ use Payum\Core\Request\Sync;
 use Payum\Core\Security\TokenInterface;
 use Prometee\PayumStripeCheckoutSession\Request\Api\RedirectToCheckout;
 use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\CreateSession;
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\RetrievePaymentIntent;
-use Stripe\Checkout\Session;
-use Stripe\PaymentIntent;
 
 class CaptureAction implements ActionInterface, GatewayAwareInterface
 {
