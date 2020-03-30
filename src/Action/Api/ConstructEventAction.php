@@ -7,18 +7,15 @@ namespace Prometee\PayumStripeCheckoutSession\Action\Api;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Payum\Core\GatewayAwareInterface;
-use Payum\Core\GatewayAwareTrait;
 use Prometee\PayumStripeCheckoutSession\Request\Api\ConstructEvent;
 use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapper;
 use Stripe\Exception\SignatureVerificationException;
 use Stripe\Stripe;
 use Stripe\Webhook;
 
-class ConstructEventAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
+class ConstructEventAction implements ActionInterface, ApiAwareInterface
 {
-    use GatewayAwareTrait,
-        StripeApiAwareTrait;
+    use StripeApiAwareTrait;
 
     /**
      * {@inheritDoc}
@@ -33,7 +30,7 @@ class ConstructEventAction implements ActionInterface, GatewayAwareInterface, Ap
 
         try {
             $event = Webhook::constructEvent(
-                $request->getModel(),
+                $request->getPayload(),
                 $request->getSigHeader(),
                 $request->getWebhookSecretKey()
             );
@@ -44,6 +41,7 @@ class ConstructEventAction implements ActionInterface, GatewayAwareInterface, Ap
         } catch (SignatureVerificationException $e) {
             $eventWrapper = null;
         }
+
         $request->setEventWrapper($eventWrapper);
     }
 

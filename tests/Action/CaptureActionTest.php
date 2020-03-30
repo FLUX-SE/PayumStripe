@@ -3,6 +3,8 @@
 namespace Tests\Prometee\PayumStripeCheckoutSession\Action;
 
 use ArrayObject;
+use Payum\Core\Action\ActionInterface;
+use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Model\Token;
@@ -18,12 +20,6 @@ use Stripe\PaymentIntent;
 
 class CaptureActionTest extends TestCase
 {
-    /** @var string */
-    protected $requestClass = Capture::class;
-
-    /** @var string */
-    protected $actionClass = CaptureAction::class;
-
     /**
      * @test
      */
@@ -32,6 +28,8 @@ class CaptureActionTest extends TestCase
         $action = new CaptureAction();
 
         $this->assertInstanceOf(GatewayAwareInterface::class, $action);
+        $this->assertInstanceOf(ActionInterface::class, $action);
+        $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
     }
 
     /**
@@ -96,7 +94,7 @@ class CaptureActionTest extends TestCase
     /**
      * @return MockObject&GatewayInterface
      */
-    protected function createGatewayMock()
+    protected function createGatewayMock(): GatewayInterface
     {
         return $this->createMock(GatewayInterface::class);
     }

@@ -14,8 +14,6 @@ use Payum\Core\Request\GetHttpRequest;
 use Prometee\PayumStripeCheckoutSession\Request\Api\ConstructEvent;
 use Prometee\PayumStripeCheckoutSession\Request\Api\ResolveWebhookEvent;
 use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapperInterface;
-use Stripe\Event;
-use Stripe\Stripe;
 
 class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
 {
@@ -40,8 +38,6 @@ class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterfac
 
         $payload = $httpRequest->content;
 
-        Stripe::setApiKey($this->api->getSecretKey());
-
         $eventWrapper = $this->constructEvent($payload, $sigHeader);
 
         if (null === $eventWrapper) {
@@ -52,7 +48,7 @@ class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterfac
              * Tip: This also allow other webhook consumers to process this $request if
              *      they are supporting the same type of `ResolveWebhookEvent` request
              */
-            RequestNotSupportedException::create($request);
+            throw RequestNotSupportedException::create($request);
         }
 
         $request->setEventWrapper($eventWrapper);
@@ -66,18 +62,22 @@ class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterfac
     protected function retrieveStripeSignature(GetHttpRequest $httpRequest): string
     {
         /**
-         * 1. GetHttpRequest has been intercepted by the Symfony bridge action.
-         * The `headers` property is normally not available into GetHttpRequest
-         * object. But it's existing into the payum symfony bridge.
+         * 1. `GetHttpRequest` has been intercepted by the Symfony bridge action.
+         * The `headers` property is normally not available into Payum core `GetHttpRequest`
+         * object, but it's existing into the payum Symfony bridge one.
          *
          * @see \Payum\Core\Bridge\Symfony\Action\GetHttpRequestAction::updateRequest()
          */
-        if (isset($httpRequest->headers) && count($httpRequest->headers) > 0) {
+        if (
+            isset($httpRequest->headers)
+            && count($httpRequest->headers) > 0
+            && isset($httpRequest->headers['stripe-signature'])
+        ) {
             return current($httpRequest->headers['stripe-signature']);
         }
 
         /**
-         * 2. GetHttpRequest has been intercepted by the PlainPhp bridge action
+         * 2. `GetHttpRequest` has been intercepted by the PlainPhp bridge action
          * and we can't get the header into $httpRequest so we try to found it
          * into $_SERVER. Useful when using plain PHP.
          *
@@ -116,7 +116,7 @@ class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterfac
     public function supports($request)
     {
         return $request instanceof ResolveWebhookEvent
-            && $request->getTo() === Event::class
+            && $request->getTo() === EventWrapperInterface::class
             ;
     }
 }

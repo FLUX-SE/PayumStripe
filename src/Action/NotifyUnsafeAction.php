@@ -28,7 +28,7 @@ final class NotifyUnsafeAction implements ActionInterface, GatewayAwareInterface
         $eventRequest = new ResolveWebhookEvent($request->getToken());
         $this->gateway->execute($eventRequest);
 
-        $this->gateway->execute(new WebhookEvent($eventRequest->getResult()));
+        $this->gateway->execute(new WebhookEvent($eventRequest->getEventWrapper()));
     }
 
     /**

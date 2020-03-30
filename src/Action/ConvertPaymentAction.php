@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Prometee\PayumStripeCheckoutSession\Action;
 
 use Payum\Core\Action\ActionInterface;
+use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Model\PaymentInterface;
 use Payum\Core\Request\Convert;
@@ -23,20 +24,20 @@ final class ConvertPaymentAction implements ActionInterface
         /** @var PaymentInterface $payment */
         $payment = $request->getSource();
 
-        $details = [
-            'customer_email' => $payment->getClientEmail(),
-            'line_items' => [
-                [
-                    'name' => $payment->getDescription(),
-                    'amount' => $payment->getTotalAmount(),
-                    'currency' => $payment->getCurrencyCode(),
-                    'quantity' => 1,
-                ],
+        $details = ArrayObject::ensureArrayObject($payment->getDetails());
+
+        $details->offsetSet('customer_email', $payment->getClientEmail());
+        $details->offsetSet('line_items', [
+            [
+                'name' => $payment->getDescription(),
+                'amount' => $payment->getTotalAmount(),
+                'currency' => $payment->getCurrencyCode(),
+                'quantity' => 1,
             ],
-            'payment_method_types' => [
-                'card',
-            ],
-        ];
+        ]);
+        $details->offsetSet('payment_method_types', [
+            'card'
+        ]);
 
         $request->setResult($details);
     }

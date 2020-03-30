@@ -24,37 +24,87 @@ class StatusAction implements ActionInterface
         RequestNotSupportedException::assertSupports($this, $request);
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
+
         if ($model['error']) {
             $request->markFailed();
             return;
         }
+
         if (false == $model['status']) {
             $request->markNew();
             return;
         }
-        if ($model['object'] === PaymentIntent::OBJECT_NAME && PaymentIntent::STATUS_PROCESSING === $model['status']) {
-            $request->markPending();
+
+        if ($this->isAPaymentIntentAndHasBeenMarked($model, $request)) {
             return;
         }
-        if ($model['object'] === Refund::OBJECT_NAME && Refund::STATUS_SUCCEEDED === $model['status']) {
-            $request->markRefunded();
-            return;
-        }
-        if ($model['object'] === PaymentIntent::OBJECT_NAME && PaymentIntent::STATUS_CANCELED == $model['status']) {
-            $request->markCanceled();
-            return;
-        }
-        if ($model['object'] === PaymentIntent::OBJECT_NAME && PaymentIntent::STATUS_SUCCEEDED === $model['status']) {
-            $request->markCaptured();
-            return;
-        }
-        if ($model['object'] === PaymentIntent::OBJECT_NAME && PaymentIntent::STATUS_REQUIRES_PAYMENT_METHOD == $model['status']) {
-            $request->markAuthorized();
+
+        if ($this->isARefundAndHasBeenMarked($model, $request)) {
             return;
         }
 
         $request->markUnknown();
     }
+
+    /**
+     * @param ArrayObject $model
+     * @param GetStatusInterface $request
+     *
+     * @return bool
+     */
+    protected function isAPaymentIntentAndHasBeenMarked(
+        ArrayObject $model,
+        GetStatusInterface $request
+    ): bool {
+        if ($model['object'] !== PaymentIntent::OBJECT_NAME) {
+            return false;
+        }
+
+        if (PaymentIntent::STATUS_PROCESSING === $model['status']) {
+            $request->markPending();
+            return true;
+        }
+
+        if (PaymentIntent::STATUS_CANCELED == $model['status']) {
+            $request->markCanceled();
+            return true;
+        }
+
+        if (PaymentIntent::STATUS_SUCCEEDED === $model['status']) {
+            $request->markCaptured();
+            return true;
+        }
+
+        if (PaymentIntent::STATUS_REQUIRES_PAYMENT_METHOD == $model['status']) {
+            $request->markAuthorized();
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param ArrayObject $model
+     * @param GetStatusInterface $request
+     *
+     * @return bool
+     */
+    protected function isARefundAndHasBeenMarked(
+        ArrayObject $model,
+        GetStatusInterface $request
+    ): bool {
+        if ($model['object'] !== Refund::OBJECT_NAME) {
+            return false;
+        }
+
+        if (Refund::STATUS_SUCCEEDED === $model['status']) {
+            $request->markRefunded();
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * {@inheritDoc}
      */

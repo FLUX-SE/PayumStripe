@@ -29,21 +29,13 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         RequestNotSupportedException::assertSupports($this, $request);
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        if (empty($model['id'])) {
-            return;
-        }
         if (empty($model['object'])) {
             return;
         }
 
         $paymentIntentId = null;
-        $objectName = $model->offsetGet('object');
-        if (PaymentIntent::OBJECT_NAME === $objectName) {
-            $paymentIntentId = $model->offsetGet('id');
-        }
-        if (Session::OBJECT_NAME === $objectName) {
-            $paymentIntentId = $model->offsetGet('payment_intent');
-        }
+        $objectName = (string) $model->offsetGet('object');
+        $paymentIntentId = $this->findPaymentIntentId($objectName, $model);
 
         if (null === $paymentIntentId) {
             return;
@@ -65,5 +57,23 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
             $request instanceof Sync &&
             $request->getModel() instanceof ArrayAccess
             ;
+    }
+
+    protected function findPaymentIntentId(string $objectName, ArrayObject $model): ?string
+    {
+        if (PaymentIntent::OBJECT_NAME === $objectName) {
+            if (false === $model->offsetExists('id')) {
+                return null;
+            }
+            return (string) $model->offsetGet('id');
+        }
+        if (Session::OBJECT_NAME === $objectName) {
+            if (false === $model->offsetExists('payment_intent')) {
+                return null;
+            }
+            return (string) $model->offsetGet('payment_intent');
+        }
+
+        return null;
     }
 }
