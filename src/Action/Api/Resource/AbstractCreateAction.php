@@ -8,13 +8,18 @@ use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Prometee\PayumStripeCheckoutSession\Action\Api\StripeApiAwareTrait;
 use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\CreateInterface;
+use Stripe\ApiOperations\Create;
 use Stripe\ApiResource;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
 
+/**
+ * @method string|Create getApiResourceClass() : string
+ */
 abstract class AbstractCreateAction implements CreateResourceActionInterface
 {
-    use StripeApiAwareTrait;
+    use StripeApiAwareTrait,
+        ResourceAwareActionTrait;
 
     /**
      * {@inheritDoc}
@@ -31,8 +36,8 @@ abstract class AbstractCreateAction implements CreateResourceActionInterface
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        Stripe::setApiKey($this->api->getSecretKey());
         $apiResource = $this->createApiResource($model, $request->getOptions());
+
         $request->setApiResource($apiResource);
     }
 
@@ -43,6 +48,8 @@ abstract class AbstractCreateAction implements CreateResourceActionInterface
      */
     public function createApiResource(ArrayObject $model, ?array $options = null): ApiResource
     {
+        Stripe::setApiKey($this->api->getSecretKey());
+
         /** @var ApiResource $apiResource */
         $apiResource = $this->getApiResourceClass()::create(
             $model->toUnsafeArrayWithoutLocal(),

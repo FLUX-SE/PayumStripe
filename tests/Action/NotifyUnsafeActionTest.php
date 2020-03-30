@@ -5,9 +5,7 @@ namespace Tests\Prometee\PayumStripeCheckoutSession\Action;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayAwareInterface;
-use Payum\Core\GatewayInterface;
 use Payum\Core\Request\Notify;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Prometee\PayumStripeCheckoutSession\Action\NotifyUnsafeAction;
 use Prometee\PayumStripeCheckoutSession\Request\Api\ResolveWebhookEvent;
@@ -17,6 +15,8 @@ use Stripe\Event;
 
 class NotifyUnsafeActionTest extends TestCase
 {
+    use GatewayAwareTestTrait;
+
     /**
      * @test
      */
@@ -53,13 +53,5 @@ class NotifyUnsafeActionTest extends TestCase
 
         $request = new Notify(null);
         $action->execute($request);
-    }
-
-    /**
-     * @return MockObject&GatewayInterface
-     */
-    protected function createGatewayMock(): GatewayInterface
-    {
-        return $this->createMock(GatewayInterface::class);
     }
 }

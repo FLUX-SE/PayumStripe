@@ -9,13 +9,8 @@ use Stripe\PaymentIntent;
 
 final class RetrievePaymentIntentAction extends AbstractRetrieveAction
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function getApiResourceClass(): string
-    {
-        return PaymentIntent::class;
-    }
+    /** @var string|PaymentIntent */
+    protected $apiResourceClass = PaymentIntent::class;
 
     /**
      * {@inheritDoc}

@@ -5,9 +5,7 @@ namespace Tests\Prometee\PayumStripeCheckoutSession\Action;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayAwareInterface;
-use Payum\Core\GatewayInterface;
 use Payum\Core\Request\Sync;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Prometee\PayumStripeCheckoutSession\Action\SyncAction;
 use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\RetrievePaymentIntent;
@@ -16,6 +14,8 @@ use Stripe\PaymentIntent;
 
 class SyncActionTest extends TestCase
 {
+    use GatewayAwareTestTrait;
+
     /**
      * @test
      */
@@ -146,13 +146,5 @@ class SyncActionTest extends TestCase
 
         $request = new Sync($model);
         $action->execute($request);
-    }
-
-    /**
-     * @return MockObject&GatewayInterface
-     */
-    protected function createGatewayMock(): GatewayInterface
-    {
-        return $this->createMock(GatewayInterface::class);
     }
 }

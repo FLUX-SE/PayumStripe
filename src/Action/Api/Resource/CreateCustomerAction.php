@@ -9,13 +9,8 @@ use Stripe\Customer;
 
 class CreateCustomerAction extends AbstractCreateAction
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function getApiResourceClass(): string
-    {
-        return Customer::class;
-    }
+    /** @var string|Customer */
+    protected $apiResourceClass = Customer::class;
 
     /**
      * {@inheritDoc}

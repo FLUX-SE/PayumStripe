@@ -9,13 +9,8 @@ use Stripe\Plan;
 
 class CreatePlanAction extends AbstractCreateAction
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function getApiResourceClass(): string
-    {
-        return Plan::class;
-    }
+    /** @var string|Plan */
+    protected $apiResourceClass = Plan::class;
 
     /**
      * {@inheritDoc}

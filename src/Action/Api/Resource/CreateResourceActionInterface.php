@@ -5,12 +5,8 @@ declare(strict_types=1);
 namespace Prometee\PayumStripeCheckoutSession\Action\Api\Resource;
 
 use Payum\Core\Bridge\Spl\ArrayObject;
-use Stripe\ApiOperations\Create;
 use Stripe\ApiResource;
 
-/**
- * @method string|Create getApiResourceClass()
- */
 interface CreateResourceActionInterface extends ResourceActionInterface
 {
     /**

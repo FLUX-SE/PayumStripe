@@ -7,7 +7,7 @@ namespace Tests\Prometee\PayumStripeCheckoutSession\Action\Api;
 use PHPUnit\Framework\MockObject\MockObject;
 use Prometee\PayumStripeCheckoutSession\Api\KeysInterface;
 
-trait ApiAwareActionTrait
+trait ApiAwareActionTestTrait
 {
     /**
      * Returns a mock object for the specified class.

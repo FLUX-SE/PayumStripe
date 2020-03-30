@@ -9,13 +9,8 @@ use Stripe\Checkout\Session;
 
 final class CreateSessionAction extends AbstractCreateAction
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function getApiResourceClass(): string
-    {
-        return Session::class;
-    }
+    /** @var string|Session */
+    protected $apiResourceClass = Session::class;
 
     /**
      * {@inheritDoc}

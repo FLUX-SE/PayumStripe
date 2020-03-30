@@ -45,6 +45,7 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
 
         // 1. Try to found the Token
         $token = $this->findTokenByHash($tokenHash);
+
         // 2. Try to found the Status of this Token
         $status = $this->findStatusByToken($token);
 
@@ -54,6 +55,7 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
 
         // 4. Update the payment
         $payment = $status->getFirstModel();
+
         // We can't rely on interfaces sometime
         // ex: Sylius don't use Payum\Core\Model\PaymentInterface
         //     or any Payum Payment related interfaces

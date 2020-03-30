@@ -6,11 +6,9 @@ use ArrayObject;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayAwareInterface;
-use Payum\Core\GatewayInterface;
 use Payum\Core\Model\Token;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\Sync;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Prometee\PayumStripeCheckoutSession\Action\CaptureAction;
 use Prometee\PayumStripeCheckoutSession\Request\Api\RedirectToCheckout;
@@ -20,6 +18,8 @@ use Stripe\PaymentIntent;
 
 class CaptureActionTest extends TestCase
 {
+    use GatewayAwareTestTrait;
+
     /**
      * @test
      */
@@ -89,13 +89,5 @@ class CaptureActionTest extends TestCase
         $request = new Capture(new Token());
         $request->setModel($model);
         $action->execute($request);
-    }
-
-    /**
-     * @return MockObject&GatewayInterface
-     */
-    protected function createGatewayMock(): GatewayInterface
-    {
-        return $this->createMock(GatewayInterface::class);
     }
 }

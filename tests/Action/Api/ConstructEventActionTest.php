@@ -12,7 +12,7 @@ use Prometee\PayumStripeCheckoutSession\Request\Api\ConstructEvent;
 
 class ConstructEventActionTest extends TestCase
 {
-    use ApiAwareActionTrait;
+    use ApiAwareActionTestTrait;
 
     /**
      * @test

@@ -6,18 +6,18 @@ use ArrayObject;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayAwareInterface;
-use Payum\Core\GatewayInterface;
 use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\RenderTemplate;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Prometee\PayumStripeCheckoutSession\Action\Api\RedirectToCheckoutAction;
 use Prometee\PayumStripeCheckoutSession\Api\KeysInterface;
 use Prometee\PayumStripeCheckoutSession\Request\Api\RedirectToCheckout;
+use Tests\Prometee\PayumStripeCheckoutSession\Action\GatewayAwareTestTrait;
 
 class RedirectToCheckoutActionTest extends TestCase
 {
-    use ApiAwareActionTrait;
+    use ApiAwareActionTestTrait,
+        GatewayAwareTestTrait;
 
     /**
      * @test
@@ -73,13 +73,5 @@ class RedirectToCheckoutActionTest extends TestCase
         $this->expectException(HttpResponse::class);
 
         $action->execute($request);
-    }
-
-    /**
-     * @return MockObject&GatewayInterface
-     */
-    protected function createGatewayMock(): GatewayInterface
-    {
-        return $this->createMock(GatewayInterface::class);
     }
 }

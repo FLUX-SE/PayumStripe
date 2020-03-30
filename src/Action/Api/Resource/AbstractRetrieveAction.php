@@ -7,13 +7,18 @@ namespace Prometee\PayumStripeCheckoutSession\Action\Api\Resource;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Prometee\PayumStripeCheckoutSession\Action\Api\StripeApiAwareTrait;
 use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\RetrieveInterface;
+use Stripe\ApiOperations\Retrieve;
 use Stripe\ApiResource;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
 
+/**
+ * @method string|Retrieve getApiResourceClass() : string
+ */
 abstract class AbstractRetrieveAction implements RetrieveResourceActionInterface
 {
-    use StripeApiAwareTrait;
+    use StripeApiAwareTrait,
+        ResourceAwareActionTrait;
 
     /**
      * {@inheritDoc}
@@ -30,7 +35,6 @@ abstract class AbstractRetrieveAction implements RetrieveResourceActionInterface
 
         $id = (string) $request->getModel();
 
-        Stripe::setApiKey($this->api->getSecretKey());
         $apiResource = $this->retrieveApiResource($id, $request->getOptions());
         $request->setApiResource($apiResource);
     }
@@ -42,6 +46,8 @@ abstract class AbstractRetrieveAction implements RetrieveResourceActionInterface
      */
     public function retrieveApiResource(string $id, ?array $options = null): ApiResource
     {
+        Stripe::setApiKey($this->api->getSecretKey());
+
         /** @var ApiResource $apiResource */
         $apiResource = $this->getApiResourceClass()::retrieve($id, $options);
 

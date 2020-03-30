@@ -9,13 +9,8 @@ use Stripe\Subscription;
 
 class CreateSubscriptionAction extends AbstractCreateAction
 {
-    /**
-     * {@inheritDoc}
-     */
-    public function getApiResourceClass(): string
-    {
-        return Subscription::class;
-    }
+    /** @var string|Subscription */
+    protected $apiResourceClass = Subscription::class;
 
     /**
      * {@inheritDoc}

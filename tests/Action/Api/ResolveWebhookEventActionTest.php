@@ -7,9 +7,7 @@ use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
-use Payum\Core\GatewayInterface;
 use Payum\Core\Request\GetHttpRequest;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Prometee\PayumStripeCheckoutSession\Action\Api\ResolveWebhookEventAction;
 use Prometee\PayumStripeCheckoutSession\Api\KeysInterface;
@@ -18,10 +16,12 @@ use Prometee\PayumStripeCheckoutSession\Request\Api\ResolveWebhookEvent;
 use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapper;
 use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapperInterface;
 use Stripe\Event;
+use Tests\Prometee\PayumStripeCheckoutSession\Action\GatewayAwareTestTrait;
 
 class ResolveWebhookEventActionTest extends TestCase
 {
-    use ApiAwareActionTrait;
+    use ApiAwareActionTestTrait,
+        GatewayAwareTestTrait;
 
     /**
      * @test
@@ -207,13 +207,5 @@ class ResolveWebhookEventActionTest extends TestCase
         $this->expectException(RequestNotSupportedException::class);
 
         $action->execute($request);
-    }
-
-    /**
-     * @return MockObject&GatewayInterface
-     */
-    protected function createGatewayMock(): GatewayInterface
-    {
-        return $this->createMock(GatewayInterface::class);
     }
 }
