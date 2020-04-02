@@ -12,8 +12,6 @@ use Prometee\PayumStripeCheckoutSession\Request\Api\ConstructEvent;
 
 class ConstructEventActionTest extends TestCase
 {
-    use ApiAwareActionTestTrait;
-
     /**
      * @test
      */
@@ -21,8 +19,8 @@ class ConstructEventActionTest extends TestCase
     {
         $action = new ConstructEventAction();
 
-        $this->assertInstanceOf(ApiAwareInterface::class, $action);
         $this->assertInstanceOf(ActionInterface::class, $action);
+        $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
         $this->assertNotInstanceOf(GatewayInterface::class, $action);
     }
 
@@ -35,11 +33,7 @@ class ConstructEventActionTest extends TestCase
         $sigHeader = '';
         $webhookSecretKey = null;
 
-        $apiMock = $this->createApiMock();
-
         $action = new ConstructEventAction();
-        $action->setApiClass(KeysInterface::class);
-        $action->setApi($apiMock);
 
         $request = new ConstructEvent($payload, $sigHeader, $webhookSecretKey);
         $action->execute($request);
@@ -67,11 +61,7 @@ class ConstructEventActionTest extends TestCase
         // Useless but here to tests legacy too
         $sigHeader .= 'v0=6ffbb59b2300aae63f272406069a9788598b792a944a07aba816edb039989a39';
 
-        $apiMock = $this->createApiMock();
-
         $action = new ConstructEventAction();
-        $action->setApiClass(KeysInterface::class);
-        $action->setApi($apiMock);
 
         $request = new ConstructEvent($payload, $sigHeader, $webhookSecretKey);
         $action->execute($request);

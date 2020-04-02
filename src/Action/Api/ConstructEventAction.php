@@ -5,18 +5,14 @@ declare(strict_types=1);
 namespace Prometee\PayumStripeCheckoutSession\Action\Api;
 
 use Payum\Core\Action\ActionInterface;
-use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Prometee\PayumStripeCheckoutSession\Request\Api\ConstructEvent;
 use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapper;
 use Stripe\Exception\SignatureVerificationException;
-use Stripe\Stripe;
 use Stripe\Webhook;
 
-class ConstructEventAction implements ActionInterface, ApiAwareInterface
+class ConstructEventAction implements ActionInterface
 {
-    use StripeApiAwareTrait;
-
     /**
      * {@inheritDoc}
      *
@@ -25,8 +21,6 @@ class ConstructEventAction implements ActionInterface, ApiAwareInterface
     public function execute($request)
     {
         RequestNotSupportedException::assertSupports($this, $request);
-
-        Stripe::setApiKey($this->api->getSecretKey());
 
         try {
             $event = Webhook::constructEvent(
