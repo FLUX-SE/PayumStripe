@@ -19,7 +19,7 @@ use Prometee\PayumStripeCheckoutSession\Action\Api\WebhookEvent\PaymentIntentCan
 use Prometee\PayumStripeCheckoutSession\Action\CaptureAction;
 use Prometee\PayumStripeCheckoutSession\Action\ConvertPaymentAction;
 use Prometee\PayumStripeCheckoutSession\Action\DeleteWebhookTokenAction;
-use Prometee\PayumStripeCheckoutSession\Action\NotifyUnsafeAction;
+use Prometee\PayumStripeCheckoutSession\Action\NotifyAction;
 use Prometee\PayumStripeCheckoutSession\Action\StatusAction;
 use Prometee\PayumStripeCheckoutSession\Action\SyncAction;
 use Prometee\PayumStripeCheckoutSession\Api\Keys;
@@ -42,7 +42,7 @@ class StripeCheckoutSessionGatewayFactory extends GatewayFactory
             // Actions
             'payum.action.capture' => new CaptureAction(),
             'payum.action.convert_payment' => new ConvertPaymentAction(),
-            'payum.action.notify_unsafe' => new NotifyUnsafeAction(),
+            'payum.action.notify_unsafe' => new NotifyAction(),
             'payum.action.status' => new StatusAction(),
             'payum.action.sync' => new SyncAction(),
             'payum.action.redirect_to_checkout' => function (ArrayObject $config) {

@@ -107,7 +107,7 @@ https://stripe.com/docs/webhooks
 The starting point is always an `Action` with Payum and generically you have to use `Notify*Action` to handle webhooks.
 
 Because we have to set a static url without any token variable params on Stripe backend,
-we can't use `NotifyAction` but we can use [`NotifyUnsafeAction`](./src/Action/NotifyUnsafeAction.php) instead.
+we can't use `NotifyAction` but we can use [`NotifyUnsafeAction`](src/Action/NotifyAction.php) instead.
 
 This `Action` will ask for 2 other actions to :
 

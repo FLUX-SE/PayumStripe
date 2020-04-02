@@ -12,7 +12,7 @@ use Payum\Core\Request\Notify;
 use Prometee\PayumStripeCheckoutSession\Request\Api\ResolveWebhookEvent;
 use Prometee\PayumStripeCheckoutSession\Request\Api\WebhookEvent\WebhookEvent;
 
-final class NotifyUnsafeAction implements ActionInterface, GatewayAwareInterface
+final class NotifyAction implements ActionInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
 
@@ -36,9 +36,6 @@ final class NotifyUnsafeAction implements ActionInterface, GatewayAwareInterface
      */
     public function supports($request)
     {
-        return
-            $request instanceof Notify &&
-            $request->getModel() === null
-            ;
+        return $request instanceof Notify;
     }
 }

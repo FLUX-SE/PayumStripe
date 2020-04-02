@@ -5,15 +5,16 @@ namespace Tests\Prometee\PayumStripeCheckoutSession\Action;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayAwareInterface;
+use Payum\Core\Model\Token;
 use Payum\Core\Request\Notify;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripeCheckoutSession\Action\NotifyUnsafeAction;
+use Prometee\PayumStripeCheckoutSession\Action\NotifyAction;
 use Prometee\PayumStripeCheckoutSession\Request\Api\ResolveWebhookEvent;
 use Prometee\PayumStripeCheckoutSession\Request\Api\WebhookEvent\WebhookEvent;
 use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapper;
 use Stripe\Event;
 
-class NotifyUnsafeActionTest extends TestCase
+class NotifyActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
@@ -22,7 +23,7 @@ class NotifyUnsafeActionTest extends TestCase
      */
     public function shouldImplements()
     {
-        $action = new NotifyUnsafeAction();
+        $action = new NotifyAction();
 
         $this->assertInstanceOf(GatewayAwareInterface::class, $action);
         $this->assertInstanceOf(ActionInterface::class, $action);
@@ -32,7 +33,7 @@ class NotifyUnsafeActionTest extends TestCase
     /**
      * @test
      */
-    public function shouldExecuteResolveWebhookEventThenGiveItToConsume()
+    public function shouldExecuteResolveWebhookEventWhenNotifyUnsafeIsCalled()
     {
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock
@@ -48,10 +49,36 @@ class NotifyUnsafeActionTest extends TestCase
             ->method('execute')
             ->with($this->isInstanceOf(WebhookEvent::class))
         ;
-        $action = new NotifyUnsafeAction();
+        $action = new NotifyAction();
         $action->setGateway($gatewayMock);
 
         $request = new Notify(null);
+        $action->execute($request);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldExecuteResolveWebhookEventWhenNotifyIsCalled()
+    {
+        $gatewayMock = $this->createGatewayMock();
+        $gatewayMock
+            ->expects($this->at(0))
+            ->method('execute')
+            ->with($this->isInstanceOf(ResolveWebhookEvent::class))
+            ->will($this->returnCallback(function (ResolveWebhookEvent $request) {
+                $request->setEventWrapper(new EventWrapper('', new Event()));
+            }))
+        ;
+        $gatewayMock
+            ->expects($this->at(1))
+            ->method('execute')
+            ->with($this->isInstanceOf(WebhookEvent::class))
+        ;
+        $action = new NotifyAction();
+        $action->setGateway($gatewayMock);
+
+        $request = new Notify(new Token());
         $action->execute($request);
     }
 }
