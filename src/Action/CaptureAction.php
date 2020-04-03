@@ -33,8 +33,14 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface
 
         if (false === $model->offsetExists('id')) {
             $token = $request->getToken();
+            // 0. Use the `afterToken->getTargetUrl()` url instead of the current one
+            // Two tokens are generally made one is the current one (`$token`)
+            // and a second one which give its `afterToken->getTargetUrl()` to the
+            // current `$token` filled as the `afterUrl` attribute.
+            // So the customer will consume the `$afterToken` while webhooks will
+            // consume the current `$token`
             $model['success_url'] = $token->getAfterUrl();
-            $model['cancel_url'] = $token->getTargetUrl();
+            $model['cancel_url'] = $token->getAfterUrl();
             $this->embedTokenHash($model, $token);
 
             // 1. Create a new `Session`
