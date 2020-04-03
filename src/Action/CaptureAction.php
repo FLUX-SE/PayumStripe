@@ -44,7 +44,7 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface
 
             // 2. Prepare storing of an `PaymentIntent` object
             //    (legacy Stripe payments were storing `Charge` object)
-            $model->replace($session->toArray());
+            $model->exchangeArray($session->toArray());
             $this->gateway->execute(new Sync($model));
 
             // 3. Display the page to redirect to Stripe Checkout portal

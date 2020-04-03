@@ -43,9 +43,8 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
 
         $retrievePaymentIntent = new RetrievePaymentIntent($paymentIntentId);
         $this->gateway->execute($retrievePaymentIntent);
-        /** @var PaymentIntent $paymentIntent */
-        $paymentIntent = $retrievePaymentIntent->getModel();
-        $model->replace($paymentIntent->toArray());
+        $paymentIntent = $retrievePaymentIntent->getApiResource();
+        $model->exchangeArray($paymentIntent->toArray());
     }
 
     /**
