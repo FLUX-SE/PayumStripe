@@ -155,7 +155,7 @@ class StatusActionTest extends TestCase
     /**
      * @test
      */
-    public function shouldMarkCanceledIfIsAPaymentIntentObjectAndStatusRequiresPaymentMethod()
+    public function shouldMarkAsNewIfIsAPaymentIntentObjectAndStatusRequiresPaymentMethod()
     {
         $action = new StatusAction();
 
@@ -167,13 +167,13 @@ class StatusActionTest extends TestCase
         $status = new GetHumanStatus($model);
         $action->execute($status);
 
-        $this->assertTrue($status->isCanceled());
+        $this->assertTrue($status->isNew());
     }
 
     /**
      * @test
      */
-    public function shouldMarkCanceledIfIsAPaymentIntentObjectAndStatusRequiresConfirmation()
+    public function shouldMarkAsNewIfIsAPaymentIntentObjectAndStatusRequiresConfirmation()
     {
         $action = new StatusAction();
 
@@ -185,13 +185,13 @@ class StatusActionTest extends TestCase
         $status = new GetHumanStatus($model);
         $action->execute($status);
 
-        $this->assertTrue($status->isCanceled());
+        $this->assertTrue($status->isNew());
     }
 
     /**
      * @test
      */
-    public function shouldMarkCanceledIfIsAPaymentIntentObjectAndStatusRequiresAction()
+    public function shouldMarkAsNewIfIsAPaymentIntentObjectAndStatusRequiresAction()
     {
         $action = new StatusAction();
 
@@ -203,7 +203,7 @@ class StatusActionTest extends TestCase
         $status = new GetHumanStatus($model);
         $action->execute($status);
 
-        $this->assertTrue($status->isCanceled());
+        $this->assertTrue($status->isNew());
     }
 
     /**

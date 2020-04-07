@@ -75,8 +75,8 @@ class StatusAction implements ActionInterface
             return true;
         }
 
-        if ($this->isAnAuthorizedStatus($model['status'])) {
-            $request->markAuthorized();
+        if ($this->isANewStatus($model['status'])) {
+            $request->markNew();
             return true;
         }
 
@@ -127,9 +127,6 @@ class StatusAction implements ActionInterface
     {
         return in_array($status, [
             PaymentIntent::STATUS_CANCELED,
-            PaymentIntent::STATUS_REQUIRES_PAYMENT_METHOD,
-            PaymentIntent::STATUS_REQUIRES_CONFIRMATION,
-            PaymentIntent::STATUS_REQUIRES_ACTION,
         ]);
     }
 
@@ -138,8 +135,12 @@ class StatusAction implements ActionInterface
      *
      * @return bool
      */
-    protected function isAnAuthorizedStatus(string $status): bool
+    protected function isANewStatus(string $status): bool
     {
-        return false;
+        return in_array($status, [
+            PaymentIntent::STATUS_REQUIRES_PAYMENT_METHOD,
+            PaymentIntent::STATUS_REQUIRES_CONFIRMATION,
+            PaymentIntent::STATUS_REQUIRES_ACTION,
+        ]);
     }
 }
