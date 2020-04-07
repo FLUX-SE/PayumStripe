@@ -137,7 +137,25 @@ class StatusActionTest extends TestCase
     /**
      * @test
      */
-    public function shouldMarkAuthorizedIfIsAPaymentIntentObjectAndStatusRequiresPaymentMethod()
+    public function shouldMarkCanceledIfIsAPaymentIntentObjectAndStatusIsCanceled()
+    {
+        $action = new StatusAction();
+
+        $model = [
+            'object' => PaymentIntent::OBJECT_NAME,
+            'status' => PaymentIntent::STATUS_CANCELED,
+        ];
+
+        $status = new GetHumanStatus($model);
+        $action->execute($status);
+
+        $this->assertTrue($status->isCanceled());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldMarkCanceledIfIsAPaymentIntentObjectAndStatusRequiresPaymentMethod()
     {
         $action = new StatusAction();
 
@@ -149,13 +167,49 @@ class StatusActionTest extends TestCase
         $status = new GetHumanStatus($model);
         $action->execute($status);
 
-        $this->assertTrue($status->isAuthorized());
+        $this->assertTrue($status->isCanceled());
     }
 
     /**
      * @test
      */
-    public function shouldNotMarkAuthorizedIfIsAPaymentIntentObjectAndStatusIsNotRequiresPaymentMethod()
+    public function shouldMarkCanceledIfIsAPaymentIntentObjectAndStatusRequiresConfirmation()
+    {
+        $action = new StatusAction();
+
+        $model = [
+            'object' => PaymentIntent::OBJECT_NAME,
+            'status' => PaymentIntent::STATUS_REQUIRES_CONFIRMATION,
+        ];
+
+        $status = new GetHumanStatus($model);
+        $action->execute($status);
+
+        $this->assertTrue($status->isCanceled());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldMarkCanceledIfIsAPaymentIntentObjectAndStatusRequiresAction()
+    {
+        $action = new StatusAction();
+
+        $model = [
+            'object' => PaymentIntent::OBJECT_NAME,
+            'status' => PaymentIntent::STATUS_REQUIRES_ACTION,
+        ];
+
+        $status = new GetHumanStatus($model);
+        $action->execute($status);
+
+        $this->assertTrue($status->isCanceled());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldMarkUnknownIfIsAPaymentIntentObjectAndStatusIsNotRequiresPaymentMethod()
     {
         $action = new StatusAction();
 
@@ -187,24 +241,6 @@ class StatusActionTest extends TestCase
         $action->execute($status);
 
         $this->assertTrue($status->isPending());
-    }
-
-    /**
-     * @test
-     */
-    public function shouldMarkPendingIfIsAPaymentIntentObjectAndStatusIsCanceled()
-    {
-        $action = new StatusAction();
-
-        $model = [
-            'object' => PaymentIntent::OBJECT_NAME,
-            'status' => PaymentIntent::STATUS_CANCELED,
-        ];
-
-        $status = new GetHumanStatus($model);
-        $action->execute($status);
-
-        $this->assertTrue($status->isCanceled());
     }
 
     /**

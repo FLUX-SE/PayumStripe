@@ -65,7 +65,7 @@ class StatusAction implements ActionInterface
             return true;
         }
 
-        if (PaymentIntent::STATUS_CANCELED == $model['status']) {
+        if ($this->isACanceledStatus($model['status'])) {
             $request->markCanceled();
             return true;
         }
@@ -75,7 +75,7 @@ class StatusAction implements ActionInterface
             return true;
         }
 
-        if (PaymentIntent::STATUS_REQUIRES_PAYMENT_METHOD == $model['status']) {
+        if ($this->isAnAuthorizedStatus($model['status'])) {
             $request->markAuthorized();
             return true;
         }
@@ -114,5 +114,32 @@ class StatusAction implements ActionInterface
             $request instanceof GetStatusInterface &&
             $request->getModel() instanceof ArrayAccess
             ;
+    }
+
+    /**
+     * @param string $status
+     *
+     * @return bool
+     *
+     * @see https://stripe.com/docs/payments/intents#payment-intent
+     */
+    protected function isACanceledStatus(string $status): bool
+    {
+        return in_array($status, [
+            PaymentIntent::STATUS_CANCELED,
+            PaymentIntent::STATUS_REQUIRES_PAYMENT_METHOD,
+            PaymentIntent::STATUS_REQUIRES_CONFIRMATION,
+            PaymentIntent::STATUS_REQUIRES_ACTION,
+        ]);
+    }
+
+    /**
+     * @param string $status
+     *
+     * @return bool
+     */
+    protected function isAnAuthorizedStatus(string $status): bool
+    {
+        return false;
     }
 }
