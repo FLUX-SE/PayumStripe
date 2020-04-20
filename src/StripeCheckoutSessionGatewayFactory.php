@@ -29,7 +29,7 @@ class StripeCheckoutSessionGatewayFactory extends GatewayFactory
     /**
      * {@inheritDoc}
      */
-    protected function populateConfig(ArrayObject $config)
+    protected function populateConfig(ArrayObject $config): void
     {
         $config->defaults([
             // Factory
