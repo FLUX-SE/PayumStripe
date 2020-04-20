@@ -6,6 +6,7 @@ use Payum\Core\Request\Generic;
 use PHPUnit\Framework\TestCase;
 use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\AbstractRetrieve;
 use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\OptionsAwareInterface;
+use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\ResourceAwareInterface;
 use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\RetrieveInterface;
 use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\RetrievePaymentIntent;
 use Stripe\PaymentIntent;
@@ -22,6 +23,7 @@ class RetrievePaymentIntentTest extends TestCase
         $this->assertInstanceOf(AbstractRetrieve::class, $retrievePaymentIntent);
         $this->assertInstanceOf(RetrieveInterface::class, $retrievePaymentIntent);
         $this->assertInstanceOf(OptionsAwareInterface::class, $retrievePaymentIntent);
+        $this->assertInstanceOf(ResourceAwareInterface::class, $retrievePaymentIntent);
         $this->assertInstanceOf(Generic::class, $retrievePaymentIntent);
     }
 

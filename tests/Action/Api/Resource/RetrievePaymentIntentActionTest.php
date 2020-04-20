@@ -6,8 +6,8 @@ use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
+use Prometee\PayumStripeCheckoutSession\Action\Api\Resource\RetrieveActionInterface;
 use Prometee\PayumStripeCheckoutSession\Action\Api\Resource\RetrievePaymentIntentAction;
-use Prometee\PayumStripeCheckoutSession\Action\Api\Resource\RetrieveResourceActionInterface;
 use Prometee\PayumStripeCheckoutSession\Api\KeysInterface;
 use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\RetrievePaymentIntent;
 use Stripe\Exception\ApiErrorException;
@@ -29,7 +29,7 @@ class RetrievePaymentIntentActionTest extends TestCase
         $this->assertInstanceOf(ActionInterface::class, $action);
         $this->assertNotInstanceOf(GatewayInterface::class, $action);
 
-        $this->assertInstanceOf(RetrieveResourceActionInterface::class, $action);
+        $this->assertInstanceOf(RetrieveActionInterface::class, $action);
     }
 
     /**

@@ -9,6 +9,7 @@ use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\AbstractCreate;
 use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\CreateCustomer;
 use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\CreateInterface;
 use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\OptionsAwareInterface;
+use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\ResourceAwareInterface;
 use Stripe\Customer;
 
 class CreateCustomerTest extends TestCase
@@ -24,6 +25,7 @@ class CreateCustomerTest extends TestCase
         $this->assertInstanceOf(AbstractCreate::class, $createCustomer);
         $this->assertInstanceOf(CreateInterface::class, $createCustomer);
         $this->assertInstanceOf(OptionsAwareInterface::class, $createCustomer);
+        $this->assertInstanceOf(ResourceAwareInterface::class, $createCustomer);
         $this->assertInstanceOf(Generic::class, $createCustomer);
     }
 

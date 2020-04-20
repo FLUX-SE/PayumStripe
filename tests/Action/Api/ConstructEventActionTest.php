@@ -7,7 +7,6 @@ use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
 use Prometee\PayumStripeCheckoutSession\Action\Api\ConstructEventAction;
-use Prometee\PayumStripeCheckoutSession\Api\KeysInterface;
 use Prometee\PayumStripeCheckoutSession\Request\Api\ConstructEvent;
 
 class ConstructEventActionTest extends TestCase
