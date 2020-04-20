@@ -4,23 +4,22 @@ declare(strict_types=1);
 
 namespace Prometee\PayumStripeCheckoutSession\Action\Api\Resource;
 
-use Payum\Core\Bridge\Spl\ArrayObject;
+use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\CreateInterface;
 use Stripe\ApiResource;
 
 interface CreateResourceActionInterface extends ResourceActionInterface
 {
     /**
-     * @param ArrayObject $model
-     * @param array|null $options
+     * @param CreateInterface $request
      *
      * @return ApiResource
      */
-    public function createApiResource(ArrayObject $model, ?array $options = null): ApiResource;
+    public function createApiResource(CreateInterface $request): ApiResource;
 
     /**
-     * @param $request
+     * @param CreateInterface $request
      *
      * @return bool
      */
-    public function supportAlso($request): bool;
+    public function supportAlso(CreateInterface $request): bool;
 }

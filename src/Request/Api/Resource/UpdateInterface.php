@@ -8,7 +8,7 @@ use Payum\Core\Model\ModelAggregateInterface;
 use Payum\Core\Model\ModelAwareInterface;
 use Payum\Core\Security\TokenAggregateInterface;
 
-interface RetrieveInterface extends ResourceAwareInterface, OptionsAwareInterface, ModelAwareInterface, ModelAggregateInterface, TokenAggregateInterface
+interface UpdateInterface extends ResourceAwareInterface, OptionsAwareInterface, ModelAwareInterface, ModelAggregateInterface, TokenAggregateInterface
 {
     /**
      * @return string
@@ -19,4 +19,14 @@ interface RetrieveInterface extends ResourceAwareInterface, OptionsAwareInterfac
      * @param string $id
      */
     public function setId(string $id): void;
+
+    /**
+     * @return array
+     */
+    public function getParameters(): array;
+
+    /**
+     * @param array $parameters
+     */
+    public function setParameters(array $parameters): void;
 }

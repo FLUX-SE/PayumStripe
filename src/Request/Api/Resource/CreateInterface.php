@@ -7,17 +7,16 @@ namespace Prometee\PayumStripeCheckoutSession\Request\Api\Resource;
 use Payum\Core\Model\ModelAggregateInterface;
 use Payum\Core\Model\ModelAwareInterface;
 use Payum\Core\Security\TokenAggregateInterface;
-use Stripe\ApiResource;
 
-interface CreateInterface extends OptionsAwareInterface, ModelAwareInterface, ModelAggregateInterface, TokenAggregateInterface
+interface CreateInterface extends ResourceAwareInterface, OptionsAwareInterface, ModelAwareInterface, ModelAggregateInterface, TokenAggregateInterface
 {
     /**
-     * @return ApiResource|null
+     * @return array|null
      */
-    public function getApiResource(): ?ApiResource;
+    public function getParameters(): ?array;
 
     /**
-     * @param ApiResource $apiResource
+     * @param array $parameters
      */
-    public function setApiResource(ApiResource $apiResource): void;
+    public function setParameters(array $parameters): void;
 }

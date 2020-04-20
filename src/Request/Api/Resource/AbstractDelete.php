@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace Prometee\PayumStripeCheckoutSession\Request\Api\Resource;
 
-use Payum\Core\Request\Generic;
-
-abstract class AbstractRetrieve extends Generic implements RetrieveInterface
+abstract class AbstractDelete extends AbstractRetrieve implements DeleteInterface
 {
     use OptionsAwareTrait,
         ResourceAwareTrait;

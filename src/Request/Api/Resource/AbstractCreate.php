@@ -6,11 +6,11 @@ namespace Prometee\PayumStripeCheckoutSession\Request\Api\Resource;
 
 use ArrayObject;
 use Payum\Core\Request\Generic;
-use Stripe\ApiResource;
 
 abstract class AbstractCreate extends Generic implements CreateInterface
 {
-    use OptionsAwareTrait;
+    use OptionsAwareTrait,
+        ResourceAwareTrait;
 
     /**
      * @param ArrayObject $model
@@ -25,10 +25,11 @@ abstract class AbstractCreate extends Generic implements CreateInterface
     /**
      * {@inheritDoc}
      */
-    public function getApiResource(): ?ApiResource
+    public function getParameters(): ?array
     {
-        if ($this->getModel() instanceof ApiResource) {
-            return $this->getModel();
+        $model = $this->getModel();
+        if ($model instanceof ArrayObject) {
+            return $model->getArrayCopy();
         }
 
         return null;
@@ -37,8 +38,8 @@ abstract class AbstractCreate extends Generic implements CreateInterface
     /**
      * {@inheritDoc}
      */
-    public function setApiResource(ApiResource $apiResource): void
+    public function setParameters(array $parameters): void
     {
-        $this->setModel($apiResource);
+        $this->setModel($parameters);
     }
 }

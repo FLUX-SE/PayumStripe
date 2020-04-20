@@ -4,18 +4,20 @@ declare(strict_types=1);
 
 namespace Prometee\PayumStripeCheckoutSession\Action\Api\Resource;
 
+use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Prometee\PayumStripeCheckoutSession\Action\Api\StripeApiAwareTrait;
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\RetrieveInterface;
+use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\DeleteInterface;
+use Stripe\ApiOperations\Delete;
 use Stripe\ApiOperations\Retrieve;
 use Stripe\ApiResource;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
 
 /**
- * @method string|Retrieve getApiResourceClass() : string
+ * @method Delete|Retrieve|string getApiResourceClass() : string
  */
-abstract class AbstractRetrieveAction implements RetrieveActionInterface
+abstract class AbstractDeleteAction implements DeleteActionInterface
 {
     use StripeApiAwareTrait,
         ResourceAwareActionTrait;
@@ -23,7 +25,7 @@ abstract class AbstractRetrieveAction implements RetrieveActionInterface
     /**
      * {@inheritDoc}
      *
-     * @param RetrieveInterface $request
+     * @param DeleteInterface $request
      *
      * @throws ApiErrorException
      */
@@ -43,15 +45,25 @@ abstract class AbstractRetrieveAction implements RetrieveActionInterface
      *
      * @throws ApiErrorException
      */
-    public function retrieveApiResource(RetrieveInterface $request): ApiResource
+    public function retrieveApiResource(DeleteInterface $request): ApiResource
     {
         Stripe::setApiKey($this->api->getSecretKey());
 
-        /** @var ApiResource $apiResource */
         $apiResource = $this->getApiResourceClass()::retrieve(
             $request->getId(),
             $request->getOptions()
         );
+
+        if (false === $apiResource instanceof Delete) {
+            throw new LogicException(sprintf(
+                'This class "%s" is not an instance of "%s"',
+                $this->getApiResourceClass(),
+                Delete::class
+            ));
+        }
+
+        /** @var ApiResource&Delete $apiResource */
+        $apiResource->delete();
 
         return $apiResource;
     }
@@ -59,20 +71,20 @@ abstract class AbstractRetrieveAction implements RetrieveActionInterface
     /**
      * {@inheritDoc}
      *
-     * @param RetrieveInterface $request
+     * @param DeleteInterface $request
      */
     public function supports($request): bool
     {
         return
-            $request instanceof RetrieveInterface &&
+            $request instanceof DeleteInterface &&
             $this->supportAlso($request)
         ;
     }
 
     /**
-     * @param RetrieveInterface $request
+     * @param DeleteInterface $request
      */
-    protected function checkRequest(RetrieveInterface $request): void
+    protected function checkRequest(DeleteInterface $request): void
     {
         // Silent is golden
     }
