@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Prometee\PayumStripeCheckoutSession\Action;
 
 use Payum\Core\Action\ActionInterface;
+use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
@@ -21,20 +22,25 @@ final class NotifyAction implements ActionInterface, GatewayAwareInterface
      *
      * @param Notify $request
      */
-    public function execute($request)
+    public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
         $eventRequest = new ResolveWebhookEvent($request->getToken());
         $this->gateway->execute($eventRequest);
 
-        $this->gateway->execute(new WebhookEvent($eventRequest->getEventWrapper()));
+        $eventWrapper = $eventRequest->getEventWrapper();
+        if (null === $eventWrapper) {
+            throw new LogicException('The event wrapper should not be null !');
+        }
+
+        $this->gateway->execute(new WebhookEvent($eventWrapper));
     }
 
     /**
      * {@inheritDoc}
      */
-    public function supports($request)
+    public function supports($request): bool
     {
         return $request instanceof Notify;
     }

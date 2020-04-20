@@ -29,7 +29,7 @@ class DeleteWebhookTokenAction implements ActionInterface
      *
      * @param DeleteWebhookToken $request
      */
-    public function execute($request)
+    public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
@@ -39,7 +39,7 @@ class DeleteWebhookTokenAction implements ActionInterface
     /**
      * {@inheritDoc}
      */
-    public function supports($request)
+    public function supports($request): bool
     {
         return
             $request instanceof DeleteWebhookToken

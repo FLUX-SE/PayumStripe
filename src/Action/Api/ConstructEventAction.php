@@ -18,7 +18,7 @@ class ConstructEventAction implements ActionInterface
      *
      * @param ConstructEvent $request
      */
-    public function execute($request)
+    public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
@@ -42,7 +42,7 @@ class ConstructEventAction implements ActionInterface
     /**
      * {@inheritDoc}
      */
-    public function supports($request)
+    public function supports($request): bool
     {
         return $request instanceof ConstructEvent
             && is_string($request->getModel())

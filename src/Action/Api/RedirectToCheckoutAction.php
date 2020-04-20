@@ -39,7 +39,7 @@ final class RedirectToCheckoutAction implements ActionInterface, ApiAwareInterfa
      *
      * @param RedirectToCheckout $request
      */
-    public function execute($request)
+    public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
@@ -56,7 +56,7 @@ final class RedirectToCheckoutAction implements ActionInterface, ApiAwareInterfa
     /**
      * {@inheritDoc}
      */
-    public function supports($request)
+    public function supports($request): bool
     {
         return $request instanceof RedirectToCheckout;
     }

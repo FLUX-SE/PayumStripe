@@ -27,7 +27,7 @@ class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterfac
      *
      * @throws LogicException
      */
-    public function execute($request)
+    public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
@@ -113,7 +113,7 @@ class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterfac
     /**
      * {@inheritDoc}
      */
-    public function supports($request)
+    public function supports($request): bool
     {
         return $request instanceof ResolveWebhookEvent
             && $request->getTo() === EventWrapperInterface::class

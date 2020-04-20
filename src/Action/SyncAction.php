@@ -7,6 +7,7 @@ namespace Prometee\PayumStripeCheckoutSession\Action;
 use ArrayAccess;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
+use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
@@ -24,7 +25,7 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
      *
      * @param Sync $request
      */
-    public function execute($request)
+    public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
         $model = ArrayObject::ensureArrayObject($request->getModel());
@@ -44,13 +45,20 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         $retrievePaymentIntent = new RetrievePaymentIntent($paymentIntentId);
         $this->gateway->execute($retrievePaymentIntent);
         $paymentIntent = $retrievePaymentIntent->getApiResource();
+
+        if (null === $paymentIntent) {
+            throw new LogicException('The payment intent should not be null !');
+        }
+
         $model->exchangeArray($paymentIntent->toArray());
     }
 
     /**
      * {@inheritDoc}
+     *
+     * @param Sync $request
      */
-    public function supports($request)
+    public function supports($request): bool
     {
         return
             $request instanceof Sync &&
@@ -58,6 +66,12 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
             ;
     }
 
+    /**
+     * @param string $objectName
+     * @param ArrayObject $model
+     *
+     * @return string|null
+     */
     protected function findPaymentIntentId(string $objectName, ArrayObject $model): ?string
     {
         if (PaymentIntent::OBJECT_NAME === $objectName) {

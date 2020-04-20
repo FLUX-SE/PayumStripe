@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Prometee\PayumStripeCheckoutSession\Action\Api\WebhookEvent;
 
 use Payum\Core\Bridge\Spl\ArrayObject;
+use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
@@ -26,7 +27,7 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
      *
      * @param WebhookEvent $request
      */
-    public function execute($request)
+    public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
@@ -36,10 +37,15 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
         /** @var Session|PaymentIntent $sessionOrPaymentIntent */
         $sessionOrPaymentIntent = $event->data->offsetGet('object');
 
-        /** @var string|null $tokenHash */
-        $tokenHash = $sessionOrPaymentIntent->metadata->offsetGet('token_hash');
+        $metadata = $sessionOrPaymentIntent->metadata;
+        if (null === $metadata) {
+            throw new LogicException(sprintf('Metadata on %s is required !', Session::class));
+        }
 
-        if ($tokenHash === null) {
+        /** @var string|null $tokenHash */
+        $tokenHash = $metadata->offsetGet('token_hash');
+
+        if (null === $tokenHash) {
             throw RequestNotSupportedException::createActionNotSupported($this, $request);
         }
 

@@ -7,6 +7,7 @@ namespace Prometee\PayumStripeCheckoutSession\Action;
 use ArrayAccess;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
+use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
@@ -25,7 +26,7 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface
      *
      * @param Capture $request
      */
-    public function execute($request)
+    public function execute($request): void
     {
         /* @var $request Capture */
         RequestNotSupportedException::assertSupports($this, $request);
@@ -48,6 +49,9 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface
             $createCheckoutSession = new CreateSession($model);
             $this->gateway->execute($createCheckoutSession);
             $session = $createCheckoutSession->getApiResource();
+            if (null === $session) {
+                throw new LogicException('The event wrapper should not be null !');
+            }
 
             // 2. Prepare storing of an `PaymentIntent` object
             //    (legacy Stripe payments were storing `Charge` object)
@@ -67,7 +71,7 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface
     /**
      * {@inheritdoc}
      */
-    public function supports($request)
+    public function supports($request): bool
     {
         return
             $request instanceof Capture &&
@@ -88,7 +92,7 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface
     public function embedTokenHash(ArrayObject $model, TokenInterface $token): void
     {
         $metadata = $model->offsetGet('metadata');
-        if (null === []) {
+        if (null === $metadata) {
             $metadata = [];
         }
 
