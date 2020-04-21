@@ -6,11 +6,14 @@ use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayAwareInterface;
+use Payum\Core\Model\Identity;
+use Payum\Core\Model\PaymentInterface;
 use Payum\Core\Model\Token;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\Sync;
 use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryInterface;
+use Payum\Core\Storage\IdentityInterface;
 use PHPUnit\Framework\TestCase;
 use Prometee\PayumStripeCheckoutSession\Action\CaptureAction;
 use Prometee\PayumStripeCheckoutSession\Request\Api\RedirectToCheckout;
@@ -64,6 +67,7 @@ class CaptureActionTest extends TestCase
     {
         $model = [];
         $token = new Token();
+        $token->setDetails(new Identity(1, PaymentInterface::class));
         $token->setGatewayName('stripe_checkout_session');
 
         $gatewayMock = $this->createGatewayMock();
@@ -95,7 +99,7 @@ class CaptureActionTest extends TestCase
         $genericGatewayFactory
             ->expects($this->once())
             ->method('createNotifyToken')
-            ->with($token->getGatewayName(), $this->isInstanceOf(ArrayObject::class))
+            ->with($token->getGatewayName(), $this->isInstanceOf(IdentityInterface::class))
             ->willReturn(new Token())
         ;
 

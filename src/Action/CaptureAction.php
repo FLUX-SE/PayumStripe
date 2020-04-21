@@ -39,7 +39,7 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
             $token = $request->getToken();
             $notifyToken = $this->tokenFactory->createNotifyToken(
                 $token->getGatewayName(),
-                $model
+                $token->getDetails()
             );
             $this->embedNotifyTokenHash($model, $notifyToken);
 
