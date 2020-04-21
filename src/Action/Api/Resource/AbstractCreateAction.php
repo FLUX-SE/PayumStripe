@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Prometee\PayumStripeCheckoutSession\Action\Api\Resource;
 
+use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Prometee\PayumStripeCheckoutSession\Action\Api\StripeApiAwareTrait;
 use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\CreateInterface;
@@ -12,9 +13,6 @@ use Stripe\ApiResource;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
 
-/**
- * @method string|Create getApiResourceClass() : string
- */
 abstract class AbstractCreateAction implements CreateResourceActionInterface
 {
     use StripeApiAwareTrait,
@@ -45,10 +43,20 @@ abstract class AbstractCreateAction implements CreateResourceActionInterface
      */
     public function createApiResource(CreateInterface $request): ApiResource
     {
+        $apiResourceClass = $this->getApiResourceClass();
+        if (false === method_exists($apiResourceClass, 'create')) {
+            throw new LogicException(sprintf(
+                'This class "%s" is not an instance of "%s"',
+                (string) $apiResourceClass,
+                Create::class
+            ));
+        }
+
         Stripe::setApiKey($this->api->getSecretKey());
 
+        /** @see Create::create() */
         /** @var ApiResource $apiResource */
-        $apiResource = $this->getApiResourceClass()::create(
+        $apiResource = $apiResourceClass::create(
             $request->getParameters(),
             $request->getOptions()
         );

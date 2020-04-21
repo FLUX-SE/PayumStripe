@@ -14,9 +14,6 @@ use Stripe\ApiResource;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
 
-/**
- * @method Delete|Retrieve|string getApiResourceClass() : string
- */
 abstract class AbstractDeleteAction implements DeleteActionInterface
 {
     use StripeApiAwareTrait,
@@ -47,9 +44,19 @@ abstract class AbstractDeleteAction implements DeleteActionInterface
      */
     public function retrieveApiResource(DeleteInterface $request): ApiResource
     {
+        $apiResourceClass = $this->getApiResourceClass();
+        if (false === method_exists($apiResourceClass, 'retrieve')) {
+            throw new LogicException(sprintf(
+                'This class "%s" is not an instance of "%s"',
+                (string) $apiResourceClass,
+                Retrieve::class
+            ));
+        }
+
         Stripe::setApiKey($this->api->getSecretKey());
 
-        $apiResource = $this->getApiResourceClass()::retrieve(
+        /** @see Retrieve::retrieve() */
+        $apiResource = $apiResourceClass::retrieve(
             $request->getId(),
             $request->getOptions()
         );
@@ -57,7 +64,7 @@ abstract class AbstractDeleteAction implements DeleteActionInterface
         if (false === $apiResource instanceof Delete) {
             throw new LogicException(sprintf(
                 'This class "%s" is not an instance of "%s"',
-                $this->getApiResourceClass(),
+                $apiResourceClass,
                 Delete::class
             ));
         }

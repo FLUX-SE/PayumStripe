@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Prometee\PayumStripeCheckoutSession\Action\Api\Resource;
 
+use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Prometee\PayumStripeCheckoutSession\Action\Api\StripeApiAwareTrait;
 use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\UpdateInterface;
@@ -12,9 +13,6 @@ use Stripe\ApiResource;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
 
-/**
- * @method string|Update getApiResourceClass() : string
- */
 abstract class AbstractUpdateAction implements UpdateResourceActionInterface
 {
     use StripeApiAwareTrait,
@@ -45,10 +43,20 @@ abstract class AbstractUpdateAction implements UpdateResourceActionInterface
      */
     public function updateApiResource(UpdateInterface $request): ApiResource
     {
+        $apiResourceClass = $this->getApiResourceClass();
+        if (false === method_exists($apiResourceClass, 'update')) {
+            throw new LogicException(sprintf(
+                'This class "%s" is not an instance of "%s"',
+                $apiResourceClass,
+                Update::class
+            ));
+        }
+
         Stripe::setApiKey($this->api->getSecretKey());
 
+        /** @see Update::update() */
         /** @var ApiResource $apiResource */
-        $apiResource = $this->getApiResourceClass()::update(
+        $apiResource = $apiResourceClass::update(
             $request->getId(),
             $request->getParameters(),
             $request->getOptions()
