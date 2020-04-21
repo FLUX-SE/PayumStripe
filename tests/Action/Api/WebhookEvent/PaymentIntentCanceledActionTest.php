@@ -75,7 +75,7 @@ class PaymentIntentCanceledActionTest extends TestCase
             }))
         ;
 
-        $action = new CheckoutSessionCompletedAction();
+        $action = new PaymentIntentCanceledAction();
         $action->setGateway($gatewayMock);
         $eventWrapper = new EventWrapper('', $event);
         $webhookEvent = new WebhookEvent($eventWrapper);
