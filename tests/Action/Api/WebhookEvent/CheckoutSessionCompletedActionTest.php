@@ -6,14 +6,13 @@ use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\Model\Token;
-use Payum\Core\Reply\HttpRedirect;
 use Payum\Core\Request\GetToken;
+use Payum\Core\Request\Notify;
 use PHPUnit\Framework\TestCase;
 use Prometee\PayumStripeCheckoutSession\Action\Api\WebhookEvent\AbstractPaymentAction;
 use Prometee\PayumStripeCheckoutSession\Action\Api\WebhookEvent\AbstractWebhookEventAction;
 use Prometee\PayumStripeCheckoutSession\Action\Api\WebhookEvent\CheckoutSessionCompletedAction;
 use Prometee\PayumStripeCheckoutSession\Request\Api\WebhookEvent\WebhookEvent;
-use Prometee\PayumStripeCheckoutSession\Request\DeleteWebhookToken;
 use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapper;
 use Stripe\Event;
 use Tests\Prometee\PayumStripeCheckoutSession\Action\GatewayAwareTestTrait;
@@ -56,7 +55,6 @@ class CheckoutSessionCompletedActionTest extends TestCase
 
         $event = Event::constructFrom($model);
         $token = new Token();
-        $token->setTargetUrl('/notify.php?payum_token=test_hash');
 
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock
@@ -67,14 +65,19 @@ class CheckoutSessionCompletedActionTest extends TestCase
                 $this->assertEquals('test_hash', $request->getHash());
                 $request->setToken($token);
             }));
-
+        $gatewayMock
+            ->expects($this->at(1))
+            ->method('execute')
+            ->with($this->isInstanceOf(Notify::class))
+            ->will($this->returnCallback(function (Notify $request) use ($token) {
+                $this->assertEquals($token, $request->getToken());
+            }))
+        ;
 
         $action = new CheckoutSessionCompletedAction();
         $action->setGateway($gatewayMock);
         $eventWrapper = new EventWrapper('', $event);
         $webhookEvent = new WebhookEvent($eventWrapper);
-
-        $this->expectException(HttpRedirect::class);
 
         $action->execute($webhookEvent);
     }

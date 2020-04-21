@@ -8,8 +8,8 @@ use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
-use Payum\Core\Reply\HttpRedirect;
 use Payum\Core\Request\GetToken;
+use Payum\Core\Request\Notify;
 use Payum\Core\Security\TokenInterface;
 use Prometee\PayumStripeCheckoutSession\Request\Api\WebhookEvent\WebhookEvent;
 use Stripe\Checkout\Session;
@@ -50,7 +50,7 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
         $token = $this->findTokenByHash($tokenHash);
 
         // 3. Redirect to the notify URL
-        throw new HttpRedirect($token->getTargetUrl());
+        $this->gateway->execute(new Notify($token));
     }
 
     /**
