@@ -4,13 +4,10 @@ namespace Tests\Prometee\PayumStripeCheckoutSession\Action\Api\WebhookEvent;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
-use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayAwareInterface;
-use Payum\Core\Model\Payment;
 use Payum\Core\Model\Token;
-use Payum\Core\Request\GetBinaryStatus;
+use Payum\Core\Reply\HttpRedirect;
 use Payum\Core\Request\GetToken;
-use Payum\Core\Request\Sync;
 use PHPUnit\Framework\TestCase;
 use Prometee\PayumStripeCheckoutSession\Action\Api\WebhookEvent\AbstractPaymentAction;
 use Prometee\PayumStripeCheckoutSession\Action\Api\WebhookEvent\AbstractWebhookEventAction;
@@ -59,7 +56,7 @@ class CheckoutSessionCompletedActionTest extends TestCase
 
         $event = Event::constructFrom($model);
         $token = new Token();
-        $payment = new Payment();
+        $token->setTargetUrl('/notify.php?payum_token=test_hash');
 
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock
@@ -70,34 +67,15 @@ class CheckoutSessionCompletedActionTest extends TestCase
                 $this->assertEquals('test_hash', $request->getHash());
                 $request->setToken($token);
             }));
-        $gatewayMock
-            ->expects($this->at(1))
-            ->method('execute')
-            ->with($this->isInstanceOf(GetBinaryStatus::class))
-            ->will($this->returnCallback(function (GetBinaryStatus $request) use ($token, $payment) {
-                $this->assertEquals($token, $request->getToken());
-                $request->setModel($payment);
-            }));
-        $gatewayMock
-            ->expects($this->at(2))
-            ->method('execute')
-            ->with($this->isInstanceOf(Sync::class))
-            ->will($this->returnCallback(function (Sync $request) use ($event) {
-                $this->assertInstanceOf(ArrayObject::class, $request->getModel());
-            }));
-        $gatewayMock
-            ->expects($this->at(3))
-            ->method('execute')
-            ->with($this->isInstanceOf(DeleteWebhookToken::class))
-            ->will($this->returnCallback(function (DeleteWebhookToken $request) use ($token) {
-                $this->assertEquals($token, $request->getToken());
-            }));
 
 
         $action = new CheckoutSessionCompletedAction();
         $action->setGateway($gatewayMock);
         $eventWrapper = new EventWrapper('', $event);
         $webhookEvent = new WebhookEvent($eventWrapper);
+
+        $this->expectException(HttpRedirect::class);
+
         $action->execute($webhookEvent);
     }
 }

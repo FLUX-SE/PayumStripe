@@ -13,13 +13,16 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\Sync;
+use Payum\Core\Security\GenericTokenFactoryAwareInterface;
+use Payum\Core\Security\GenericTokenFactoryAwareTrait;
 use Payum\Core\Security\TokenInterface;
 use Prometee\PayumStripeCheckoutSession\Request\Api\RedirectToCheckout;
 use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\CreateSession;
 
-class CaptureAction implements ActionInterface, GatewayAwareInterface
+class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTokenFactoryAwareInterface
 {
-    use GatewayAwareTrait;
+    use GatewayAwareTrait,
+        GenericTokenFactoryAwareTrait;
 
     /**
      * {@inheritdoc}
@@ -28,24 +31,24 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface
      */
     public function execute($request): void
     {
-        /* @var $request Capture */
         RequestNotSupportedException::assertSupports($this, $request);
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
         if (false === $model->offsetExists('id')) {
+            // 0. Create another token to allow payment webhooks to use `Notify`
             $token = $request->getToken();
-            // 0. Use the `afterToken->getTargetUrl()` url instead of `$token->getTargetUrl()`
-            // Two tokens are generally made :
-            //   - one is the current `$token`
-            //   - and a second one which give its `$afterToken->getTargetUrl()`
-            //     to the current `$token` filled as the `afterUrl` attribute.
-            // So the customer will consume the `$afterToken` while webhooks will
-            // consume the current `$token`
-            $model['success_url'] = $token->getAfterUrl();
-            $model['cancel_url'] = $token->getAfterUrl();
-            $this->embedTokenHash($model, $token);
+            $notifyToken = $this->tokenFactory->createNotifyToken(
+                $token->getGatewayName(),
+                $model
+            );
+            $this->embedNotifyTokenHash($model, $notifyToken);
 
-            // 1. Create a new `Session`
+            // 1. Use the capture URL to `Sync` the payment
+            //    after the customer get back from Stripe Checkout Session
+            $model['success_url'] = $token->getTargetUrl();
+            $model['cancel_url'] = $token->getTargetUrl();
+
+            // 2. Create a new `Session`
             $createCheckoutSession = new CreateSession($model);
             $this->gateway->execute($createCheckoutSession);
             $session = $createCheckoutSession->getApiResource();
@@ -53,12 +56,12 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface
                 throw new LogicException('The event wrapper should not be null !');
             }
 
-            // 2. Prepare storing of an `PaymentIntent` object
+            // 3. Prepare storing of an `PaymentIntent` object
             //    (legacy Stripe payments were storing `Charge` object)
             $model->exchangeArray($session->toArray());
             $this->gateway->execute(new Sync($model));
 
-            // 3. Display the page to redirect to Stripe Checkout portal
+            // 4. Display the page to redirect to Stripe Checkout portal
             $redirectToCheckout = new RedirectToCheckout($session->toArray());
             $this->gateway->execute($redirectToCheckout);
             // Nothing else will be execute after this line because of the rendering of the template
@@ -66,17 +69,6 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface
 
         // 0. Retrieve `PaymentIntent` object and update it
         $this->gateway->execute(new Sync($model));
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports($request): bool
-    {
-        return
-            $request instanceof Capture &&
-            $request->getModel() instanceof ArrayAccess
-            ;
     }
 
     /**
@@ -89,7 +81,7 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface
      * @param ArrayObject $model
      * @param TokenInterface $token
      */
-    public function embedTokenHash(ArrayObject $model, TokenInterface $token): void
+    public function embedNotifyTokenHash(ArrayObject $model, TokenInterface $token): void
     {
         $metadata = $model->offsetGet('metadata');
         if (null === $metadata) {
@@ -108,5 +100,16 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface
         }
         $paymentIntentData['metadata']['token_hash'] = $token->getHash();
         $model['payment_intent_data'] = $paymentIntentData;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function supports($request): bool
+    {
+        return
+            $request instanceof Capture &&
+            $request->getModel() instanceof ArrayAccess
+        ;
     }
 }

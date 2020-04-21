@@ -2,13 +2,15 @@
 
 namespace Tests\Prometee\PayumStripeCheckoutSession\Action;
 
-use ArrayObject;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
+use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\Model\Token;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\Sync;
+use Payum\Core\Security\GenericTokenFactoryAwareInterface;
+use Payum\Core\Security\GenericTokenFactoryInterface;
 use PHPUnit\Framework\TestCase;
 use Prometee\PayumStripeCheckoutSession\Action\CaptureAction;
 use Prometee\PayumStripeCheckoutSession\Request\Api\RedirectToCheckout;
@@ -23,13 +25,14 @@ class CaptureActionTest extends TestCase
     /**
      * @test
      */
-    public function shouldImplementGatewayAwareInterface()
+    public function shouldImplements()
     {
         $action = new CaptureAction();
 
         $this->assertInstanceOf(GatewayAwareInterface::class, $action);
         $this->assertInstanceOf(ActionInterface::class, $action);
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
+        $this->assertInstanceOf(GenericTokenFactoryAwareInterface::class, $action);
     }
 
     /**
@@ -60,6 +63,8 @@ class CaptureActionTest extends TestCase
     public function shouldDoARedirectToStripeSessionIfPaymentIsNew()
     {
         $model = [];
+        $token = new Token();
+        $token->setGatewayName('stripe_checkout_session');
 
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock
@@ -69,7 +74,8 @@ class CaptureActionTest extends TestCase
             ->will($this->returnCallback(function (CreateSession $request) {
                 $this->assertInstanceOf(ArrayObject::class, $request->getModel());
                 $request->setApiResource(new Session());
-            }));
+            }))
+        ;
         $gatewayMock
             ->expects($this->at(1))
             ->method('execute')
@@ -77,16 +83,27 @@ class CaptureActionTest extends TestCase
             ->will($this->returnCallback(function (Sync $request) {
                 $this->assertInstanceOf(ArrayObject::class, $request->getModel());
                 $request->setModel(new PaymentIntent());
-            }));
+            }))
+        ;
         $gatewayMock
             ->expects($this->at(2))
             ->method('execute')
-            ->with($this->isInstanceOf(RedirectToCheckout::class));
+            ->with($this->isInstanceOf(RedirectToCheckout::class))
+        ;
+
+        $genericGatewayFactory = $this->createMock(GenericTokenFactoryInterface::class);
+        $genericGatewayFactory
+            ->expects($this->once())
+            ->method('createNotifyToken')
+            ->with($token->getGatewayName(), $this->isInstanceOf(ArrayObject::class))
+            ->willReturn(new Token())
+        ;
 
         $action = new CaptureAction();
         $action->setGateway($gatewayMock);
+        $action->setGenericTokenFactory($genericGatewayFactory);
 
-        $request = new Capture(new Token());
+        $request = new Capture($token);
         $request->setModel($model);
         $action->execute($request);
     }

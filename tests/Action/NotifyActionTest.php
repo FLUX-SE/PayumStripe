@@ -7,6 +7,7 @@ use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\Model\Token;
 use Payum\Core\Request\Notify;
+use Payum\Core\Request\Sync;
 use PHPUnit\Framework\TestCase;
 use Prometee\PayumStripeCheckoutSession\Action\NotifyAction;
 use Prometee\PayumStripeCheckoutSession\Request\Api\ResolveWebhookEvent;
@@ -59,22 +60,15 @@ class NotifyActionTest extends TestCase
     /**
      * @test
      */
-    public function shouldExecuteResolveWebhookEventWhenNotifyIsCalled()
+    public function shouldExecuteSyncWhenNotifyIsCalled()
     {
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock
             ->expects($this->at(0))
             ->method('execute')
-            ->with($this->isInstanceOf(ResolveWebhookEvent::class))
-            ->will($this->returnCallback(function (ResolveWebhookEvent $request) {
-                $request->setEventWrapper(new EventWrapper('', new Event()));
-            }))
+            ->with($this->isInstanceOf(Sync::class))
         ;
-        $gatewayMock
-            ->expects($this->at(1))
-            ->method('execute')
-            ->with($this->isInstanceOf(WebhookEvent::class))
-        ;
+
         $action = new NotifyAction();
         $action->setGateway($gatewayMock);
 

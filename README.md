@@ -90,8 +90,6 @@ $payment->setClientEmail('test@domain.tld');
 $payment->setDescription('My test order');
 $payment->setDetails([]);
 
-// Payum create two tokens : an afterToken and a normal one referencing the first one
-// So we have one token getting the user on his way to pay and another for webhooks.
 $token = $payum->getTokenFactory()
     ->createCaptureToken('stripe_checkout_session', $payment, '/after-pay.php');
 

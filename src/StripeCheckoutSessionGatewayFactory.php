@@ -64,26 +64,20 @@ class StripeCheckoutSessionGatewayFactory extends GatewayFactory
             'payum.action.payment_intent_canceled' => new PaymentIntentCanceledAction(),
         ]);
 
-        if (true !== empty($config['payum.security.token_storage'])) {
-            $config['payum.action.delete_webhook_token'] = function (ArrayObject $config) {
-                return new DeleteWebhookTokenAction($config['payum.security.token_storage']);
-            };
-        }
-
-        if (false == $config['payum.api']) {
-            $config['payum.default_options'] = [
+        if (false === $config->offsetExists('payum.api')) {
+            $config->offsetSet('payum.default_options', [
                 'publishable_key' => '',
                 'secret_key' => '',
                 'webhook_secret_keys' => [],
-            ];
+            ]);
             $config->defaults($config['payum.default_options']);
-            $config['payum.required_options'] = [
+            $config->offsetSet('payum.required_options', [
                 'publishable_key',
                 'secret_key',
                 'webhook_secret_keys',
-            ];
+            ]);
 
-            $config['payum.api'] = function (ArrayObject $config) {
+            $config->offsetSet('payum.api', function (ArrayObject $config) {
                 $config->validateNotEmpty($config['payum.required_options']);
 
                 return new Keys(
@@ -91,11 +85,11 @@ class StripeCheckoutSessionGatewayFactory extends GatewayFactory
                     $config['secret_key'],
                     $config['webhook_secret_keys']
                 );
-            };
+            });
         }
 
-        $config['payum.paths'] = array_replace([
+        $config->offsetSet('payum.paths', array_replace([
             'PrometeePayumStripeCheckoutSession' => __DIR__ . '/Resources/views',
-        ], $config['payum.paths'] ?: []);
+        ], $config['payum.paths'] ?: []));
     }
 }

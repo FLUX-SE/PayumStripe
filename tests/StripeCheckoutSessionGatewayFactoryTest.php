@@ -7,6 +7,7 @@ namespace Tests\Prometee\PayumStripeCheckoutSession;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\GatewayFactoryInterface;
 use PHPUnit\Framework\TestCase;
+use Prometee\PayumStripeCheckoutSession\Action\DeleteWebhookTokenAction;
 use Prometee\PayumStripeCheckoutSession\StripeCheckoutSessionGatewayFactory;
 
 class StripeCheckoutSessionGatewayFactoryTest extends TestCase
