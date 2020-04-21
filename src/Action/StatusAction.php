@@ -126,6 +126,7 @@ class StatusAction implements ActionInterface
     protected function isACanceledStatus(string $status): bool
     {
         return in_array($status, [
+            PaymentIntent::STATUS_REQUIRES_PAYMENT_METHOD, // Customer use the "cancel_url"
             PaymentIntent::STATUS_CANCELED,
         ]);
     }
@@ -138,7 +139,6 @@ class StatusAction implements ActionInterface
     protected function isANewStatus(string $status): bool
     {
         return in_array($status, [
-            PaymentIntent::STATUS_REQUIRES_PAYMENT_METHOD,
             PaymentIntent::STATUS_REQUIRES_CONFIRMATION,
             PaymentIntent::STATUS_REQUIRES_ACTION,
         ]);
