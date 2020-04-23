@@ -32,7 +32,7 @@ abstract class AbstractDeleteAction implements DeleteActionInterface
 
         $this->checkRequest($request);
 
-        $apiResource = $this->retrieveApiResource($request);
+        $apiResource = $this->deleteApiResource($request);
 
         $request->setApiResource($apiResource);
     }
@@ -42,7 +42,7 @@ abstract class AbstractDeleteAction implements DeleteActionInterface
      *
      * @throws ApiErrorException
      */
-    public function retrieveApiResource(DeleteInterface $request): ApiResource
+    public function deleteApiResource(DeleteInterface $request): ApiResource
     {
         $apiResourceClass = $this->getApiResourceClass();
         if (false === method_exists($apiResourceClass, 'retrieve')) {
