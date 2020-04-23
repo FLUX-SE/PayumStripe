@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Prometee\PayumStripeCheckoutSession\Request\Api\WebhookEvent;
+namespace Tests\Prometee\PayumStripe\Request\Api\WebhookEvent;
 
 use Payum\Core\Request\Generic;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripeCheckoutSession\Request\Api\WebhookEvent\WebhookEvent;
-use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapper;
+use Prometee\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
+use Prometee\PayumStripe\Wrapper\EventWrapper;
 use Stripe\Event;
 
 class WebhookEventTest extends TestCase

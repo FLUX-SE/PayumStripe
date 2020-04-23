@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Prometee\PayumStripeCheckoutSession\Action\Api;
+namespace Tests\Prometee\PayumStripe\Action\Api;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripeCheckoutSession\Action\Api\ConstructEventAction;
-use Prometee\PayumStripeCheckoutSession\Request\Api\ConstructEvent;
+use Prometee\PayumStripe\Action\Api\ConstructEventAction;
+use Prometee\PayumStripe\Request\Api\ConstructEvent;
 
 class ConstructEventActionTest extends TestCase
 {

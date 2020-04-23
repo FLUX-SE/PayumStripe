@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Prometee\PayumStripeCheckoutSession\Action\Api\WebhookEvent;
+namespace Tests\Prometee\PayumStripe\Action\Api\WebhookEvent;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -9,13 +9,13 @@ use Payum\Core\Model\Token;
 use Payum\Core\Request\GetToken;
 use Payum\Core\Request\Notify;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripeCheckoutSession\Action\Api\WebhookEvent\AbstractPaymentAction;
-use Prometee\PayumStripeCheckoutSession\Action\Api\WebhookEvent\AbstractWebhookEventAction;
-use Prometee\PayumStripeCheckoutSession\Action\Api\WebhookEvent\CheckoutSessionCompletedAction;
-use Prometee\PayumStripeCheckoutSession\Request\Api\WebhookEvent\WebhookEvent;
-use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapper;
+use Prometee\PayumStripe\Action\Api\WebhookEvent\AbstractPaymentAction;
+use Prometee\PayumStripe\Action\Api\WebhookEvent\AbstractWebhookEventAction;
+use Prometee\PayumStripe\Action\Api\WebhookEvent\CheckoutSessionCompletedAction;
+use Prometee\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
+use Prometee\PayumStripe\Wrapper\EventWrapper;
 use Stripe\Event;
-use Tests\Prometee\PayumStripeCheckoutSession\Action\GatewayAwareTestTrait;
+use Tests\Prometee\PayumStripe\Action\GatewayAwareTestTrait;
 
 class CheckoutSessionCompletedActionTest extends TestCase
 {

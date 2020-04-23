@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Prometee\PayumStripeCheckoutSession\Action;
+namespace Tests\Prometee\PayumStripe\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -9,10 +9,10 @@ use Payum\Core\Model\Token;
 use Payum\Core\Request\Notify;
 use Payum\Core\Request\Sync;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripeCheckoutSession\Action\NotifyAction;
-use Prometee\PayumStripeCheckoutSession\Request\Api\ResolveWebhookEvent;
-use Prometee\PayumStripeCheckoutSession\Request\Api\WebhookEvent\WebhookEvent;
-use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapper;
+use Prometee\PayumStripe\Action\NotifyAction;
+use Prometee\PayumStripe\Request\Api\ResolveWebhookEvent;
+use Prometee\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
+use Prometee\PayumStripe\Wrapper\EventWrapper;
 use Stripe\Event;
 
 class NotifyActionTest extends TestCase

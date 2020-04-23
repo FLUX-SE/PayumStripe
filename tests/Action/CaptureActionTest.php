@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Prometee\PayumStripeCheckoutSession\Action;
+namespace Tests\Prometee\PayumStripe\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -15,9 +15,9 @@ use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Storage\IdentityInterface;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripeCheckoutSession\Action\CaptureAction;
-use Prometee\PayumStripeCheckoutSession\Request\Api\RedirectToCheckout;
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\CreateSession;
+use Prometee\PayumStripe\Action\CaptureAction;
+use Prometee\PayumStripe\Request\Api\RedirectToCheckout;
+use Prometee\PayumStripe\Request\Api\Resource\CreateSession;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
 

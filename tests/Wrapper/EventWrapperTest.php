@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Prometee\PayumStripeCheckoutSession\Wrapper;
+namespace Tests\Prometee\PayumStripe\Wrapper;
 
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapper;
-use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapperInterface;
+use Prometee\PayumStripe\Wrapper\EventWrapper;
+use Prometee\PayumStripe\Wrapper\EventWrapperInterface;
 use Stripe\Event;
 
 class EventWrapperTest extends TestCase

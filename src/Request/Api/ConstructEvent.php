@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripeCheckoutSession\Request\Api;
+namespace Prometee\PayumStripe\Request\Api;
 
 use Payum\Core\Request\Generic;
-use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapperInterface;
+use Prometee\PayumStripe\Wrapper\EventWrapperInterface;
 
 class ConstructEvent extends Generic
 {

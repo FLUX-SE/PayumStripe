@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripeCheckoutSession\Request\Api;
+namespace Prometee\PayumStripe\Request\Api;
 
 use Payum\Core\Request\Convert;
 use Payum\Core\Security\TokenInterface;
-use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapperInterface;
+use Prometee\PayumStripe\Wrapper\EventWrapperInterface;
 
 final class ResolveWebhookEvent extends Convert
 {

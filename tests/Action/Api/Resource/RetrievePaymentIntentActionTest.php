@@ -1,18 +1,18 @@
 <?php
 
-namespace Tests\Prometee\PayumStripeCheckoutSession\Action\Api\Resource;
+namespace Tests\Prometee\PayumStripe\Action\Api\Resource;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripeCheckoutSession\Action\Api\Resource\RetrieveActionInterface;
-use Prometee\PayumStripeCheckoutSession\Action\Api\Resource\RetrievePaymentIntentAction;
-use Prometee\PayumStripeCheckoutSession\Api\KeysInterface;
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\RetrievePaymentIntent;
+use Prometee\PayumStripe\Action\Api\Resource\RetrieveActionInterface;
+use Prometee\PayumStripe\Action\Api\Resource\RetrievePaymentIntentAction;
+use Prometee\PayumStripe\Api\KeysInterface;
+use Prometee\PayumStripe\Request\Api\Resource\RetrievePaymentIntent;
 use Stripe\Exception\ApiErrorException;
 use Stripe\PaymentIntent;
-use Tests\Prometee\PayumStripeCheckoutSession\Action\Api\ApiAwareActionTestTrait;
+use Tests\Prometee\PayumStripe\Action\Api\ApiAwareActionTestTrait;
 
 class RetrievePaymentIntentActionTest extends TestCase
 {

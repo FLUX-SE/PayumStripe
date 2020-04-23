@@ -2,27 +2,26 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripeCheckoutSession;
+namespace Prometee\PayumStripe;
 
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayFactory;
-use Prometee\PayumStripeCheckoutSession\Action\Api\ConstructEventAction;
-use Prometee\PayumStripeCheckoutSession\Action\Api\RedirectToCheckoutAction;
-use Prometee\PayumStripeCheckoutSession\Action\Api\ResolveWebhookEventAction;
-use Prometee\PayumStripeCheckoutSession\Action\Api\Resource\CreateCustomerAction;
-use Prometee\PayumStripeCheckoutSession\Action\Api\Resource\CreatePlanAction;
-use Prometee\PayumStripeCheckoutSession\Action\Api\Resource\CreateSessionAction;
-use Prometee\PayumStripeCheckoutSession\Action\Api\Resource\CreateSubscriptionAction;
-use Prometee\PayumStripeCheckoutSession\Action\Api\Resource\RetrievePaymentIntentAction;
-use Prometee\PayumStripeCheckoutSession\Action\Api\WebhookEvent\CheckoutSessionCompletedAction;
-use Prometee\PayumStripeCheckoutSession\Action\Api\WebhookEvent\PaymentIntentCanceledAction;
-use Prometee\PayumStripeCheckoutSession\Action\CaptureAction;
-use Prometee\PayumStripeCheckoutSession\Action\ConvertPaymentAction;
-use Prometee\PayumStripeCheckoutSession\Action\DeleteWebhookTokenAction;
-use Prometee\PayumStripeCheckoutSession\Action\NotifyAction;
-use Prometee\PayumStripeCheckoutSession\Action\StatusAction;
-use Prometee\PayumStripeCheckoutSession\Action\SyncAction;
-use Prometee\PayumStripeCheckoutSession\Api\Keys;
+use Prometee\PayumStripe\Action\Api\ConstructEventAction;
+use Prometee\PayumStripe\Action\Api\RedirectToCheckoutAction;
+use Prometee\PayumStripe\Action\Api\ResolveWebhookEventAction;
+use Prometee\PayumStripe\Action\Api\Resource\CreateCustomerAction;
+use Prometee\PayumStripe\Action\Api\Resource\CreatePlanAction;
+use Prometee\PayumStripe\Action\Api\Resource\CreateSessionAction;
+use Prometee\PayumStripe\Action\Api\Resource\CreateSubscriptionAction;
+use Prometee\PayumStripe\Action\Api\Resource\RetrievePaymentIntentAction;
+use Prometee\PayumStripe\Action\Api\WebhookEvent\CheckoutSessionCompletedAction;
+use Prometee\PayumStripe\Action\Api\WebhookEvent\PaymentIntentCanceledAction;
+use Prometee\PayumStripe\Action\CaptureAction;
+use Prometee\PayumStripe\Action\ConvertPaymentAction;
+use Prometee\PayumStripe\Action\NotifyAction;
+use Prometee\PayumStripe\Action\StatusAction;
+use Prometee\PayumStripe\Action\SyncAction;
+use Prometee\PayumStripe\Api\Keys;
 
 class StripeCheckoutSessionGatewayFactory extends GatewayFactory
 {

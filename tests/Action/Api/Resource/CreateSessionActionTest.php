@@ -1,19 +1,19 @@
 <?php
 
-namespace Tests\Prometee\PayumStripeCheckoutSession\Action\Api\Resource;
+namespace Tests\Prometee\PayumStripe\Action\Api\Resource;
 
 use ArrayObject;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripeCheckoutSession\Action\Api\Resource\CreateResourceActionInterface;
-use Prometee\PayumStripeCheckoutSession\Action\Api\Resource\CreateSessionAction;
-use Prometee\PayumStripeCheckoutSession\Api\KeysInterface;
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\CreateSession;
+use Prometee\PayumStripe\Action\Api\Resource\CreateResourceActionInterface;
+use Prometee\PayumStripe\Action\Api\Resource\CreateSessionAction;
+use Prometee\PayumStripe\Api\KeysInterface;
+use Prometee\PayumStripe\Request\Api\Resource\CreateSession;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
-use Tests\Prometee\PayumStripeCheckoutSession\Action\Api\ApiAwareActionTestTrait;
+use Tests\Prometee\PayumStripe\Action\Api\ApiAwareActionTestTrait;
 
 class CreateSessionActionTest extends TestCase
 {

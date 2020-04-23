@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Prometee\PayumStripeCheckoutSession\Action\Api;
+namespace Tests\Prometee\PayumStripe\Action\Api;
 
 use LogicException;
 use Payum\Core\Action\ActionInterface;
@@ -9,14 +9,14 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\Request\GetHttpRequest;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripeCheckoutSession\Action\Api\ResolveWebhookEventAction;
-use Prometee\PayumStripeCheckoutSession\Api\KeysInterface;
-use Prometee\PayumStripeCheckoutSession\Request\Api\ConstructEvent;
-use Prometee\PayumStripeCheckoutSession\Request\Api\ResolveWebhookEvent;
-use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapper;
-use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapperInterface;
+use Prometee\PayumStripe\Action\Api\ResolveWebhookEventAction;
+use Prometee\PayumStripe\Api\KeysInterface;
+use Prometee\PayumStripe\Request\Api\ConstructEvent;
+use Prometee\PayumStripe\Request\Api\ResolveWebhookEvent;
+use Prometee\PayumStripe\Wrapper\EventWrapper;
+use Prometee\PayumStripe\Wrapper\EventWrapperInterface;
 use Stripe\Event;
-use Tests\Prometee\PayumStripeCheckoutSession\Action\GatewayAwareTestTrait;
+use Tests\Prometee\PayumStripe\Action\GatewayAwareTestTrait;
 
 class ResolveWebhookEventActionTest extends TestCase
 {

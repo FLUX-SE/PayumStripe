@@ -1,19 +1,19 @@
 <?php
 
-namespace Tests\Prometee\PayumStripeCheckoutSession\Action\Api\Resource;
+namespace Tests\Prometee\PayumStripe\Action\Api\Resource;
 
 use ArrayObject;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripeCheckoutSession\Action\Api\Resource\CreatePlanAction;
-use Prometee\PayumStripeCheckoutSession\Action\Api\Resource\CreateResourceActionInterface;
-use Prometee\PayumStripeCheckoutSession\Api\KeysInterface;
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\CreatePlan;
+use Prometee\PayumStripe\Action\Api\Resource\CreatePlanAction;
+use Prometee\PayumStripe\Action\Api\Resource\CreateResourceActionInterface;
+use Prometee\PayumStripe\Api\KeysInterface;
+use Prometee\PayumStripe\Request\Api\Resource\CreatePlan;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Plan;
-use Tests\Prometee\PayumStripeCheckoutSession\Action\Api\ApiAwareActionTestTrait;
+use Tests\Prometee\PayumStripe\Action\Api\ApiAwareActionTestTrait;
 
 class CreatePlanActionTest extends TestCase
 {

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripeCheckoutSession\Action\Api\Resource;
+namespace Prometee\PayumStripe\Action\Api\Resource;
 
 use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Prometee\PayumStripeCheckoutSession\Action\Api\StripeApiAwareTrait;
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\DeleteInterface;
+use Prometee\PayumStripe\Action\Api\StripeApiAwareTrait;
+use Prometee\PayumStripe\Request\Api\Resource\DeleteInterface;
 use Stripe\ApiOperations\Delete;
 use Stripe\ApiOperations\Retrieve;
 use Stripe\ApiResource;

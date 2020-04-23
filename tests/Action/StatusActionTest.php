@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Prometee\PayumStripeCheckoutSession\Action;
+namespace Tests\Prometee\PayumStripe\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Request\GetHumanStatus;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripeCheckoutSession\Action\StatusAction;
+use Prometee\PayumStripe\Action\StatusAction;
 use Stripe\PaymentIntent;
 use Stripe\Refund;
 

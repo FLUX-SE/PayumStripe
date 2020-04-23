@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripeCheckoutSession\Action\Api;
+namespace Prometee\PayumStripe\Action\Api;
 
 use LogicException;
 use Payum\Core\Action\ActionInterface;
@@ -11,9 +11,9 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\GetHttpRequest;
-use Prometee\PayumStripeCheckoutSession\Request\Api\ConstructEvent;
-use Prometee\PayumStripeCheckoutSession\Request\Api\ResolveWebhookEvent;
-use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapperInterface;
+use Prometee\PayumStripe\Request\Api\ConstructEvent;
+use Prometee\PayumStripe\Request\Api\ResolveWebhookEvent;
+use Prometee\PayumStripe\Wrapper\EventWrapperInterface;
 
 class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
 {

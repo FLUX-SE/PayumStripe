@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripeCheckoutSession\Action\Api\Resource;
+namespace Prometee\PayumStripe\Action\Api\Resource;
 
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\CreateInterface;
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\CreateSubscription;
+use Prometee\PayumStripe\Request\Api\Resource\CreateInterface;
+use Prometee\PayumStripe\Request\Api\Resource\CreateSubscription;
 use Stripe\Subscription;
 
 class CreateSubscriptionAction extends AbstractCreateAction

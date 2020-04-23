@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripeCheckoutSession\Action;
+namespace Prometee\PayumStripe\Action;
 
 use ArrayAccess;
 use Payum\Core\Action\ActionInterface;

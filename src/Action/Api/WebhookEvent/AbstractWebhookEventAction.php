@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripeCheckoutSession\Action\Api\WebhookEvent;
+namespace Prometee\PayumStripe\Action\Api\WebhookEvent;
 
 use Payum\Core\Action\ActionInterface;
-use Prometee\PayumStripeCheckoutSession\Request\Api\WebhookEvent\WebhookEvent;
-use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapperInterface;
+use Prometee\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
+use Prometee\PayumStripe\Wrapper\EventWrapperInterface;
 use Stripe\Event;
 
 abstract class AbstractWebhookEventAction implements ActionInterface

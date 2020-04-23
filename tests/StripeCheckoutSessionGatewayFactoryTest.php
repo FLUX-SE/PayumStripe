@@ -2,13 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Prometee\PayumStripeCheckoutSession;
+namespace Tests\Prometee\PayumStripe;
 
 use Payum\Core\Exception\LogicException;
 use Payum\Core\GatewayFactoryInterface;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripeCheckoutSession\Action\DeleteWebhookTokenAction;
-use Prometee\PayumStripeCheckoutSession\StripeCheckoutSessionGatewayFactory;
+use Prometee\PayumStripe\StripeCheckoutSessionGatewayFactory;
 
 class StripeCheckoutSessionGatewayFactoryTest extends TestCase
 {

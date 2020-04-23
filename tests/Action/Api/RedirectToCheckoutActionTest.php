@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Prometee\PayumStripeCheckoutSession\Action\Api;
+namespace Tests\Prometee\PayumStripe\Action\Api;
 
 use ArrayObject;
 use Payum\Core\Action\ActionInterface;
@@ -9,10 +9,10 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\RenderTemplate;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripeCheckoutSession\Action\Api\RedirectToCheckoutAction;
-use Prometee\PayumStripeCheckoutSession\Api\KeysInterface;
-use Prometee\PayumStripeCheckoutSession\Request\Api\RedirectToCheckout;
-use Tests\Prometee\PayumStripeCheckoutSession\Action\GatewayAwareTestTrait;
+use Prometee\PayumStripe\Action\Api\RedirectToCheckoutAction;
+use Prometee\PayumStripe\Api\KeysInterface;
+use Prometee\PayumStripe\Request\Api\RedirectToCheckout;
+use Tests\Prometee\PayumStripe\Action\GatewayAwareTestTrait;
 
 class RedirectToCheckoutActionTest extends TestCase
 {

@@ -1,6 +1,6 @@
 {
-    "name": "prometee/payum-stripe-checkout-session",
-    "description": "Payum Stripe checkout session gateway",
+    "name": "prometee/payum-stripe",
+    "description": "Payum Stripe gateways",
     "type": "library",
     "require": {
         "php": "^7.3",
@@ -14,10 +14,10 @@
         "phpstan/phpstan": "^0.12.18"
     },
     "autoload": {
-        "psr-4": { "Prometee\\PayumStripeCheckoutSession\\": "src/" }
+        "psr-4": { "Prometee\\PayumStripe\\": "src/" }
     },
     "autoload-dev": {
-        "psr-4": { "Tests\\Prometee\\PayumStripeCheckoutSession\\": "tests/" }
+        "psr-4": { "Tests\\Prometee\\PayumStripe\\": "tests/" }
     },
     "license": "MIT",
     "extra": {

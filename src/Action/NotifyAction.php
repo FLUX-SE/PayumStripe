@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripeCheckoutSession\Action;
+namespace Prometee\PayumStripe\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Exception\LogicException;
@@ -11,8 +11,8 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Notify;
 use Payum\Core\Request\Sync;
-use Prometee\PayumStripeCheckoutSession\Request\Api\ResolveWebhookEvent;
-use Prometee\PayumStripeCheckoutSession\Request\Api\WebhookEvent\WebhookEvent;
+use Prometee\PayumStripe\Request\Api\ResolveWebhookEvent;
+use Prometee\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 
 final class NotifyAction implements ActionInterface, GatewayAwareInterface
 {

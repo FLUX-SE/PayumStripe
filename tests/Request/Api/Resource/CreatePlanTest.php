@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\Prometee\PayumStripeCheckoutSession\Request\Api\Resource;
+namespace Tests\Prometee\PayumStripe\Request\Api\Resource;
 
 use ArrayObject;
 use Payum\Core\Request\Generic;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\AbstractCreate;
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\CreateInterface;
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\CreatePlan;
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\OptionsAwareInterface;
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\ResourceAwareInterface;
+use Prometee\PayumStripe\Request\Api\Resource\AbstractCreate;
+use Prometee\PayumStripe\Request\Api\Resource\CreateInterface;
+use Prometee\PayumStripe\Request\Api\Resource\CreatePlan;
+use Prometee\PayumStripe\Request\Api\Resource\OptionsAwareInterface;
+use Prometee\PayumStripe\Request\Api\Resource\ResourceAwareInterface;
 use Stripe\Plan;
 
 class CreatePlanTest extends TestCase

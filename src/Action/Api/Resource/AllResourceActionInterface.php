@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripeCheckoutSession\Action\Api\Resource;
+namespace Prometee\PayumStripe\Action\Api\Resource;
 
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\AllInterface;
+use Prometee\PayumStripe\Request\Api\Resource\AllInterface;
 use Stripe\ApiResource;
 use Stripe\Collection;
 

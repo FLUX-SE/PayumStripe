@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripeCheckoutSession\Request\Api;
+namespace Prometee\PayumStripe\Request\Api;
 
 use Payum\Core\Request\Generic;
 

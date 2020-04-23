@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripeCheckoutSession\Action\Api\Resource;
+namespace Prometee\PayumStripe\Action\Api\Resource;
 
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\RetrieveInterface;
+use Prometee\PayumStripe\Request\Api\Resource\RetrieveInterface;
 use Stripe\ApiResource;
 
 interface RetrieveActionInterface extends ResourceActionInterface

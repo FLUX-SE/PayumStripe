@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripeCheckoutSession\Action\Api;
+namespace Prometee\PayumStripe\Action\Api;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Prometee\PayumStripeCheckoutSession\Request\Api\ConstructEvent;
-use Prometee\PayumStripeCheckoutSession\Wrapper\EventWrapper;
+use Prometee\PayumStripe\Request\Api\ConstructEvent;
+use Prometee\PayumStripe\Wrapper\EventWrapper;
 use Stripe\Exception\SignatureVerificationException;
 use Stripe\Webhook;
 

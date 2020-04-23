@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Prometee\PayumStripeCheckoutSession\Request\Api;
+namespace Tests\Prometee\PayumStripe\Request\Api;
 
 use Payum\Core\Request\Generic;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripeCheckoutSession\Request\Api\RedirectToCheckout;
+use Prometee\PayumStripe\Request\Api\RedirectToCheckout;
 
 class RedirectToCheckoutTest extends TestCase
 {

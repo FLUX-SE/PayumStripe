@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\Prometee\PayumStripeCheckoutSession\Resources\Views\Action;
+namespace Tests\Prometee\PayumStripe\Resources\Views\Action;
 
 use Payum\Core\Gateway;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripeCheckoutSession\StripeCheckoutSessionGatewayFactory;
+use Prometee\PayumStripe\StripeCheckoutSessionGatewayFactory;
 use ReflectionClass;
 use ReflectionException;
 use Twig\Environment;

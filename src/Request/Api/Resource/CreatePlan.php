@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripeCheckoutSession\Request\Api\Resource;
+namespace Prometee\PayumStripe\Request\Api\Resource;
 
 class CreatePlan extends AbstractCreate
 {

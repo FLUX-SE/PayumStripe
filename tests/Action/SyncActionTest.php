@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\Prometee\PayumStripeCheckoutSession\Action;
+namespace Tests\Prometee\PayumStripe\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\Request\Sync;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripeCheckoutSession\Action\SyncAction;
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\RetrievePaymentIntent;
+use Prometee\PayumStripe\Action\SyncAction;
+use Prometee\PayumStripe\Request\Api\Resource\RetrievePaymentIntent;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
 

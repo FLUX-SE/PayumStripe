@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripeCheckoutSession\Api;
+namespace Prometee\PayumStripe\Api;
 
 interface KeysInterface
 {

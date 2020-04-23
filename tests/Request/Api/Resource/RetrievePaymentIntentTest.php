@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\Prometee\PayumStripeCheckoutSession\Request\Api\Resource;
+namespace Tests\Prometee\PayumStripe\Request\Api\Resource;
 
 use Payum\Core\Request\Generic;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\AbstractRetrieve;
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\OptionsAwareInterface;
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\ResourceAwareInterface;
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\RetrieveInterface;
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\RetrievePaymentIntent;
+use Prometee\PayumStripe\Request\Api\Resource\AbstractRetrieve;
+use Prometee\PayumStripe\Request\Api\Resource\OptionsAwareInterface;
+use Prometee\PayumStripe\Request\Api\Resource\ResourceAwareInterface;
+use Prometee\PayumStripe\Request\Api\Resource\RetrieveInterface;
+use Prometee\PayumStripe\Request\Api\Resource\RetrievePaymentIntent;
 use Stripe\PaymentIntent;
 
 class RetrievePaymentIntentTest extends TestCase

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Prometee\PayumStripeCheckoutSession\Action;
+namespace Tests\Prometee\PayumStripe\Action;
 
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\MockObject\MockObject;

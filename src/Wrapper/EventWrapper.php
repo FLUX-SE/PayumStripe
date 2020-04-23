@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripeCheckoutSession\Wrapper;
+namespace Prometee\PayumStripe\Wrapper;
 
 use Stripe\Event;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripeCheckoutSession\Action;
+namespace Prometee\PayumStripe\Action;
 
 use ArrayAccess;
 use Payum\Core\Action\ActionInterface;
@@ -16,8 +16,8 @@ use Payum\Core\Request\Sync;
 use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryAwareTrait;
 use Payum\Core\Security\TokenInterface;
-use Prometee\PayumStripeCheckoutSession\Request\Api\RedirectToCheckout;
-use Prometee\PayumStripeCheckoutSession\Request\Api\Resource\CreateSession;
+use Prometee\PayumStripe\Request\Api\RedirectToCheckout;
+use Prometee\PayumStripe\Request\Api\Resource\CreateSession;
 
 class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTokenFactoryAwareInterface
 {

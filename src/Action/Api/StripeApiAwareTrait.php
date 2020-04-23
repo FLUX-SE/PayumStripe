@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripeCheckoutSession\Action\Api;
+namespace Prometee\PayumStripe\Action\Api;
 
 use Payum\Core\ApiAwareTrait;
-use Prometee\PayumStripeCheckoutSession\Api\Keys;
-use Prometee\PayumStripeCheckoutSession\Api\KeysInterface;
+use Prometee\PayumStripe\Api\Keys;
+use Prometee\PayumStripe\Api\KeysInterface;
 
 /**
  * @property KeysInterface $api
