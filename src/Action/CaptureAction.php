@@ -74,9 +74,12 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
     /**
      * Save the token hash for future webhook consuming retrieval
      *
-     * comment : A `Session` can be completed or its `PaymentIntent` can be canceled.
-     *           So the token hash have to be stored both on `Session` metadata and on
-     *           `PaymentIntent` metadata
+     *  - A `Session` can be completed.
+     *  - or its `PaymentIntent` can be canceled.
+     *  - or its `Subscription` can be canceled.
+     *  - or its `SetupIntent` can be canceled.
+     *
+     * So the token hash have to be stored both on `Session` metadata and other mode metadata
      *
      * @param ArrayObject $model
      * @param TokenInterface $token
@@ -91,15 +94,8 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
         $metadata['token_hash'] = $token->getHash();
         $model['metadata'] = $metadata;
 
-        $paymentIntentData = $model->offsetGet('payment_intent_data');
-        if (null === $paymentIntentData) {
-            $paymentIntentData = [];
-        }
-        if (false === isset($paymentIntentData['metadata'])) {
-            $paymentIntentData['metadata'] = [];
-        }
-        $paymentIntentData['metadata']['token_hash'] = $token->getHash();
-        $model['payment_intent_data'] = $paymentIntentData;
+        $modeDataKey = $this->detectModeData($model);
+        $this->embedOnModeData($model, $token, $modeDataKey);
     }
 
     /**
@@ -111,5 +107,41 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
             $request instanceof Capture &&
             $request->getModel() instanceof ArrayAccess
         ;
+    }
+
+    /**
+     * @param ArrayObject $model
+     * @param TokenInterface $token
+     * @param string $modeDataKey
+     */
+    public function embedOnModeData(ArrayObject $model, TokenInterface $token, string $modeDataKey): void
+    {
+        $paymentIntentData = $model->offsetGet($modeDataKey);
+        if (null === $paymentIntentData) {
+            $paymentIntentData = [];
+        }
+        if (false === isset($paymentIntentData['metadata'])) {
+            $paymentIntentData['metadata'] = [];
+        }
+        $paymentIntentData['metadata']['token_hash'] = $token->getHash();
+        $model[$modeDataKey] = $paymentIntentData;
+    }
+
+    /**
+     * @param ArrayObject $model
+     *
+     * @return string
+     */
+    protected function detectModeData(ArrayObject $model): string
+    {
+        if ($model->offsetExists('subscription_data')) {
+            return 'subscription_data';
+        }
+
+        if ($model->offsetExists('setup_intent_data')) {
+            return 'setup_intent_data';
+        }
+
+        return 'payment_intent_data';
     }
 }

@@ -12,7 +12,7 @@ use Prometee\PayumStripe\Request\Api\Resource\OptionsAwareInterface;
 use Prometee\PayumStripe\Request\Api\Resource\ResourceAwareInterface;
 use Stripe\Customer;
 
-class CreateCustomerTest extends TestCase
+final class CreateCustomerTest extends TestCase
 {
     /**
      * @test

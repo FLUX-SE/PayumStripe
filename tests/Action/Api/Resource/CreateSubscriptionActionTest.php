@@ -15,7 +15,7 @@ use Stripe\Exception\ApiErrorException;
 use Stripe\Subscription;
 use Tests\Prometee\PayumStripe\Action\Api\ApiAwareActionTestTrait;
 
-class CreateSubscriptionActionTest extends TestCase
+final class CreateSubscriptionActionTest extends TestCase
 {
     use ApiAwareActionTestTrait;
 

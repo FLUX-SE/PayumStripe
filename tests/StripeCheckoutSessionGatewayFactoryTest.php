@@ -9,7 +9,7 @@ use Payum\Core\GatewayFactoryInterface;
 use PHPUnit\Framework\TestCase;
 use Prometee\PayumStripe\StripeCheckoutSessionGatewayFactory;
 
-class StripeCheckoutSessionGatewayFactoryTest extends TestCase
+final class StripeCheckoutSessionGatewayFactoryTest extends TestCase
 {
     /**
      * @test

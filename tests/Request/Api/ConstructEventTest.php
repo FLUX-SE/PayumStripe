@@ -8,7 +8,7 @@ use Prometee\PayumStripe\Request\Api\ConstructEvent;
 use Prometee\PayumStripe\Wrapper\EventWrapper;
 use Stripe\Event;
 
-class ConstructEventTest extends TestCase
+final class ConstructEventTest extends TestCase
 {
     /**
      * @test

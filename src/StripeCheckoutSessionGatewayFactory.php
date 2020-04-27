@@ -14,13 +14,19 @@ use Prometee\PayumStripe\Action\Api\Resource\CreatePlanAction;
 use Prometee\PayumStripe\Action\Api\Resource\CreateSessionAction;
 use Prometee\PayumStripe\Action\Api\Resource\CreateSubscriptionAction;
 use Prometee\PayumStripe\Action\Api\Resource\RetrievePaymentIntentAction;
+use Prometee\PayumStripe\Action\Api\Resource\RetrieveSessionAction;
+use Prometee\PayumStripe\Action\Api\Resource\RetrieveSetupIntentAction;
+use Prometee\PayumStripe\Action\Api\Resource\RetrieveSubscriptionAction;
 use Prometee\PayumStripe\Action\Api\WebhookEvent\CheckoutSessionCompletedAction;
 use Prometee\PayumStripe\Action\Api\WebhookEvent\PaymentIntentCanceledAction;
+use Prometee\PayumStripe\Action\Api\WebhookEvent\SetupIntentCanceledAction;
 use Prometee\PayumStripe\Action\CaptureAction;
 use Prometee\PayumStripe\Action\ConvertPaymentAction;
 use Prometee\PayumStripe\Action\NotifyAction;
 use Prometee\PayumStripe\Action\StatusAction;
 use Prometee\PayumStripe\Action\SyncAction;
+use Prometee\PayumStripe\Action\SyncSetupIntentAction;
+use Prometee\PayumStripe\Action\SyncSubscriptionAction;
 use Prometee\PayumStripe\Api\Keys;
 
 class StripeCheckoutSessionGatewayFactory extends GatewayFactory
@@ -50,7 +56,10 @@ class StripeCheckoutSessionGatewayFactory extends GatewayFactory
 
             // API Resources
             'payum.action.create_session' => new CreateSessionAction(),
+            'payum.action.retrieve_session' => new RetrieveSessionAction(),
             'payum.action.retrieve_payment_intent' => new RetrievePaymentIntentAction(),
+            'payum.action.retrieve_subscription' => new RetrieveSubscriptionAction(),
+            'payum.action.retrieve_setup_intent' => new RetrieveSetupIntentAction(),
             'payum.action.create_customer' => new CreateCustomerAction(),
             'payum.action.create_plan' => new CreatePlanAction(),
             'payum.action.create_subscription' => new CreateSubscriptionAction(),
@@ -58,9 +67,11 @@ class StripeCheckoutSessionGatewayFactory extends GatewayFactory
             // Webhooks
             'payum.action.resolve_webhook_event' => new ResolveWebhookEventAction(),
             'payum.action.construct_event' => new ConstructEventAction(),
+
             // Webhook event resolver
             'payum.action.checkout_session_completed' => new CheckoutSessionCompletedAction(),
             'payum.action.payment_intent_canceled' => new PaymentIntentCanceledAction(),
+            'payum.action.setup_intent_canceled' => new SetupIntentCanceledAction(),
         ]);
 
         if (false === $config->offsetExists('payum.api')) {

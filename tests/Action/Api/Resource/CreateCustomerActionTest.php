@@ -15,7 +15,7 @@ use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
 use Tests\Prometee\PayumStripe\Action\Api\ApiAwareActionTestTrait;
 
-class CreateCustomerActionTest extends TestCase
+final class CreateCustomerActionTest extends TestCase
 {
     use ApiAwareActionTestTrait;
 

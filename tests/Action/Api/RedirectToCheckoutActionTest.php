@@ -14,7 +14,7 @@ use Prometee\PayumStripe\Api\KeysInterface;
 use Prometee\PayumStripe\Request\Api\RedirectToCheckout;
 use Tests\Prometee\PayumStripe\Action\GatewayAwareTestTrait;
 
-class RedirectToCheckoutActionTest extends TestCase
+final class RedirectToCheckoutActionTest extends TestCase
 {
     use ApiAwareActionTestTrait,
         GatewayAwareTestTrait;

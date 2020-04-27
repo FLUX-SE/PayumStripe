@@ -20,7 +20,7 @@ trait GatewayAwareTestTrait
      *
      * @return MockObject
      */
-    abstract protected function createMock($originalClassName): MockObject;
+    abstract protected function createMock(string $originalClassName): MockObject;
 
     /**
      * @return MockObject&GatewayInterface

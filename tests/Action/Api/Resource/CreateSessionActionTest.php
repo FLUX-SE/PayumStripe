@@ -15,7 +15,7 @@ use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
 use Tests\Prometee\PayumStripe\Action\Api\ApiAwareActionTestTrait;
 
-class CreateSessionActionTest extends TestCase
+final class CreateSessionActionTest extends TestCase
 {
     use ApiAwareActionTestTrait;
 

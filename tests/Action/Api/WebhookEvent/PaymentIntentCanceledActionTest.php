@@ -11,14 +11,13 @@ use Payum\Core\Request\Notify;
 use PHPUnit\Framework\TestCase;
 use Prometee\PayumStripe\Action\Api\WebhookEvent\AbstractPaymentAction;
 use Prometee\PayumStripe\Action\Api\WebhookEvent\AbstractWebhookEventAction;
-use Prometee\PayumStripe\Action\Api\WebhookEvent\CheckoutSessionCompletedAction;
 use Prometee\PayumStripe\Action\Api\WebhookEvent\PaymentIntentCanceledAction;
 use Prometee\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use Prometee\PayumStripe\Wrapper\EventWrapper;
 use Stripe\Event;
 use Tests\Prometee\PayumStripe\Action\GatewayAwareTestTrait;
 
-class PaymentIntentCanceledActionTest extends TestCase
+final class PaymentIntentCanceledActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 

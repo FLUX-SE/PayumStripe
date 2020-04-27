@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Prometee\PayumStripe\Action\Api\ConstructEventAction;
 use Prometee\PayumStripe\Request\Api\ConstructEvent;
 
-class ConstructEventActionTest extends TestCase
+final class ConstructEventActionTest extends TestCase
 {
     /**
      * @test

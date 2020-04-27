@@ -12,7 +12,7 @@ use Prometee\PayumStripe\Request\Api\Resource\OptionsAwareInterface;
 use Prometee\PayumStripe\Request\Api\Resource\ResourceAwareInterface;
 use Stripe\Checkout\Session;
 
-class CreateSessionTest extends TestCase
+final class CreateSessionTest extends TestCase
 {
     /**
      * @test

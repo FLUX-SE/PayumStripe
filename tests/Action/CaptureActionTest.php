@@ -21,7 +21,7 @@ use Prometee\PayumStripe\Request\Api\Resource\CreateSession;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
 
-class CaptureActionTest extends TestCase
+final class CaptureActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 

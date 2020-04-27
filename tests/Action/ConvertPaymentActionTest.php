@@ -10,7 +10,7 @@ use Payum\Core\Request\Convert;
 use PHPUnit\Framework\TestCase;
 use Prometee\PayumStripe\Action\ConvertPaymentAction;
 
-class ConvertPaymentActionTest extends TestCase
+final class ConvertPaymentActionTest extends TestCase
 {
     /**
      * @test

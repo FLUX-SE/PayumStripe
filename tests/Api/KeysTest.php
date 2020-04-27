@@ -6,7 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Prometee\PayumStripe\Api\Keys;
 use Prometee\PayumStripe\Api\KeysInterface;
 
-class KeysTest extends TestCase
+final class KeysTest extends TestCase
 {
     public function test__construct()
     {

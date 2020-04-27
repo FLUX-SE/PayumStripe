@@ -14,7 +14,7 @@ use Stripe\Exception\ApiErrorException;
 use Stripe\PaymentIntent;
 use Tests\Prometee\PayumStripe\Action\Api\ApiAwareActionTestTrait;
 
-class RetrievePaymentIntentActionTest extends TestCase
+final class RetrievePaymentIntentActionTest extends TestCase
 {
     use ApiAwareActionTestTrait;
 

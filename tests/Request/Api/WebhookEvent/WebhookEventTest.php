@@ -8,7 +8,7 @@ use Prometee\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use Prometee\PayumStripe\Wrapper\EventWrapper;
 use Stripe\Event;
 
-class WebhookEventTest extends TestCase
+final class WebhookEventTest extends TestCase
 {
     /**
      * @test

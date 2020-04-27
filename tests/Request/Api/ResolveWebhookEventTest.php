@@ -7,7 +7,7 @@ use Payum\Core\Request\Convert;
 use PHPUnit\Framework\TestCase;
 use Prometee\PayumStripe\Request\Api\ResolveWebhookEvent;
 
-class ResolveWebhookEventTest extends TestCase
+final class ResolveWebhookEventTest extends TestCase
 {
     /**
      * @test

@@ -7,7 +7,7 @@ use Prometee\PayumStripe\Wrapper\EventWrapper;
 use Prometee\PayumStripe\Wrapper\EventWrapperInterface;
 use Stripe\Event;
 
-class EventWrapperTest extends TestCase
+final class EventWrapperTest extends TestCase
 {
     /**
      * @test

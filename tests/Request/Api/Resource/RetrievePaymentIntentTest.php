@@ -11,7 +11,7 @@ use Prometee\PayumStripe\Request\Api\Resource\RetrieveInterface;
 use Prometee\PayumStripe\Request\Api\Resource\RetrievePaymentIntent;
 use Stripe\PaymentIntent;
 
-class RetrievePaymentIntentTest extends TestCase
+final class RetrievePaymentIntentTest extends TestCase
 {
     /**
      * @test

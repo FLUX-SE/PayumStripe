@@ -11,13 +11,13 @@ use Payum\Core\Request\Notify;
 use PHPUnit\Framework\TestCase;
 use Prometee\PayumStripe\Action\Api\WebhookEvent\AbstractPaymentAction;
 use Prometee\PayumStripe\Action\Api\WebhookEvent\AbstractWebhookEventAction;
-use Prometee\PayumStripe\Action\Api\WebhookEvent\CheckoutSessionCompletedAction;
+use Prometee\PayumStripe\Action\Api\WebhookEvent\SetupIntentCanceledAction;
 use Prometee\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use Prometee\PayumStripe\Wrapper\EventWrapper;
 use Stripe\Event;
 use Tests\Prometee\PayumStripe\Action\GatewayAwareTestTrait;
 
-final class CheckoutSessionCompletedActionTest extends TestCase
+final class SetupIntentCanceledActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
@@ -26,7 +26,7 @@ final class CheckoutSessionCompletedActionTest extends TestCase
      */
     public function shouldImplements()
     {
-        $action = new CheckoutSessionCompletedAction();
+        $action = new SetupIntentCanceledAction();
 
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
         $this->assertInstanceOf(ActionInterface::class, $action);
@@ -50,7 +50,7 @@ final class CheckoutSessionCompletedActionTest extends TestCase
                     ],
                 ],
             ],
-            'type' => Event::CHECKOUT_SESSION_COMPLETED,
+            'type' => Event::SETUP_INTENT_CANCELED,
         ];
 
         $event = Event::constructFrom($model);
@@ -74,7 +74,7 @@ final class CheckoutSessionCompletedActionTest extends TestCase
             }))
         ;
 
-        $action = new CheckoutSessionCompletedAction();
+        $action = new SetupIntentCanceledAction();
         $action->setGateway($gatewayMock);
         $eventWrapper = new EventWrapper('', $event);
         $webhookEvent = new WebhookEvent($eventWrapper);

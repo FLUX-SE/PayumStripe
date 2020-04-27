@@ -6,7 +6,7 @@ use Payum\Core\Request\Generic;
 use PHPUnit\Framework\TestCase;
 use Prometee\PayumStripe\Request\Api\RedirectToCheckout;
 
-class RedirectToCheckoutTest extends TestCase
+final class RedirectToCheckoutTest extends TestCase
 {
     /**
      * @test

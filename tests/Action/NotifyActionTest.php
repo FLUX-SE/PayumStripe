@@ -15,7 +15,7 @@ use Prometee\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use Prometee\PayumStripe\Wrapper\EventWrapper;
 use Stripe\Event;
 
-class NotifyActionTest extends TestCase
+final class NotifyActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 

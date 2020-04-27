@@ -15,7 +15,7 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
 
-class RedirectToCheckoutTest extends TestCase
+final class RedirectToCheckoutTest extends TestCase
 {
     /**
      * @param string $class

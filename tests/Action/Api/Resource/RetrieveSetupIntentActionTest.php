@@ -2,20 +2,19 @@
 
 namespace Tests\Prometee\PayumStripe\Action\Api\Resource;
 
-use ArrayObject;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripe\Action\Api\Resource\CreatePlanAction;
-use Prometee\PayumStripe\Action\Api\Resource\CreateResourceActionInterface;
+use Prometee\PayumStripe\Action\Api\Resource\RetrieveActionInterface;
+use Prometee\PayumStripe\Action\Api\Resource\RetrieveSetupIntentAction;
 use Prometee\PayumStripe\Api\KeysInterface;
-use Prometee\PayumStripe\Request\Api\Resource\CreatePlan;
+use Prometee\PayumStripe\Request\Api\Resource\RetrieveSetupIntent;
 use Stripe\Exception\ApiErrorException;
-use Stripe\Plan;
+use Stripe\SetupIntent;
 use Tests\Prometee\PayumStripe\Action\Api\ApiAwareActionTestTrait;
 
-final class CreatePlanActionTest extends TestCase
+final class RetrieveSetupIntentActionTest extends TestCase
 {
     use ApiAwareActionTestTrait;
 
@@ -24,31 +23,31 @@ final class CreatePlanActionTest extends TestCase
      */
     public function shouldImplements()
     {
-        $action = new CreatePlanAction();
+        $action = new RetrieveSetupIntentAction();
 
         $this->assertInstanceOf(ApiAwareInterface::class, $action);
         $this->assertInstanceOf(ActionInterface::class, $action);
         $this->assertNotInstanceOf(GatewayInterface::class, $action);
 
-        $this->assertInstanceOf(CreateResourceActionInterface::class, $action);
+        $this->assertInstanceOf(RetrieveActionInterface::class, $action);
     }
 
     /**
      * @test
      */
-    public function shouldCreateAPlan()
+    public function shouldRetrieveASetupIntent()
     {
-        $model = new ArrayObject([]);
+        $model = 'si_1';
 
         $apiMock = $this->createApiMock();
 
-        $action = new CreatePlanAction();
+        $action = new RetrieveSetupIntentAction();
         $action->setApiClass(KeysInterface::class);
         $action->setApi($apiMock);
 
-        $this->assertEquals(Plan::class, $action->getApiResourceClass());
+        $this->assertEquals(SetupIntent::class, $action->getApiResourceClass());
 
-        $request = new CreatePlan($model);
+        $request = new RetrieveSetupIntent($model);
 
         $this->assertTrue($action->supportAlso($request));
 

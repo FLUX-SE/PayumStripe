@@ -2,20 +2,19 @@
 
 namespace Tests\Prometee\PayumStripe\Action\Api\Resource;
 
-use ArrayObject;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripe\Action\Api\Resource\CreatePlanAction;
-use Prometee\PayumStripe\Action\Api\Resource\CreateResourceActionInterface;
+use Prometee\PayumStripe\Action\Api\Resource\RetrieveActionInterface;
+use Prometee\PayumStripe\Action\Api\Resource\RetrieveSubscriptionAction;
 use Prometee\PayumStripe\Api\KeysInterface;
-use Prometee\PayumStripe\Request\Api\Resource\CreatePlan;
+use Prometee\PayumStripe\Request\Api\Resource\RetrieveSubscription;
 use Stripe\Exception\ApiErrorException;
-use Stripe\Plan;
+use Stripe\Subscription;
 use Tests\Prometee\PayumStripe\Action\Api\ApiAwareActionTestTrait;
 
-final class CreatePlanActionTest extends TestCase
+final class RetrieveSubscriptionActionTest extends TestCase
 {
     use ApiAwareActionTestTrait;
 
@@ -24,31 +23,31 @@ final class CreatePlanActionTest extends TestCase
      */
     public function shouldImplements()
     {
-        $action = new CreatePlanAction();
+        $action = new RetrieveSubscriptionAction();
 
         $this->assertInstanceOf(ApiAwareInterface::class, $action);
         $this->assertInstanceOf(ActionInterface::class, $action);
         $this->assertNotInstanceOf(GatewayInterface::class, $action);
 
-        $this->assertInstanceOf(CreateResourceActionInterface::class, $action);
+        $this->assertInstanceOf(RetrieveActionInterface::class, $action);
     }
 
     /**
      * @test
      */
-    public function shouldCreateAPlan()
+    public function shouldRetrieveASubscription()
     {
-        $model = new ArrayObject([]);
+        $model = 'sub_1';
 
         $apiMock = $this->createApiMock();
 
-        $action = new CreatePlanAction();
+        $action = new RetrieveSubscriptionAction();
         $action->setApiClass(KeysInterface::class);
         $action->setApi($apiMock);
 
-        $this->assertEquals(Plan::class, $action->getApiResourceClass());
+        $this->assertEquals(Subscription::class, $action->getApiResourceClass());
 
-        $request = new CreatePlan($model);
+        $request = new RetrieveSubscription($model);
 
         $this->assertTrue($action->supportAlso($request));
 
