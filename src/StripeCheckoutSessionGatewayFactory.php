@@ -56,13 +56,13 @@ class StripeCheckoutSessionGatewayFactory extends GatewayFactory
 
             // API Resources
             'payum.action.create_session' => new CreateSessionAction(),
+            'payum.action.create_customer' => new CreateCustomerAction(),
+            'payum.action.create_plan' => new CreatePlanAction(),
+            'payum.action.create_subscription' => new CreateSubscriptionAction(),
             'payum.action.retrieve_session' => new RetrieveSessionAction(),
             'payum.action.retrieve_payment_intent' => new RetrievePaymentIntentAction(),
             'payum.action.retrieve_subscription' => new RetrieveSubscriptionAction(),
             'payum.action.retrieve_setup_intent' => new RetrieveSetupIntentAction(),
-            'payum.action.create_customer' => new CreateCustomerAction(),
-            'payum.action.create_plan' => new CreatePlanAction(),
-            'payum.action.create_subscription' => new CreateSubscriptionAction(),
 
             // Webhooks
             'payum.action.resolve_webhook_event' => new ResolveWebhookEventAction(),
