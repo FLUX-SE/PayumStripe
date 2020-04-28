@@ -3,7 +3,6 @@
     "description": "Payum Stripe gateways",
     "type": "library",
     "require": {
-        "php": "^7.3",
         "payum/core": "^1.6",
         "stripe/stripe-php": "^7"
     },
