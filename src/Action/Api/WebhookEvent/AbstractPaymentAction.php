@@ -14,6 +14,7 @@ use Payum\Core\Security\TokenInterface;
 use Prometee\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
+use Stripe\SetupIntent;
 
 abstract class AbstractPaymentAction extends AbstractWebhookEventAction implements GatewayAwareInterface
 {
@@ -31,11 +32,11 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
         $eventWrapper = $request->getEventWrapper();
         $event = $eventWrapper->getEvent();
 
-        /** @var Session|PaymentIntent $sessionOrPaymentIntent */
-        $sessionOrPaymentIntent = $event->data->offsetGet('object');
+        /** @var Session|PaymentIntent|SetupIntent $sessionModeObject */
+        $sessionModeObject = $event->data->offsetGet('object');
 
         // 1. Retrieve the token hash into the metadata
-        $metadata = $sessionOrPaymentIntent->metadata;
+        $metadata = $sessionModeObject->metadata;
         if (null === $metadata) {
             throw new LogicException(sprintf('Metadata on %s is required !', Session::class));
         }
