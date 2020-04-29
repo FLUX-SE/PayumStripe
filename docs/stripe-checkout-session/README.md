@@ -80,6 +80,7 @@ If the token is null then we will try to handle a webhook, and if a token is det
 then it's a normal `Notify` so we must handle a `Sync` to refresh a payment details.
 
 #### Resolving a webhook : `NotifyUnsafe`
+
 The [`NotifyAction.php`](../../src/Action/NotifyAction.php) will ask for 2 other actions to :
 
 1. Resolve the webhook event, meaning :
@@ -91,12 +92,25 @@ So if you want to consume another webhook event type, you just need to create an
 extending [`Prometee\PayumStripe\Action\Api\WebhookEvent\AbstractWebhookEventAction`](../../src/Action/Api/WebhookEvent/AbstractWebhookEventAction.php).
 Examples available into the [`src/Action/Api/WebhookEvent/`](../../src/Action/Api/WebhookEvent) folder.
 
+## Subscription handling
+
+Payum don't have php `Interfaces` to handle subscription, that's why subscriptions should be
+managed by yourself. There is maybe a composer packages which meet your need,
+but you will have to build the interface between your subscription `Model` class and `Payum`.
+
+Usually you will have to build a `ConvertPaymentAction` like this one : [ConvertPaymentAction.php](https://github.com/Prometee/SyliusPayumStripeCheckoutSessionPlugin/blob/master/src/Action/ConvertPaymentAction.php)
+customizing the `supports` method to meet your need and finally providing the right `$details` array.
+
+Example : https://stripe.com/docs/payments/checkout/subscriptions/starting#create-checkout-session (`$details` is the array given to create a `Session`)
+
+## Subscription update payment details
+
+Same as the [previous chapter](#subscription-handling)
+
+Example : https://stripe.com/docs/payments/checkout/subscriptions/updating#create-checkout-session (`$details` is the array given to create a `Session`)
+
 ## More
 
-Check the dedicated bundle :
-
-https://github.com/Prometee/PayumStripeCheckoutSessionBundle
-
-And the Sylius plugin :
-
-https://github.com/Prometee/SyliusPayumStripeCheckoutSessionPlugin
+ - A Symfony bundle : [prometee/payum-stripe-checkout-bundle](https://github.com/Prometee/PayumStripeCheckoutSessionBundle)
+ - A Sylius plugin : [prometee/sylius-payum-stripe-checkout-session-plugin](https://github.com/Prometee/SyliusPayumStripeCheckoutSessionPlugin)
+  
