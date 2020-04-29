@@ -19,7 +19,7 @@ final class CreateSessionTest extends TestCase
      */
     public function shouldBeInstanceClassOfAbstractCreateAndCreateInterfaceAndOptionsAwareInterfaceAndGeneric()
     {
-        $model = new ArrayObject([]);
+        $model = [];
         $createSession = new CreateSession($model);
 
         $this->assertInstanceOf(AbstractCreate::class, $createSession);
@@ -31,7 +31,7 @@ final class CreateSessionTest extends TestCase
 
     public function testOptions()
     {
-        $model = new ArrayObject([]);
+        $model = [];
         $createSession = new CreateSession($model, ['test' => 'test']);
 
         $this->assertEquals(['test' => 'test'], $createSession->getOptions());
@@ -41,7 +41,7 @@ final class CreateSessionTest extends TestCase
 
     public function testApiResource()
     {
-        $model = new ArrayObject([]);
+        $model = [];
         $createSession = new CreateSession($model);
 
         $session = new Session();

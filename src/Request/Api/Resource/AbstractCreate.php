@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Prometee\PayumStripe\Request\Api\Resource;
 
 use ArrayObject;
+use LogicException;
 use Payum\Core\Request\Generic;
 
 abstract class AbstractCreate extends Generic implements CreateInterface
@@ -13,10 +14,10 @@ abstract class AbstractCreate extends Generic implements CreateInterface
         ResourceAwareTrait;
 
     /**
-     * @param ArrayObject $model
+     * @param array $model
      * @param array $options
      */
-    public function __construct(ArrayObject $model, array $options = [])
+    public function __construct(array $model, array $options = [])
     {
         parent::__construct($model);
         $this->setOptions($options);
@@ -25,14 +26,17 @@ abstract class AbstractCreate extends Generic implements CreateInterface
     /**
      * {@inheritDoc}
      */
-    public function getParameters(): ?array
+    public function getParameters(): array
     {
         $model = $this->getModel();
         if ($model instanceof ArrayObject) {
             return $model->getArrayCopy();
         }
 
-        return null;
+        throw new LogicException(sprintf(
+            'The parameter is null or is not an instance of %s !',
+            ArrayObject::class
+        ));
     }
 
     /**

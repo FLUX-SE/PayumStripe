@@ -9,9 +9,9 @@ use Stripe\ApiResource;
 interface ResourceAwareInterface
 {
     /**
-     * @return ApiResource|null
+     * @return ApiResource
      */
-    public function getApiResource(): ?ApiResource;
+    public function getApiResource(): ApiResource;
 
     /**
      * @param ApiResource $apiResource

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Prometee\PayumStripe\Request\Api\Resource;
 
+use LogicException;
 use Stripe\ApiResource;
 
 trait ResourceAwareTrait
@@ -15,9 +16,18 @@ trait ResourceAwareTrait
 
     /**
      * {@inheritDoc}
+     *
+     * @throws LogicException
      */
-    public function getApiResource(): ?ApiResource
+    public function getApiResource(): ApiResource
     {
+        if (null === $this->apiResource) {
+            throw new LogicException(
+                'The API Resource is null !'
+                . 'You should send this request to `Payum->execute()` before using this getter.'
+            );
+        }
+
         return $this->apiResource;
     }
 

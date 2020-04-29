@@ -23,12 +23,12 @@ interface AllInterface extends OptionsAwareInterface, ModelAwareInterface, Model
     public function setParameters(array $parameters): void;
 
     /**
-     * @return ApiResource[]|Collection|null
+     * @return Collection<ApiResource>
      */
-    public function getApiResources(): ?Collection;
+    public function getApiResources(): Collection;
 
     /**
-     * @param ApiResource[]|Collection $apiResources
+     * @param Collection<ApiResource> $apiResources
      */
     public function setApiResources(Collection $apiResources): void;
 }

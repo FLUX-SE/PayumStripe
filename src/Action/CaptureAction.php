@@ -45,18 +45,19 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
 
             // 1. Use the capture URL to `Sync` the payment
             //    after the customer get back from Stripe Checkout Session
-            $model['success_url'] = $token->getTargetUrl();
-            $model['cancel_url'] = $token->getTargetUrl();
+            $model->offsetSet('success_url', $token->getTargetUrl());
+            $model->offsetSet('cancel_url', $token->getTargetUrl());
 
             // 2. Create a new `Session`
-            $createCheckoutSession = new CreateSession($model);
+            $createCheckoutSession = new CreateSession($model->getArrayCopy());
             $this->gateway->execute($createCheckoutSession);
             $session = $createCheckoutSession->getApiResource();
-            if (null === $session) {
-                throw new LogicException('The event wrapper should not be null !');
-            }
 
-            // 3. Prepare storing of an `PaymentIntent` object
+            // 3. Prepare storing of a `Session` object synced to one of this object :
+            //      - `PaymentIntent`
+            //      - `SetupIntent`
+            //      - `Subscription`
+            //      - `Session`
             //    (legacy Stripe payments were storing `Charge` object)
             $model->exchangeArray($session->toArray());
             $this->gateway->execute(new Sync($model));
@@ -76,7 +77,6 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
      *
      *  - A `Session` can be completed.
      *  - or its `PaymentIntent` can be canceled.
-     *  - or its `Subscription` can be canceled.
      *  - or its `SetupIntent` can be canceled.
      *
      * So the token hash have to be stored both on `Session` metadata and other mode metadata

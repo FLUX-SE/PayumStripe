@@ -2,7 +2,6 @@
 
 namespace Tests\Prometee\PayumStripe\Action\Api\Resource;
 
-use ArrayObject;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
@@ -38,7 +37,7 @@ final class CreatePlanActionTest extends TestCase
      */
     public function shouldCreateAPlan()
     {
-        $model = new ArrayObject([]);
+        $model = [];
 
         $apiMock = $this->createApiMock();
 

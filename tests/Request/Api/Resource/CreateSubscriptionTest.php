@@ -19,7 +19,7 @@ final class CreateSubscriptionTest extends TestCase
      */
     public function shouldBeInstanceClassOfAbstractCreateAndCreateInterfaceAndOptionsAwareInterfaceAndGeneric()
     {
-        $model = new ArrayObject([]);
+        $model = [];
         $createSubscription = new CreateSubscription($model);
 
         $this->assertInstanceOf(AbstractCreate::class, $createSubscription);
@@ -31,7 +31,7 @@ final class CreateSubscriptionTest extends TestCase
 
     public function testOptions()
     {
-        $model = new ArrayObject([]);
+        $model = [];
         $createSubscription = new CreateSubscription($model, ['test' => 'test']);
 
         $this->assertEquals(['test' => 'test'], $createSubscription->getOptions());
@@ -41,7 +41,7 @@ final class CreateSubscriptionTest extends TestCase
 
     public function testApiResource()
     {
-        $model = new ArrayObject([]);
+        $model = [];
         $createSubscription = new CreateSubscription($model);
 
         $subscription = new Subscription();

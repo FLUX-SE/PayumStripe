@@ -43,15 +43,7 @@ class StatusAction implements ActionInterface
             return;
         }
 
-        if ($this->isMarkedPaymentIntent($model, $request)) {
-            return;
-        }
-
-        if ($this->isMarkedSubscription($model, $request)) {
-            return;
-        }
-
-        if ($this->isMarkedSetupIntent($model, $request)) {
+        if ($this->isMarkedSessionMode($model, $request)) {
             return;
         }
 
@@ -60,6 +52,31 @@ class StatusAction implements ActionInterface
         }
 
         $request->markUnknown();
+    }
+
+    /**
+     * @param ArrayObject $model
+     * @param GetStatusInterface $request
+     *
+     * @return bool
+     */
+    protected function isMarkedSessionMode(
+        ArrayObject $model,
+        GetStatusInterface $request
+    ): bool {
+        if ($this->isMarkedPaymentIntent($model, $request)) {
+            return true;
+        }
+
+        if ($this->isMarkedSubscription($model, $request)) {
+            return true;
+        }
+
+        if ($this->isMarkedSetupIntent($model, $request)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

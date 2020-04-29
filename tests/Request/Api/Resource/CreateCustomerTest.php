@@ -19,7 +19,7 @@ final class CreateCustomerTest extends TestCase
      */
     public function shouldBeInstanceClassOfAbstractCreateAndCreateInterfaceAndOptionsAwareInterfaceAndGeneric()
     {
-        $model = new ArrayObject([]);
+        $model = [];
         $createCustomer = new CreateCustomer($model);
 
         $this->assertInstanceOf(AbstractCreate::class, $createCustomer);
@@ -31,7 +31,7 @@ final class CreateCustomerTest extends TestCase
 
     public function testOptions()
     {
-        $model = new ArrayObject([]);
+        $model = [];
         $createCustomer = new CreateCustomer($model, ['test' => 'test']);
 
         $this->assertEquals(['test' => 'test'], $createCustomer->getOptions());
@@ -41,7 +41,7 @@ final class CreateCustomerTest extends TestCase
 
     public function testApiResource()
     {
-        $model = new ArrayObject([]);
+        $model = [];
         $createCustomer = new CreateCustomer($model);
 
         $customer = new Customer();

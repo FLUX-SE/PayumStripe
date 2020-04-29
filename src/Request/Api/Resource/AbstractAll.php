@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Prometee\PayumStripe\Request\Api\Resource;
 
 use ArrayObject;
+use LogicException;
 use Payum\Core\Request\Generic;
 use Stripe\ApiResource;
 use Stripe\Collection;
@@ -50,8 +51,14 @@ abstract class AbstractAll extends Generic implements AllInterface
     /**
      * {@inheritDoc}
      */
-    public function getApiResources(): ?Collection
+    public function getApiResources(): Collection
     {
+        if (null === $this->apiResources) {
+            throw new LogicException(
+                'The API Resources is null !'
+                . 'You should send this request to `Payum->execute()` before using this getter.'
+            );
+        }
         return $this->apiResources;
     }
 

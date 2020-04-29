@@ -11,9 +11,9 @@ use Payum\Core\Security\TokenAggregateInterface;
 interface CreateInterface extends ResourceAwareInterface, OptionsAwareInterface, ModelAwareInterface, ModelAggregateInterface, TokenAggregateInterface
 {
     /**
-     * @return array|null
+     * @return array
      */
-    public function getParameters(): ?array;
+    public function getParameters(): array;
 
     /**
      * @param array $parameters

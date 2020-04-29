@@ -64,18 +64,13 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         $retrieveSessionModeObject = $this->findRetrievableSessionModeObject($model);
 
         if (null === $retrieveSessionModeObject) {
-            // Case where Session mode is "subscription" and the customer is canceling is payment
+            // Case where Session mode is "subscription" and the customer
+            // is canceling his payment
             return;
         }
 
         $this->gateway->execute($retrieveSessionModeObject);
         $sessionModeObject = $retrieveSessionModeObject->getApiResource();
-
-        if (null === $sessionModeObject) {
-            throw new LogicException(
-                'The Session mode object should not be null !'
-            );
-        }
 
         $model->exchangeArray($sessionModeObject->toArray());
     }
@@ -100,12 +95,6 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         $sessionRequest = new RetrieveSession($model->offsetGet('id'));
         $this->gateway->execute($sessionRequest);
         $session = $sessionRequest->getApiResource();
-
-        if (null === $session) {
-            throw new LogicException(
-                'The Session object should not be null !'
-            );
-        }
 
         $model->exchangeArray($session->toArray());
     }

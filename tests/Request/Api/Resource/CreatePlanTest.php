@@ -19,7 +19,7 @@ final class CreatePlanTest extends TestCase
      */
     public function shouldBeInstanceClassOfAbstractCreateAndCreateInterfaceAndOptionsAwareInterfaceAndGeneric()
     {
-        $model = new ArrayObject([]);
+        $model = [];
         $createPlan = new CreatePlan($model);
 
         $this->assertInstanceOf(AbstractCreate::class, $createPlan);
@@ -31,7 +31,7 @@ final class CreatePlanTest extends TestCase
 
     public function testOptions()
     {
-        $model = new ArrayObject([]);
+        $model = [];
         $createPlan = new CreatePlan($model, ['test' => 'test']);
 
         $this->assertEquals(['test' => 'test'], $createPlan->getOptions());
@@ -41,7 +41,7 @@ final class CreatePlanTest extends TestCase
 
     public function testApiResource()
     {
-        $model = new ArrayObject([]);
+        $model = [];
         $createPlan = new CreatePlan($model);
 
         $plan = new Plan();

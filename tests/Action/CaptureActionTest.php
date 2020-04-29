@@ -2,13 +2,14 @@
 
 namespace Tests\Prometee\PayumStripe\Action;
 
+use ArrayObject;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
-use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\Model\Identity;
 use Payum\Core\Model\PaymentInterface;
 use Payum\Core\Model\Token;
+use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\Sync;
 use Payum\Core\Security\GenericTokenFactoryAwareInterface;
@@ -20,6 +21,8 @@ use Prometee\PayumStripe\Request\Api\RedirectToCheckout;
 use Prometee\PayumStripe\Request\Api\Resource\CreateSession;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
+use Stripe\SetupIntent;
+use Stripe\Subscription;
 
 final class CaptureActionTest extends TestCase
 {
@@ -61,23 +64,27 @@ final class CaptureActionTest extends TestCase
     }
 
     /**
-     * @test
+     * @param array $model
+     * @param string $objectName
      */
-    public function shouldDoARedirectToStripeSessionIfPaymentIsNew()
+    public function executeCaptureAction(array $model, string $objectName): void
     {
-        $model = [];
         $token = new Token();
         $token->setDetails(new Identity(1, PaymentInterface::class));
         $token->setGatewayName('stripe_checkout_session');
 
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock
+            ->expects($this->exactly(3))
+            ->method('execute')
+        ;
+        $gatewayMock
             ->expects($this->at(0))
             ->method('execute')
             ->with($this->isInstanceOf(CreateSession::class))
             ->will($this->returnCallback(function (CreateSession $request) {
                 $this->assertInstanceOf(ArrayObject::class, $request->getModel());
-                $request->setApiResource(new Session());
+                $request->setApiResource(new Session('sess_0001'));
             }))
         ;
         $gatewayMock
@@ -85,15 +92,16 @@ final class CaptureActionTest extends TestCase
             ->method('execute')
             ->with($this->isInstanceOf(Sync::class))
             ->will($this->returnCallback(function (Sync $request) {
-                $this->assertInstanceOf(ArrayObject::class, $request->getModel());
-                $request->setModel(new PaymentIntent());
+                $model = $request->getModel();
+                $this->assertInstanceOf(ArrayObject::class, $model);
+                $model->exchangeArray([]);
             }))
         ;
         $gatewayMock
             ->expects($this->at(2))
             ->method('execute')
             ->with($this->isInstanceOf(RedirectToCheckout::class))
-        ;
+            ->will($this->throwException(new HttpResponse('')));
 
         $genericGatewayFactory = $this->createMock(GenericTokenFactoryInterface::class);
         $genericGatewayFactory
@@ -109,6 +117,60 @@ final class CaptureActionTest extends TestCase
 
         $request = new Capture($token);
         $request->setModel($model);
+
+        $this->expectException(HttpResponse::class);
         $action->execute($request);
+
+        /** @var ArrayObject $resultModel */
+        $resultModel = $request->getModel();
+        $this->assertTrue($resultModel->offsetExists($objectName . '_data'));
+        $data = $resultModel->offsetGet($objectName . '_data');
+        $this->assertArrayHasKey('metadata', $data);
+        $this->assertArrayHasKey('token_hash', $data['metadata']);
+        $this->assertEquals($token->getHash(), $data['metadata']['token_hash']);
+
+        // Session metadata
+        $this->assertTrue($resultModel->offsetExists('metadata'));
+        $data = $resultModel->offsetGet('metadata');
+        $this->assertArrayHasKey('metadata', $data);
+        $this->assertArrayHasKey('token_hash', $data['metadata']);
+        $this->assertEquals($token->getHash(), $data['metadata']['token_hash']);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsAPaymentIntentDataField()
+    {
+        $model = [];
+        $objectName = PaymentIntent::OBJECT_NAME;
+
+        $this->executeCaptureAction($model, $objectName);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsASetupIntentDataField()
+    {
+        $model = [
+            'setup_intent_data' => [],
+        ];
+        $objectName = SetupIntent::OBJECT_NAME;
+
+        $this->executeCaptureAction($model, $objectName);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsASubscriptionDataField()
+    {
+        $model = [
+            'subscription_data' => [],
+        ];
+        $objectName = Subscription::OBJECT_NAME;
+
+        $this->executeCaptureAction($model, $objectName);
     }
 }
