@@ -8,6 +8,7 @@ use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
 use Prometee\PayumStripe\Action\Api\ConstructEventAction;
 use Prometee\PayumStripe\Request\Api\ConstructEvent;
+use Stripe\Exception\SignatureVerificationException;
 
 final class ConstructEventActionTest extends TestCase
 {
@@ -26,7 +27,7 @@ final class ConstructEventActionTest extends TestCase
     /**
      * @test
      */
-    public function shouldReturnNullWhenInvalidPayloadIsRequested()
+    public function shouldThrowExceptionWhenInvalidPayloadIsRequested()
     {
         $payload = '';
         $sigHeader = '';
@@ -35,6 +36,7 @@ final class ConstructEventActionTest extends TestCase
         $action = new ConstructEventAction();
 
         $request = new ConstructEvent($payload, $sigHeader, $webhookSecretKey);
+        $this->expectException(SignatureVerificationException::class);
         $action->execute($request);
 
         $this->assertNull($request->getEventWrapper());

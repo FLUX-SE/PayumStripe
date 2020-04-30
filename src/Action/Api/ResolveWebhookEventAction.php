@@ -7,6 +7,7 @@ namespace Prometee\PayumStripe\Action\Api;
 use LogicException;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
+use Payum\Core\Debug\Humanify;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
@@ -14,11 +15,15 @@ use Payum\Core\Request\GetHttpRequest;
 use Prometee\PayumStripe\Request\Api\ConstructEvent;
 use Prometee\PayumStripe\Request\Api\ResolveWebhookEvent;
 use Prometee\PayumStripe\Wrapper\EventWrapperInterface;
+use Stripe\Exception\SignatureVerificationException;
 
 class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
 {
     use GatewayAwareTrait,
         StripeApiAwareTrait;
+
+    /** @var string[] */
+    protected $signatureVerificationErrors = [];
 
     /**
      * {@inheritDoc}
@@ -42,13 +47,23 @@ class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterfac
 
         if (null === $eventWrapper) {
             /**
-             * In case no $event has been retrieve we stop here. This means no webhook secret
+             * In case no event has been retrieve we stop here. This means no webhook secret
              * keys can be used to construct the event or something wrong append.
              *
              * Tip: This also allow other webhook consumers to process this $request if
              *      they are supporting the same type of `ResolveWebhookEvent` request
              */
-            throw RequestNotSupportedException::create($request);
+            $signatureResults = implode(', ', $this->signatureVerificationErrors);
+            $subException = RequestNotSupportedException::create($request);
+            throw new RequestNotSupportedException(
+                sprintf(
+                    'Unable to resolve the webhook event payload with
+                    one of your webhook secret keys ! Signature results : %s',
+                    $signatureResults
+                ),
+                0,
+                $subException
+            );
         }
 
         $request->setEventWrapper($eventWrapper);
@@ -87,7 +102,7 @@ class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterfac
             return $_SERVER['HTTP_STRIPE_SIGNATURE'];
         }
 
-        throw new LogicException('A Stripe signature is required !');
+        throw new LogicException('A Stripe header signature is required !');
     }
 
     /**
@@ -100,8 +115,19 @@ class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterfac
     {
         foreach ($this->api->getWebhookSecretKeys() as $webhookSecretKey) {
             $eventRequest = new ConstructEvent($payload, $sigHeader, $webhookSecretKey);
-            $this->gateway->execute($eventRequest);
+
+            try {
+                $this->gateway->execute($eventRequest);
+            } catch (SignatureVerificationException $e) {
+                $this->signatureVerificationErrors[] = sprintf(
+                    '%s : %s',
+                    $webhookSecretKey,
+                    $e->getMessage()
+                );
+            }
+
             $eventWrapper = $eventRequest->getEventWrapper();
+
             if (null !== $eventWrapper) {
                 return $eventWrapper;
             }

@@ -57,7 +57,7 @@ final class ResolveWebhookEventActionTest extends TestCase
         $request = new ResolveWebhookEvent();
 
         $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('A Stripe signature is required !');
+        $this->expectExceptionMessage('A Stripe header signature is required !');
 
         $action->execute($request);
     }

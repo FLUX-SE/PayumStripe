@@ -17,24 +17,22 @@ class ConstructEventAction implements ActionInterface
      * {@inheritDoc}
      *
      * @param ConstructEvent $request
+     *
+     * @throws SignatureVerificationException
      */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        try {
-            $event = Webhook::constructEvent(
-                $request->getPayload(),
-                $request->getSigHeader(),
-                $request->getWebhookSecretKey()
-            );
-            $eventWrapper = new EventWrapper(
-                $request->getWebhookSecretKey(),
-                $event
-            );
-        } catch (SignatureVerificationException $e) {
-            $eventWrapper = null;
-        }
+        $event = Webhook::constructEvent(
+            $request->getPayload(),
+            $request->getSigHeader(),
+            $request->getWebhookSecretKey()
+        );
+        $eventWrapper = new EventWrapper(
+            $request->getWebhookSecretKey(),
+            $event
+        );
 
         $request->setEventWrapper($eventWrapper);
     }
