@@ -10,6 +10,7 @@ use Prometee\PayumStripe\Action\Api\ConstructEventAction;
 use Prometee\PayumStripe\Action\Api\RedirectToCheckoutAction;
 use Prometee\PayumStripe\Action\Api\ResolveWebhookEventAction;
 use Prometee\PayumStripe\Action\Api\Resource\CreateCustomerAction;
+use Prometee\PayumStripe\Action\Api\Resource\CreatePaymentIntentAction;
 use Prometee\PayumStripe\Action\Api\Resource\CreatePlanAction;
 use Prometee\PayumStripe\Action\Api\Resource\CreateSessionAction;
 use Prometee\PayumStripe\Action\Api\Resource\CreateSubscriptionAction;
@@ -56,6 +57,7 @@ class StripeCheckoutSessionGatewayFactory extends GatewayFactory
 
             // API Resources
             'payum.action.create_session' => new CreateSessionAction(),
+            'payum.action.create_payment_intent' => new CreatePaymentIntentAction(),
             'payum.action.create_customer' => new CreateCustomerAction(),
             'payum.action.create_plan' => new CreatePlanAction(),
             'payum.action.create_subscription' => new CreateSubscriptionAction(),
