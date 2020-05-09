@@ -8,4 +8,10 @@ use Payum\Core\Request\Generic;
 
 final class Pay extends Generic
 {
+    public function __construct($firstModel = null, $currentModel = null)
+    {
+        parent::__construct($firstModel);
+
+        $this->setModel($currentModel);
+    }
 }

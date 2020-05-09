@@ -11,11 +11,11 @@ use Prometee\PayumStripe\Action\JsCaptureAction;
 class StripeJsGatewayFactory extends StripeCheckoutSessionGatewayFactory
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function populateConfig(ArrayObject $config): void
     {
-        $config->defaults(array(
+        $config->defaults([
             'payum.factory_name' => 'stripe_js',
             'payum.factory_title' => 'Stripe JS',
 
@@ -24,7 +24,7 @@ class StripeJsGatewayFactory extends StripeCheckoutSessionGatewayFactory
                 return new PayAction($config['payum.template.pay']);
             },
             'payum.template.pay' => '@PrometeePayumStripeCheckoutSession/Action/pay.html.twig',
-        ));
+        ]);
 
         parent::populateConfig($config);
     }

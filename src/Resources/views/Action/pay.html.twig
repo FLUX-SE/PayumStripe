@@ -89,9 +89,6 @@
         var showError = function(errorMsgText) {
             var displayError = document.getElementById('card-errors');
             displayError.textContent = errorMsgText;
-            setTimeout(function() {
-                displayError.textContent = "";
-            }, 4000);
         };
 
         // Show a spinner on payment submission
@@ -106,6 +103,8 @@
 {% endblock %}
 
 {% block payum_stylesheets %}
+    {{ parent() }}
+
     <style type="text/css">
         .StripeElement {
             box-sizing: border-box;

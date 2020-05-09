@@ -51,6 +51,7 @@ final class PayAction implements ActionInterface, ApiAwareInterface, GatewayAwar
         }
 
         $this->gateway->execute($renderTemplate = new RenderTemplate($this->templateName, [
+            'firstModel' => $request->getFirstModel(),
             'model' => $model,
             'publishable_key' => $this->api->getPublishableKey(),
             'actionUrl' => $request->getToken() ? $request->getToken()->getTargetUrl() : null,

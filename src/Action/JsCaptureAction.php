@@ -65,7 +65,7 @@ class JsCaptureAction extends CaptureAction implements ActionInterface, GatewayA
         }
 
         // Pay with the PaymentIntent model
-        $pay = new Pay($model);
+        $pay = new Pay($request->getFirstModel(), $model);
         $this->gateway->execute($pay);
     }
 }
