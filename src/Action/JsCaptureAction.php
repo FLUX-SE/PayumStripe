@@ -15,7 +15,10 @@ use Payum\Core\Request\Sync;
 use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryAwareTrait;
 use Prometee\PayumStripe\Request\Api\Pay;
+use Prometee\PayumStripe\Request\Api\Resource\CreateCustomer;
 use Prometee\PayumStripe\Request\Api\Resource\CreatePaymentIntent;
+use Prometee\PayumStripe\Request\Api\Resource\RetrieveCustomer;
+use Prometee\PayumStripe\Request\Api\Resource\RetrievePaymentMethod;
 
 class JsCaptureAction extends CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTokenFactoryAwareInterface
 {
@@ -43,6 +46,21 @@ class JsCaptureAction extends CaptureAction implements ActionInterface, GatewayA
             );
             $this->embedNotifyTokenHash($model, $notifyToken);
 
+            // Get or Create the Customer if we have some data in the model
+            if ($model->offsetExists('customer') && !isset($model['customer']['id'])) {
+                if (isset($model['customer']['stripe_id'])) {
+                    $retrieveCustomer = new RetrieveCustomer($model['customer']['stripe_id']);
+                    $this->gateway->execute($retrieveCustomer);
+
+                    $model['customer'] = $retrieveCustomer->getApiResource();
+                } else {
+                    $createCustomer = new CreateCustomer($model->offsetGet('customer'));
+                    $this->gateway->execute($createCustomer);
+
+                    $model['customer'] = $createCustomer->getApiResource();
+                }
+            }
+
             // Create the PaymentIntent for this payment
             $createPaymentIntent = new CreatePaymentIntent($model->getArrayCopy());
             $this->gateway->execute($createPaymentIntent);
@@ -66,6 +84,7 @@ class JsCaptureAction extends CaptureAction implements ActionInterface, GatewayA
 
         // Pay with the PaymentIntent model
         $pay = new Pay($request->getFirstModel(), $model);
+        $pay->setToken($request->getToken());
         $this->gateway->execute($pay);
     }
 }

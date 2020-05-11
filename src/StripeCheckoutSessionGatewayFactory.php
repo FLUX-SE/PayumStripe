@@ -11,10 +11,13 @@ use Prometee\PayumStripe\Action\Api\RedirectToCheckoutAction;
 use Prometee\PayumStripe\Action\Api\ResolveWebhookEventAction;
 use Prometee\PayumStripe\Action\Api\Resource\CreateCustomerAction;
 use Prometee\PayumStripe\Action\Api\Resource\CreatePaymentIntentAction;
+use Prometee\PayumStripe\Action\Api\Resource\CreatePaymentMethodAction;
 use Prometee\PayumStripe\Action\Api\Resource\CreatePlanAction;
 use Prometee\PayumStripe\Action\Api\Resource\CreateSessionAction;
 use Prometee\PayumStripe\Action\Api\Resource\CreateSubscriptionAction;
+use Prometee\PayumStripe\Action\Api\Resource\RetrieveCustomerAction;
 use Prometee\PayumStripe\Action\Api\Resource\RetrievePaymentIntentAction;
+use Prometee\PayumStripe\Action\Api\Resource\RetrievePaymentMethodAction;
 use Prometee\PayumStripe\Action\Api\Resource\RetrieveSessionAction;
 use Prometee\PayumStripe\Action\Api\Resource\RetrieveSetupIntentAction;
 use Prometee\PayumStripe\Action\Api\Resource\RetrieveSubscriptionAction;
@@ -58,11 +61,14 @@ class StripeCheckoutSessionGatewayFactory extends GatewayFactory
             // API Resources
             'payum.action.create_session' => new CreateSessionAction(),
             'payum.action.create_payment_intent' => new CreatePaymentIntentAction(),
+            'payum.action.create_payment_method' => new CreatePaymentMethodAction(),
             'payum.action.create_customer' => new CreateCustomerAction(),
             'payum.action.create_plan' => new CreatePlanAction(),
             'payum.action.create_subscription' => new CreateSubscriptionAction(),
             'payum.action.retrieve_session' => new RetrieveSessionAction(),
             'payum.action.retrieve_payment_intent' => new RetrievePaymentIntentAction(),
+            'payum.action.retrieve_payment_method' => new RetrievePaymentMethodAction(),
+            'payum.action.retrieve_customer' => new RetrieveCustomerAction(),
             'payum.action.retrieve_subscription' => new RetrieveSubscriptionAction(),
             'payum.action.retrieve_setup_intent' => new RetrieveSetupIntentAction(),
 

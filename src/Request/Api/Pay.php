@@ -14,4 +14,9 @@ final class Pay extends Generic
 
         $this->setModel($currentModel);
     }
+
+    public function setToken($token)
+    {
+        $this->token = $token;
+    }
 }
