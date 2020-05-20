@@ -38,7 +38,7 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
         // 1. Retrieve the token hash into the metadata
         $metadata = $sessionModeObject->metadata;
         if (null === $metadata) {
-            throw new LogicException(sprintf('Metadata on %s is required !', Session::class));
+            throw RequestNotSupportedException::createActionNotSupported($this, $request);
         }
 
         /** @var string|null $tokenHash */
