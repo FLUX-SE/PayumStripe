@@ -31,7 +31,7 @@ final class ConstructEventActionTest extends TestCase
     {
         $payload = '';
         $sigHeader = '';
-        $webhookSecretKey = null;
+        $webhookSecretKey = '';
 
         $action = new ConstructEventAction();
 

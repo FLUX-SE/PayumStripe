@@ -15,7 +15,7 @@ final class ConstructEventTest extends TestCase
      */
     public function shouldBeSubClassOfGeneric()
     {
-        $constructEvent = new ConstructEvent('', '');
+        $constructEvent = new ConstructEvent('', '', '');
 
         $this->assertInstanceOf(Generic::class, $constructEvent);
     }
@@ -24,9 +24,9 @@ final class ConstructEventTest extends TestCase
     {
         $constructEvent = new ConstructEvent('', '', '');
 
-        $constructEvent->setWebhookSecretKey(null);
+        $constructEvent->setWebhookSecretKey('my_whsec');
 
-        $this->assertEquals(null, $constructEvent->getWebhookSecretKey());
+        $this->assertEquals('my_whsec', $constructEvent->getWebhookSecretKey());
     }
 
     public function testGetWebhookSecretKey()
