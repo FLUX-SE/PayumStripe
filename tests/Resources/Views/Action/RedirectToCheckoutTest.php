@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\Prometee\PayumStripe\Resources\Views\Action;
+namespace Tests\FluxSE\PayumStripe\Resources\Views\Action;
 
 use Payum\Core\Gateway;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripe\StripeCheckoutSessionGatewayFactory;
+use FluxSE\PayumStripe\StripeCheckoutSessionGatewayFactory;
 use ReflectionClass;
 use ReflectionException;
 use Twig\Environment;
@@ -45,7 +45,7 @@ final class RedirectToCheckoutTest extends TestCase
         );
         $twigLoader->addPath(
             $this->guessViewsPath(StripeCheckoutSessionGatewayFactory::class),
-            'PrometeePayumStripeCheckoutSession'
+            'FluxSEPayumStripeCheckoutSession'
         );
         return new Environment($twigLoader);
     }
@@ -62,7 +62,7 @@ final class RedirectToCheckoutTest extends TestCase
     {
         $twig = $this->buildTwigEnvironment();
 
-        $result = $twig->render('@PrometeePayumStripeCheckoutSession/Action/redirectToCheckout.html.twig', [
+        $result = $twig->render('@FluxSEPayumStripeCheckoutSession/Action/redirectToCheckout.html.twig', [
             'model' => [
                 'id' => 1
             ],

@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Prometee\PayumStripe\Action;
+namespace Tests\FluxSE\PayumStripe\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Request\GetHumanStatus;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripe\Action\StatusAction;
+use FluxSE\PayumStripe\Action\StatusAction;
 use Stripe\Refund;
 
 final class StatusActionTest extends TestCase

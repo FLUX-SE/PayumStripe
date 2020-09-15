@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Prometee\PayumStripe\Request\Api;
+namespace Tests\FluxSE\PayumStripe\Request\Api;
 
 use Payum\Core\Request\Generic;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripe\Request\Api\ConstructEvent;
-use Prometee\PayumStripe\Wrapper\EventWrapper;
+use FluxSE\PayumStripe\Request\Api\ConstructEvent;
+use FluxSE\PayumStripe\Wrapper\EventWrapper;
 use Stripe\Event;
 
 final class ConstructEventTest extends TestCase

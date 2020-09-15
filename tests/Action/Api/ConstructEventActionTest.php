@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Prometee\PayumStripe\Action\Api;
+namespace Tests\FluxSE\PayumStripe\Action\Api;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripe\Action\Api\ConstructEventAction;
-use Prometee\PayumStripe\Request\Api\ConstructEvent;
+use FluxSE\PayumStripe\Action\Api\ConstructEventAction;
+use FluxSE\PayumStripe\Request\Api\ConstructEvent;
 use Stripe\Exception\SignatureVerificationException;
 
 final class ConstructEventActionTest extends TestCase

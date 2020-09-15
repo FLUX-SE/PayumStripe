@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Prometee\PayumStripe\Action\Api;
+namespace Tests\FluxSE\PayumStripe\Action\Api;
 
 use ArrayObject;
 use Payum\Core\Action\ActionInterface;
@@ -9,10 +9,10 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\RenderTemplate;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripe\Action\Api\RedirectToCheckoutAction;
-use Prometee\PayumStripe\Api\KeysInterface;
-use Prometee\PayumStripe\Request\Api\RedirectToCheckout;
-use Tests\Prometee\PayumStripe\Action\GatewayAwareTestTrait;
+use FluxSE\PayumStripe\Action\Api\RedirectToCheckoutAction;
+use FluxSE\PayumStripe\Api\KeysInterface;
+use FluxSE\PayumStripe\Request\Api\RedirectToCheckout;
+use Tests\FluxSE\PayumStripe\Action\GatewayAwareTestTrait;
 
 final class RedirectToCheckoutActionTest extends TestCase
 {
@@ -41,7 +41,7 @@ final class RedirectToCheckoutActionTest extends TestCase
 
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock
-            ->expects($this->at(0))
+            ->expects($this->once())
             ->method('execute')
             ->with($this->isInstanceOf(RenderTemplate::class))
             ->will($this->returnCallback(function (RenderTemplate $request) use ($model) {

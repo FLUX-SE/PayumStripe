@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Request\Api\WebhookEvent;
+namespace FluxSE\PayumStripe\Request\Api\WebhookEvent;
 
 use Payum\Core\Request\Generic;
-use Prometee\PayumStripe\Wrapper\EventWrapperInterface;
+use FluxSE\PayumStripe\Wrapper\EventWrapperInterface;
 
 final class WebhookEvent extends Generic
 {

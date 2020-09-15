@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Action;
+namespace FluxSE\PayumStripe\Action;
 
 use ArrayAccess;
 use Payum\Core\Action\ActionInterface;
@@ -12,11 +12,11 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Sync;
-use Prometee\PayumStripe\Request\Api\Resource\AbstractRetrieve;
-use Prometee\PayumStripe\Request\Api\Resource\RetrievePaymentIntent;
-use Prometee\PayumStripe\Request\Api\Resource\RetrieveSession;
-use Prometee\PayumStripe\Request\Api\Resource\RetrieveSetupIntent;
-use Prometee\PayumStripe\Request\Api\Resource\RetrieveSubscription;
+use FluxSE\PayumStripe\Request\Api\Resource\AbstractRetrieve;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrievePaymentIntent;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSession;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSetupIntent;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSubscription;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
 use Stripe\SetupIntent;

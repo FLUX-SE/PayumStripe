@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Action\Api;
+namespace FluxSE\PayumStripe\Action\Api;
 
 use Payum\Core\ApiAwareTrait;
-use Prometee\PayumStripe\Api\Keys;
-use Prometee\PayumStripe\Api\KeysInterface;
+use FluxSE\PayumStripe\Api\Keys;
+use FluxSE\PayumStripe\Api\KeysInterface;
 
 /**
  * @property KeysInterface $api

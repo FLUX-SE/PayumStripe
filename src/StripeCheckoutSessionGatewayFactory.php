@@ -2,32 +2,32 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe;
+namespace FluxSE\PayumStripe;
 
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayFactory;
-use Prometee\PayumStripe\Action\Api\ConstructEventAction;
-use Prometee\PayumStripe\Action\Api\RedirectToCheckoutAction;
-use Prometee\PayumStripe\Action\Api\ResolveWebhookEventAction;
-use Prometee\PayumStripe\Action\Api\Resource\CreateCustomerAction;
-use Prometee\PayumStripe\Action\Api\Resource\CreatePlanAction;
-use Prometee\PayumStripe\Action\Api\Resource\CreateSessionAction;
-use Prometee\PayumStripe\Action\Api\Resource\CreateSubscriptionAction;
-use Prometee\PayumStripe\Action\Api\Resource\RetrievePaymentIntentAction;
-use Prometee\PayumStripe\Action\Api\Resource\RetrieveSessionAction;
-use Prometee\PayumStripe\Action\Api\Resource\RetrieveSetupIntentAction;
-use Prometee\PayumStripe\Action\Api\Resource\RetrieveSubscriptionAction;
-use Prometee\PayumStripe\Action\Api\WebhookEvent\CheckoutSessionCompletedAction;
-use Prometee\PayumStripe\Action\Api\WebhookEvent\PaymentIntentCanceledAction;
-use Prometee\PayumStripe\Action\Api\WebhookEvent\SetupIntentCanceledAction;
-use Prometee\PayumStripe\Action\CaptureAction;
-use Prometee\PayumStripe\Action\ConvertPaymentAction;
-use Prometee\PayumStripe\Action\NotifyAction;
-use Prometee\PayumStripe\Action\StatusAction;
-use Prometee\PayumStripe\Action\SyncAction;
-use Prometee\PayumStripe\Action\SyncSetupIntentAction;
-use Prometee\PayumStripe\Action\SyncSubscriptionAction;
-use Prometee\PayumStripe\Api\Keys;
+use FluxSE\PayumStripe\Action\Api\ConstructEventAction;
+use FluxSE\PayumStripe\Action\Api\RedirectToCheckoutAction;
+use FluxSE\PayumStripe\Action\Api\ResolveWebhookEventAction;
+use FluxSE\PayumStripe\Action\Api\Resource\CreateCustomerAction;
+use FluxSE\PayumStripe\Action\Api\Resource\CreatePlanAction;
+use FluxSE\PayumStripe\Action\Api\Resource\CreateSessionAction;
+use FluxSE\PayumStripe\Action\Api\Resource\CreateSubscriptionAction;
+use FluxSE\PayumStripe\Action\Api\Resource\RetrievePaymentIntentAction;
+use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSessionAction;
+use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSetupIntentAction;
+use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSubscriptionAction;
+use FluxSE\PayumStripe\Action\Api\WebhookEvent\CheckoutSessionCompletedAction;
+use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentCanceledAction;
+use FluxSE\PayumStripe\Action\Api\WebhookEvent\SetupIntentCanceledAction;
+use FluxSE\PayumStripe\Action\CaptureAction;
+use FluxSE\PayumStripe\Action\ConvertPaymentAction;
+use FluxSE\PayumStripe\Action\NotifyAction;
+use FluxSE\PayumStripe\Action\StatusAction;
+use FluxSE\PayumStripe\Action\SyncAction;
+use FluxSE\PayumStripe\Action\SyncSetupIntentAction;
+use FluxSE\PayumStripe\Action\SyncSubscriptionAction;
+use FluxSE\PayumStripe\Api\Keys;
 
 class StripeCheckoutSessionGatewayFactory extends GatewayFactory
 {
@@ -42,7 +42,7 @@ class StripeCheckoutSessionGatewayFactory extends GatewayFactory
             'payum.factory_title' => 'Stripe Checkout Session',
 
             // Templates
-            'payum.template.redirect_to_checkout' => '@PrometeePayumStripeCheckoutSession/Action/redirectToCheckout.html.twig',
+            'payum.template.redirect_to_checkout' => '@FluxSEPayumStripeCheckoutSession/Action/redirectToCheckout.html.twig',
 
             // Actions
             'payum.action.capture' => new CaptureAction(),
@@ -99,7 +99,7 @@ class StripeCheckoutSessionGatewayFactory extends GatewayFactory
         }
 
         $config->offsetSet('payum.paths', array_replace([
-            'PrometeePayumStripeCheckoutSession' => __DIR__ . '/Resources/views',
+            'FluxSEPayumStripeCheckoutSession' => __DIR__ . '/Resources/views',
         ], $config['payum.paths'] ?: []));
     }
 }

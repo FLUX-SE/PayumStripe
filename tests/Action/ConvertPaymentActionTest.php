@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Prometee\PayumStripe\Action;
+namespace Tests\FluxSE\PayumStripe\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -8,7 +8,7 @@ use Payum\Core\GatewayInterface;
 use Payum\Core\Model\Payment;
 use Payum\Core\Request\Convert;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripe\Action\ConvertPaymentAction;
+use FluxSE\PayumStripe\Action\ConvertPaymentAction;
 
 final class ConvertPaymentActionTest extends TestCase
 {

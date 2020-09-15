@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Action\Api\Resource;
+namespace FluxSE\PayumStripe\Action\Api\Resource;
 
-use Prometee\PayumStripe\Request\Api\Resource\CreateInterface;
+use FluxSE\PayumStripe\Request\Api\Resource\CreateInterface;
 use Stripe\ApiResource;
 
 interface CreateResourceActionInterface extends ResourceActionInterface

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Request\Api;
+namespace FluxSE\PayumStripe\Request\Api;
 
 use Payum\Core\Request\Generic;
 

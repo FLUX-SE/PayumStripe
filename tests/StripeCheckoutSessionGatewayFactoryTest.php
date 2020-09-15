@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Prometee\PayumStripe;
+namespace Tests\FluxSE\PayumStripe;
 
 use Payum\Core\Exception\LogicException;
 use Payum\Core\GatewayFactoryInterface;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripe\StripeCheckoutSessionGatewayFactory;
+use FluxSE\PayumStripe\StripeCheckoutSessionGatewayFactory;
 
 final class StripeCheckoutSessionGatewayFactoryTest extends TestCase
 {
@@ -134,8 +134,8 @@ final class StripeCheckoutSessionGatewayFactoryTest extends TestCase
         $this->assertStringEndsWith('Resources/views', $config['payum.paths']['PayumCore']);
         $this->assertTrue(file_exists($config['payum.paths']['PayumCore']));
 
-        $this->assertArrayHasKey('PrometeePayumStripeCheckoutSession', $config['payum.paths']);
-        $this->assertStringEndsWith('Resources/views', $config['payum.paths']['PrometeePayumStripeCheckoutSession']);
-        $this->assertTrue(file_exists($config['payum.paths']['PrometeePayumStripeCheckoutSession']));
+        $this->assertArrayHasKey('FluxSEPayumStripeCheckoutSession', $config['payum.paths']);
+        $this->assertStringEndsWith('Resources/views', $config['payum.paths']['FluxSEPayumStripeCheckoutSession']);
+        $this->assertTrue(file_exists($config['payum.paths']['FluxSEPayumStripeCheckoutSession']));
     }
 }

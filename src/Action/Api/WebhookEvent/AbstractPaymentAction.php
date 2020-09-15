@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Action\Api\WebhookEvent;
+namespace FluxSE\PayumStripe\Action\Api\WebhookEvent;
 
 use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -11,7 +11,7 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\GetToken;
 use Payum\Core\Request\Notify;
 use Payum\Core\Security\TokenInterface;
-use Prometee\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
+use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
 use Stripe\SetupIntent;

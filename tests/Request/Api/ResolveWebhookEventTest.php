@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Prometee\PayumStripe\Request\Api;
+namespace Tests\FluxSE\PayumStripe\Request\Api;
 
 use Payum\Core\Model\Token;
 use Payum\Core\Request\Convert;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripe\Request\Api\ResolveWebhookEvent;
+use FluxSE\PayumStripe\Request\Api\ResolveWebhookEvent;
 
 final class ResolveWebhookEventTest extends TestCase
 {

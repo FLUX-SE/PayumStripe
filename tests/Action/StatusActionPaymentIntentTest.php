@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Prometee\PayumStripe\Action;
+namespace Tests\FluxSE\PayumStripe\Action;
 
 use Payum\Core\Request\GetHumanStatus;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripe\Action\StatusAction;
+use FluxSE\PayumStripe\Action\StatusAction;
 use Stripe\PaymentIntent;
 
 final class StatusActionPaymentIntentTest extends TestCase
