@@ -3,6 +3,9 @@
 namespace Tests\FluxSE\PayumStripe\Action;
 
 use ArrayObject;
+use FluxSE\PayumStripe\Action\CaptureAction;
+use FluxSE\PayumStripe\Request\Api\RedirectToCheckout;
+use FluxSE\PayumStripe\Request\Api\Resource\CreateSession;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayAwareInterface;
@@ -16,9 +19,6 @@ use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Storage\IdentityInterface;
 use PHPUnit\Framework\TestCase;
-use FluxSE\PayumStripe\Action\CaptureAction;
-use FluxSE\PayumStripe\Request\Api\RedirectToCheckout;
-use FluxSE\PayumStripe\Request\Api\Resource\CreateSession;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
 use Stripe\SetupIntent;

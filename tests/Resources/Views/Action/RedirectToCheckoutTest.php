@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\FluxSE\PayumStripe\Resources\Views\Action;
 
+use FluxSE\PayumStripe\StripeCheckoutSessionGatewayFactory;
 use Payum\Core\Gateway;
 use PHPUnit\Framework\TestCase;
-use FluxSE\PayumStripe\StripeCheckoutSessionGatewayFactory;
 use ReflectionClass;
 use ReflectionException;
 use Twig\Environment;

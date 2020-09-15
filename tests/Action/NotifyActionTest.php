@@ -2,6 +2,10 @@
 
 namespace Tests\FluxSE\PayumStripe\Action;
 
+use FluxSE\PayumStripe\Action\NotifyAction;
+use FluxSE\PayumStripe\Request\Api\ResolveWebhookEvent;
+use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
+use FluxSE\PayumStripe\Wrapper\EventWrapper;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayAwareInterface;
@@ -9,10 +13,6 @@ use Payum\Core\Model\Token;
 use Payum\Core\Request\Notify;
 use Payum\Core\Request\Sync;
 use PHPUnit\Framework\TestCase;
-use FluxSE\PayumStripe\Action\NotifyAction;
-use FluxSE\PayumStripe\Request\Api\ResolveWebhookEvent;
-use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
-use FluxSE\PayumStripe\Wrapper\EventWrapper;
 use Stripe\Event;
 
 final class NotifyActionTest extends TestCase

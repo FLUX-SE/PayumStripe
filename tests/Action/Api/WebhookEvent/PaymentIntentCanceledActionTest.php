@@ -2,6 +2,11 @@
 
 namespace Tests\FluxSE\PayumStripe\Action\Api\WebhookEvent;
 
+use FluxSE\PayumStripe\Action\Api\WebhookEvent\AbstractPaymentAction;
+use FluxSE\PayumStripe\Action\Api\WebhookEvent\AbstractWebhookEventAction;
+use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentCanceledAction;
+use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
+use FluxSE\PayumStripe\Wrapper\EventWrapper;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayAwareInterface;
@@ -9,11 +14,6 @@ use Payum\Core\Model\Token;
 use Payum\Core\Request\GetToken;
 use Payum\Core\Request\Notify;
 use PHPUnit\Framework\TestCase;
-use FluxSE\PayumStripe\Action\Api\WebhookEvent\AbstractPaymentAction;
-use FluxSE\PayumStripe\Action\Api\WebhookEvent\AbstractWebhookEventAction;
-use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentCanceledAction;
-use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
-use FluxSE\PayumStripe\Wrapper\EventWrapper;
 use Stripe\Event;
 use Tests\FluxSE\PayumStripe\Action\GatewayAwareTestTrait;
 

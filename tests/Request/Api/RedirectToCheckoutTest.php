@@ -2,9 +2,9 @@
 
 namespace Tests\FluxSE\PayumStripe\Request\Api;
 
+use FluxSE\PayumStripe\Request\Api\RedirectToCheckout;
 use Payum\Core\Request\Generic;
 use PHPUnit\Framework\TestCase;
-use FluxSE\PayumStripe\Request\Api\RedirectToCheckout;
 
 final class RedirectToCheckoutTest extends TestCase
 {

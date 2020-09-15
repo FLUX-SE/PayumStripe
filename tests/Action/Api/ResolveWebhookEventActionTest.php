@@ -2,6 +2,12 @@
 
 namespace Tests\FluxSE\PayumStripe\Action\Api;
 
+use FluxSE\PayumStripe\Action\Api\ResolveWebhookEventAction;
+use FluxSE\PayumStripe\Api\KeysInterface;
+use FluxSE\PayumStripe\Request\Api\ConstructEvent;
+use FluxSE\PayumStripe\Request\Api\ResolveWebhookEvent;
+use FluxSE\PayumStripe\Wrapper\EventWrapper;
+use FluxSE\PayumStripe\Wrapper\EventWrapperInterface;
 use LogicException;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -9,12 +15,6 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\Request\GetHttpRequest;
 use PHPUnit\Framework\TestCase;
-use FluxSE\PayumStripe\Action\Api\ResolveWebhookEventAction;
-use FluxSE\PayumStripe\Api\KeysInterface;
-use FluxSE\PayumStripe\Request\Api\ConstructEvent;
-use FluxSE\PayumStripe\Request\Api\ResolveWebhookEvent;
-use FluxSE\PayumStripe\Wrapper\EventWrapper;
-use FluxSE\PayumStripe\Wrapper\EventWrapperInterface;
 use Stripe\Event;
 use Tests\FluxSE\PayumStripe\Action\GatewayAwareTestTrait;
 

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Request\Api;
 
+use FluxSE\PayumStripe\Wrapper\EventWrapperInterface;
 use LogicException;
 use Payum\Core\Request\Generic;
-use FluxSE\PayumStripe\Wrapper\EventWrapperInterface;
 
 class ConstructEvent extends Generic
 {

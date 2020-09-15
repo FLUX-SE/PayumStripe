@@ -3,13 +3,13 @@
 namespace Tests\FluxSE\PayumStripe\Request\Api\Resource;
 
 use ArrayObject;
-use Payum\Core\Request\Generic;
-use PHPUnit\Framework\TestCase;
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractCreate;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateSession;
 use FluxSE\PayumStripe\Request\Api\Resource\OptionsAwareInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\ResourceAwareInterface;
+use Payum\Core\Request\Generic;
+use PHPUnit\Framework\TestCase;
 use Stripe\Checkout\Session;
 
 final class CreateSessionTest extends TestCase

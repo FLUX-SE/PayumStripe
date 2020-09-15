@@ -2,9 +2,9 @@
 
 namespace Tests\FluxSE\PayumStripe\Wrapper;
 
-use PHPUnit\Framework\TestCase;
 use FluxSE\PayumStripe\Wrapper\EventWrapper;
 use FluxSE\PayumStripe\Wrapper\EventWrapperInterface;
+use PHPUnit\Framework\TestCase;
 use Stripe\Event;
 
 final class EventWrapperTest extends TestCase

@@ -2,9 +2,9 @@
 
 namespace Tests\FluxSE\PayumStripe\Action;
 
+use FluxSE\PayumStripe\Action\StatusAction;
 use Payum\Core\Request\GetHumanStatus;
 use PHPUnit\Framework\TestCase;
-use FluxSE\PayumStripe\Action\StatusAction;
 use Stripe\PaymentIntent;
 
 final class StatusActionPaymentIntentTest extends TestCase

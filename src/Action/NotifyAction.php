@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Action;
 
+use FluxSE\PayumStripe\Request\Api\ResolveWebhookEvent;
+use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -11,8 +13,6 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Notify;
 use Payum\Core\Request\Sync;
-use FluxSE\PayumStripe\Request\Api\ResolveWebhookEvent;
-use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 
 final class NotifyAction implements ActionInterface, GatewayAwareInterface
 {

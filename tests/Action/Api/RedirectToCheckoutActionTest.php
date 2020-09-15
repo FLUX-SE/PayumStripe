@@ -3,15 +3,15 @@
 namespace Tests\FluxSE\PayumStripe\Action\Api;
 
 use ArrayObject;
+use FluxSE\PayumStripe\Action\Api\RedirectToCheckoutAction;
+use FluxSE\PayumStripe\Api\KeysInterface;
+use FluxSE\PayumStripe\Request\Api\RedirectToCheckout;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\RenderTemplate;
 use PHPUnit\Framework\TestCase;
-use FluxSE\PayumStripe\Action\Api\RedirectToCheckoutAction;
-use FluxSE\PayumStripe\Api\KeysInterface;
-use FluxSE\PayumStripe\Request\Api\RedirectToCheckout;
 use Tests\FluxSE\PayumStripe\Action\GatewayAwareTestTrait;
 
 final class RedirectToCheckoutActionTest extends TestCase

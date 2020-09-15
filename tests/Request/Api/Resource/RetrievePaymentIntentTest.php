@@ -2,13 +2,13 @@
 
 namespace Tests\FluxSE\PayumStripe\Request\Api\Resource;
 
-use Payum\Core\Request\Generic;
-use PHPUnit\Framework\TestCase;
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractRetrieve;
 use FluxSE\PayumStripe\Request\Api\Resource\OptionsAwareInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\ResourceAwareInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrievePaymentIntent;
+use Payum\Core\Request\Generic;
+use PHPUnit\Framework\TestCase;
 use Stripe\PaymentIntent;
 
 final class RetrievePaymentIntentTest extends TestCase

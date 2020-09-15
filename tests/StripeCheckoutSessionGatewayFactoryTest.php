@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\FluxSE\PayumStripe;
 
+use FluxSE\PayumStripe\StripeCheckoutSessionGatewayFactory;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\GatewayFactoryInterface;
 use PHPUnit\Framework\TestCase;
-use FluxSE\PayumStripe\StripeCheckoutSessionGatewayFactory;
 
 final class StripeCheckoutSessionGatewayFactoryTest extends TestCase
 {

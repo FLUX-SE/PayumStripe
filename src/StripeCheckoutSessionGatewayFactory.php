@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe;
 
-use Payum\Core\Bridge\Spl\ArrayObject;
-use Payum\Core\GatewayFactory;
 use FluxSE\PayumStripe\Action\Api\ConstructEventAction;
 use FluxSE\PayumStripe\Action\Api\RedirectToCheckoutAction;
 use FluxSE\PayumStripe\Action\Api\ResolveWebhookEventAction;
@@ -28,6 +26,8 @@ use FluxSE\PayumStripe\Action\SyncAction;
 use FluxSE\PayumStripe\Action\SyncSetupIntentAction;
 use FluxSE\PayumStripe\Action\SyncSubscriptionAction;
 use FluxSE\PayumStripe\Api\Keys;
+use Payum\Core\Bridge\Spl\ArrayObject;
+use Payum\Core\GatewayFactory;
 
 class StripeCheckoutSessionGatewayFactory extends GatewayFactory
 {

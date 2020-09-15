@@ -2,9 +2,9 @@
 
 namespace Tests\FluxSE\PayumStripe\Api;
 
-use PHPUnit\Framework\TestCase;
 use FluxSE\PayumStripe\Api\Keys;
 use FluxSE\PayumStripe\Api\KeysInterface;
+use PHPUnit\Framework\TestCase;
 
 final class KeysTest extends TestCase
 {

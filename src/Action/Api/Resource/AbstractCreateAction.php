@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Action\Api\Resource;
 
-use Payum\Core\Exception\LogicException;
-use Payum\Core\Exception\RequestNotSupportedException;
 use FluxSE\PayumStripe\Action\Api\StripeApiAwareTrait;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateInterface;
+use Payum\Core\Exception\LogicException;
+use Payum\Core\Exception\RequestNotSupportedException;
 use Stripe\ApiOperations\Create;
 use Stripe\ApiResource;
 use Stripe\Exception\ApiErrorException;

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Action\Api;
 
-use Payum\Core\ApiAwareTrait;
 use FluxSE\PayumStripe\Api\Keys;
 use FluxSE\PayumStripe\Api\KeysInterface;
+use Payum\Core\ApiAwareTrait;
 
 /**
  * @property KeysInterface $api

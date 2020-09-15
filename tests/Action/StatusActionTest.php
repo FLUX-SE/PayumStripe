@@ -2,12 +2,12 @@
 
 namespace Tests\FluxSE\PayumStripe\Action;
 
+use FluxSE\PayumStripe\Action\StatusAction;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Request\GetHumanStatus;
 use PHPUnit\Framework\TestCase;
-use FluxSE\PayumStripe\Action\StatusAction;
 use Stripe\Refund;
 
 final class StatusActionTest extends TestCase

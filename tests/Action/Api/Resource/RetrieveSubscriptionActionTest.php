@@ -2,14 +2,14 @@
 
 namespace Tests\FluxSE\PayumStripe\Action\Api\Resource;
 
-use Payum\Core\Action\ActionInterface;
-use Payum\Core\ApiAwareInterface;
-use Payum\Core\GatewayInterface;
-use PHPUnit\Framework\TestCase;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveActionInterface;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSubscriptionAction;
 use FluxSE\PayumStripe\Api\KeysInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSubscription;
+use Payum\Core\Action\ActionInterface;
+use Payum\Core\ApiAwareInterface;
+use Payum\Core\GatewayInterface;
+use PHPUnit\Framework\TestCase;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Subscription;
 use Tests\FluxSE\PayumStripe\Action\Api\ApiAwareActionTestTrait;

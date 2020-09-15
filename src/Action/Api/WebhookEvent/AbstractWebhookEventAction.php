@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Action\Api\WebhookEvent;
 
-use Payum\Core\Action\ActionInterface;
 use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use FluxSE\PayumStripe\Wrapper\EventWrapperInterface;
+use Payum\Core\Action\ActionInterface;
 use Stripe\Event;
 
 abstract class AbstractWebhookEventAction implements ActionInterface

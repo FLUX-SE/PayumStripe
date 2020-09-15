@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Action\Api;
 
-use Payum\Core\Action\ActionInterface;
-use Payum\Core\Exception\RequestNotSupportedException;
 use FluxSE\PayumStripe\Request\Api\ConstructEvent;
 use FluxSE\PayumStripe\Wrapper\EventWrapper;
+use Payum\Core\Action\ActionInterface;
+use Payum\Core\Exception\RequestNotSupportedException;
 use Stripe\Exception\SignatureVerificationException;
 use Stripe\Webhook;
 
