@@ -50,12 +50,12 @@ composer require  php-http/guzzle6-adapter
  - [WORK IN PROGRESS]
 
 
-[ico-version]: https://img.shields.io/packagist/v/FluxSE/payum-stripe.svg?style=flat-square
+[ico-version]: https://img.shields.io/packagist/v/Flux-SE/payum-stripe.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/FluxSE/PayumStripe/master.svg?style=flat-square
-[ico-code-quality]: https://img.shields.io/scrutinizer/g/FluxSE/PayumStripe.svg?style=flat-square
+[ico-travis]: https://img.shields.io/travis/Flux-SE/PayumStripe/master.svg?style=flat-square
+[ico-code-quality]: https://img.shields.io/scrutinizer/g/Flux-SE/PayumStripe.svg?style=flat-square
 
 [link-packagist]: https://packagist.org/packages/flux-se/payum-stripe
-[link-travis]: https://travis-ci.org/FluxSE/PayumStripe
-[link-scrutinizer]: https://scrutinizer-ci.com/g/FluxSE/PayumStripe/code-structure
-[link-code-quality]: https://scrutinizer-ci.com/g/FluxSE/PayumStripe
+[link-travis]: https://travis-ci.org/Flux-SE/PayumStripe
+[link-scrutinizer]: https://scrutinizer-ci.com/g/Flux-SE/PayumStripe/code-structure
+[link-code-quality]: https://scrutinizer-ci.com/g/Flux-SE/PayumStripe
