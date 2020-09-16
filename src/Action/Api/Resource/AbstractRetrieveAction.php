@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Action\Api\Resource;
+namespace FluxSE\PayumStripe\Action\Api\Resource;
 
+use FluxSE\PayumStripe\Action\Api\StripeApiAwareTrait;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInterface;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Prometee\PayumStripe\Action\Api\StripeApiAwareTrait;
-use Prometee\PayumStripe\Request\Api\Resource\RetrieveInterface;
 use Stripe\ApiOperations\Retrieve;
 use Stripe\ApiResource;
 use Stripe\Exception\ApiErrorException;

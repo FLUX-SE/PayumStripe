@@ -2,8 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Action\Api;
+namespace FluxSE\PayumStripe\Action\Api;
 
+use FluxSE\PayumStripe\Request\Api\ConstructEvent;
+use FluxSE\PayumStripe\Request\Api\ResolveWebhookEvent;
+use FluxSE\PayumStripe\Wrapper\EventWrapperInterface;
 use LogicException;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -12,9 +15,6 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\GetHttpRequest;
-use Prometee\PayumStripe\Request\Api\ConstructEvent;
-use Prometee\PayumStripe\Request\Api\ResolveWebhookEvent;
-use Prometee\PayumStripe\Wrapper\EventWrapperInterface;
 use Stripe\Exception\SignatureVerificationException;
 
 class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface

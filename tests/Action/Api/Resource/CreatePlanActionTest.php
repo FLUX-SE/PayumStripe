@@ -1,18 +1,18 @@
 <?php
 
-namespace Tests\Prometee\PayumStripe\Action\Api\Resource;
+namespace Tests\FluxSE\PayumStripe\Action\Api\Resource;
 
+use FluxSE\PayumStripe\Action\Api\Resource\CreatePlanAction;
+use FluxSE\PayumStripe\Action\Api\Resource\CreateResourceActionInterface;
+use FluxSE\PayumStripe\Api\KeysInterface;
+use FluxSE\PayumStripe\Request\Api\Resource\CreatePlan;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripe\Action\Api\Resource\CreatePlanAction;
-use Prometee\PayumStripe\Action\Api\Resource\CreateResourceActionInterface;
-use Prometee\PayumStripe\Api\KeysInterface;
-use Prometee\PayumStripe\Request\Api\Resource\CreatePlan;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Plan;
-use Tests\Prometee\PayumStripe\Action\Api\ApiAwareActionTestTrait;
+use Tests\FluxSE\PayumStripe\Action\Api\ApiAwareActionTestTrait;
 
 final class CreatePlanActionTest extends TestCase
 {

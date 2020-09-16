@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Action\Api\Resource;
+namespace FluxSE\PayumStripe\Action\Api\Resource;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;

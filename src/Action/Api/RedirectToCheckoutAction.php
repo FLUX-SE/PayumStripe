@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Action\Api;
+namespace FluxSE\PayumStripe\Action\Api;
 
+use FluxSE\PayumStripe\Request\Api\RedirectToCheckout;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -11,7 +12,6 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\RenderTemplate;
-use Prometee\PayumStripe\Request\Api\RedirectToCheckout;
 
 final class RedirectToCheckoutAction implements ActionInterface, ApiAwareInterface, GatewayAwareInterface
 {

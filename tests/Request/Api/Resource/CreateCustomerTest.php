@@ -1,15 +1,15 @@
 <?php
 
-namespace Tests\Prometee\PayumStripe\Request\Api\Resource;
+namespace Tests\FluxSE\PayumStripe\Request\Api\Resource;
 
 use ArrayObject;
+use FluxSE\PayumStripe\Request\Api\Resource\AbstractCreate;
+use FluxSE\PayumStripe\Request\Api\Resource\CreateCustomer;
+use FluxSE\PayumStripe\Request\Api\Resource\CreateInterface;
+use FluxSE\PayumStripe\Request\Api\Resource\OptionsAwareInterface;
+use FluxSE\PayumStripe\Request\Api\Resource\ResourceAwareInterface;
 use Payum\Core\Request\Generic;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripe\Request\Api\Resource\AbstractCreate;
-use Prometee\PayumStripe\Request\Api\Resource\CreateCustomer;
-use Prometee\PayumStripe\Request\Api\Resource\CreateInterface;
-use Prometee\PayumStripe\Request\Api\Resource\OptionsAwareInterface;
-use Prometee\PayumStripe\Request\Api\Resource\ResourceAwareInterface;
 use Stripe\Customer;
 
 final class CreateCustomerTest extends TestCase

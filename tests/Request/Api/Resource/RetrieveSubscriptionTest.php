@@ -1,14 +1,14 @@
 <?php
 
-namespace Tests\Prometee\PayumStripe\Request\Api\Resource;
+namespace Tests\FluxSE\PayumStripe\Request\Api\Resource;
 
+use FluxSE\PayumStripe\Request\Api\Resource\AbstractRetrieve;
+use FluxSE\PayumStripe\Request\Api\Resource\OptionsAwareInterface;
+use FluxSE\PayumStripe\Request\Api\Resource\ResourceAwareInterface;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInterface;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSubscription;
 use Payum\Core\Request\Generic;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripe\Request\Api\Resource\AbstractRetrieve;
-use Prometee\PayumStripe\Request\Api\Resource\OptionsAwareInterface;
-use Prometee\PayumStripe\Request\Api\Resource\ResourceAwareInterface;
-use Prometee\PayumStripe\Request\Api\Resource\RetrieveInterface;
-use Prometee\PayumStripe\Request\Api\Resource\RetrieveSubscription;
 use Stripe\Subscription;
 
 class RetrieveSubscriptionTest extends TestCase

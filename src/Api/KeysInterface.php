@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Api;
+namespace FluxSE\PayumStripe\Api;
 
 interface KeysInterface
 {

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Request\Api;
+namespace FluxSE\PayumStripe\Request\Api;
 
+use FluxSE\PayumStripe\Wrapper\EventWrapperInterface;
 use LogicException;
 use Payum\Core\Request\Generic;
-use Prometee\PayumStripe\Wrapper\EventWrapperInterface;
 
 class ConstructEvent extends Generic
 {

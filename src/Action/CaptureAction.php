@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Action;
+namespace FluxSE\PayumStripe\Action;
 
 use ArrayAccess;
+use FluxSE\PayumStripe\Request\Api\RedirectToCheckout;
+use FluxSE\PayumStripe\Request\Api\Resource\CreateSession;
 use LogicException;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -16,8 +18,6 @@ use Payum\Core\Request\Sync;
 use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryAwareTrait;
 use Payum\Core\Security\TokenInterface;
-use Prometee\PayumStripe\Request\Api\RedirectToCheckout;
-use Prometee\PayumStripe\Request\Api\Resource\CreateSession;
 
 class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTokenFactoryAwareInterface
 {

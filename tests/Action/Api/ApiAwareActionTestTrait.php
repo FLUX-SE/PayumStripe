@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\Prometee\PayumStripe\Action\Api;
+namespace Tests\FluxSE\PayumStripe\Action\Api;
 
+use FluxSE\PayumStripe\Api\KeysInterface;
 use PHPUnit\Framework\MockObject\MockObject;
-use Prometee\PayumStripe\Api\KeysInterface;
 
 trait ApiAwareActionTestTrait
 {

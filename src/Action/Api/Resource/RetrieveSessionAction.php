@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Action\Api\Resource;
+namespace FluxSE\PayumStripe\Action\Api\Resource;
 
-use Prometee\PayumStripe\Request\Api\Resource\RetrieveSession;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSession;
 use Stripe\Checkout\Session;
 
 final class RetrieveSessionAction extends AbstractRetrieveAction
