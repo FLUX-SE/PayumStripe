@@ -98,7 +98,7 @@ Payum don't have php `Interfaces` to handle subscription, that's why subscriptio
 managed by yourself. There is maybe a composer packages which meet your need,
 but you will have to build the interface between your subscription `Model` class and `Payum`.
 
-Usually you will have to build a `ConvertPaymentAction` like this one : [ConvertPaymentAction.php](https://github.com/FluxSE/SyliusPayumStripePlugin/blob/master/src/Action/ConvertPaymentAction.php)
+Usually you will have to build a `ConvertPaymentAction` like this one : [ConvertPaymentAction.php](https://github.com/FLUX-SE/SyliusPayumStripePlugin/blob/master/src/Action/ConvertPaymentAction.php)
 customizing the `supports` method to meet your need and finally providing the right `$details` array.
 
 Example : https://stripe.com/docs/payments/checkout/subscriptions/starting#create-checkout-session (`$details` is the array given to create a `Session`)
@@ -111,6 +111,6 @@ Example : https://stripe.com/docs/payments/checkout/subscriptions/updating#creat
 
 ## More
 
- - A Symfony bundle : [flux-se/payum-stripe-checkout-bundle](https://github.com/FluxSE/PayumStripeBundle)
- - A Sylius plugin : [flux-se/sylius-payum-stripe-checkout-session-plugin](https://github.com/FluxSE/SyliusPayumStripePlugin)
+ - A Symfony bundle : [flux-se/payum-stripe-checkout-bundle](https://github.com/FLUX-SE/PayumStripeBundle)
+ - A Sylius plugin : [flux-se/sylius-payum-stripe-checkout-session-plugin](https://github.com/FLUX-SE/SyliusPayumStripePlugin)
   
