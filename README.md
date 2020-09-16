@@ -8,9 +8,9 @@
 This library is designed to add a new gateways to Payum to support Stripe (with SCA support)
 Actually there is one Gateway fully supported `Stripe checkout session` but soon `Stripe JS` will be supported too.
 
-> If you are using Symfony use the bundle : [flux-se/payum-stripe-checkout-bundle](https://github.com/FluxSE/PayumStripeBundle)
+> If you are using Symfony use the bundle : [flux-se/payum-stripe-bundle](https://github.com/FluxSE/PayumStripeBundle)
 
-> If you are using Sylius use the plugin : [flux-se/sylius-payum-stripe-checkout-session-plugin](https://github.com/FluxSE/SyliusPayumStripePlugin)
+> If you are using Sylius use the plugin : [flux-se/sylius-payum-stripe-plugin](https://github.com/FluxSE/SyliusPayumStripePlugin)
 
 ## Installation
 
@@ -42,8 +42,8 @@ composer require  php-http/guzzle6-adapter
 
 ### What to use with Stripe Checkout Session gateway ?
 
- - A Symfony bundle : [flux-se/payum-stripe-checkout-bundle](https://github.com/FluxSE/PayumStripeBundle)
- - A Sylius plugin : [flux-se/sylius-payum-stripe-checkout-session-plugin](https://github.com/FluxSE/SyliusPayumStripePlugin)
+ - A Symfony bundle : [flux-se/payum-stripe-bundle](https://github.com/FluxSE/PayumStripeBundle)
+ - A Sylius plugin : [flux-se/sylius-payum-stripe-plugin](https://github.com/FluxSE/SyliusPayumStripePlugin)
   
 ### What to use with Stripe JS gateway ?
 
