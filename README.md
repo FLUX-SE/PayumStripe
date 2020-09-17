@@ -2,6 +2,7 @@
 [![Software License][ico-license]](LICENSE)
 [![Build Status][ico-travis]][link-travis]
 [![Quality Score][ico-code-quality]][link-code-quality]
+[![codecov](ico-codecov)][link-codecov]
 
 ## Payum Stripe gateways
 
@@ -54,8 +55,10 @@ composer require  php-http/guzzle6-adapter
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [ico-travis]: https://img.shields.io/travis/FLUX-SE/PayumStripe/master.svg?style=flat-square
 [ico-code-quality]: https://img.shields.io/scrutinizer/g/FLUX-SE/PayumStripe.svg?style=flat-square
+[ico-codecov]: https://codecov.io/gh/FLUX-SE/PayumStripe/branch/master/graph/badge.svg
 
 [link-packagist]: https://packagist.org/packages/flux-se/payum-stripe
 [link-travis]: https://travis-ci.org/FLUX-SE/PayumStripe
 [link-scrutinizer]: https://scrutinizer-ci.com/g/FLUX-SE/PayumStripe/code-structure
 [link-code-quality]: https://scrutinizer-ci.com/g/FLUX-SE/PayumStripe
+[link-codecov]: https://codecov.io/gh/FLUX-SE/PayumStripe
