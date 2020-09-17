@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace FluxSE\PayumStripe\Action\Api\WebhookEvent;
 
 use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
-use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
@@ -21,7 +20,7 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
     use GatewayAwareTrait;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param WebhookEvent $request
      */
@@ -59,11 +58,6 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
         $this->gateway->execute(new Notify($token));
     }
 
-    /**
-     * @param string $tokenHash
-     *
-     * @return TokenInterface
-     */
     private function findTokenByHash(string $tokenHash): TokenInterface
     {
         $getTokenRequest = new GetToken($tokenHash);

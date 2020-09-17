@@ -9,12 +9,12 @@ use Stripe\Event;
 final class PaymentIntentCanceledAction extends AbstractPaymentAction
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getSupportedEventTypes(): array
     {
         return [
-            Event::PAYMENT_INTENT_CANCELED
+            Event::PAYMENT_INTENT_CANCELED,
         ];
     }
 }

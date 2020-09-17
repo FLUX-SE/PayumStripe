@@ -9,17 +9,7 @@ use Stripe\ApiResource;
 
 interface RetrieveActionInterface extends ResourceActionInterface
 {
-    /**
-     * @param RetrieveInterface $request
-     *
-     * @return ApiResource
-     */
     public function retrieveApiResource(RetrieveInterface $request): ApiResource;
 
-    /**
-     * @param RetrieveInterface $request
-     *
-     * @return bool
-     */
     public function supportAlso(RetrieveInterface $request): bool;
 }

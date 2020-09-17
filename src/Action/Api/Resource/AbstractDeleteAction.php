@@ -16,11 +16,11 @@ use Stripe\Stripe;
 
 abstract class AbstractDeleteAction implements DeleteActionInterface
 {
-    use StripeApiAwareTrait,
-        ResourceAwareActionTrait;
+    use StripeApiAwareTrait;
+    use ResourceAwareActionTrait;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param DeleteInterface $request
      *
@@ -38,7 +38,7 @@ abstract class AbstractDeleteAction implements DeleteActionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @throws ApiErrorException
      */
@@ -46,11 +46,7 @@ abstract class AbstractDeleteAction implements DeleteActionInterface
     {
         $apiResourceClass = $this->getApiResourceClass();
         if (false === method_exists($apiResourceClass, 'retrieve')) {
-            throw new LogicException(sprintf(
-                'This class "%s" is not an instance of "%s"',
-                (string) $apiResourceClass,
-                Retrieve::class
-            ));
+            throw new LogicException(sprintf('This class "%s" is not an instance of "%s"', (string) $apiResourceClass, Retrieve::class));
         }
 
         Stripe::setApiKey($this->api->getSecretKey());
@@ -62,21 +58,17 @@ abstract class AbstractDeleteAction implements DeleteActionInterface
         );
 
         if (false === $apiResource instanceof Delete) {
-            throw new LogicException(sprintf(
-                'This class "%s" is not an instance of "%s"',
-                $apiResourceClass,
-                Delete::class
-            ));
+            throw new LogicException(sprintf('This class "%s" is not an instance of "%s"', $apiResourceClass, Delete::class));
         }
 
-        /** @var ApiResource&Delete $apiResource */
+        /* @var ApiResource&Delete $apiResource */
         $apiResource->delete();
 
         return $apiResource;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param DeleteInterface $request
      */
@@ -88,9 +80,6 @@ abstract class AbstractDeleteAction implements DeleteActionInterface
         ;
     }
 
-    /**
-     * @param DeleteInterface $request
-     */
     protected function checkRequest(DeleteInterface $request): void
     {
         // Silent is golden

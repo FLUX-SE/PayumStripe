@@ -14,7 +14,7 @@ class CreatePlanAction extends AbstractCreateAction
     protected $apiResourceClass = Plan::class;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supportAlso(CreateInterface $request): bool
     {

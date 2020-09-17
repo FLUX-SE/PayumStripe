@@ -9,13 +9,7 @@ use Payum\Core\ApiAwareInterface;
 
 interface ResourceActionInterface extends ActionInterface, ApiAwareInterface
 {
-    /**
-     * @return string
-     */
     public function getApiResourceClass(): string;
 
-    /**
-     * @param string $apiResourceClass
-     */
     public function setApiResourceClass(string $apiResourceClass): void;
 }

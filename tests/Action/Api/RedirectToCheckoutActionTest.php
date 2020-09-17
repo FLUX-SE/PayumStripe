@@ -16,8 +16,8 @@ use Tests\FluxSE\PayumStripe\Action\GatewayAwareTestTrait;
 
 final class RedirectToCheckoutActionTest extends TestCase
 {
-    use ApiAwareActionTestTrait,
-        GatewayAwareTestTrait;
+    use ApiAwareActionTestTrait;
+    use GatewayAwareTestTrait;
 
     /**
      * @test

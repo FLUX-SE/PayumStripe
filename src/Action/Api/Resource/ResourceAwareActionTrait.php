@@ -10,7 +10,7 @@ trait ResourceAwareActionTrait
     protected $apiResourceClass = '';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getApiResourceClass(): string
     {
@@ -18,7 +18,7 @@ trait ResourceAwareActionTrait
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setApiResourceClass(string $apiResourceClass): void
     {

@@ -244,7 +244,6 @@ final class SyncActionTest extends TestCase
                 $this->assertIsString($request->getModel());
                 $request->setApiResource(new Session($model));
             }));
-        ;
 
         $action = new SyncAction();
         $action->setGateway($gatewayMock);

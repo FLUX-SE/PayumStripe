@@ -14,7 +14,7 @@ final class RetrievePaymentIntentAction extends AbstractRetrieveAction
     protected $apiResourceClass = PaymentIntent::class;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supportAlso(RetrieveInterface $request): bool
     {

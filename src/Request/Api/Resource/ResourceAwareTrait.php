@@ -15,24 +15,21 @@ trait ResourceAwareTrait
     protected $apiResource;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @throws LogicException
      */
     public function getApiResource(): ApiResource
     {
         if (null === $this->apiResource) {
-            throw new LogicException(
-                'The API Resource is null !'
-                . 'You should send this request to `Payum->execute()` before using this getter.'
-            );
+            throw new LogicException('The API Resource is null !'.'You should send this request to `Payum->execute()` before using this getter.');
         }
 
         return $this->apiResource;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setApiResource(ApiResource $apiResource): void
     {

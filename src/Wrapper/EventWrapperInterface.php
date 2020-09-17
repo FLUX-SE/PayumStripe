@@ -8,13 +8,7 @@ use Stripe\Event;
 
 interface EventWrapperInterface
 {
-    /**
-     * @return Event
-     */
     public function getEvent(): Event;
 
-    /**
-     * @return string
-     */
     public function getUsedWebhookSecretKey(): string;
 }

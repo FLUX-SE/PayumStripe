@@ -17,9 +17,6 @@ interface AllInterface extends OptionsAwareInterface, ModelAwareInterface, Model
      */
     public function getParameters(): ?array;
 
-    /**
-     * @param array $parameters
-     */
     public function setParameters(array $parameters): void;
 
     /**

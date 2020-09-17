@@ -14,7 +14,7 @@ class CreateCustomerAction extends AbstractCreateAction
     protected $apiResourceClass = Customer::class;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supportAlso(CreateInterface $request): bool
     {

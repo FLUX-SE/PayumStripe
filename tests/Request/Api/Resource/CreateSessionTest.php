@@ -2,7 +2,6 @@
 
 namespace Tests\FluxSE\PayumStripe\Request\Api\Resource;
 
-use ArrayObject;
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractCreate;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateSession;

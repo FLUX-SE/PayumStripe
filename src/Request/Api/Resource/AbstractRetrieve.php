@@ -8,13 +8,9 @@ use Payum\Core\Request\Generic;
 
 abstract class AbstractRetrieve extends Generic implements RetrieveInterface
 {
-    use OptionsAwareTrait,
-        ResourceAwareTrait;
+    use OptionsAwareTrait;
+    use ResourceAwareTrait;
 
-    /**
-     * @param string $id
-     * @param array $options
-     */
     public function __construct(string $id, array $options = [])
     {
         parent::__construct($id);
@@ -22,7 +18,7 @@ abstract class AbstractRetrieve extends Generic implements RetrieveInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getId(): string
     {
@@ -30,7 +26,7 @@ abstract class AbstractRetrieve extends Generic implements RetrieveInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setId(string $id): void
     {

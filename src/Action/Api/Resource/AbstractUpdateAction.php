@@ -15,11 +15,11 @@ use Stripe\Stripe;
 
 abstract class AbstractUpdateAction implements UpdateResourceActionInterface
 {
-    use StripeApiAwareTrait,
-        ResourceAwareActionTrait;
+    use StripeApiAwareTrait;
+    use ResourceAwareActionTrait;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param UpdateInterface $request
      *
@@ -37,7 +37,7 @@ abstract class AbstractUpdateAction implements UpdateResourceActionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @throws ApiErrorException
      */
@@ -45,11 +45,7 @@ abstract class AbstractUpdateAction implements UpdateResourceActionInterface
     {
         $apiResourceClass = $this->getApiResourceClass();
         if (false === method_exists($apiResourceClass, 'update')) {
-            throw new LogicException(sprintf(
-                'This class "%s" is not an instance of "%s"',
-                $apiResourceClass,
-                Update::class
-            ));
+            throw new LogicException(sprintf('This class "%s" is not an instance of "%s"', $apiResourceClass, Update::class));
         }
 
         Stripe::setApiKey($this->api->getSecretKey());
@@ -66,7 +62,7 @@ abstract class AbstractUpdateAction implements UpdateResourceActionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param UpdateInterface $request
      */
@@ -78,9 +74,6 @@ abstract class AbstractUpdateAction implements UpdateResourceActionInterface
         ;
     }
 
-    /**
-     * @param UpdateInterface $request
-     */
     protected function checkRequest(UpdateInterface $request): void
     {
         // Silent is golden

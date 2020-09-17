@@ -21,14 +21,9 @@ use Payum\Core\Security\TokenInterface;
 
 class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTokenFactoryAwareInterface
 {
-    use GatewayAwareTrait,
-        GenericTokenFactoryAwareTrait;
+    use GatewayAwareTrait;
+    use GenericTokenFactoryAwareTrait;
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param Capture $request
-     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -73,16 +68,13 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
     }
 
     /**
-     * Save the token hash for future webhook consuming retrieval
+     * Save the token hash for future webhook consuming retrieval.
      *
      *  - A `Session` can be completed.
      *  - or its `PaymentIntent` can be canceled.
      *  - or its `SetupIntent` can be canceled.
      *
      * So the token hash have to be stored both on `Session` metadata and other mode metadata
-     *
-     * @param ArrayObject $model
-     * @param TokenInterface $token
      */
     public function embedNotifyTokenHash(ArrayObject $model, TokenInterface $token): void
     {
@@ -98,9 +90,6 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
         $this->embedOnModeData($model, $token, $modeDataKey);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request): bool
     {
         return
@@ -109,11 +98,6 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
         ;
     }
 
-    /**
-     * @param ArrayObject $model
-     * @param TokenInterface $token
-     * @param string $modeDataKey
-     */
     public function embedOnModeData(ArrayObject $model, TokenInterface $token, string $modeDataKey): void
     {
         $paymentIntentData = $model->offsetGet($modeDataKey);
@@ -127,11 +111,6 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
         $model[$modeDataKey] = $paymentIntentData;
     }
 
-    /**
-     * @param ArrayObject $model
-     *
-     * @return string
-     */
     protected function detectModeData(ArrayObject $model): string
     {
         if ($model->offsetExists('subscription_data')) {
@@ -145,11 +124,6 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
         return 'payment_intent_data';
     }
 
-    /**
-     * @param Capture $request
-     *
-     * @return TokenInterface
-     */
     private function getRequestToken(Capture $request): TokenInterface
     {
         $token = $request->getToken();

@@ -10,7 +10,6 @@ use FluxSE\PayumStripe\Wrapper\EventWrapperInterface;
 use LogicException;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
-use Payum\Core\Debug\Humanify;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
@@ -19,14 +18,14 @@ use Stripe\Exception\SignatureVerificationException;
 
 class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
 {
-    use GatewayAwareTrait,
-        StripeApiAwareTrait;
+    use GatewayAwareTrait;
+    use StripeApiAwareTrait;
 
     /** @var string[] */
     protected $signatureVerificationErrors = [];
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param ResolveWebhookEvent $request
      *
@@ -55,28 +54,16 @@ class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterfac
              */
             $signatureResults = implode(', ', $this->signatureVerificationErrors);
             $subException = RequestNotSupportedException::create($request);
-            throw new RequestNotSupportedException(
-                sprintf(
-                    'Unable to resolve the webhook event payload with
-                    one of your webhook secret keys ! Signature results : %s',
-                    $signatureResults
-                ),
-                0,
-                $subException
-            );
+            throw new RequestNotSupportedException(sprintf('Unable to resolve the webhook event payload with
+                    one of your webhook secret keys ! Signature results : %s', $signatureResults), 0, $subException);
         }
 
         $request->setEventWrapper($eventWrapper);
     }
 
-    /**
-     * @param GetHttpRequest $httpRequest
-     *
-     * @return string
-     */
     protected function retrieveStripeSignature(GetHttpRequest $httpRequest): string
     {
-        /**
+        /*
          * 1. `GetHttpRequest` has been intercepted by the Symfony bridge action.
          * The `headers` property is normally not available into Payum core `GetHttpRequest`
          * object, but it's existing into the payum Symfony bridge one.
@@ -105,12 +92,6 @@ class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterfac
         throw new LogicException('A Stripe header signature is required !');
     }
 
-    /**
-     * @param string $payload
-     * @param string $sigHeader
-     *
-     * @return EventWrapperInterface|null
-     */
     protected function constructEvent(string $payload, string $sigHeader): ?EventWrapperInterface
     {
         foreach ($this->api->getWebhookSecretKeys() as $webhookSecretKey) {
@@ -137,12 +118,12 @@ class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterfac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($request): bool
     {
         return $request instanceof ResolveWebhookEvent
-            && $request->getTo() === EventWrapperInterface::class
+            && EventWrapperInterface::class === $request->getTo()
             ;
     }
 }

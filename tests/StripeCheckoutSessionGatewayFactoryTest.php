@@ -49,10 +49,10 @@ final class StripeCheckoutSessionGatewayFactoryTest extends TestCase
      */
     public function shouldAddDefaultConfigPassedInConstructorWhileCreatingGatewayConfig()
     {
-        $factory = new StripeCheckoutSessionGatewayFactory(array(
+        $factory = new StripeCheckoutSessionGatewayFactory([
             'foo' => 'fooVal',
             'bar' => 'barVal',
-        ));
+        ]);
 
         $config = $factory->createConfig();
 

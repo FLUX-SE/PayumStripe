@@ -68,9 +68,9 @@ final class ConvertPaymentActionTest extends TestCase
         $payment->setCurrencyCode('USD');
         $payment->setTotalAmount(123);
         $payment->setDescription('the description');
-        $payment->setDetails(array(
+        $payment->setDetails([
             'foo' => 'fooVal',
-        ));
+        ]);
 
         $action = new ConvertPaymentAction();
 

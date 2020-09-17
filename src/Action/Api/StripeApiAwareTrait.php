@@ -21,9 +21,7 @@ trait StripeApiAwareTrait
     }
 
     /**
-     * Use for tests and also if someone need to change the default Keys class
-     *
-     * @param string $apiClass
+     * Use for tests and also if someone need to change the default Keys class.
      */
     public function setApiClass(string $apiClass): void
     {
@@ -31,9 +29,7 @@ trait StripeApiAwareTrait
     }
 
     /**
-     * Use for tests and also if someone need to change the default Keys class
-     *
-     * @return string
+     * Use for tests and also if someone need to change the default Keys class.
      */
     public function getApiClass(): string
     {

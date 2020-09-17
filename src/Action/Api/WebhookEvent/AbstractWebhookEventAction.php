@@ -17,7 +17,7 @@ abstract class AbstractWebhookEventAction implements ActionInterface
     abstract protected function getSupportedEventTypes(): array;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param WebhookEvent $request
      */
@@ -30,11 +30,6 @@ abstract class AbstractWebhookEventAction implements ActionInterface
         ;
     }
 
-    /**
-     * @param WebhookEvent $request
-     *
-     * @return bool
-     */
     protected function supportsTypes(WebhookEvent $request): bool
     {
         $eventWrapper = $request->getEventWrapper();

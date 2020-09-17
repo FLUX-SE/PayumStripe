@@ -14,7 +14,7 @@ final class CreateSessionAction extends AbstractCreateAction
     protected $apiResourceClass = Session::class;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supportAlso(CreateInterface $request): bool
     {

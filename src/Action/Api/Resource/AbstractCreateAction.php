@@ -15,11 +15,11 @@ use Stripe\Stripe;
 
 abstract class AbstractCreateAction implements CreateResourceActionInterface
 {
-    use StripeApiAwareTrait,
-        ResourceAwareActionTrait;
+    use StripeApiAwareTrait;
+    use ResourceAwareActionTrait;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param CreateInterface $request
      *
@@ -37,7 +37,7 @@ abstract class AbstractCreateAction implements CreateResourceActionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @throws ApiErrorException
      */
@@ -45,11 +45,7 @@ abstract class AbstractCreateAction implements CreateResourceActionInterface
     {
         $apiResourceClass = $this->getApiResourceClass();
         if (false === method_exists($apiResourceClass, 'create')) {
-            throw new LogicException(sprintf(
-                'This class "%s" is not an instance of "%s"',
-                (string) $apiResourceClass,
-                Create::class
-            ));
+            throw new LogicException(sprintf('This class "%s" is not an instance of "%s"', (string) $apiResourceClass, Create::class));
         }
 
         Stripe::setApiKey($this->api->getSecretKey());
@@ -65,7 +61,7 @@ abstract class AbstractCreateAction implements CreateResourceActionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param CreateInterface $request
      */
@@ -77,9 +73,6 @@ abstract class AbstractCreateAction implements CreateResourceActionInterface
         ;
     }
 
-    /**
-     * @param CreateInterface $request
-     */
     protected function checkRequest(CreateInterface $request): void
     {
         // Silent is golden

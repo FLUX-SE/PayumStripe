@@ -8,17 +8,12 @@ use Payum\Core\Request\Generic;
 
 abstract class AbstractUpdate extends Generic implements UpdateInterface
 {
-    use OptionsAwareTrait,
-        ResourceAwareTrait;
+    use OptionsAwareTrait;
+    use ResourceAwareTrait;
 
     /** @var array */
     protected $parameters = [];
 
-    /**
-     * @param string $id
-     * @param array $parameters
-     * @param array $options
-     */
     public function __construct(string $id, array $parameters, array $options = [])
     {
         parent::__construct($id);
@@ -27,7 +22,7 @@ abstract class AbstractUpdate extends Generic implements UpdateInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getId(): string
     {
@@ -35,7 +30,7 @@ abstract class AbstractUpdate extends Generic implements UpdateInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setId(string $id): void
     {
@@ -43,8 +38,7 @@ abstract class AbstractUpdate extends Generic implements UpdateInterface
     }
 
     /**
-     *
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getParameters(): array
     {
@@ -52,7 +46,7 @@ abstract class AbstractUpdate extends Generic implements UpdateInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setParameters(array $parameters): void
     {

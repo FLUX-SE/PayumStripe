@@ -14,17 +14,11 @@ final class WebhookEvent extends Generic
         parent::__construct($model);
     }
 
-    /**
-     * @param EventWrapperInterface|null $eventWrapper
-     */
     public function setEventWrapper(?EventWrapperInterface $eventWrapper): void
     {
         parent::setModel($eventWrapper);
     }
 
-    /**
-     * @return EventWrapperInterface|null
-     */
     public function getEventWrapper(): ?EventWrapperInterface
     {
         if ($this->getModel() instanceof EventWrapperInterface) {

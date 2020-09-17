@@ -36,7 +36,7 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
     ];
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param Sync $request
      */
@@ -47,16 +47,12 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
 
         $objectName = (string) $model->offsetGet('object');
         if (empty($objectName)) {
-            throw new LogicException(
-                'The synced object should have an "object" attribute !'
-            );
+            throw new LogicException('The synced object should have an "object" attribute !');
         }
 
         $id = (string) $model->offsetGet('id');
-        if ($id === '') {
-            throw new LogicException(
-                'The synced object should have a retrievable "id" attribute !'
-            );
+        if ('' === $id) {
+            throw new LogicException('The synced object should have a retrievable "id" attribute !');
         }
 
         $this->syncSession($model);
@@ -75,13 +71,10 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         $model->exchangeArray($sessionModeObject->toArray());
     }
 
-    /**
-     * @param ArrayObject $model
-     */
     private function syncSession(ArrayObject $model): void
     {
         $objectName = (string) $model->offsetGet('object');
-        if ($objectName !== Session::OBJECT_NAME) {
+        if (Session::OBJECT_NAME !== $objectName) {
             return;
         }
 
@@ -99,11 +92,6 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         $model->exchangeArray($session->toArray());
     }
 
-    /**
-     * @param ArrayObject $model
-     *
-     * @return AbstractRetrieve|null
-     */
     protected function findRetrievableSessionModeObject(ArrayObject $model): ?AbstractRetrieve
     {
         $objectName = (string) $model->offsetGet('object');
@@ -114,11 +102,6 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         return $this->findSessionModeIdInModeObject($model);
     }
 
-    /**
-     * @param ArrayObject $model
-     *
-     * @return AbstractRetrieve|null
-     */
     private function findSessionModeIdInSession(ArrayObject $model): ?AbstractRetrieve
     {
         foreach ($this->sessionModes as $sessionObject => $retrieveRequest) {
@@ -127,7 +110,7 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
             }
 
             $sessionModeId = $model->offsetGet($sessionObject);
-            if ($sessionModeId === null || $sessionModeId === '') {
+            if (null === $sessionModeId || '' === $sessionModeId) {
                 continue;
             }
 
@@ -137,11 +120,6 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         return null;
     }
 
-    /**
-     * @param ArrayObject $model
-     *
-     * @return AbstractRetrieve|null
-     */
     private function findSessionModeIdInModeObject(ArrayObject $model): ?AbstractRetrieve
     {
         $objectName = (string) $model->offsetGet('object');
@@ -155,7 +133,7 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
             }
 
             $sessionModeId = $model->offsetGet('id');
-            if ($sessionModeId === null || $sessionModeId === '') {
+            if (null === $sessionModeId || '' === $sessionModeId) {
                 return null;
             }
 
@@ -166,7 +144,7 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param Sync $request
      */

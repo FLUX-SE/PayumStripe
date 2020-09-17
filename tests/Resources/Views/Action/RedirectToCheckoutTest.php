@@ -18,21 +18,16 @@ use Twig\Loader\FilesystemLoader;
 final class RedirectToCheckoutTest extends TestCase
 {
     /**
-     * @param string $class
-     *
-     * @return string
-     *
      * @throws ReflectionException
      */
     protected function guessViewsPath(string $class): string
     {
         $rc = new ReflectionClass($class);
-        return dirname($rc->getFileName()) . '/Resources/views';
+
+        return dirname($rc->getFileName()).'/Resources/views';
     }
 
     /**
-     * @return Environment
-     *
      * @throws ReflectionException
      * @throws LoaderError
      */
@@ -47,6 +42,7 @@ final class RedirectToCheckoutTest extends TestCase
             $this->guessViewsPath(StripeCheckoutSessionGatewayFactory::class),
             'FluxSEPayumStripeCheckoutSession'
         );
+
         return new Environment($twigLoader);
     }
 
@@ -64,7 +60,7 @@ final class RedirectToCheckoutTest extends TestCase
 
         $result = $twig->render('@FluxSEPayumStripeCheckoutSession/Action/redirectToCheckout.html.twig', [
             'model' => [
-                'id' => 1
+                'id' => 1,
             ],
             'publishable_key' => 'theKey',
         ]);

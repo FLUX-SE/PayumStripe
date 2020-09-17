@@ -13,7 +13,7 @@ final class RetrieveSessionAction extends AbstractRetrieveAction
     protected $apiResourceClass = Session::class;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supportAlso($request): bool
     {

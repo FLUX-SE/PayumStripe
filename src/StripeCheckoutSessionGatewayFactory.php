@@ -23,8 +23,6 @@ use FluxSE\PayumStripe\Action\ConvertPaymentAction;
 use FluxSE\PayumStripe\Action\NotifyAction;
 use FluxSE\PayumStripe\Action\StatusAction;
 use FluxSE\PayumStripe\Action\SyncAction;
-use FluxSE\PayumStripe\Action\SyncSetupIntentAction;
-use FluxSE\PayumStripe\Action\SyncSubscriptionAction;
 use FluxSE\PayumStripe\Api\Keys;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayFactory;
@@ -32,7 +30,7 @@ use Payum\Core\GatewayFactory;
 class StripeCheckoutSessionGatewayFactory extends GatewayFactory
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function populateConfig(ArrayObject $config): void
     {
@@ -99,7 +97,7 @@ class StripeCheckoutSessionGatewayFactory extends GatewayFactory
         }
 
         $config->offsetSet('payum.paths', array_replace([
-            'FluxSEPayumStripeCheckoutSession' => __DIR__ . '/Resources/views',
+            'FluxSEPayumStripeCheckoutSession' => __DIR__.'/Resources/views',
         ], $config['payum.paths'] ?: []));
     }
 }

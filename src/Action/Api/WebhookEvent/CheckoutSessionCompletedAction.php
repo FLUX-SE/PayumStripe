@@ -9,12 +9,12 @@ use Stripe\Event;
 final class CheckoutSessionCompletedAction extends AbstractPaymentAction
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getSupportedEventTypes(): array
     {
         return [
-            Event::CHECKOUT_SESSION_COMPLETED
+            Event::CHECKOUT_SESSION_COMPLETED,
         ];
     }
 }

@@ -14,7 +14,7 @@ class CreateSubscriptionAction extends AbstractCreateAction
     protected $apiResourceClass = Subscription::class;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supportAlso(CreateInterface $request): bool
     {

@@ -15,11 +15,11 @@ use Stripe\Stripe;
 
 abstract class AbstractRetrieveAction implements RetrieveActionInterface
 {
-    use StripeApiAwareTrait,
-        ResourceAwareActionTrait;
+    use StripeApiAwareTrait;
+    use ResourceAwareActionTrait;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param RetrieveInterface $request
      *
@@ -37,7 +37,7 @@ abstract class AbstractRetrieveAction implements RetrieveActionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @throws ApiErrorException
      */
@@ -45,11 +45,7 @@ abstract class AbstractRetrieveAction implements RetrieveActionInterface
     {
         $apiResourceClass = $this->getApiResourceClass();
         if (false === method_exists($apiResourceClass, 'retrieve')) {
-            throw new LogicException(sprintf(
-                'This class "%s" is not an instance of "%s"',
-                (string) $apiResourceClass,
-                Retrieve::class
-            ));
+            throw new LogicException(sprintf('This class "%s" is not an instance of "%s"', (string) $apiResourceClass, Retrieve::class));
         }
 
         Stripe::setApiKey($this->api->getSecretKey());
@@ -65,7 +61,7 @@ abstract class AbstractRetrieveAction implements RetrieveActionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param RetrieveInterface $request
      */
@@ -77,9 +73,6 @@ abstract class AbstractRetrieveAction implements RetrieveActionInterface
         ;
     }
 
-    /**
-     * @param RetrieveInterface $request
-     */
     protected function checkRequest(RetrieveInterface $request): void
     {
         // Silent is golden

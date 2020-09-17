@@ -13,7 +13,7 @@ final class RetrieveSubscriptionAction extends AbstractRetrieveAction
     protected $apiResourceClass = Subscription::class;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supportAlso($request): bool
     {

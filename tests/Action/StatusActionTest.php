@@ -32,7 +32,7 @@ final class StatusActionTest extends TestCase
         $action = new StatusAction();
 
         $model = [];
-        
+
         $status = new GetHumanStatus($model);
         $action->execute($status);
 

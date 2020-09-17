@@ -13,7 +13,7 @@ final class RetrieveSetupIntentAction extends AbstractRetrieveAction
     protected $apiResourceClass = SetupIntent::class;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supportAlso($request): bool
     {

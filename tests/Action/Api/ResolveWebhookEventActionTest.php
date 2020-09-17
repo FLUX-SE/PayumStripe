@@ -20,8 +20,8 @@ use Tests\FluxSE\PayumStripe\Action\GatewayAwareTestTrait;
 
 final class ResolveWebhookEventActionTest extends TestCase
 {
-    use ApiAwareActionTestTrait,
-        GatewayAwareTestTrait;
+    use ApiAwareActionTestTrait;
+    use GatewayAwareTestTrait;
 
     /**
      * @test
@@ -80,7 +80,7 @@ final class ResolveWebhookEventActionTest extends TestCase
             ->willReturnOnConsecutiveCalls(
                 $this->returnCallback(function (GetHttpRequest $request) {
                     $request->headers = [
-                        'stripe-signature' => ['stripeSignature']
+                        'stripe-signature' => ['stripeSignature'],
                     ];
                     $request->content = 'stripeContent';
                 }),

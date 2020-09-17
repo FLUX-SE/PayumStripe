@@ -15,11 +15,6 @@ class ConstructEvent extends Generic
     /** @var string */
     private $sigHeader;
 
-    /**
-     * @param string $payload
-     * @param string $sigHeader
-     * @param string $webhookSecretKey
-     */
     public function __construct(
         string $payload,
         string $sigHeader,
@@ -30,9 +25,6 @@ class ConstructEvent extends Generic
         $this->webhookSecretKey = $webhookSecretKey;
     }
 
-    /**
-     * @return string
-     */
     public function getPayload(): string
     {
         if (is_string($this->getModel())) {
@@ -47,41 +39,26 @@ class ConstructEvent extends Generic
         $this->setModel($payload);
     }
 
-    /**
-     * @param string $webhookSecretKey
-     */
     public function setWebhookSecretKey(string $webhookSecretKey): void
     {
         $this->webhookSecretKey = $webhookSecretKey;
     }
 
-    /**
-     * @return string
-     */
     public function getWebhookSecretKey(): string
     {
         return $this->webhookSecretKey;
     }
 
-    /**
-     * @return string
-     */
     public function getSigHeader(): string
     {
         return $this->sigHeader;
     }
 
-    /**
-     * @param EventWrapperInterface|null $eventWrapper
-     */
     public function setEventWrapper(?EventWrapperInterface $eventWrapper): void
     {
         parent::setModel($eventWrapper);
     }
 
-    /**
-     * @return EventWrapperInterface|null
-     */
     public function getEventWrapper(): ?EventWrapperInterface
     {
         if ($this->getModel() instanceof EventWrapperInterface) {

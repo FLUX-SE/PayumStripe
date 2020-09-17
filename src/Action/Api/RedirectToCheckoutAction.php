@@ -25,9 +25,6 @@ final class RedirectToCheckoutAction implements ActionInterface, ApiAwareInterfa
      */
     protected $templateName;
 
-    /**
-     * @param string $templateName
-     */
     public function __construct(string $templateName)
     {
         $this->templateName = $templateName;
@@ -35,7 +32,7 @@ final class RedirectToCheckoutAction implements ActionInterface, ApiAwareInterfa
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param RedirectToCheckout $request
      */
@@ -54,7 +51,7 @@ final class RedirectToCheckoutAction implements ActionInterface, ApiAwareInterfa
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($request): bool
     {

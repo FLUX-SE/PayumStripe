@@ -19,8 +19,6 @@ trait ApiAwareActionTestTrait
     abstract protected function createMock(string $originalClassName): MockObject;
 
     /**
-     * @param bool $shouldGetSecretKey
-     *
      * @return MockObject&KeysInterface
      */
     protected function createApiMock(bool $shouldGetSecretKey = true): KeysInterface

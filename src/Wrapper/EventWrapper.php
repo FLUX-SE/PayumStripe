@@ -13,10 +13,6 @@ class EventWrapper implements EventWrapperInterface
     /** @var Event */
     protected $event;
 
-    /**
-     * @param string $usedWebhookSecretKey
-     * @param Event $event
-     */
     public function __construct(string $usedWebhookSecretKey, Event $event)
     {
         $this->usedWebhookSecretKey = $usedWebhookSecretKey;
@@ -24,7 +20,7 @@ class EventWrapper implements EventWrapperInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getUsedWebhookSecretKey(): string
     {
@@ -32,7 +28,7 @@ class EventWrapper implements EventWrapperInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getEvent(): Event
     {

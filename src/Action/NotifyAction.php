@@ -18,11 +18,6 @@ final class NotifyAction implements ActionInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param Notify $request
-     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -35,7 +30,7 @@ final class NotifyAction implements ActionInterface, GatewayAwareInterface
     }
 
     /**
-     * All webhooks will be handle by this method
+     * All webhooks will be handle by this method.
      */
     private function executeWebhook(): void
     {
@@ -50,9 +45,6 @@ final class NotifyAction implements ActionInterface, GatewayAwareInterface
         $this->gateway->execute(new WebhookEvent($eventWrapper));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function supports($request): bool
     {
         return $request instanceof Notify;

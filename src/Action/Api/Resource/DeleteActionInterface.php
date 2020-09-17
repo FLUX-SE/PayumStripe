@@ -9,17 +9,7 @@ use Stripe\ApiResource;
 
 interface DeleteActionInterface extends ResourceActionInterface
 {
-    /**
-     * @param DeleteInterface $request
-     *
-     * @return ApiResource
-     */
     public function deleteApiResource(DeleteInterface $request): ApiResource;
 
-    /**
-     * @param DeleteInterface $request
-     *
-     * @return bool
-     */
     public function supportAlso(DeleteInterface $request): bool;
 }

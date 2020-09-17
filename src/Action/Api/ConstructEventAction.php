@@ -14,7 +14,7 @@ use Stripe\Webhook;
 class ConstructEventAction implements ActionInterface
 {
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      *
      * @param ConstructEvent $request
      *
@@ -38,7 +38,7 @@ class ConstructEventAction implements ActionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($request): bool
     {

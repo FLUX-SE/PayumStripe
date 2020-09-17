@@ -14,8 +14,6 @@ final class Keys implements KeysInterface
     private $secret;
 
     /**
-     * @param string $publishable
-     * @param string $secret
      * @param string[] $webhookSecretKeys
      */
     public function __construct(
@@ -29,7 +27,7 @@ final class Keys implements KeysInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getSecretKey(): string
     {
@@ -37,7 +35,7 @@ final class Keys implements KeysInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getPublishableKey(): string
     {
@@ -45,7 +43,7 @@ final class Keys implements KeysInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getWebhookSecretKeys(): array
     {
@@ -53,7 +51,7 @@ final class Keys implements KeysInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function hasWebhookSecretKey(string $webhookSecretKey): bool
     {
@@ -61,7 +59,7 @@ final class Keys implements KeysInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function addWebhookSecretKey(string $webhookSecretKey): void
     {
@@ -71,7 +69,7 @@ final class Keys implements KeysInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setWebhookSecretKeys(array $webhookSecretKeys): void
     {
