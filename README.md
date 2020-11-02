@@ -2,7 +2,7 @@
 [![Software License][ico-license]](LICENSE)
 [![Build Status][ico-travis]][link-travis]
 [![Quality Score][ico-code-quality]][link-code-quality]
-[![codecov](ico-codecov)][link-codecov]
+[![codecov][ico-codecov]][link-codecov]
 
 ## Payum Stripe gateways
 
