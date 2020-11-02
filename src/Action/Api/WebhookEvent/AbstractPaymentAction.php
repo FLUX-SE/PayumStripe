@@ -21,19 +21,14 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
 
     /**
      * {@inheritdoc}
-     *
-     * @param WebhookEvent $request
      */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
+        /** @var WebhookEvent $request */
         $eventWrapper = $request->getEventWrapper();
-        // This should never be the case but phpstan don't know
-        // about the tests made in the `supports()` method
-        if (null === $eventWrapper) {
-            return;
-        }
+
         $event = $eventWrapper->getEvent();
 
         /** @var Session|PaymentIntent|SetupIntent $sessionModeObject */

@@ -9,17 +9,11 @@ trait ResourceAwareActionTrait
     /** @var string */
     protected $apiResourceClass = '';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getApiResourceClass(): string
     {
         return $this->apiResourceClass;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setApiResourceClass(string $apiResourceClass): void
     {
         $this->apiResourceClass = $apiResourceClass;

@@ -22,8 +22,6 @@ abstract class AbstractDeleteAction implements DeleteActionInterface
     /**
      * {@inheritdoc}
      *
-     * @param DeleteInterface $request
-     *
      * @throws ApiErrorException
      */
     public function execute($request): void
@@ -37,16 +35,23 @@ abstract class AbstractDeleteAction implements DeleteActionInterface
         $request->setApiResource($apiResource);
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws ApiErrorException
-     */
     public function deleteApiResource(DeleteInterface $request): ApiResource
     {
         $apiResourceClass = $this->getApiResourceClass();
         if (false === method_exists($apiResourceClass, 'retrieve')) {
-            throw new LogicException(sprintf('This class "%s" is not an instance of "%s"', (string) $apiResourceClass, Retrieve::class));
+            throw new LogicException(sprintf(
+                'This class "%s" is not an instance of "%s" !',
+                $apiResourceClass,
+                Retrieve::class
+            ));
+        }
+
+        if (false === method_exists($apiResourceClass, 'delete')) {
+            throw new LogicException(sprintf(
+                'This class "%s" is not an instance of "%s" !',
+                $apiResourceClass,
+                Delete::class
+            ));
         }
 
         Stripe::setApiKey($this->api->getSecretKey());
@@ -57,20 +62,12 @@ abstract class AbstractDeleteAction implements DeleteActionInterface
             $request->getOptions()
         );
 
-        if (false === $apiResource instanceof Delete) {
-            throw new LogicException(sprintf('This class "%s" is not an instance of "%s"', $apiResourceClass, Delete::class));
-        }
-
-        /* @var ApiResource&Delete $apiResource */
-        $apiResource->delete();
-
-        return $apiResource;
+        /** @see Delete::delete() */
+        return $apiResource->delete();
     }
 
     /**
      * {@inheritdoc}
-     *
-     * @param DeleteInterface $request
      */
     public function supports($request): bool
     {

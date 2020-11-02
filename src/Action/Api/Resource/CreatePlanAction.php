@@ -10,12 +10,8 @@ use Stripe\Plan;
 
 class CreatePlanAction extends AbstractCreateAction
 {
-    /** @var string|Plan */
     protected $apiResourceClass = Plan::class;
 
-    /**
-     * {@inheritdoc}
-     */
     public function supportAlso(CreateInterface $request): bool
     {
         return $request instanceof CreatePlan;

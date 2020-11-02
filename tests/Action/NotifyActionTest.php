@@ -6,6 +6,7 @@ use FluxSE\PayumStripe\Action\NotifyAction;
 use FluxSE\PayumStripe\Request\Api\ResolveWebhookEvent;
 use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use FluxSE\PayumStripe\Wrapper\EventWrapper;
+use LogicException;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayAwareInterface;
@@ -29,6 +30,33 @@ final class NotifyActionTest extends TestCase
         $this->assertInstanceOf(GatewayAwareInterface::class, $action);
         $this->assertInstanceOf(ActionInterface::class, $action);
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExceptionWhenResolveWebhookEventReturnANullEventWrapper()
+    {
+        $gatewayMock = $this->createGatewayMock();
+        $gatewayMock
+            ->expects($this->once())
+            ->method('execute')
+            ->withConsecutive(
+                [$this->isInstanceOf(ResolveWebhookEvent::class)]
+            )
+            ->willReturnOnConsecutiveCalls(
+                $this->returnCallback(function (ResolveWebhookEvent $request) {
+                    $request->setEventWrapper(null);
+                })
+            )
+        ;
+
+        $action = new NotifyAction();
+        $action->setGateway($gatewayMock);
+
+        $request = new Notify(null);
+        $this->expectException(LogicException::class);
+        $action->execute($request);
     }
 
     /**

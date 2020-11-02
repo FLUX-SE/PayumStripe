@@ -20,9 +20,7 @@ final class RedirectToCheckoutAction implements ActionInterface, ApiAwareInterfa
         StripeApiAwareTrait::__construct as private __stripeApiAwareTraitConstruct;
     }
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $templateName;
 
     public function __construct(string $templateName)
@@ -33,8 +31,6 @@ final class RedirectToCheckoutAction implements ActionInterface, ApiAwareInterfa
 
     /**
      * {@inheritdoc}
-     *
-     * @param RedirectToCheckout $request
      */
     public function execute($request): void
     {

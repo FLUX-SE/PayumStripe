@@ -8,9 +8,6 @@ use Stripe\Event;
 
 final class SetupIntentCanceledAction extends AbstractPaymentAction
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function getSupportedEventTypes(): array
     {
         return [

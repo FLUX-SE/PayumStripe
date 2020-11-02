@@ -10,12 +10,8 @@ use Stripe\PaymentIntent;
 
 final class RetrievePaymentIntentAction extends AbstractRetrieveAction
 {
-    /** @var string|PaymentIntent */
     protected $apiResourceClass = PaymentIntent::class;
 
-    /**
-     * {@inheritdoc}
-     */
     public function supportAlso(RetrieveInterface $request): bool
     {
         return $request instanceof RetrievePaymentIntent;

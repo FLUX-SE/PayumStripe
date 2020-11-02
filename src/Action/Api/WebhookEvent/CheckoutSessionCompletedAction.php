@@ -8,9 +8,6 @@ use Stripe\Event;
 
 final class CheckoutSessionCompletedAction extends AbstractPaymentAction
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function getSupportedEventTypes(): array
     {
         return [

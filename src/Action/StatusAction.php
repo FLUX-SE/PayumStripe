@@ -29,6 +29,9 @@ class StatusAction implements ActionInterface
             return;
         }
 
+        // PaymentIntent, Subscription, SetupIntent are the only object name allowed
+        // if it's a Session this means the process has been stop somewhere and the
+        // payment has to be retried
         if (Session::OBJECT_NAME === $model['object']) {
             $request->markFailed();
 

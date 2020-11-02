@@ -27,8 +27,6 @@ class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterfac
     /**
      * {@inheritdoc}
      *
-     * @param ResolveWebhookEvent $request
-     *
      * @throws LogicException
      */
     public function execute($request): void
@@ -117,9 +115,6 @@ class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterfac
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request): bool
     {
         return $request instanceof ResolveWebhookEvent

@@ -16,8 +16,6 @@ class ConstructEventAction implements ActionInterface
     /**
      * {@inheritdoc}
      *
-     * @param ConstructEvent $request
-     *
      * @throws SignatureVerificationException
      */
     public function execute($request): void

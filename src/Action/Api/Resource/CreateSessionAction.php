@@ -10,12 +10,8 @@ use Stripe\Checkout\Session;
 
 final class CreateSessionAction extends AbstractCreateAction
 {
-    /** @var string|Session */
     protected $apiResourceClass = Session::class;
 
-    /**
-     * {@inheritdoc}
-     */
     public function supportAlso(CreateInterface $request): bool
     {
         return $request instanceof CreateSession;

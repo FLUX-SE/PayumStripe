@@ -10,12 +10,8 @@ use Stripe\Subscription;
 
 class CreateSubscriptionAction extends AbstractCreateAction
 {
-    /** @var string|Subscription */
     protected $apiResourceClass = Subscription::class;
 
-    /**
-     * {@inheritdoc}
-     */
     public function supportAlso(CreateInterface $request): bool
     {
         return $request instanceof CreateSubscription;

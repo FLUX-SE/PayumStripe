@@ -6,6 +6,7 @@ use ArrayObject;
 use FluxSE\PayumStripe\Action\CaptureAction;
 use FluxSE\PayumStripe\Request\Api\RedirectToCheckout;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateSession;
+use LogicException;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayAwareInterface;
@@ -60,6 +61,19 @@ final class CaptureActionTest extends TestCase
         $action = new CaptureAction();
         $action->setGateway($gatewayMock);
 
+        $action->execute(new Capture($model));
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExceptionWhenThereIsNoTokenAvailable()
+    {
+        $model = [];
+
+        $action = new CaptureAction();
+
+        $this->expectException(LogicException::class);
         $action->execute(new Capture($model));
     }
 

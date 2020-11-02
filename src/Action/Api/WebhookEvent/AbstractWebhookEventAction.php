@@ -7,7 +7,6 @@ namespace FluxSE\PayumStripe\Action\Api\WebhookEvent;
 use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use FluxSE\PayumStripe\Wrapper\EventWrapperInterface;
 use Payum\Core\Action\ActionInterface;
-use Stripe\Event;
 
 abstract class AbstractWebhookEventAction implements ActionInterface
 {
@@ -16,16 +15,9 @@ abstract class AbstractWebhookEventAction implements ActionInterface
      */
     abstract protected function getSupportedEventTypes(): array;
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param WebhookEvent $request
-     */
     public function supports($request): bool
     {
         return $request instanceof WebhookEvent
-            && $request->getEventWrapper() instanceof EventWrapperInterface
-            && $request->getEventWrapper()->getEvent() instanceof Event
             && $this->supportsTypes($request)
         ;
     }
@@ -34,7 +26,7 @@ abstract class AbstractWebhookEventAction implements ActionInterface
     {
         $eventWrapper = $request->getEventWrapper();
 
-        if (null === $eventWrapper) {
+        if (false === $eventWrapper instanceof EventWrapperInterface) {
             return false;
         }
 
