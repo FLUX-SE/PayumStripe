@@ -29,11 +29,7 @@ final class CancelSubscriptionAction extends AbstractDeleteAction
     {
         $apiResourceClass = $this->getApiResourceClass();
         if (false === method_exists($apiResourceClass, 'retrieve')) {
-            throw new LogicException(sprintf(
-                'This class "%s" is not an instance of "%s"',
-                (string) $apiResourceClass,
-                Retrieve::class
-            ));
+            throw new LogicException(sprintf('This class "%s" is not an instance of "%s"', (string) $apiResourceClass, Retrieve::class));
         }
 
         Stripe::setApiKey($this->api->getSecretKey());
@@ -45,11 +41,7 @@ final class CancelSubscriptionAction extends AbstractDeleteAction
         );
 
         if (false === $apiResource instanceof Subscription) {
-            throw new LogicException(sprintf(
-                'This class "%s" is not an instance of "%s"',
-                $apiResourceClass,
-                Subscription::class
-            ));
+            throw new LogicException(sprintf('This class "%s" is not an instance of "%s"', $apiResourceClass, Subscription::class));
         }
 
         $apiResource->cancel();

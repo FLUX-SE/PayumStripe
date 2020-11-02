@@ -17,4 +17,3 @@ final class RetrieveChargeAction extends AbstractRetrieveAction
         return $request instanceof RetrieveCharge;
     }
 }
-

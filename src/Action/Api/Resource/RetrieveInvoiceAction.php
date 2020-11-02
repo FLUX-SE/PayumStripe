@@ -17,4 +17,3 @@ final class RetrieveInvoiceAction extends AbstractRetrieveAction
         return $request instanceof RetrieveInvoice;
     }
 }
-

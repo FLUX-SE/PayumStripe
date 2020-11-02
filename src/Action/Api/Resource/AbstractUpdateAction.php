@@ -33,16 +33,12 @@ abstract class AbstractUpdateAction implements UpdateResourceActionInterface
     {
         $apiResourceClass = $this->getApiResourceClass();
         if (false === method_exists($apiResourceClass, 'update')) {
-            throw new LogicException(sprintf(
-                'This class "%s" is not an instance of "%s" !',
-                $apiResourceClass,
-                Update::class
-            ));
+            throw new LogicException(sprintf('This class "%s" is not an instance of "%s" !', $apiResourceClass, Update::class));
         }
 
         Stripe::setApiKey($this->api->getSecretKey());
 
-        /** @see Update::update() */
+        /* @see Update::update() */
         return $apiResourceClass::update(
             $request->getId(),
             $request->getParameters(),

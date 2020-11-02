@@ -35,11 +35,7 @@ abstract class AbstractAllAction implements AllResourceActionInterface
     {
         $apiResourceClass = $this->getApiResourceClass();
         if (false === method_exists($apiResourceClass, 'all')) {
-            throw new LogicException(sprintf(
-                'This class "%s" is not an instance of "%s" !',
-                $apiResourceClass,
-                All::class
-            ));
+            throw new LogicException(sprintf('This class "%s" is not an instance of "%s" !', $apiResourceClass, All::class));
         }
 
         Stripe::setApiKey($this->api->getSecretKey());

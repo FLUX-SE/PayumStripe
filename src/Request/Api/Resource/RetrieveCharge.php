@@ -6,5 +6,4 @@ namespace FluxSE\PayumStripe\Request\Api\Resource;
 
 final class RetrieveCharge extends AbstractRetrieve
 {
-
 }

@@ -30,16 +30,12 @@ abstract class AbstractRetrieveAction implements RetrieveActionInterface
     {
         $apiResourceClass = $this->getApiResourceClass();
         if (false === method_exists($apiResourceClass, 'retrieve')) {
-            throw new LogicException(sprintf(
-                'This class "%s" is not an instance of "%s" !',
-                $apiResourceClass,
-                Retrieve::class
-            ));
+            throw new LogicException(sprintf('This class "%s" is not an instance of "%s" !', $apiResourceClass, Retrieve::class));
         }
 
         Stripe::setApiKey($this->api->getSecretKey());
 
-        /** @see Retrieve::retrieve() */
+        /* @see Retrieve::retrieve() */
         return $apiResourceClass::retrieve(
             $request->getId(),
             $request->getOptions()

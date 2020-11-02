@@ -39,19 +39,11 @@ abstract class AbstractDeleteAction implements DeleteActionInterface
     {
         $apiResourceClass = $this->getApiResourceClass();
         if (false === method_exists($apiResourceClass, 'retrieve')) {
-            throw new LogicException(sprintf(
-                'This class "%s" is not an instance of "%s" !',
-                $apiResourceClass,
-                Retrieve::class
-            ));
+            throw new LogicException(sprintf('This class "%s" is not an instance of "%s" !', $apiResourceClass, Retrieve::class));
         }
 
         if (false === method_exists($apiResourceClass, 'delete')) {
-            throw new LogicException(sprintf(
-                'This class "%s" is not an instance of "%s" !',
-                $apiResourceClass,
-                Delete::class
-            ));
+            throw new LogicException(sprintf('This class "%s" is not an instance of "%s" !', $apiResourceClass, Delete::class));
         }
 
         Stripe::setApiKey($this->api->getSecretKey());
@@ -62,7 +54,7 @@ abstract class AbstractDeleteAction implements DeleteActionInterface
             $request->getOptions()
         );
 
-        /** @see Delete::delete() */
+        /* @see Delete::delete() */
         return $apiResource->delete();
     }
 

@@ -33,16 +33,12 @@ abstract class AbstractCreateAction implements CreateResourceActionInterface
     {
         $apiResourceClass = $this->getApiResourceClass();
         if (false === method_exists($apiResourceClass, 'create')) {
-            throw new LogicException(sprintf(
-                'This class "%s" is not an instance of "%s" !',
-                $apiResourceClass,
-                Create::class
-            ));
+            throw new LogicException(sprintf('This class "%s" is not an instance of "%s" !', $apiResourceClass, Create::class));
         }
 
         Stripe::setApiKey($this->api->getSecretKey());
 
-        /** @see Create::create() */
+        /* @see Create::create() */
         return $apiResourceClass::create(
             $request->getParameters(),
             $request->getOptions()
