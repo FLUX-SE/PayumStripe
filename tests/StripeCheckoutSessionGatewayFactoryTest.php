@@ -138,4 +138,23 @@ final class StripeCheckoutSessionGatewayFactoryTest extends TestCase
         $this->assertStringEndsWith('Resources/views', $config['payum.paths']['FluxSEPayumStripeCheckoutSession']);
         $this->assertTrue(file_exists($config['payum.paths']['FluxSEPayumStripeCheckoutSession']));
     }
+
+    /** @test */
+    public function shouldAcceptDefaultOptions()
+    {
+        $defaults = [
+            'publishable_key' => '123456',
+            'secret_key' => '123456',
+            'webhook_secret_keys' => [
+                '123456',
+            ],
+        ];
+        $factory = new StripeCheckoutSessionGatewayFactory($defaults);
+
+        $config = $factory->createConfig();
+
+        $this->assertEquals($defaults['publishable_key'], $config['publishable_key']);
+        $this->assertEquals($defaults['secret_key'], $config['secret_key']);
+        $this->assertEquals($defaults['webhook_secret_keys'], $config['webhook_secret_keys']);
+    }
 }

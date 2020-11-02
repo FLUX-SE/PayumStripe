@@ -8,6 +8,7 @@ use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Request\GetHumanStatus;
 use PHPUnit\Framework\TestCase;
+use Stripe\Checkout\Session;
 use Stripe\Refund;
 
 final class StatusActionTest extends TestCase
@@ -22,6 +23,23 @@ final class StatusActionTest extends TestCase
         $this->assertInstanceOf(ActionInterface::class, $action);
         $this->assertNotInstanceOf(GatewayInterface::class, $action);
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldMarkFailedIfObjectIsASession()
+    {
+        $action = new StatusAction();
+
+        $model = [
+            'object' => Session::OBJECT_NAME,
+        ];
+
+        $status = new GetHumanStatus($model);
+        $action->execute($status);
+
+        $this->assertTrue($status->isFailed());
     }
 
     /**
@@ -94,6 +112,26 @@ final class StatusActionTest extends TestCase
 
         $this->assertFalse($status->isRefunded());
         $this->assertTrue($status->isNew());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldMarkUnknownIfItsNotARefundWithUnknownStatus()
+    {
+        $action = new StatusAction();
+
+        $model = [
+            'object' => Refund::OBJECT_NAME,
+            'status' => 'test',
+        ];
+
+        $status = new GetHumanStatus($model);
+        $status->markPending();
+
+        $action->execute($status);
+
+        $this->assertTrue($status->isUnknown());
     }
 
     /**

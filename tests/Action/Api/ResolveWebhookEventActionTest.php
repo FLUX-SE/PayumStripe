@@ -16,6 +16,7 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\Request\GetHttpRequest;
 use PHPUnit\Framework\TestCase;
 use Stripe\Event;
+use Stripe\Exception\SignatureVerificationException;
 use Tests\FluxSE\PayumStripe\Action\GatewayAwareTestTrait;
 
 final class ResolveWebhookEventActionTest extends TestCase
@@ -59,6 +60,48 @@ final class ResolveWebhookEventActionTest extends TestCase
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage('A Stripe header signature is required !');
 
+        $action->execute($request);
+    }
+
+    /**
+     * @test
+     */
+    public function shouldThrowExceptionWhenSignatureFailed()
+    {
+        $action = new ResolveWebhookEventAction();
+
+        $gatewayMock = $this->createGatewayMock();
+        $gatewayMock
+            ->expects($this->exactly(2))
+            ->method('execute')
+            ->withConsecutive(
+                [$this->isInstanceOf(GetHttpRequest::class)],
+                [$this->isInstanceOf(ConstructEvent::class)]
+            )
+            ->willReturnOnConsecutiveCalls(
+                $this->returnCallback(function (GetHttpRequest $request) {
+                    $request->headers = [
+                        'stripe-signature' => ['stripeSignature'],
+                    ];
+                    $request->content = 'stripeContent';
+                }),
+                $this->throwException(SignatureVerificationException::factory(''))
+            );
+
+        $apiMock = $this->createApiMock(false);
+        $apiMock
+            ->expects($this->once())
+            ->method('getWebhookSecretKeys')
+            ->willReturn(['whsec_test'])
+        ;
+
+        $action->setApiClass(KeysInterface::class);
+        $action->setGateway($gatewayMock);
+        $action->setApi($apiMock);
+
+        $request = new ResolveWebhookEvent();
+
+        $this->expectException(RequestNotSupportedException::class);
         $action->execute($request);
     }
 

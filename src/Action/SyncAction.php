@@ -35,11 +35,6 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         SetupIntent::OBJECT_NAME => RetrieveSetupIntent::class,
     ];
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param Sync $request
-     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -61,7 +56,7 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
 
         if (null === $retrieveSessionModeObject) {
             // Case where Session mode is "subscription" and the customer
-            // is canceling his payment
+            // is canceling it payment
             return;
         }
 
@@ -128,14 +123,7 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
                 continue;
             }
 
-            if (false === $model->offsetExists('id')) {
-                return null;
-            }
-
             $sessionModeId = $model->offsetGet('id');
-            if (null === $sessionModeId || '' === $sessionModeId) {
-                return null;
-            }
 
             return new $retrieveRequest((string) $sessionModeId);
         }
@@ -143,11 +131,6 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param Sync $request
-     */
     public function supports($request): bool
     {
         return

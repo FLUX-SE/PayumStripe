@@ -4,6 +4,7 @@ namespace Tests\FluxSE\PayumStripe\Request\Api;
 
 use FluxSE\PayumStripe\Request\Api\ConstructEvent;
 use FluxSE\PayumStripe\Wrapper\EventWrapper;
+use LogicException;
 use Payum\Core\Request\Generic;
 use PHPUnit\Framework\TestCase;
 use Stripe\Event;
@@ -59,5 +60,20 @@ final class ConstructEventTest extends TestCase
         $constructEvent = new ConstructEvent('', '', '');
 
         $this->assertEquals(null, $constructEvent->getEventWrapper());
+    }
+
+    public function testPayloadIsNotAString()
+    {
+        $constructEvent = new ConstructEvent('', '', '');
+        $constructEvent->setModel(null);
+        $this->expectException(LogicException::class);
+        $constructEvent->getPayload();
+    }
+
+    public function testChangePayload()
+    {
+        $constructEvent = new ConstructEvent('', '', '');
+        $constructEvent->setPayload('payload_test');
+        $this->assertEquals('payload_test', $constructEvent->getPayload());
     }
 }

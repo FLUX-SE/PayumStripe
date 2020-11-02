@@ -14,7 +14,7 @@ final class WebhookEvent extends Generic
         parent::__construct($model);
     }
 
-    public function setEventWrapper(?EventWrapperInterface $eventWrapper): void
+    public function setEventWrapper(EventWrapperInterface $eventWrapper): void
     {
         parent::setModel($eventWrapper);
     }
