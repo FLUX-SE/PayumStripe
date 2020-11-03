@@ -29,7 +29,7 @@ trait ApiAwareActionTestTrait
             $apiMock
                 ->expects($this->atLeastOnce())
                 ->method('getSecretKey')
-                ->willReturn('')
+                ->willReturn('sk_test_123')
             ;
         }
 

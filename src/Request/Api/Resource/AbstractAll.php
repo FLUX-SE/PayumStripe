@@ -50,7 +50,7 @@ abstract class AbstractAll extends Generic implements AllInterface
     public function getApiResources(): Collection
     {
         if (null === $this->apiResources) {
-            throw new LogicException('The API Resources is null !'.'You should send this request to `Payum->execute()` before using this getter.');
+            throw new LogicException('The API Resources is null ! You should send this request to `Payum->execute()` before using this getter.');
         }
 
         return $this->apiResources;

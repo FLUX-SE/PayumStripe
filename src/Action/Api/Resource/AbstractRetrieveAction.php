@@ -12,7 +12,7 @@ use Stripe\ApiOperations\Retrieve;
 use Stripe\ApiResource;
 use Stripe\Stripe;
 
-abstract class AbstractRetrieveAction implements RetrieveActionInterface
+abstract class AbstractRetrieveAction implements RetrieveResourceActionInterface
 {
     use StripeApiAwareTrait;
     use ResourceAwareActionTrait;

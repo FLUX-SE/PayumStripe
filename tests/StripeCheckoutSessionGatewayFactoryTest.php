@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\FluxSE\PayumStripe;
 
 use FluxSE\PayumStripe\StripeCheckoutSessionGatewayFactory;
+use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\GatewayFactoryInterface;
 use PHPUnit\Framework\TestCase;
@@ -149,6 +150,7 @@ final class StripeCheckoutSessionGatewayFactoryTest extends TestCase
                 '123456',
             ],
         ];
+
         $factory = new StripeCheckoutSessionGatewayFactory($defaults);
 
         $config = $factory->createConfig();
@@ -156,5 +158,7 @@ final class StripeCheckoutSessionGatewayFactoryTest extends TestCase
         $this->assertEquals($defaults['publishable_key'], $config['publishable_key']);
         $this->assertEquals($defaults['secret_key'], $config['secret_key']);
         $this->assertEquals($defaults['webhook_secret_keys'], $config['webhook_secret_keys']);
+
+        $config['payum.api'](ArrayObject::ensureArrayObject($config));
     }
 }

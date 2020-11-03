@@ -7,7 +7,7 @@ namespace FluxSE\PayumStripe\Action\Api\Resource;
 use FluxSE\PayumStripe\Request\Api\Resource\DeleteInterface;
 use Stripe\ApiResource;
 
-interface DeleteActionInterface extends ResourceActionInterface
+interface DeleteResourceActionInterface extends ResourceActionInterface
 {
     public function deleteApiResource(DeleteInterface $request): ApiResource;
 

@@ -7,7 +7,7 @@ namespace FluxSE\PayumStripe\Action\Api\Resource;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInterface;
 use Stripe\ApiResource;
 
-interface RetrieveActionInterface extends ResourceActionInterface
+interface RetrieveResourceActionInterface extends ResourceActionInterface
 {
     public function retrieveApiResource(RetrieveInterface $request): ApiResource;
 

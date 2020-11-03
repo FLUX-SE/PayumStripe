@@ -14,7 +14,7 @@ use Stripe\ApiResource;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
 
-abstract class AbstractDeleteAction implements DeleteActionInterface
+abstract class AbstractDeleteAction implements DeleteResourceActionInterface
 {
     use StripeApiAwareTrait;
     use ResourceAwareActionTrait;
