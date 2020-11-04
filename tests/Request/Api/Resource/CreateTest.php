@@ -5,6 +5,8 @@ namespace Tests\FluxSE\PayumStripe\Request\Api\Resource;
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractCreate;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateCustomer;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateInterface;
+use FluxSE\PayumStripe\Request\Api\Resource\CreatePaymentIntent;
+use FluxSE\PayumStripe\Request\Api\Resource\CreatePaymentMethod;
 use FluxSE\PayumStripe\Request\Api\Resource\CreatePlan;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateSession;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateSubscription;
@@ -18,6 +20,8 @@ use Stripe\ApiOperations\Create;
 use Stripe\ApiResource;
 use Stripe\Checkout\Session;
 use Stripe\Customer;
+use Stripe\PaymentIntent;
+use Stripe\PaymentMethod;
 use Stripe\Plan;
 use Stripe\Subscription;
 use Stripe\TaxRate;
@@ -117,6 +121,8 @@ final class CreateTest extends TestCase
         return [
             [CreateCustomer::class, Customer::class],
             [CreateSession::class, Session::class],
+            [CreatePaymentIntent::class, PaymentIntent::class],
+            [CreatePaymentMethod::class, PaymentMethod::class],
             [CreatePlan::class, Plan::class],
             [CreateSubscription::class, Subscription::class],
             [CreateTaxRate::class, TaxRate::class],

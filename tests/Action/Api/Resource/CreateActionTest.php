@@ -4,6 +4,8 @@ namespace Tests\FluxSE\PayumStripe\Action\Api\Resource;
 
 use FluxSE\PayumStripe\Action\Api\Resource\AbstractCreateAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateCustomerAction;
+use FluxSE\PayumStripe\Action\Api\Resource\CreatePaymentIntentAction;
+use FluxSE\PayumStripe\Action\Api\Resource\CreatePaymentMethodAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreatePlanAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateResourceActionInterface;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateSessionAction;
@@ -13,6 +15,8 @@ use FluxSE\PayumStripe\Api\KeysInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractCreate;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateCustomer;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateInterface;
+use FluxSE\PayumStripe\Request\Api\Resource\CreatePaymentIntent;
+use FluxSE\PayumStripe\Request\Api\Resource\CreatePaymentMethod;
 use FluxSE\PayumStripe\Request\Api\Resource\CreatePlan;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateSession;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateSubscription;
@@ -25,6 +29,8 @@ use PHPUnit\Framework\TestCase;
 use Stripe\Checkout\Session;
 use Stripe\Customer;
 use Stripe\Issuing\CardDetails;
+use Stripe\PaymentIntent;
+use Stripe\PaymentMethod;
 use Stripe\Plan;
 use Stripe\Subscription;
 use Stripe\TaxRate;
@@ -111,6 +117,9 @@ final class CreateActionTest extends TestCase
         return [
             [CreateCustomerAction::class, CreateCustomer::class, Customer::class],
             [CreateSessionAction::class, CreateSession::class, Session::class],
+            [CreatePaymentIntentAction::class, CreatePaymentIntent::class, PaymentIntent::class],
+            [CreatePaymentMethodAction::class, CreatePaymentMethod::class, PaymentMethod::class],
+            [CreatePlanAction::class, CreatePlan::class, Plan::class],
             [CreatePlanAction::class, CreatePlan::class, Plan::class],
             [CreateSubscriptionAction::class, CreateSubscription::class, Subscription::class],
             [CreateTaxRateAction::class, CreateTaxRate::class, TaxRate::class],
