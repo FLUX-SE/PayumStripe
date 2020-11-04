@@ -78,8 +78,8 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
             // so it's needed to skip this method when retrievable id is founded
             return;
         }
-        // if not retrieve the newest session from it's id
 
+        // if not retrieve the newest session from it's id
         $sessionRequest = new RetrieveSession($model->offsetGet('id'));
         $this->gateway->execute($sessionRequest);
         $session = $sessionRequest->getApiResource();
