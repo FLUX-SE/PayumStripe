@@ -1,10 +1,11 @@
+{# @var model \Stripe\PaymentIntent #}
 {% extends layout ?: "@PayumCore/layout.html.twig" %}
 
 {% block payum_body %}
     {{ parent() }}
 
-    <form action="{{ actionUrl|default('') }}" method="POST" name="payment-form" id="payment-form" style="max-width: 500px;" data-secret="{{ model.client_secret }}">
-        <div class="form-row" style="margin: 50px 0;">
+    <form action="{{ action_url|default('') }}" method="POST" name="payment-form" id="payment-form" data-secret="{{ model.client_secret }}">
+        <div class="form-row">
             <div id="card-element">
                 <!-- Elements will create input elements here -->
             </div>
@@ -17,17 +18,12 @@
     </form>
 {% endblock %}
 
-{% block payum_javascripts %}
-    {{ parent() }}
-
+{% block payum_javascripts_stripejs_global %}
     <script src="https://js.stripe.com/v3/"></script>
+{% endblock %}
 
+{% block payum_javascripts_stripejs_style %}
     <script type="text/javascript">
-        var stripe = Stripe('{{ publishable_key }}');
-        var elements = stripe.elements();
-
-        // Custom styling can be passed to options when creating an Element.
-        // (Note that this demo uses a wider set of styles than the guide below.)
         var style = {
             base: {
                 color: '#32325d',
@@ -43,6 +39,13 @@
                 iconColor: '#fa755a'
             }
         };
+    </script>
+{% endblock %}
+
+{% block payum_javascripts_stripejs_common %}
+    <script type="text/javascript">
+        var stripe = Stripe('{{ publishable_key }}');
+        var elements = stripe.elements();
 
         // Create an instance of the card Element.
         var card = elements.create('card', {style: style});
@@ -102,10 +105,16 @@
     </script>
 {% endblock %}
 
-{% block payum_stylesheets %}
-    {{ parent() }}
-
+{% block payum_stylesheets_stripejs_common %}
     <style type="text/css">
+        #payment-form {
+            max-width: 500px;
+        }
+
+        #payment-form > .form-row {
+            margin: 50px 0;
+        }
+
         .StripeElement {
             box-sizing: border-box;
 
@@ -134,4 +143,16 @@
             background-color: #fefde5 !important;
         }
     </style>
+{% endblock %}
+
+{% block payum_javascripts %}
+    {{ parent() }}
+    {{ block('payum_javascripts_stripejs_global') }}
+    {{ block('payum_javascripts_stripejs_style') }}
+    {{ block('payum_javascripts_stripejs_common') }}
+{% endblock %}
+
+{% block payum_stylesheets %}
+    {{ parent() }}
+    {{ block('payum_stylesheets_stripejs_common') }}
 {% endblock %}
