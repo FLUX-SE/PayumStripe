@@ -7,14 +7,25 @@ namespace FluxSE\PayumStripe;
 use FluxSE\PayumStripe\Action\Api\ConstructEventAction;
 use FluxSE\PayumStripe\Action\Api\RedirectToCheckoutAction;
 use FluxSE\PayumStripe\Action\Api\ResolveWebhookEventAction;
+use FluxSE\PayumStripe\Action\Api\Resource\AllCustomerAction;
+use FluxSE\PayumStripe\Action\Api\Resource\AllTaxRateAction;
+use FluxSE\PayumStripe\Action\Api\Resource\CancelSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateCustomerAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreatePlanAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateSessionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateSubscriptionAction;
+use FluxSE\PayumStripe\Action\Api\Resource\CreateTaxRateAction;
+use FluxSE\PayumStripe\Action\Api\Resource\DeletePlanAction;
+use FluxSE\PayumStripe\Action\Api\Resource\RetrieveChargeAction;
+use FluxSE\PayumStripe\Action\Api\Resource\RetrieveCustomerAction;
+use FluxSE\PayumStripe\Action\Api\Resource\RetrieveInvoiceAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrievePaymentIntentAction;
+use FluxSE\PayumStripe\Action\Api\Resource\RetrievePaymentMethodAction;
+use FluxSE\PayumStripe\Action\Api\Resource\RetrieveProductAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSessionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSetupIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSubscriptionAction;
+use FluxSE\PayumStripe\Action\Api\Resource\UpdateSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\CheckoutSessionCompletedAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentCanceledAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\SetupIntentCanceledAction;
@@ -53,14 +64,25 @@ class StripeCheckoutSessionGatewayFactory extends GatewayFactory
             },
 
             // API Resources
-            'payum.action.create_session' => new CreateSessionAction(),
+            'payum.action.all_customer' => new AllCustomerAction(),
+            'payum.action.all_tax_rate' => new AllTaxRateAction(),
+            'payum.action.cancel_subscription' => new CancelSubscriptionAction(),
             'payum.action.create_customer' => new CreateCustomerAction(),
             'payum.action.create_plan' => new CreatePlanAction(),
+            'payum.action.create_session' => new CreateSessionAction(),
             'payum.action.create_subscription' => new CreateSubscriptionAction(),
-            'payum.action.retrieve_session' => new RetrieveSessionAction(),
+            'payum.action.create_tax_rate' => new CreateTaxRateAction(),
+            'payum.action.delete_plan' => new DeletePlanAction(),
+            'payum.action.retrieve_charge' => new RetrieveChargeAction(),
+            'payum.action.retrieve_customer' => new RetrieveCustomerAction(),
+            'payum.action.retrieve_invoice' => new RetrieveInvoiceAction(),
             'payum.action.retrieve_payment_intent' => new RetrievePaymentIntentAction(),
-            'payum.action.retrieve_subscription' => new RetrieveSubscriptionAction(),
+            'payum.action.retrieve_payment_method' => new RetrievePaymentMethodAction(),
+            'payum.action.retrieve_product' => new RetrieveProductAction(),
+            'payum.action.retrieve_session' => new RetrieveSessionAction(),
             'payum.action.retrieve_setup_intent' => new RetrieveSetupIntentAction(),
+            'payum.action.retrieve_subscription' => new RetrieveSubscriptionAction(),
+            'payum.action.update_subscription' => new UpdateSubscriptionAction(),
 
             // Webhooks
             'payum.action.resolve_webhook_event' => new ResolveWebhookEventAction(),
