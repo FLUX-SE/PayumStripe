@@ -6,6 +6,7 @@ namespace FluxSE\PayumStripe;
 
 use FluxSE\PayumStripe\Action\Api\RedirectToCheckoutAction;
 use FluxSE\PayumStripe\Action\CaptureAction;
+use FluxSE\PayumStripe\Action\ConvertPaymentAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 
 final class StripeCheckoutSessionGatewayFactory extends AbstractStripeGatewayFactory
@@ -24,6 +25,7 @@ final class StripeCheckoutSessionGatewayFactory extends AbstractStripeGatewayFac
 
             // Action
             'payum.action.capture' => new CaptureAction(),
+            'payum.action.convert_payment' => new ConvertPaymentAction(),
             'payum.action.redirect_to_checkout' => function (ArrayObject $config) {
                 return new RedirectToCheckoutAction($config['payum.template.redirect_to_checkout']);
             },

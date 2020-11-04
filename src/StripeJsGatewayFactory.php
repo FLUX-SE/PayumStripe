@@ -6,6 +6,7 @@ namespace FluxSE\PayumStripe;
 
 use FluxSE\PayumStripe\Action\Api\PayAction;
 use FluxSE\PayumStripe\Action\JsCaptureAction;
+use FluxSE\PayumStripe\Action\JsConvertPaymentAction;
 use Payum\Core\Bridge\Spl\ArrayObject;
 
 final class StripeJsGatewayFactory extends AbstractStripeGatewayFactory
@@ -24,6 +25,7 @@ final class StripeJsGatewayFactory extends AbstractStripeGatewayFactory
 
             // Actions
             'payum.action.capture' => new JsCaptureAction(),
+            'payum.action.convert_payment' => new JsConvertPaymentAction(),
             'payum.action.pay' => function (ArrayObject $config) {
                 return new PayAction($config['payum.template.pay']);
             },

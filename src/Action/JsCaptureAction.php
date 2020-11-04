@@ -9,6 +9,7 @@ use FluxSE\PayumStripe\Request\Api\Resource\CreatePaymentIntent;
 use LogicException;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Request\Capture;
+use Payum\Core\Security\TokenInterface;
 use Stripe\ApiResource;
 use Stripe\PaymentIntent;
 
@@ -32,5 +33,10 @@ class JsCaptureAction extends CaptureAction
         $actionUrl = $token->getTargetUrl();
         $pay = new Pay($captureResource, $actionUrl);
         $this->gateway->execute($pay);
+    }
+
+    public function embedOnModeData(ArrayObject $model, TokenInterface $token, string $modeDataKey): void
+    {
+        // not need for this on Stripe JS
     }
 }

@@ -30,7 +30,6 @@ use FluxSE\PayumStripe\Action\Api\Resource\UpdateSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\CheckoutSessionCompletedAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentCanceledAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\SetupIntentCanceledAction;
-use FluxSE\PayumStripe\Action\ConvertPaymentAction;
 use FluxSE\PayumStripe\Action\NotifyAction;
 use FluxSE\PayumStripe\Action\StatusAction;
 use FluxSE\PayumStripe\Action\SyncAction;
@@ -44,7 +43,6 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
     {
         $config->defaults([
             // Actions
-            'payum.action.convert_payment' => new ConvertPaymentAction(),
             'payum.action.notify_unsafe' => new NotifyAction(),
             'payum.action.status' => new StatusAction(),
             'payum.action.sync' => new SyncAction(),
