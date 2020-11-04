@@ -2,21 +2,45 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Request\Api;
+namespace FluxSE\PayumStripe\Request\Api;
 
+use LogicException;
 use Payum\Core\Request\Generic;
+use Stripe\PaymentIntent;
 
 final class Pay extends Generic
 {
-    public function __construct($firstModel = null, $currentModel = null)
-    {
-        parent::__construct($firstModel);
+    /** @var string */
+    private $actionUrl;
 
-        $this->setModel($currentModel);
+    public function __construct(PaymentIntent $paymentIntent, string $actionUrl)
+    {
+        parent::__construct($paymentIntent);
+        $this->actionUrl = $actionUrl;
     }
 
-    public function setToken($token)
+    public function getActionUrl(): string
     {
-        $this->token = $token;
+        return $this->actionUrl;
+    }
+
+    public function setActionUrl(string $actionUrl): void
+    {
+        $this->actionUrl = $actionUrl;
+    }
+
+    public function getPaymentIntent(): PaymentIntent
+    {
+        $paymentIntent = $this->getModel();
+        if ($paymentIntent instanceof PaymentIntent) {
+            return $paymentIntent;
+        }
+
+        throw new LogicException(sprintf('The model is not an instance of "%s" !', PaymentIntent::class));
+    }
+
+    public function setPaymentIntent(PaymentIntent $paymentIntent): void
+    {
+        $this->setModel($paymentIntent);
     }
 }
