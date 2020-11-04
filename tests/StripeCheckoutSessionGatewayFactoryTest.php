@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\FluxSE\PayumStripe;
 
+use FluxSE\PayumStripe\Api\KeysInterface;
 use FluxSE\PayumStripe\StripeCheckoutSessionGatewayFactory;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\LogicException;
@@ -159,6 +160,16 @@ final class StripeCheckoutSessionGatewayFactoryTest extends TestCase
         $this->assertEquals($defaults['secret_key'], $config['secret_key']);
         $this->assertEquals($defaults['webhook_secret_keys'], $config['webhook_secret_keys']);
 
-        $config['payum.api'](ArrayObject::ensureArrayObject($config));
+        // Allow to update the credentials
+        $newCredentials = ArrayObject::ensureArrayObject([
+            'payum.required_options' => $config['payum.required_options'],
+            'publishable_key' => '654321',
+            'secret_key' => '654321',
+            'webhook_secret_keys' => [
+                '654321',
+            ],
+        ]);
+        $api = $config['payum.api']($newCredentials);
+        $this->assertInstanceOf(KeysInterface::class, $api);
     }
 }
