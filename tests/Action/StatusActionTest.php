@@ -1,13 +1,14 @@
 <?php
 
-namespace Tests\Prometee\PayumStripe\Action;
+namespace Tests\FluxSE\PayumStripe\Action;
 
+use FluxSE\PayumStripe\Action\StatusAction;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Request\GetHumanStatus;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripe\Action\StatusAction;
+use Stripe\Checkout\Session;
 use Stripe\Refund;
 
 final class StatusActionTest extends TestCase
@@ -27,12 +28,29 @@ final class StatusActionTest extends TestCase
     /**
      * @test
      */
+    public function shouldMarkFailedIfObjectIsASession()
+    {
+        $action = new StatusAction();
+
+        $model = [
+            'object' => Session::OBJECT_NAME,
+        ];
+
+        $status = new GetHumanStatus($model);
+        $action->execute($status);
+
+        $this->assertTrue($status->isFailed());
+    }
+
+    /**
+     * @test
+     */
     public function shouldMarkNewIfDetailsEmpty()
     {
         $action = new StatusAction();
 
         $model = [];
-        
+
         $status = new GetHumanStatus($model);
         $action->execute($status);
 
@@ -94,6 +112,26 @@ final class StatusActionTest extends TestCase
 
         $this->assertFalse($status->isRefunded());
         $this->assertTrue($status->isNew());
+    }
+
+    /**
+     * @test
+     */
+    public function shouldMarkUnknownIfItsNotARefundWithUnknownStatus()
+    {
+        $action = new StatusAction();
+
+        $model = [
+            'object' => Refund::OBJECT_NAME,
+            'status' => 'test',
+        ];
+
+        $status = new GetHumanStatus($model);
+        $status->markPending();
+
+        $action->execute($status);
+
+        $this->assertTrue($status->isUnknown());
     }
 
     /**

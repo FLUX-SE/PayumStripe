@@ -2,15 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Api;
+namespace FluxSE\PayumStripe\Api;
 
 interface KeysInterface
 {
-    /**
-     * @param string $webhookSecretKey
-     *
-     * @return bool
-     */
     public function hasWebhookSecretKey(string $webhookSecretKey): bool;
 
     /**
@@ -23,18 +18,9 @@ interface KeysInterface
      */
     public function getWebhookSecretKeys(): array;
 
-    /**
-     * @param string $webhookSecretKey
-     */
     public function addWebhookSecretKey(string $webhookSecretKey): void;
 
-    /**
-     * @return string
-     */
     public function getSecretKey(): string;
 
-    /**
-     * @return string
-     */
     public function getPublishableKey(): string;
 }

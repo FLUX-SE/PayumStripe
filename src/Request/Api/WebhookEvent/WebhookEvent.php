@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Request\Api\WebhookEvent;
+namespace FluxSE\PayumStripe\Request\Api\WebhookEvent;
 
+use FluxSE\PayumStripe\Wrapper\EventWrapperInterface;
 use Payum\Core\Request\Generic;
-use Prometee\PayumStripe\Wrapper\EventWrapperInterface;
 
 final class WebhookEvent extends Generic
 {
@@ -14,17 +14,11 @@ final class WebhookEvent extends Generic
         parent::__construct($model);
     }
 
-    /**
-     * @param EventWrapperInterface|null $eventWrapper
-     */
-    public function setEventWrapper(?EventWrapperInterface $eventWrapper): void
+    public function setEventWrapper(EventWrapperInterface $eventWrapper): void
     {
         parent::setModel($eventWrapper);
     }
 
-    /**
-     * @return EventWrapperInterface|null
-     */
     public function getEventWrapper(): ?EventWrapperInterface
     {
         if ($this->getModel() instanceof EventWrapperInterface) {

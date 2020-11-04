@@ -14,7 +14,7 @@ declare(strict_types=1);
 $loader = require_once( __DIR__.'/vendor/autoload.php');
 
 use Payum\Core\GatewayFactoryInterface;
-use Prometee\PayumStripe\StripeCheckoutSessionGatewayFactory;
+use FluxSE\PayumStripe\StripeCheckoutSessionGatewayFactory;
 use Payum\Core\PayumBuilder;
 use Payum\Core\Payum;
 
@@ -89,7 +89,7 @@ The [`NotifyAction.php`](../../src/Action/NotifyAction.php) will ask for 2 other
 2. Give this resolved `Event` to an `Action` able to consume this `Event`.
 
 So if you want to consume another webhook event type, you just need to create an `Action`
-extending [`Prometee\PayumStripe\Action\Api\WebhookEvent\AbstractWebhookEventAction`](../../src/Action/Api/WebhookEvent/AbstractWebhookEventAction.php).
+extending [`FluxSE\PayumStripe\Action\Api\WebhookEvent\AbstractWebhookEventAction`](../../src/Action/Api/WebhookEvent/AbstractWebhookEventAction.php).
 Examples available into the [`src/Action/Api/WebhookEvent/`](../../src/Action/Api/WebhookEvent) folder.
 
 ## Subscription handling
@@ -98,7 +98,7 @@ Payum don't have php `Interfaces` to handle subscription, that's why subscriptio
 managed by yourself. There is maybe a composer packages which meet your need,
 but you will have to build the interface between your subscription `Model` class and `Payum`.
 
-Usually you will have to build a `ConvertPaymentAction` like this one : [ConvertPaymentAction.php](https://github.com/Prometee/SyliusPayumStripeCheckoutSessionPlugin/blob/master/src/Action/ConvertPaymentAction.php)
+Usually you will have to build a `ConvertPaymentAction` like this one : [ConvertPaymentAction.php](https://github.com/FLUX-SE/SyliusPayumStripePlugin/blob/master/src/Action/ConvertPaymentAction.php)
 customizing the `supports` method to meet your need and finally providing the right `$details` array.
 
 Example : https://stripe.com/docs/payments/checkout/subscriptions/starting#create-checkout-session (`$details` is the array given to create a `Session`)
@@ -111,6 +111,6 @@ Example : https://stripe.com/docs/payments/checkout/subscriptions/updating#creat
 
 ## More
 
- - A Symfony bundle : [prometee/payum-stripe-checkout-bundle](https://github.com/Prometee/PayumStripeCheckoutSessionBundle)
- - A Sylius plugin : [prometee/sylius-payum-stripe-checkout-session-plugin](https://github.com/Prometee/SyliusPayumStripeCheckoutSessionPlugin)
+ - A Symfony bundle : [flux-se/payum-stripe-checkout-bundle](https://github.com/FLUX-SE/PayumStripeBundle)
+ - A Sylius plugin : [flux-se/sylius-payum-stripe-checkout-session-plugin](https://github.com/FLUX-SE/SyliusPayumStripePlugin)
   

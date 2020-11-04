@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Action;
+namespace FluxSE\PayumStripe\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -12,11 +12,6 @@ use Payum\Core\Request\Convert;
 
 final class ConvertPaymentAction implements ActionInterface
 {
-    /**
-     * {@inheritDoc}
-     *
-     * @param Convert $request
-     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -36,21 +31,18 @@ final class ConvertPaymentAction implements ActionInterface
             ],
         ]);
         $details->offsetSet('payment_method_types', [
-            'card'
+            'card',
         ]);
 
         $request->setResult($details);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request): bool
     {
         return
             $request instanceof Convert &&
             $request->getSource() instanceof PaymentInterface &&
-            $request->getTo() === 'array'
+            'array' === $request->getTo()
         ;
     }
 }

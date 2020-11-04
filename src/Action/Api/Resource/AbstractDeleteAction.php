@@ -2,27 +2,25 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Action\Api\Resource;
+namespace FluxSE\PayumStripe\Action\Api\Resource;
 
+use FluxSE\PayumStripe\Action\Api\StripeApiAwareTrait;
+use FluxSE\PayumStripe\Request\Api\Resource\DeleteInterface;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Prometee\PayumStripe\Action\Api\StripeApiAwareTrait;
-use Prometee\PayumStripe\Request\Api\Resource\DeleteInterface;
 use Stripe\ApiOperations\Delete;
 use Stripe\ApiOperations\Retrieve;
 use Stripe\ApiResource;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
 
-abstract class AbstractDeleteAction implements DeleteActionInterface
+abstract class AbstractDeleteAction implements DeleteResourceActionInterface
 {
-    use StripeApiAwareTrait,
-        ResourceAwareActionTrait;
+    use StripeApiAwareTrait;
+    use ResourceAwareActionTrait;
 
     /**
-     * {@inheritDoc}
-     *
-     * @param DeleteInterface $request
+     * {@inheritdoc}
      *
      * @throws ApiErrorException
      */
@@ -37,20 +35,15 @@ abstract class AbstractDeleteAction implements DeleteActionInterface
         $request->setApiResource($apiResource);
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @throws ApiErrorException
-     */
     public function deleteApiResource(DeleteInterface $request): ApiResource
     {
         $apiResourceClass = $this->getApiResourceClass();
         if (false === method_exists($apiResourceClass, 'retrieve')) {
-            throw new LogicException(sprintf(
-                'This class "%s" is not an instance of "%s"',
-                (string) $apiResourceClass,
-                Retrieve::class
-            ));
+            throw new LogicException(sprintf('This class "%s" is not an instance of "%s" !', $apiResourceClass, Retrieve::class));
+        }
+
+        if (false === method_exists($apiResourceClass, 'delete')) {
+            throw new LogicException(sprintf('This class "%s" is not an instance of "%s" !', $apiResourceClass, Delete::class));
         }
 
         Stripe::setApiKey($this->api->getSecretKey());
@@ -61,24 +54,12 @@ abstract class AbstractDeleteAction implements DeleteActionInterface
             $request->getOptions()
         );
 
-        if (false === $apiResource instanceof Delete) {
-            throw new LogicException(sprintf(
-                'This class "%s" is not an instance of "%s"',
-                $apiResourceClass,
-                Delete::class
-            ));
-        }
-
-        /** @var ApiResource&Delete $apiResource */
-        $apiResource->delete();
-
-        return $apiResource;
+        /* @see Delete::delete() */
+        return $apiResource->delete();
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * @param DeleteInterface $request
+     * {@inheritdoc}
      */
     public function supports($request): bool
     {
@@ -88,9 +69,6 @@ abstract class AbstractDeleteAction implements DeleteActionInterface
         ;
     }
 
-    /**
-     * @param DeleteInterface $request
-     */
     protected function checkRequest(DeleteInterface $request): void
     {
         // Silent is golden

@@ -2,43 +2,36 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Request\Api;
+namespace FluxSE\PayumStripe\Request\Api;
 
+use FluxSE\PayumStripe\Wrapper\EventWrapperInterface;
+use LogicException;
 use Payum\Core\Request\Generic;
-use Prometee\PayumStripe\Wrapper\EventWrapperInterface;
 
 class ConstructEvent extends Generic
 {
-    /** @var null|string */
+    /** @var string */
     private $webhookSecretKey;
     /** @var string */
     private $sigHeader;
 
-    /**
-     * @param string $payload
-     * @param string $sigHeader
-     * @param string|null $webhookSecretKey
-     */
     public function __construct(
         string $payload,
         string $sigHeader,
-        string $webhookSecretKey = null
+        string $webhookSecretKey
     ) {
         parent::__construct($payload);
         $this->sigHeader = $sigHeader;
         $this->webhookSecretKey = $webhookSecretKey;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getPayload(): ?string
+    public function getPayload(): string
     {
         if (is_string($this->getModel())) {
             return (string) $this->getModel();
         }
 
-        return null;
+        throw new LogicException('The payload is not a string !');
     }
 
     public function setPayload(string $payload): void
@@ -46,41 +39,26 @@ class ConstructEvent extends Generic
         $this->setModel($payload);
     }
 
-    /**
-     * @param string|null $webhookSecretKey
-     */
-    public function setWebhookSecretKey(?string $webhookSecretKey): void
+    public function setWebhookSecretKey(string $webhookSecretKey): void
     {
         $this->webhookSecretKey = $webhookSecretKey;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getWebhookSecretKey(): ?string
+    public function getWebhookSecretKey(): string
     {
         return $this->webhookSecretKey;
     }
 
-    /**
-     * @return string
-     */
     public function getSigHeader(): string
     {
         return $this->sigHeader;
     }
 
-    /**
-     * @param EventWrapperInterface|null $eventWrapper
-     */
     public function setEventWrapper(?EventWrapperInterface $eventWrapper): void
     {
         parent::setModel($eventWrapper);
     }
 
-    /**
-     * @return EventWrapperInterface|null
-     */
     public function getEventWrapper(): ?EventWrapperInterface
     {
         if ($this->getModel() instanceof EventWrapperInterface) {

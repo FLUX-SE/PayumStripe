@@ -2,21 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Action\Api;
+namespace FluxSE\PayumStripe\Action\Api;
 
+use FluxSE\PayumStripe\Request\Api\ConstructEvent;
+use FluxSE\PayumStripe\Wrapper\EventWrapper;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Prometee\PayumStripe\Request\Api\ConstructEvent;
-use Prometee\PayumStripe\Wrapper\EventWrapper;
 use Stripe\Exception\SignatureVerificationException;
 use Stripe\Webhook;
 
 class ConstructEventAction implements ActionInterface
 {
     /**
-     * {@inheritDoc}
-     *
-     * @param ConstructEvent $request
+     * {@inheritdoc}
      *
      * @throws SignatureVerificationException
      */
@@ -38,7 +36,7 @@ class ConstructEventAction implements ActionInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($request): bool
     {

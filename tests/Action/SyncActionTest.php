@@ -1,18 +1,18 @@
 <?php
 
-namespace Tests\Prometee\PayumStripe\Action;
+namespace Tests\FluxSE\PayumStripe\Action;
 
+use FluxSE\PayumStripe\Action\SyncAction;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrievePaymentIntent;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSession;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSetupIntent;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSubscription;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\Request\Sync;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripe\Action\SyncAction;
-use Prometee\PayumStripe\Request\Api\Resource\RetrievePaymentIntent;
-use Prometee\PayumStripe\Request\Api\Resource\RetrieveSession;
-use Prometee\PayumStripe\Request\Api\Resource\RetrieveSetupIntent;
-use Prometee\PayumStripe\Request\Api\Resource\RetrieveSubscription;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
 use Stripe\SetupIntent;
@@ -244,7 +244,6 @@ final class SyncActionTest extends TestCase
                 $this->assertIsString($request->getModel());
                 $request->setApiResource(new Session($model));
             }));
-        ;
 
         $action = new SyncAction();
         $action->setGateway($gatewayMock);

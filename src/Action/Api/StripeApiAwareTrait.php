@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Action\Api;
+namespace FluxSE\PayumStripe\Action\Api;
 
+use FluxSE\PayumStripe\Api\Keys;
+use FluxSE\PayumStripe\Api\KeysInterface;
 use Payum\Core\ApiAwareTrait;
-use Prometee\PayumStripe\Api\Keys;
-use Prometee\PayumStripe\Api\KeysInterface;
 
 /**
  * @property KeysInterface $api
@@ -21,9 +21,7 @@ trait StripeApiAwareTrait
     }
 
     /**
-     * Use for tests and also if someone need to change the default Keys class
-     *
-     * @param string $apiClass
+     * Use for tests and also if someone need to change the default Keys class.
      */
     public function setApiClass(string $apiClass): void
     {
@@ -31,9 +29,7 @@ trait StripeApiAwareTrait
     }
 
     /**
-     * Use for tests and also if someone need to change the default Keys class
-     *
-     * @return string
+     * Use for tests and also if someone need to change the default Keys class.
      */
     public function getApiClass(): string
     {

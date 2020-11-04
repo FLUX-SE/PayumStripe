@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Request\Api\Resource;
+namespace FluxSE\PayumStripe\Request\Api\Resource;
 
 use ArrayObject;
 use LogicException;
@@ -17,10 +17,6 @@ abstract class AbstractAll extends Generic implements AllInterface
     /** @var ApiResource[]|Collection|null */
     protected $apiResources;
 
-    /**
-     * @param array $parameters
-     * @param array $options
-     */
     public function __construct(array $parameters = [], array $options = [])
     {
         parent::__construct($parameters);
@@ -28,7 +24,7 @@ abstract class AbstractAll extends Generic implements AllInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getParameters(): ?array
     {
@@ -41,7 +37,7 @@ abstract class AbstractAll extends Generic implements AllInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setParameters(array $parameters): void
     {
@@ -49,21 +45,19 @@ abstract class AbstractAll extends Generic implements AllInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getApiResources(): Collection
     {
         if (null === $this->apiResources) {
-            throw new LogicException(
-                'The API Resources is null !'
-                . 'You should send this request to `Payum->execute()` before using this getter.'
-            );
+            throw new LogicException('The API Resources is null ! You should send this request to `Payum->execute()` before using this getter.');
         }
+
         return $this->apiResources;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setApiResources(Collection $apiResources): void
     {

@@ -2,9 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Action;
+namespace FluxSE\PayumStripe\Action;
 
 use ArrayAccess;
+use FluxSE\PayumStripe\Request\Api\Resource\AbstractRetrieve;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrievePaymentIntent;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSession;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSetupIntent;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSubscription;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\LogicException;
@@ -12,11 +17,6 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Sync;
-use Prometee\PayumStripe\Request\Api\Resource\AbstractRetrieve;
-use Prometee\PayumStripe\Request\Api\Resource\RetrievePaymentIntent;
-use Prometee\PayumStripe\Request\Api\Resource\RetrieveSession;
-use Prometee\PayumStripe\Request\Api\Resource\RetrieveSetupIntent;
-use Prometee\PayumStripe\Request\Api\Resource\RetrieveSubscription;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
 use Stripe\SetupIntent;
@@ -35,11 +35,6 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         SetupIntent::OBJECT_NAME => RetrieveSetupIntent::class,
     ];
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param Sync $request
-     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -47,16 +42,12 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
 
         $objectName = (string) $model->offsetGet('object');
         if (empty($objectName)) {
-            throw new LogicException(
-                'The synced object should have an "object" attribute !'
-            );
+            throw new LogicException('The synced object should have an "object" attribute !');
         }
 
         $id = (string) $model->offsetGet('id');
-        if ($id === '') {
-            throw new LogicException(
-                'The synced object should have a retrievable "id" attribute !'
-            );
+        if ('' === $id) {
+            throw new LogicException('The synced object should have a retrievable "id" attribute !');
         }
 
         $this->syncSession($model);
@@ -65,7 +56,7 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
 
         if (null === $retrieveSessionModeObject) {
             // Case where Session mode is "subscription" and the customer
-            // is canceling his payment
+            // is canceling it payment
             return;
         }
 
@@ -75,13 +66,10 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         $model->exchangeArray($sessionModeObject->toArray());
     }
 
-    /**
-     * @param ArrayObject $model
-     */
     private function syncSession(ArrayObject $model): void
     {
         $objectName = (string) $model->offsetGet('object');
-        if ($objectName !== Session::OBJECT_NAME) {
+        if (Session::OBJECT_NAME !== $objectName) {
             return;
         }
 
@@ -90,8 +78,8 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
             // so it's needed to skip this method when retrievable id is founded
             return;
         }
-        // if not retrieve the newest session from it's id
 
+        // if not retrieve the newest session from it's id
         $sessionRequest = new RetrieveSession($model->offsetGet('id'));
         $this->gateway->execute($sessionRequest);
         $session = $sessionRequest->getApiResource();
@@ -99,11 +87,6 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         $model->exchangeArray($session->toArray());
     }
 
-    /**
-     * @param ArrayObject $model
-     *
-     * @return AbstractRetrieve|null
-     */
     protected function findRetrievableSessionModeObject(ArrayObject $model): ?AbstractRetrieve
     {
         $objectName = (string) $model->offsetGet('object');
@@ -114,11 +97,6 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         return $this->findSessionModeIdInModeObject($model);
     }
 
-    /**
-     * @param ArrayObject $model
-     *
-     * @return AbstractRetrieve|null
-     */
     private function findSessionModeIdInSession(ArrayObject $model): ?AbstractRetrieve
     {
         foreach ($this->sessionModes as $sessionObject => $retrieveRequest) {
@@ -127,7 +105,7 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
             }
 
             $sessionModeId = $model->offsetGet($sessionObject);
-            if ($sessionModeId === null || $sessionModeId === '') {
+            if (null === $sessionModeId || '' === $sessionModeId) {
                 continue;
             }
 
@@ -137,11 +115,6 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         return null;
     }
 
-    /**
-     * @param ArrayObject $model
-     *
-     * @return AbstractRetrieve|null
-     */
     private function findSessionModeIdInModeObject(ArrayObject $model): ?AbstractRetrieve
     {
         $objectName = (string) $model->offsetGet('object');
@@ -150,14 +123,7 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
                 continue;
             }
 
-            if (false === $model->offsetExists('id')) {
-                return null;
-            }
-
             $sessionModeId = $model->offsetGet('id');
-            if ($sessionModeId === null || $sessionModeId === '') {
-                return null;
-            }
 
             return new $retrieveRequest((string) $sessionModeId);
         }
@@ -165,11 +131,6 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         return null;
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param Sync $request
-     */
     public function supports($request): bool
     {
         return

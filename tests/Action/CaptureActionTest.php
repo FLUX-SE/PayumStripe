@@ -1,8 +1,12 @@
 <?php
 
-namespace Tests\Prometee\PayumStripe\Action;
+namespace Tests\FluxSE\PayumStripe\Action;
 
 use ArrayObject;
+use FluxSE\PayumStripe\Action\CaptureAction;
+use FluxSE\PayumStripe\Request\Api\RedirectToCheckout;
+use FluxSE\PayumStripe\Request\Api\Resource\CreateSession;
+use LogicException;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayAwareInterface;
@@ -16,9 +20,6 @@ use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Storage\IdentityInterface;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripe\Action\CaptureAction;
-use Prometee\PayumStripe\Request\Api\RedirectToCheckout;
-use Prometee\PayumStripe\Request\Api\Resource\CreateSession;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
 use Stripe\SetupIntent;
@@ -64,9 +65,18 @@ final class CaptureActionTest extends TestCase
     }
 
     /**
-     * @param array $model
-     * @param string $objectName
+     * @test
      */
+    public function shouldThrowExceptionWhenThereIsNoTokenAvailable()
+    {
+        $model = [];
+
+        $action = new CaptureAction();
+
+        $this->expectException(LogicException::class);
+        $action->execute(new Capture($model));
+    }
+
     public function executeCaptureAction(array $model, string $objectName): void
     {
         $token = new Token();
@@ -79,29 +89,26 @@ final class CaptureActionTest extends TestCase
             ->method('execute')
         ;
         $gatewayMock
-            ->expects($this->at(0))
+            ->expects($this->exactly(3))
             ->method('execute')
-            ->with($this->isInstanceOf(CreateSession::class))
-            ->will($this->returnCallback(function (CreateSession $request) {
-                $this->assertInstanceOf(ArrayObject::class, $request->getModel());
-                $request->setApiResource(new Session('sess_0001'));
-            }))
+            ->withConsecutive(
+                [$this->isInstanceOf(CreateSession::class)],
+                [$this->isInstanceOf(Sync::class)],
+                [$this->isInstanceOf(RedirectToCheckout::class)]
+            )
+            ->willReturnOnConsecutiveCalls(
+                $this->returnCallback(function (CreateSession $request) {
+                    $this->assertInstanceOf(ArrayObject::class, $request->getModel());
+                    $request->setApiResource(new Session('sess_0001'));
+                }),
+                $this->returnCallback(function (Sync $request) {
+                    $model = $request->getModel();
+                    $this->assertInstanceOf(ArrayObject::class, $model);
+                    $model->exchangeArray([]);
+                }),
+                $this->throwException(new HttpResponse(''))
+            )
         ;
-        $gatewayMock
-            ->expects($this->at(1))
-            ->method('execute')
-            ->with($this->isInstanceOf(Sync::class))
-            ->will($this->returnCallback(function (Sync $request) {
-                $model = $request->getModel();
-                $this->assertInstanceOf(ArrayObject::class, $model);
-                $model->exchangeArray([]);
-            }))
-        ;
-        $gatewayMock
-            ->expects($this->at(2))
-            ->method('execute')
-            ->with($this->isInstanceOf(RedirectToCheckout::class))
-            ->will($this->throwException(new HttpResponse('')));
 
         $genericGatewayFactory = $this->createMock(GenericTokenFactoryInterface::class);
         $genericGatewayFactory
@@ -123,8 +130,8 @@ final class CaptureActionTest extends TestCase
 
         /** @var ArrayObject $resultModel */
         $resultModel = $request->getModel();
-        $this->assertTrue($resultModel->offsetExists($objectName . '_data'));
-        $data = $resultModel->offsetGet($objectName . '_data');
+        $this->assertTrue($resultModel->offsetExists($objectName.'_data'));
+        $data = $resultModel->offsetGet($objectName.'_data');
         $this->assertArrayHasKey('metadata', $data);
         $this->assertArrayHasKey('token_hash', $data['metadata']);
         $this->assertEquals($token->getHash(), $data['metadata']['token_hash']);

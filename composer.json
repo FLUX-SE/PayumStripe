@@ -1,5 +1,5 @@
 {
-    "name": "prometee/payum-stripe",
+    "name": "flux-se/payum-stripe",
     "description": "Payum Stripe gateways",
     "type": "library",
     "require": {
@@ -8,20 +8,22 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^8|^9",
-        "symplify/easy-coding-standard": "^7.2",
+        "symplify/easy-coding-standard": "^8.1",
         "php-http/guzzle6-adapter": "^2.0",
-        "phpstan/phpstan": "^0.12"
+        "phpstan/phpstan": "^0.12",
+        "ext-curl": "*",
+        "ext-json": "*"
     },
     "autoload": {
-        "psr-4": { "Prometee\\PayumStripe\\": "src/" }
+        "psr-4": { "FluxSE\\PayumStripe\\": "src/" }
     },
     "autoload-dev": {
-        "psr-4": { "Tests\\Prometee\\PayumStripe\\": "tests/" }
+        "psr-4": { "Tests\\FluxSE\\PayumStripe\\": "tests/" }
     },
     "license": "MIT",
     "extra": {
         "branch-alias": {
-            "dev-master": "1.1-dev"
+            "dev-master": "1.2-dev"
         }
     },
     "authors": [

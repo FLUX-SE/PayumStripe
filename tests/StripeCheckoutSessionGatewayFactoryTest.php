@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\Prometee\PayumStripe;
+namespace Tests\FluxSE\PayumStripe;
 
+use FluxSE\PayumStripe\Api\KeysInterface;
+use FluxSE\PayumStripe\StripeCheckoutSessionGatewayFactory;
+use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\GatewayFactoryInterface;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripe\StripeCheckoutSessionGatewayFactory;
 
 final class StripeCheckoutSessionGatewayFactoryTest extends TestCase
 {
@@ -49,10 +51,10 @@ final class StripeCheckoutSessionGatewayFactoryTest extends TestCase
      */
     public function shouldAddDefaultConfigPassedInConstructorWhileCreatingGatewayConfig()
     {
-        $factory = new StripeCheckoutSessionGatewayFactory(array(
+        $factory = new StripeCheckoutSessionGatewayFactory([
             'foo' => 'fooVal',
             'bar' => 'barVal',
-        ));
+        ]);
 
         $config = $factory->createConfig();
 
@@ -134,8 +136,40 @@ final class StripeCheckoutSessionGatewayFactoryTest extends TestCase
         $this->assertStringEndsWith('Resources/views', $config['payum.paths']['PayumCore']);
         $this->assertTrue(file_exists($config['payum.paths']['PayumCore']));
 
-        $this->assertArrayHasKey('PrometeePayumStripeCheckoutSession', $config['payum.paths']);
-        $this->assertStringEndsWith('Resources/views', $config['payum.paths']['PrometeePayumStripeCheckoutSession']);
-        $this->assertTrue(file_exists($config['payum.paths']['PrometeePayumStripeCheckoutSession']));
+        $this->assertArrayHasKey('FluxSEPayumStripeCheckoutSession', $config['payum.paths']);
+        $this->assertStringEndsWith('Resources/views', $config['payum.paths']['FluxSEPayumStripeCheckoutSession']);
+        $this->assertTrue(file_exists($config['payum.paths']['FluxSEPayumStripeCheckoutSession']));
+    }
+
+    /** @test */
+    public function shouldAcceptDefaultOptions()
+    {
+        $defaults = [
+            'publishable_key' => '123456',
+            'secret_key' => '123456',
+            'webhook_secret_keys' => [
+                '123456',
+            ],
+        ];
+
+        $factory = new StripeCheckoutSessionGatewayFactory($defaults);
+
+        $config = $factory->createConfig();
+
+        $this->assertEquals($defaults['publishable_key'], $config['publishable_key']);
+        $this->assertEquals($defaults['secret_key'], $config['secret_key']);
+        $this->assertEquals($defaults['webhook_secret_keys'], $config['webhook_secret_keys']);
+
+        // Allow to update the credentials
+        $newCredentials = ArrayObject::ensureArrayObject([
+            'payum.required_options' => $config['payum.required_options'],
+            'publishable_key' => '654321',
+            'secret_key' => '654321',
+            'webhook_secret_keys' => [
+                '654321',
+            ],
+        ]);
+        $api = $config['payum.api']($newCredentials);
+        $this->assertInstanceOf(KeysInterface::class, $api);
     }
 }

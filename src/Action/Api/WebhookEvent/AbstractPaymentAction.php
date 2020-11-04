@@ -2,16 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Action\Api\WebhookEvent;
+namespace FluxSE\PayumStripe\Action\Api\WebhookEvent;
 
-use Payum\Core\Exception\LogicException;
+use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\GetToken;
 use Payum\Core\Request\Notify;
 use Payum\Core\Security\TokenInterface;
-use Prometee\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
 use Stripe\SetupIntent;
@@ -21,15 +20,15 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
     use GatewayAwareTrait;
 
     /**
-     * {@inheritDoc}
-     *
-     * @param WebhookEvent $request
+     * {@inheritdoc}
      */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
+        /** @var WebhookEvent $request */
         $eventWrapper = $request->getEventWrapper();
+
         $event = $eventWrapper->getEvent();
 
         /** @var Session|PaymentIntent|SetupIntent $sessionModeObject */
@@ -38,7 +37,7 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
         // 1. Retrieve the token hash into the metadata
         $metadata = $sessionModeObject->metadata;
         if (null === $metadata) {
-            throw new LogicException(sprintf('Metadata on %s is required !', Session::class));
+            throw RequestNotSupportedException::createActionNotSupported($this, $request);
         }
 
         /** @var string|null $tokenHash */
@@ -54,11 +53,6 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
         $this->gateway->execute(new Notify($token));
     }
 
-    /**
-     * @param string $tokenHash
-     *
-     * @return TokenInterface
-     */
     private function findTokenByHash(string $tokenHash): TokenInterface
     {
         $getTokenRequest = new GetToken($tokenHash);

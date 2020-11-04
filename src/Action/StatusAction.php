@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Action;
+namespace FluxSE\PayumStripe\Action;
 
 use ArrayAccess;
 use Payum\Core\Action\ActionInterface;
@@ -17,11 +17,6 @@ use Stripe\Subscription;
 
 class StatusAction implements ActionInterface
 {
-    /**
-     * {@inheritDoc}
-     *
-     * @param GetStatusInterface $request
-     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -30,16 +25,22 @@ class StatusAction implements ActionInterface
 
         if ($model['error']) {
             $request->markFailed();
+
             return;
         }
 
-        if ($model['object'] === Session::OBJECT_NAME) {
+        // PaymentIntent, Subscription, SetupIntent are the only object name allowed
+        // if it's a Session this means the process has been stop somewhere and the
+        // payment has to be retried
+        if (Session::OBJECT_NAME === $model['object']) {
             $request->markFailed();
+
             return;
         }
 
         if (false == $model['status']) {
             $request->markNew();
+
             return;
         }
 
@@ -54,12 +55,6 @@ class StatusAction implements ActionInterface
         $request->markUnknown();
     }
 
-    /**
-     * @param ArrayObject $model
-     * @param GetStatusInterface $request
-     *
-     * @return bool
-     */
     protected function isMarkedSessionMode(
         ArrayObject $model,
         GetStatusInterface $request
@@ -79,38 +74,36 @@ class StatusAction implements ActionInterface
         return false;
     }
 
-    /**
-     * @param ArrayObject $model
-     * @param GetStatusInterface $request
-     *
-     * @return bool
-     */
     protected function isMarkedPaymentIntent(
         ArrayObject $model,
         GetStatusInterface $request
     ): bool {
-        if ($model['object'] !== PaymentIntent::OBJECT_NAME) {
+        if (PaymentIntent::OBJECT_NAME !== $model['object']) {
             return false;
         }
 
         $status = (string) $model->offsetGet('status');
         if (PaymentIntent::STATUS_PROCESSING === $status) {
             $request->markPending();
+
             return true;
         }
 
         if ($this->isPaymentIntentCanceledStatus($status)) {
             $request->markCanceled();
+
             return true;
         }
 
         if (PaymentIntent::STATUS_SUCCEEDED === $status) {
             $request->markCaptured();
+
             return true;
         }
 
         if ($this->isPaymentIntentNewStatus($status)) {
             $request->markNew();
+
             return true;
         }
 
@@ -118,10 +111,6 @@ class StatusAction implements ActionInterface
     }
 
     /**
-     * @param string $status
-     *
-     * @return bool
-     *
      * @see https://stripe.com/docs/payments/intents#payment-intent
      */
     protected function isPaymentIntentCanceledStatus(string $status): bool
@@ -132,11 +121,6 @@ class StatusAction implements ActionInterface
         ]);
     }
 
-    /**
-     * @param string $status
-     *
-     * @return bool
-     */
     protected function isPaymentIntentNewStatus(string $status): bool
     {
         return in_array($status, [
@@ -145,39 +129,30 @@ class StatusAction implements ActionInterface
         ]);
     }
 
-    /**
-     * @param ArrayObject $model
-     * @param GetStatusInterface $request
-     *
-     * @return bool
-     */
     protected function isMarkedSubscription(
         ArrayObject $model,
         GetStatusInterface $request
     ): bool {
-        if ($model['object'] !== Subscription::OBJECT_NAME) {
+        if (Subscription::OBJECT_NAME !== $model['object']) {
             return false;
         }
 
         $status = (string) $model->offsetGet('status');
         if ($this->isSubscriptionCanceledStatus($status)) {
             $request->markCanceled();
+
             return true;
         }
 
         if ($this->isSubscriptionCapturedStatus($status)) {
             $request->markCaptured();
+
             return true;
         }
 
         return false;
     }
 
-    /**
-     * @param string $status
-     *
-     * @return bool
-     */
     protected function isSubscriptionCanceledStatus(string $status): bool
     {
         return in_array($status, [
@@ -187,11 +162,6 @@ class StatusAction implements ActionInterface
         ]);
     }
 
-    /**
-     * @param string $status
-     *
-     * @return bool
-     */
     protected function isSubscriptionCapturedStatus(string $status): bool
     {
         return in_array($status, [
@@ -200,38 +170,36 @@ class StatusAction implements ActionInterface
         ]);
     }
 
-    /**
-     * @param ArrayObject $model
-     * @param GetStatusInterface $request
-     *
-     * @return bool
-     */
     protected function isMarkedSetupIntent(
         ArrayObject $model,
         GetStatusInterface $request
     ): bool {
-        if ($model['object'] !== SetupIntent::OBJECT_NAME) {
+        if (SetupIntent::OBJECT_NAME !== $model['object']) {
             return false;
         }
 
         $status = (string) $model->offsetGet('status');
         if (SetupIntent::STATUS_PROCESSING === $status) {
             $request->markPending();
+
             return true;
         }
 
         if ($this->isSetupIntentCanceledStatus($status)) {
             $request->markCanceled();
+
             return true;
         }
 
         if (SetupIntent::STATUS_SUCCEEDED === $status) {
             $request->markCaptured();
+
             return true;
         }
 
         if ($this->isSetupIntentNewStatus($status)) {
             $request->markNew();
+
             return true;
         }
 
@@ -239,10 +207,6 @@ class StatusAction implements ActionInterface
     }
 
     /**
-     * @param string $status
-     *
-     * @return bool
-     *
      * @see https://stripe.com/docs/payments/intents#payment-intent
      */
     protected function isSetupIntentCanceledStatus(string $status): bool
@@ -253,11 +217,6 @@ class StatusAction implements ActionInterface
         ]);
     }
 
-    /**
-     * @param string $status
-     *
-     * @return bool
-     */
     protected function isSetupIntentNewStatus(string $status): bool
     {
         return in_array($status, [
@@ -265,32 +224,25 @@ class StatusAction implements ActionInterface
             SetupIntent::STATUS_REQUIRES_ACTION,
         ]);
     }
-    /**
-     * @param ArrayObject $model
-     * @param GetStatusInterface $request
-     *
-     * @return bool
-     */
+
     protected function isMarkedRefund(
         ArrayObject $model,
         GetStatusInterface $request
     ): bool {
-        if ($model['object'] !== Refund::OBJECT_NAME) {
+        if (Refund::OBJECT_NAME !== $model['object']) {
             return false;
         }
 
         $status = (string) $model->offsetGet('status');
         if (Refund::STATUS_SUCCEEDED === $status) {
             $request->markRefunded();
+
             return true;
         }
 
         return false;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function supports($request): bool
     {
         return

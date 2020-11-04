@@ -1,13 +1,13 @@
 <?php
 
-namespace Tests\Prometee\PayumStripe\Action\Api;
+namespace Tests\FluxSE\PayumStripe\Action\Api;
 
+use FluxSE\PayumStripe\Action\Api\ConstructEventAction;
+use FluxSE\PayumStripe\Request\Api\ConstructEvent;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripe\Action\Api\ConstructEventAction;
-use Prometee\PayumStripe\Request\Api\ConstructEvent;
 use Stripe\Exception\SignatureVerificationException;
 
 final class ConstructEventActionTest extends TestCase
@@ -31,7 +31,7 @@ final class ConstructEventActionTest extends TestCase
     {
         $payload = '';
         $sigHeader = '';
-        $webhookSecretKey = null;
+        $webhookSecretKey = '';
 
         $action = new ConstructEventAction();
 
@@ -52,7 +52,7 @@ final class ConstructEventActionTest extends TestCase
 
         $webhookSecretKey = 'whsec_test';
 
-        $payload = file_get_contents(__DIR__ . '/../../Resources/Webhooks/checkout-session-completed.json');
+        $payload = file_get_contents(__DIR__.'/../../Resources/Webhooks/checkout-session-completed.json');
 
         $signedPayload = sprintf('%s.%s', $now, $payload);
         $signature = hash_hmac('sha256', $signedPayload, $webhookSecretKey);

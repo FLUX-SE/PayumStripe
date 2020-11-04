@@ -2,17 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Request\Api\Resource;
+namespace FluxSE\PayumStripe\Request\Api\Resource;
 
 abstract class AbstractDelete extends AbstractRetrieve implements DeleteInterface
 {
-    use OptionsAwareTrait,
-        ResourceAwareTrait;
+    use OptionsAwareTrait;
+    use ResourceAwareTrait;
 
-    /**
-     * @param string $id
-     * @param array $options
-     */
     public function __construct(string $id, array $options = [])
     {
         parent::__construct($id);
@@ -20,7 +16,7 @@ abstract class AbstractDelete extends AbstractRetrieve implements DeleteInterfac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getId(): string
     {
@@ -28,7 +24,7 @@ abstract class AbstractDelete extends AbstractRetrieve implements DeleteInterfac
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setId(string $id): void
     {

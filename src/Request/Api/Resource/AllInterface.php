@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Request\Api\Resource;
+namespace FluxSE\PayumStripe\Request\Api\Resource;
 
 use Payum\Core\Model\ModelAggregateInterface;
 use Payum\Core\Model\ModelAwareInterface;
@@ -17,9 +17,6 @@ interface AllInterface extends OptionsAwareInterface, ModelAwareInterface, Model
      */
     public function getParameters(): ?array;
 
-    /**
-     * @param array $parameters
-     */
     public function setParameters(array $parameters): void;
 
     /**

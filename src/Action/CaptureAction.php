@@ -2,12 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Action;
+namespace FluxSE\PayumStripe\Action;
 
 use ArrayAccess;
+use FluxSE\PayumStripe\Request\Api\RedirectToCheckout;
+use FluxSE\PayumStripe\Request\Api\Resource\CreateSession;
+use LogicException;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
-use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
@@ -16,19 +18,12 @@ use Payum\Core\Request\Sync;
 use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryAwareTrait;
 use Payum\Core\Security\TokenInterface;
-use Prometee\PayumStripe\Request\Api\RedirectToCheckout;
-use Prometee\PayumStripe\Request\Api\Resource\CreateSession;
 
 class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTokenFactoryAwareInterface
 {
-    use GatewayAwareTrait,
-        GenericTokenFactoryAwareTrait;
+    use GatewayAwareTrait;
+    use GenericTokenFactoryAwareTrait;
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param Capture $request
-     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -36,7 +31,7 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
 
         if (false === $model->offsetExists('id')) {
             // 0. Create another token to allow payment webhooks to use `Notify`
-            $token = $request->getToken();
+            $token = $this->getRequestToken($request);
             $notifyToken = $this->tokenFactory->createNotifyToken(
                 $token->getGatewayName(),
                 $token->getDetails()
@@ -73,16 +68,13 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
     }
 
     /**
-     * Save the token hash for future webhook consuming retrieval
+     * Save the token hash for future webhook consuming retrieval.
      *
      *  - A `Session` can be completed.
      *  - or its `PaymentIntent` can be canceled.
      *  - or its `SetupIntent` can be canceled.
      *
      * So the token hash have to be stored both on `Session` metadata and other mode metadata
-     *
-     * @param ArrayObject $model
-     * @param TokenInterface $token
      */
     public function embedNotifyTokenHash(ArrayObject $model, TokenInterface $token): void
     {
@@ -98,9 +90,6 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
         $this->embedOnModeData($model, $token, $modeDataKey);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request): bool
     {
         return
@@ -109,11 +98,6 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
         ;
     }
 
-    /**
-     * @param ArrayObject $model
-     * @param TokenInterface $token
-     * @param string $modeDataKey
-     */
     public function embedOnModeData(ArrayObject $model, TokenInterface $token, string $modeDataKey): void
     {
         $paymentIntentData = $model->offsetGet($modeDataKey);
@@ -127,11 +111,6 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
         $model[$modeDataKey] = $paymentIntentData;
     }
 
-    /**
-     * @param ArrayObject $model
-     *
-     * @return string
-     */
     protected function detectModeData(ArrayObject $model): string
     {
         if ($model->offsetExists('subscription_data')) {
@@ -143,5 +122,16 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
         }
 
         return 'payment_intent_data';
+    }
+
+    private function getRequestToken(Capture $request): TokenInterface
+    {
+        $token = $request->getToken();
+
+        if (null === $token) {
+            throw new LogicException('The request token should not be null !');
+        }
+
+        return $token;
     }
 }

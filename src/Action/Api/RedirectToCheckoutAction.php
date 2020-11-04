@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Action\Api;
+namespace FluxSE\PayumStripe\Action\Api;
 
+use FluxSE\PayumStripe\Request\Api\RedirectToCheckout;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -11,7 +12,6 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\RenderTemplate;
-use Prometee\PayumStripe\Request\Api\RedirectToCheckout;
 
 final class RedirectToCheckoutAction implements ActionInterface, ApiAwareInterface, GatewayAwareInterface
 {
@@ -20,14 +20,9 @@ final class RedirectToCheckoutAction implements ActionInterface, ApiAwareInterfa
         StripeApiAwareTrait::__construct as private __stripeApiAwareTraitConstruct;
     }
 
-    /**
-     * @var string
-     */
+    /** @var string */
     protected $templateName;
 
-    /**
-     * @param string $templateName
-     */
     public function __construct(string $templateName)
     {
         $this->templateName = $templateName;
@@ -35,9 +30,7 @@ final class RedirectToCheckoutAction implements ActionInterface, ApiAwareInterfa
     }
 
     /**
-     * {@inheritDoc}
-     *
-     * @param RedirectToCheckout $request
+     * {@inheritdoc}
      */
     public function execute($request): void
     {
@@ -54,7 +47,7 @@ final class RedirectToCheckoutAction implements ActionInterface, ApiAwareInterfa
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports($request): bool
     {

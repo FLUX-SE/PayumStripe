@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Prometee\PayumStripe\Action;
+namespace Tests\FluxSE\PayumStripe\Action;
 
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -17,8 +17,6 @@ trait GatewayAwareTestTrait
      * @psalm-template RealInstanceType of object
      * @psalm-param class-string<RealInstanceType>|string[] $originalClassName
      * @psalm-return MockObject&RealInstanceType
-     *
-     * @return MockObject
      */
     abstract protected function createMock(string $originalClassName): MockObject;
 

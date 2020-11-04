@@ -1,11 +1,12 @@
 <?php
 
-namespace Tests\Prometee\PayumStripe\Request\Api;
+namespace Tests\FluxSE\PayumStripe\Request\Api;
 
+use FluxSE\PayumStripe\Request\Api\ConstructEvent;
+use FluxSE\PayumStripe\Wrapper\EventWrapper;
+use LogicException;
 use Payum\Core\Request\Generic;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripe\Request\Api\ConstructEvent;
-use Prometee\PayumStripe\Wrapper\EventWrapper;
 use Stripe\Event;
 
 final class ConstructEventTest extends TestCase
@@ -15,7 +16,7 @@ final class ConstructEventTest extends TestCase
      */
     public function shouldBeSubClassOfGeneric()
     {
-        $constructEvent = new ConstructEvent('', '');
+        $constructEvent = new ConstructEvent('', '', '');
 
         $this->assertInstanceOf(Generic::class, $constructEvent);
     }
@@ -24,9 +25,9 @@ final class ConstructEventTest extends TestCase
     {
         $constructEvent = new ConstructEvent('', '', '');
 
-        $constructEvent->setWebhookSecretKey(null);
+        $constructEvent->setWebhookSecretKey('my_whsec');
 
-        $this->assertEquals(null, $constructEvent->getWebhookSecretKey());
+        $this->assertEquals('my_whsec', $constructEvent->getWebhookSecretKey());
     }
 
     public function testGetWebhookSecretKey()
@@ -59,5 +60,20 @@ final class ConstructEventTest extends TestCase
         $constructEvent = new ConstructEvent('', '', '');
 
         $this->assertEquals(null, $constructEvent->getEventWrapper());
+    }
+
+    public function testPayloadIsNotAString()
+    {
+        $constructEvent = new ConstructEvent('', '', '');
+        $constructEvent->setModel(null);
+        $this->expectException(LogicException::class);
+        $constructEvent->getPayload();
+    }
+
+    public function testChangePayload()
+    {
+        $constructEvent = new ConstructEvent('', '', '');
+        $constructEvent->setPayload('payload_test');
+        $this->assertEquals('payload_test', $constructEvent->getPayload());
     }
 }

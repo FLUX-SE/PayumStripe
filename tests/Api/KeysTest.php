@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\Prometee\PayumStripe\Api;
+namespace Tests\FluxSE\PayumStripe\Api;
 
+use FluxSE\PayumStripe\Api\Keys;
+use FluxSE\PayumStripe\Api\KeysInterface;
 use PHPUnit\Framework\TestCase;
-use Prometee\PayumStripe\Api\Keys;
-use Prometee\PayumStripe\Api\KeysInterface;
 
 final class KeysTest extends TestCase
 {

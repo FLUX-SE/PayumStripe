@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Action;
+namespace FluxSE\PayumStripe\Action;
 
+use FluxSE\PayumStripe\Request\Api\ResolveWebhookEvent;
+use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -11,18 +13,11 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Notify;
 use Payum\Core\Request\Sync;
-use Prometee\PayumStripe\Request\Api\ResolveWebhookEvent;
-use Prometee\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 
 final class NotifyAction implements ActionInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param Notify $request
-     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -35,7 +30,7 @@ final class NotifyAction implements ActionInterface, GatewayAwareInterface
     }
 
     /**
-     * All webhooks will be handle by this method
+     * All webhooks will be handle by this method.
      */
     private function executeWebhook(): void
     {
@@ -50,9 +45,6 @@ final class NotifyAction implements ActionInterface, GatewayAwareInterface
         $this->gateway->execute(new WebhookEvent($eventWrapper));
     }
 
-    /**
-     * {@inheritDoc}
-     */
     public function supports($request): bool
     {
         return $request instanceof Notify;

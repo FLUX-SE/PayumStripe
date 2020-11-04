@@ -2,20 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Prometee\PayumStripe\Action\Api\Resource;
+namespace FluxSE\PayumStripe\Action\Api\Resource;
 
-use Prometee\PayumStripe\Request\Api\Resource\RetrieveSession;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInterface;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSession;
 use Stripe\Checkout\Session;
 
 final class RetrieveSessionAction extends AbstractRetrieveAction
 {
-    /** @var string|Session */
     protected $apiResourceClass = Session::class;
 
-    /**
-     * {@inheritDoc}
-     */
-    public function supportAlso($request): bool
+    public function supportAlso(RetrieveInterface $request): bool
     {
         return $request instanceof RetrieveSession;
     }
