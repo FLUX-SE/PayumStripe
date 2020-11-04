@@ -18,6 +18,7 @@ use Payum\Core\Request\Sync;
 use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryAwareTrait;
 use Payum\Core\Security\TokenInterface;
+use Stripe\ApiResource;
 
 class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTokenFactoryAwareInterface
 {
@@ -40,13 +41,8 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
 
             // 1. Use the capture URL to `Sync` the payment
             //    after the customer get back from Stripe Checkout Session
-            $model->offsetSet('success_url', $token->getTargetUrl());
-            $model->offsetSet('cancel_url', $token->getTargetUrl());
-
             // 2. Create a new `Session`
-            $createCheckoutSession = new CreateSession($model->getArrayCopy());
-            $this->gateway->execute($createCheckoutSession);
-            $session = $createCheckoutSession->getApiResource();
+            $session = $this->createCaptureResource($model, $request);
 
             // 3. Prepare storing of a `Session` object synced to one of this object :
             //      - `PaymentIntent`
@@ -58,8 +54,7 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
             $this->gateway->execute(new Sync($model));
 
             // 4. Display the page to redirect to Stripe Checkout portal
-            $redirectToCheckout = new RedirectToCheckout($session->toArray());
-            $this->gateway->execute($redirectToCheckout);
+            $this->renderCapture($session, $request);
             // Nothing else will be execute after this line because of the rendering of the template
         }
 
@@ -90,14 +85,6 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
         $this->embedOnModeData($model, $token, $modeDataKey);
     }
 
-    public function supports($request): bool
-    {
-        return
-            $request instanceof Capture &&
-            $request->getModel() instanceof ArrayAccess
-        ;
-    }
-
     public function embedOnModeData(ArrayObject $model, TokenInterface $token, string $modeDataKey): void
     {
         $paymentIntentData = $model->offsetGet($modeDataKey);
@@ -124,7 +111,7 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
         return 'payment_intent_data';
     }
 
-    private function getRequestToken(Capture $request): TokenInterface
+    protected function getRequestToken(Capture $request): TokenInterface
     {
         $token = $request->getToken();
 
@@ -133,5 +120,31 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
         }
 
         return $token;
+    }
+
+    protected function createCaptureResource(ArrayObject $model, Capture $request): ApiResource
+    {
+        $token = $this->getRequestToken($request);
+        $model->offsetSet('success_url', $token->getTargetUrl());
+        $model->offsetSet('cancel_url', $token->getTargetUrl());
+
+        $createCheckoutSession = new CreateSession($model->getArrayCopy());
+        $this->gateway->execute($createCheckoutSession);
+
+        return $createCheckoutSession->getApiResource();
+    }
+
+    protected function renderCapture(ApiResource $captureResource, Capture $request): void
+    {
+        $redirectToCheckout = new RedirectToCheckout($captureResource->toArray());
+        $this->gateway->execute($redirectToCheckout);
+    }
+
+    public function supports($request): bool
+    {
+        return
+            $request instanceof Capture &&
+            $request->getModel() instanceof ArrayAccess
+            ;
     }
 }

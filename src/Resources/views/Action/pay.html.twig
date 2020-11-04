@@ -1,0 +1,158 @@
+{# @var model \Stripe\PaymentIntent #}
+{% extends layout ?: "@PayumCore/layout.html.twig" %}
+
+{% block payum_body %}
+    {{ parent() }}
+
+    <form action="{{ action_url|default('') }}" method="POST" name="payment-form" id="payment-form" data-secret="{{ model.client_secret }}">
+        <div class="form-row">
+            <div id="card-element">
+                <!-- Elements will create input elements here -->
+            </div>
+
+            <!-- We'll put the error messages in this element -->
+            <div id="card-errors" role="alert"></div>
+        </div>
+
+        <button type="submit">Pay</button>
+    </form>
+{% endblock %}
+
+{% block payum_javascripts_stripejs_global %}
+    <script src="https://js.stripe.com/v3/"></script>
+{% endblock %}
+
+{% block payum_javascripts_stripejs_style %}
+    <script type="text/javascript">
+        var style = {
+            base: {
+                color: '#32325d',
+                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                fontSmoothing: 'antialiased',
+                fontSize: '16px',
+                '::placeholder': {
+                    color: '#aab7c4'
+                }
+            },
+            invalid: {
+                color: '#fa755a',
+                iconColor: '#fa755a'
+            }
+        };
+    </script>
+{% endblock %}
+
+{% block payum_javascripts_stripejs_common %}
+    <script type="text/javascript">
+        var stripe = Stripe('{{ publishable_key }}');
+        var elements = stripe.elements();
+
+        // Create an instance of the card Element.
+        var card = elements.create('card', {style: style});
+
+        // Add an instance of the card Element into the `card-element` <div>.
+        card.mount('#card-element');
+
+        // Handle real-time validation errors from the card Element.
+        card.addEventListener('change', function(event) {
+            showError(event.error ? event.error.message : '');
+        });
+
+        // Handle form submission.
+        var form = document.getElementById('payment-form');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            changeLoadingState(true);
+
+            stripe.confirmCardPayment(form.dataset['secret'], {
+                payment_method: {
+                    card: card,
+                }
+            }).then(function(result) {
+                if (result.error) {
+                    changeLoadingState(false);
+                    // Show error to your customer
+                    showError(result.error.message);
+                } else {
+                    // The payment has been processed!
+                    var paymentIntent = result.paymentIntent;
+                    if (paymentIntent.status === 'succeeded') {
+                        // Show a success message to your customer
+                        // There's a risk of the customer closing the window before callback
+                        // execution. Set up a webhook or plugin to listen for the
+                        // payment_intent.succeeded event that handles any business critical
+                        // post-payment actions.
+                        form.submit();
+                    }
+                }
+            });
+        });
+
+        var showError = function(errorMsgText) {
+            var displayError = document.getElementById('card-errors');
+            displayError.textContent = errorMsgText;
+        };
+
+        // Show a spinner on payment submission
+        var changeLoadingState = function(isLoading) {
+            if (isLoading) {
+                form.querySelector("button").disabled = true;
+            } else {
+                form.querySelector("button").disabled = false;
+            }
+        };
+    </script>
+{% endblock %}
+
+{% block payum_stylesheets_stripejs_common %}
+    <style type="text/css">
+        #payment-form {
+            max-width: 500px;
+        }
+
+        #payment-form > .form-row {
+            margin: 50px 0;
+        }
+
+        .StripeElement {
+            box-sizing: border-box;
+
+            height: 40px;
+
+            padding: 10px 12px;
+
+            border: 1px solid transparent;
+            border-radius: 4px;
+            background-color: white;
+
+            box-shadow: 0 1px 3px 0 #e6ebf1;
+            -webkit-transition: box-shadow 150ms ease;
+            transition: box-shadow 150ms ease;
+        }
+
+        .StripeElement--focus {
+            box-shadow: 0 1px 3px 0 #cfd7df;
+        }
+
+        .StripeElement--invalid {
+            border-color: #fa755a;
+        }
+
+        .StripeElement--webkit-autofill {
+            background-color: #fefde5 !important;
+        }
+    </style>
+{% endblock %}
+
+{% block payum_javascripts %}
+    {{ parent() }}
+    {{ block('payum_javascripts_stripejs_global') }}
+    {{ block('payum_javascripts_stripejs_style') }}
+    {{ block('payum_javascripts_stripejs_common') }}
+{% endblock %}
+
+{% block payum_stylesheets %}
+    {{ parent() }}
+    {{ block('payum_stylesheets_stripejs_common') }}
+{% endblock %}
