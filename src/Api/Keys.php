@@ -26,41 +26,26 @@ final class Keys implements KeysInterface
         $this->webhookSecretKeys = $webhookSecretKeys;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSecretKey(): string
     {
         return $this->secret;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPublishableKey(): string
     {
         return $this->publishable;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getWebhookSecretKeys(): array
     {
         return $this->webhookSecretKeys;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function hasWebhookSecretKey(string $webhookSecretKey): bool
     {
         return in_array($webhookSecretKey, $this->webhookSecretKeys);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function addWebhookSecretKey(string $webhookSecretKey): void
     {
         if (!$this->hasWebhookSecretKey($webhookSecretKey)) {
@@ -68,9 +53,6 @@ final class Keys implements KeysInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setWebhookSecretKeys(array $webhookSecretKeys): void
     {
         $this->webhookSecretKeys = $webhookSecretKeys;

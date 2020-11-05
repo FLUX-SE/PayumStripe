@@ -35,9 +35,6 @@ class ConstructEventAction implements ActionInterface
         $request->setEventWrapper($eventWrapper);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request): bool
     {
         return $request instanceof ConstructEvent

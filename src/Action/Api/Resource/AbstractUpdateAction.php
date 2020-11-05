@@ -17,13 +17,11 @@ abstract class AbstractUpdateAction implements UpdateResourceActionInterface
     use StripeApiAwareTrait;
     use ResourceAwareActionTrait;
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
+        /** @var UpdateInterface $request */
         $apiResources = $this->updateApiResource($request);
 
         $request->setApiResource($apiResources);
@@ -46,9 +44,6 @@ abstract class AbstractUpdateAction implements UpdateResourceActionInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request): bool
     {
         return

@@ -11,7 +11,6 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Stripe\ApiOperations\Delete;
 use Stripe\ApiOperations\Retrieve;
 use Stripe\ApiResource;
-use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
 
 abstract class AbstractDeleteAction implements DeleteResourceActionInterface
@@ -19,17 +18,11 @@ abstract class AbstractDeleteAction implements DeleteResourceActionInterface
     use StripeApiAwareTrait;
     use ResourceAwareActionTrait;
 
-    /**
-     * {@inheritdoc}
-     *
-     * @throws ApiErrorException
-     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        $this->checkRequest($request);
-
+        /** @var DeleteInterface $request */
         $apiResource = $this->deleteApiResource($request);
 
         $request->setApiResource($apiResource);
@@ -58,19 +51,11 @@ abstract class AbstractDeleteAction implements DeleteResourceActionInterface
         return $apiResource->delete();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request): bool
     {
         return
             $request instanceof DeleteInterface &&
             $this->supportAlso($request)
         ;
-    }
-
-    protected function checkRequest(DeleteInterface $request): void
-    {
-        // Silent is golden
     }
 }

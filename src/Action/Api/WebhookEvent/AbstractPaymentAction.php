@@ -19,9 +19,6 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
 {
     use GatewayAwareTrait;
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);

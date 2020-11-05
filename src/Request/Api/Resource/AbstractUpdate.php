@@ -21,33 +21,21 @@ abstract class AbstractUpdate extends Generic implements UpdateInterface
         $this->setOptions($options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId(): string
     {
         return (string) $this->getModel();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setId(string $id): void
     {
         $this->setModel($id);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParameters(): array
     {
         return $this->parameters;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setParameters(array $parameters): void
     {
         $this->parameters = $parameters;

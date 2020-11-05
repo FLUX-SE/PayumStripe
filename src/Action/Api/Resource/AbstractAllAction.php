@@ -21,8 +21,6 @@ abstract class AbstractAllAction implements AllResourceActionInterface
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        $this->checkRequest($request);
-
         $apiResources = $this->allApiResource($request);
 
         $request->setApiResources($apiResources);
@@ -53,10 +51,5 @@ abstract class AbstractAllAction implements AllResourceActionInterface
             $request instanceof AllInterface &&
             $this->supportAlso($request)
         ;
-    }
-
-    protected function checkRequest(AllInterface $request): void
-    {
-        // Silent is golden
     }
 }

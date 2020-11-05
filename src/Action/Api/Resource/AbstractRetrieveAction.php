@@ -21,6 +21,7 @@ abstract class AbstractRetrieveAction implements RetrieveResourceActionInterface
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
+        /** @var RetrieveInterface $request */
         $apiResource = $this->retrieveApiResource($request);
 
         $request->setApiResource($apiResource);
@@ -42,11 +43,6 @@ abstract class AbstractRetrieveAction implements RetrieveResourceActionInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     *
-     * @param RetrieveInterface $request
-     */
     public function supports($request): bool
     {
         return

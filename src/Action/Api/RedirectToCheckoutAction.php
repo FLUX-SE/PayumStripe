@@ -29,13 +29,11 @@ final class RedirectToCheckoutAction implements ActionInterface, ApiAwareInterfa
         $this->__stripeApiAwareTraitConstruct();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
+        /** @var RedirectToCheckout $request */
         $renderTemplate = new RenderTemplate($this->templateName, [
             'model' => $request->getModel(),
             'publishable_key' => $this->api->getPublishableKey(),

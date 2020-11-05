@@ -21,6 +21,7 @@ abstract class AbstractCreateAction implements CreateResourceActionInterface
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
+        /** @var CreateInterface $request */
         $apiResource = $this->createApiResource($request);
 
         $request->setApiResource($apiResource);

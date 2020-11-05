@@ -15,17 +15,11 @@ abstract class AbstractDelete extends AbstractRetrieve implements DeleteInterfac
         $this->setOptions($options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getId(): string
     {
         return (string) $this->getModel();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setId(string $id): void
     {
         $this->setModel($id);
