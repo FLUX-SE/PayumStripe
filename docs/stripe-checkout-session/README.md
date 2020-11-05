@@ -2,9 +2,14 @@
 
 See https://stripe.com/docs/payments/checkout for more information.
 
-## Configuration
+## Get it started
 
 First get [your credentials](../stripe-credentials.md) from Stripe dashboard.
+
+ > The following example is the basic Payum implementation
+ > (see [documentation of Payum](https://github.com/Payum/Payum/blob/master/docs/get-it-started.md) for more information)
+
+### config.php
 
 ```php
 <?php
@@ -36,32 +41,107 @@ $payum = (new PayumBuilder())
 ;
 ```
 
-## Usage quick Example
-
-More effort is needed to get a full working Payum solution, but here is a generic example.
+### prepare.php
 
 ```php
 <?php
 
 declare(strict_types=1);
 
+include __DIR__.'/config.php';
+
 use Payum\Core\Model\Payment;
-use Payum\Core\Request\Capture;
 
-$gateway = $payum->getGateway('stripe_checkout_session');
+$gatewayName = 'stripe_checkout_session';
 
-$payment = new Payment();
-$payment->setNumber('00001');
-$payment->setTotalAmount(123);
-$payment->setCurrencyCode('USD');
-$payment->setClientEmail('test@domain.tld');
-$payment->setDescription('My test order');
+$storage = $payum->getStorage(Payment::class);
+
+/** @var Payment $payment */
+$payment = $storage->create();
+$payment->setNumber(uniqid());
+$payment->setCurrencyCode('EUR');
+$payment->setTotalAmount(123); // 1.23 EUR
+$payment->setDescription('A description');
+$payment->setClientId('anId');
+$payment->setClientEmail('foo@example.com');
 $payment->setDetails([]);
 
-$token = $payum->getTokenFactory()
-    ->createCaptureToken('stripe_checkout_session', $payment, '/after-pay.php');
+$storage->update($payment);
 
-$gateway->execute(new Capture($token));
+$tokenFactory = $payum->getTokenFactory();
+$captureToken = $tokenFactory->createCaptureToken($gatewayName, $payment, 'done.php');
+
+header("Location: ".$captureToken->getTargetUrl());
+```
+
+### capture.php
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Payum\Core\Reply\HttpResponse;
+use Payum\Core\Request\Capture;
+use Payum\Core\Reply\HttpRedirect;
+
+include __DIR__.'/config.php';
+
+$token = $payum->getHttpRequestVerifier()->verify($_REQUEST);
+$gateway = $payum->getGateway($token->getGatewayName());
+
+if ($reply = $gateway->execute(new Capture($token), true)) {
+    if ($reply instanceof HttpRedirect) {
+        header("Location: ".$reply->getUrl());
+        die();
+    }
+    if ($reply instanceof HttpResponse) {
+        echo $reply->getContent();
+        die();
+    }
+
+    throw new \LogicException('Unsupported reply', null, $reply);
+}
+
+$payum->getHttpRequestVerifier()->invalidate($token);
+
+header("Location: ".$token->getAfterUrl());
+```
+
+### done.php
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use Payum\Core\Request\GetHumanStatus;
+
+include __DIR__.'/config.php';
+
+$token = $payum->getHttpRequestVerifier()->verify($_REQUEST);
+$gateway = $payum->getGateway($token->getGatewayName());
+
+// you can invalidate the token. The url could not be requested any more.
+// $payum->getHttpRequestVerifier()->invalidate($token);
+
+// Once you have token you can get the model from the storage directly.
+//$identity = $token->getDetails();
+//$payment = $payum->getStorage($identity->getClass())->find($identity);
+
+// or Payum can fetch the model for you while executing a request (Preferred).
+$gateway->execute($status = new GetHumanStatus($token));
+$payment = $status->getFirstModel();
+
+header('Content-Type: application/json');
+echo json_encode([
+    'status' => $status->getValue(),
+    'order' => [
+        'total_amount' => $payment->getTotalAmount(),
+        'currency_code' => $payment->getCurrencyCode(),
+        'details' => $payment->getDetails(),
+    ],
+], JSON_PRETTY_PRINT);
 ```
 
 ## Webhooks
@@ -95,11 +175,11 @@ Examples available into the [`src/Action/Api/WebhookEvent/`](../../src/Action/Ap
 ## Subscription handling
 
 Payum don't have php `Interfaces` to handle subscription, that's why subscriptions should be
-managed by yourself. There is maybe a composer packages which meet your need,
+managed by yourself. There is maybe a composer packages which fit your need,
 but you will have to build the interface between your subscription `Model` class and `Payum`.
 
 Usually you will have to build a `ConvertPaymentAction` like this one : [ConvertPaymentAction.php](https://github.com/FLUX-SE/SyliusPayumStripePlugin/blob/master/src/Action/ConvertPaymentAction.php)
-customizing the `supports` method to meet your need and finally providing the right `$details` array.
+customizing the `supports` method to fit your need and provide the right `$details` array.
 
 Example : https://stripe.com/docs/payments/checkout/subscriptions/starting#create-checkout-session (`$details` is the array given to create a `Session`)
 
