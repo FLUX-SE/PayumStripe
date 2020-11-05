@@ -9,10 +9,7 @@ use Stripe\SetupIntent;
 
 final class StatusActionSetupIntentTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function shouldMarkCapturedIfIsASetupIntentObjectAndStatusSucceeded()
+    public function testShouldMarkCapturedIfIsASetupIntentObjectAndStatusSucceeded()
     {
         $action = new StatusAction();
 
@@ -27,10 +24,7 @@ final class StatusActionSetupIntentTest extends TestCase
         $this->assertTrue($status->isCaptured());
     }
 
-    /**
-     * @test
-     */
-    public function shouldNotMarkCapturedIfIsASetupIntentObjectAndStatusIsNotAValidStatus()
+    public function testShouldNotMarkCapturedIfIsASetupIntentObjectAndStatusIsNotAValidStatus()
     {
         $action = new StatusAction();
 
@@ -46,10 +40,7 @@ final class StatusActionSetupIntentTest extends TestCase
         $this->assertTrue($status->isUnknown());
     }
 
-    /**
-     * @test
-     */
-    public function shouldMarkCanceledIfIsASetupIntentObjectAndStatusIsCanceled()
+    public function testShouldMarkCanceledIfIsASetupIntentObjectAndStatusIsCanceled()
     {
         $action = new StatusAction();
 
@@ -64,10 +55,7 @@ final class StatusActionSetupIntentTest extends TestCase
         $this->assertTrue($status->isCanceled());
     }
 
-    /**
-     * @test
-     */
-    public function shouldMarkAsCanceledIfIsASetupIntentObjectAndStatusRequiresPaymentMethod()
+    public function testShouldMarkAsCanceledIfIsASetupIntentObjectAndStatusRequiresPaymentMethod()
     {
         $action = new StatusAction();
 
@@ -82,10 +70,7 @@ final class StatusActionSetupIntentTest extends TestCase
         $this->assertTrue($status->isCanceled());
     }
 
-    /**
-     * @test
-     */
-    public function shouldMarkAsNewIfIsASetupIntentObjectAndStatusRequiresConfirmation()
+    public function testShouldMarkAsNewIfIsASetupIntentObjectAndStatusRequiresConfirmation()
     {
         $action = new StatusAction();
 
@@ -100,10 +85,7 @@ final class StatusActionSetupIntentTest extends TestCase
         $this->assertTrue($status->isNew());
     }
 
-    /**
-     * @test
-     */
-    public function shouldMarkAsNewIfIsASetupIntentObjectAndStatusRequiresAction()
+    public function testShouldMarkAsNewIfIsASetupIntentObjectAndStatusRequiresAction()
     {
         $action = new StatusAction();
 
@@ -118,10 +100,7 @@ final class StatusActionSetupIntentTest extends TestCase
         $this->assertTrue($status->isNew());
     }
 
-    /**
-     * @test
-     */
-    public function shouldMarkPendingIfIsASetupIntentObjectAndStatusIsProcessing()
+    public function testShouldMarkPendingIfIsASetupIntentObjectAndStatusIsProcessing()
     {
         $action = new StatusAction();
 

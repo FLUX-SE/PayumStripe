@@ -22,10 +22,7 @@ final class SyncActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
-    /**
-     * @test
-     */
-    public function shouldImplements()
+    public function testShouldImplements()
     {
         $action = new SyncAction();
 
@@ -94,10 +91,7 @@ final class SyncActionTest extends TestCase
         $action->execute($request);
     }
 
-    /**
-     * @test
-     */
-    public function shouldRetrievePaymentIntentWhenSessionObjectContainsPaymentIntentId()
+    public function testShouldRetrievePaymentIntentWhenSessionObjectContainsPaymentIntentId()
     {
         $model = [
             'object' => Session::OBJECT_NAME,
@@ -108,10 +102,7 @@ final class SyncActionTest extends TestCase
         $this->retrievePaymentIntentFromModel($model);
     }
 
-    /**
-     * @test
-     */
-    public function shouldRetrieveAPaymentIntentFromAPaymentIntentObject()
+    public function testShouldRetrieveAPaymentIntentFromAPaymentIntentObject()
     {
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
@@ -121,10 +112,7 @@ final class SyncActionTest extends TestCase
         $this->retrievePaymentIntentFromModel($model);
     }
 
-    /**
-     * @test
-     */
-    public function shouldRetrieveSubscriptionWhenSessionObjectContainsSubscriptionId()
+    public function testShouldRetrieveSubscriptionWhenSessionObjectContainsSubscriptionId()
     {
         $model = [
             'object' => Session::OBJECT_NAME,
@@ -135,10 +123,7 @@ final class SyncActionTest extends TestCase
         $this->retrieveSubscriptionFromModel($model);
     }
 
-    /**
-     * @test
-     */
-    public function shouldRetrieveASubscriptionFromASubscriptionObject()
+    public function testShouldRetrieveASubscriptionFromASubscriptionObject()
     {
         $model = [
             'object' => Subscription::OBJECT_NAME,
@@ -148,10 +133,7 @@ final class SyncActionTest extends TestCase
         $this->retrieveSubscriptionFromModel($model);
     }
 
-    /**
-     * @test
-     */
-    public function shouldRetrieveSetupIntentWhenSessionObjectContainsSetupIntentId()
+    public function testShouldRetrieveSetupIntentWhenSessionObjectContainsSetupIntentId()
     {
         $model = [
             'object' => Session::OBJECT_NAME,
@@ -162,10 +144,7 @@ final class SyncActionTest extends TestCase
         $this->retrieveSetupIntentFromModel($model);
     }
 
-    /**
-     * @test
-     */
-    public function shouldRetrieveASetupIntentFromASetupIntentObject()
+    public function testShouldRetrieveASetupIntentFromASetupIntentObject()
     {
         $model = [
             'object' => SetupIntent::OBJECT_NAME,
@@ -175,10 +154,7 @@ final class SyncActionTest extends TestCase
         $this->retrieveSetupIntentFromModel($model);
     }
 
-    /**
-     * @test
-     */
-    public function shouldThrowExceptionWhenObjectIsNotProvided()
+    public function testShouldThrowExceptionWhenObjectIsNotProvided()
     {
         $model = [
             'id' => 'test_1',
@@ -200,11 +176,9 @@ final class SyncActionTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @throws LogicException
      */
-    public function shouldThrowExceptionWhenIdIsNotProvided()
+    public function testShouldThrowExceptionWhenIdIsNotProvided()
     {
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
@@ -225,10 +199,7 @@ final class SyncActionTest extends TestCase
         $action->execute($request);
     }
 
-    /**
-     * @test
-     */
-    public function shouldRetrieveSessionWhenRetrievableSessionModeObjectIdIsNotProvided()
+    public function testShouldRetrieveSessionWhenRetrievableSessionModeObjectIdIsNotProvided()
     {
         $model = [
             'object' => Session::OBJECT_NAME,

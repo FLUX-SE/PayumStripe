@@ -8,10 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class RedirectToCheckoutTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function shouldBeSubClassOfGeneric()
+    public function testShouldBeSubClassOfGeneric()
     {
         $redirectToCheckout = new RedirectToCheckout([]);
 

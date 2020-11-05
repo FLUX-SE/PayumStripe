@@ -21,10 +21,7 @@ final class PaymentIntentCanceledActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
-    /**
-     * @test
-     */
-    public function shouldImplements()
+    public function testShouldImplements()
     {
         $action = new PaymentIntentCanceledAction();
 
@@ -36,10 +33,7 @@ final class PaymentIntentCanceledActionTest extends TestCase
         $this->assertInstanceOf(AbstractWebhookEventAction::class, $action);
     }
 
-    /**
-     * @test
-     */
-    public function shouldConsumeAWebhookEvent()
+    public function testShouldConsumeAWebhookEvent()
     {
         $model = [
             'id' => 'event_1',

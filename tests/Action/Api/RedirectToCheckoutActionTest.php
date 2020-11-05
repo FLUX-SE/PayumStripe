@@ -19,10 +19,7 @@ final class RedirectToCheckoutActionTest extends TestCase
     use ApiAwareActionTestTrait;
     use GatewayAwareTestTrait;
 
-    /**
-     * @test
-     */
-    public function shouldImplements()
+    public function testShouldImplements()
     {
         $action = new RedirectToCheckoutAction('aTemplateName');
 
@@ -31,10 +28,7 @@ final class RedirectToCheckoutActionTest extends TestCase
         $this->assertInstanceOf(GatewayAwareInterface::class, $action);
     }
 
-    /**
-     * @test
-     */
-    public function shouldNotSupportObtainTokenRequestWithNotArrayAccessModel()
+    public function testShouldNotSupportObtainTokenRequestWithNotArrayAccessModel()
     {
         $model = [];
         $action = new RedirectToCheckoutAction('aTemplateName');

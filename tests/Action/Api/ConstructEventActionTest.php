@@ -12,10 +12,7 @@ use Stripe\Exception\SignatureVerificationException;
 
 final class ConstructEventActionTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function shouldImplements()
+    public function testShouldImplements()
     {
         $action = new ConstructEventAction();
 
@@ -24,10 +21,7 @@ final class ConstructEventActionTest extends TestCase
         $this->assertNotInstanceOf(GatewayInterface::class, $action);
     }
 
-    /**
-     * @test
-     */
-    public function shouldThrowExceptionWhenInvalidPayloadIsRequested()
+    public function testShouldThrowExceptionWhenInvalidPayloadIsRequested()
     {
         $payload = '';
         $sigHeader = '';
@@ -43,10 +37,7 @@ final class ConstructEventActionTest extends TestCase
         $this->assertNull($request->getWebhookSecretKey());
     }
 
-    /**
-     * @test
-     */
-    public function shouldGetAnEventWrapperWhenValidPayloadIsRequested()
+    public function testShouldGetAnEventWrapperWhenValidPayloadIsRequested()
     {
         $now = time();
 

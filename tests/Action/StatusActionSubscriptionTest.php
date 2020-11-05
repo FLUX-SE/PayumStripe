@@ -9,10 +9,7 @@ use Stripe\Subscription;
 
 final class StatusActionSubscriptionTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function shouldMarkCapturedIfIsASubscriptionObjectAndStatusActive()
+    public function testShouldMarkCapturedIfIsASubscriptionObjectAndStatusActive()
     {
         $action = new StatusAction();
 
@@ -27,10 +24,7 @@ final class StatusActionSubscriptionTest extends TestCase
         $this->assertTrue($status->isCaptured());
     }
 
-    /**
-     * @test
-     */
-    public function shouldMarkCapturedIfIsASubscriptionObjectAndStatusIsTrialing()
+    public function testShouldMarkCapturedIfIsASubscriptionObjectAndStatusIsTrialing()
     {
         $action = new StatusAction();
 
@@ -45,10 +39,7 @@ final class StatusActionSubscriptionTest extends TestCase
         $this->assertTrue($status->isCaptured());
     }
 
-    /**
-     * @test
-     */
-    public function shouldNotMarkCapturedIfIsASubscriptionObjectAndStatusIsNotAValidStatus()
+    public function testShouldNotMarkCapturedIfIsASubscriptionObjectAndStatusIsNotAValidStatus()
     {
         $action = new StatusAction();
 
@@ -64,10 +55,7 @@ final class StatusActionSubscriptionTest extends TestCase
         $this->assertTrue($status->isUnknown());
     }
 
-    /**
-     * @test
-     */
-    public function shouldMarkCanceledIfIsASubscriptionObjectAndStatusIsCanceled()
+    public function testShouldMarkCanceledIfIsASubscriptionObjectAndStatusIsCanceled()
     {
         $action = new StatusAction();
 
@@ -82,10 +70,7 @@ final class StatusActionSubscriptionTest extends TestCase
         $this->assertTrue($status->isCanceled());
     }
 
-    /**
-     * @test
-     */
-    public function shouldMarkAsCanceledIfIsASubscriptionObjectAndStatusIncomplete()
+    public function testShouldMarkAsCanceledIfIsASubscriptionObjectAndStatusIncomplete()
     {
         $action = new StatusAction();
 
@@ -100,10 +85,7 @@ final class StatusActionSubscriptionTest extends TestCase
         $this->assertTrue($status->isCanceled());
     }
 
-    /**
-     * @test
-     */
-    public function shouldMarkAsCanceledIfIsASubscriptionObjectAndStatusIncompleteExpired()
+    public function testShouldMarkAsCanceledIfIsASubscriptionObjectAndStatusIncompleteExpired()
     {
         $action = new StatusAction();
 

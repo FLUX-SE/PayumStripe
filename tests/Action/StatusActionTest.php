@@ -13,10 +13,7 @@ use Stripe\Refund;
 
 final class StatusActionTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function shouldImplements()
+    public function testShouldImplements()
     {
         $action = new StatusAction();
 
@@ -25,10 +22,7 @@ final class StatusActionTest extends TestCase
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
     }
 
-    /**
-     * @test
-     */
-    public function shouldMarkFailedIfObjectIsASession()
+    public function testShouldMarkFailedIfObjectIsASession()
     {
         $action = new StatusAction();
 
@@ -42,10 +36,7 @@ final class StatusActionTest extends TestCase
         $this->assertTrue($status->isFailed());
     }
 
-    /**
-     * @test
-     */
-    public function shouldMarkNewIfDetailsEmpty()
+    public function testShouldMarkNewIfDetailsEmpty()
     {
         $action = new StatusAction();
 
@@ -57,10 +48,7 @@ final class StatusActionTest extends TestCase
         $this->assertTrue($status->isNew());
     }
 
-    /**
-     * @test
-     */
-    public function shouldMarkFailedIfDetailsHasErrorSet()
+    public function testShouldMarkFailedIfDetailsHasErrorSet()
     {
         $action = new StatusAction();
 
@@ -78,10 +66,7 @@ final class StatusActionTest extends TestCase
         $this->assertTrue($status->isFailed());
     }
 
-    /**
-     * @test
-     */
-    public function shouldMarkRefundedIfIsARefundObjectAndStatusSucceeded()
+    public function testShouldMarkRefundedIfIsARefundObjectAndStatusSucceeded()
     {
         $action = new StatusAction();
 
@@ -96,10 +81,7 @@ final class StatusActionTest extends TestCase
         $this->assertTrue($status->isRefunded());
     }
 
-    /**
-     * @test
-     */
-    public function shouldNotMarkRefundedIfIsARefundObjectAndStatusNotSet()
+    public function testShouldNotMarkRefundedIfIsARefundObjectAndStatusNotSet()
     {
         $action = new StatusAction();
 
@@ -114,10 +96,7 @@ final class StatusActionTest extends TestCase
         $this->assertTrue($status->isNew());
     }
 
-    /**
-     * @test
-     */
-    public function shouldMarkUnknownIfItsNotARefundWithUnknownStatus()
+    public function testShouldMarkUnknownIfItsNotARefundWithUnknownStatus()
     {
         $action = new StatusAction();
 
@@ -134,10 +113,7 @@ final class StatusActionTest extends TestCase
         $this->assertTrue($status->isUnknown());
     }
 
-    /**
-     * @test
-     */
-    public function shouldMarkUnknownIfStatusCouldNotBeGuessed()
+    public function testShouldMarkUnknownIfStatusCouldNotBeGuessed()
     {
         $action = new StatusAction();
 

@@ -12,10 +12,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ConvertPaymentActionTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function shouldImplements()
+    public function testShouldImplements()
     {
         $action = new ConvertPaymentAction();
 
@@ -24,10 +21,7 @@ final class ConvertPaymentActionTest extends TestCase
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
     }
 
-    /**
-     * @test
-     */
-    public function shouldCorrectlyConvertPaymentToDetailsAndSetItBack()
+    public function testShouldCorrectlyConvertPaymentToDetailsAndSetItBack()
     {
         $payment = new Payment();
         $payment->setClientEmail('test@domain.tld');
@@ -58,10 +52,7 @@ final class ConvertPaymentActionTest extends TestCase
         $this->assertEquals(1, $details['line_items'][0]['quantity']);
     }
 
-    /**
-     * @test
-     */
-    public function shouldNotOverwriteAlreadySetExtraDetails()
+    public function testShouldNotOverwriteAlreadySetExtraDetails()
     {
         $payment = new Payment();
         $payment->setClientEmail('test@domain.tld');

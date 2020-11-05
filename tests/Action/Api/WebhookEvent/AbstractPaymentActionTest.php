@@ -26,10 +26,7 @@ final class AbstractPaymentActionTest extends TestCase
         };
     }
 
-    /**
-     * @test
-     */
-    public function shouldThrowExceptionWhenNullMetadata()
+    public function testShouldThrowExceptionWhenNullMetadata()
     {
         $model = [
             'id' => 'event_1',
@@ -49,10 +46,7 @@ final class AbstractPaymentActionTest extends TestCase
         $this->action->execute($webhookEvent);
     }
 
-    /**
-     * @test
-     */
-    public function shouldThrowExceptionWhenNullTokenHash()
+    public function testShouldThrowExceptionWhenNullTokenHash()
     {
         $model = [
             'id' => 'event_1',

@@ -29,10 +29,7 @@ final class CaptureActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
-    /**
-     * @test
-     */
-    public function shouldImplements()
+    public function testShouldImplements()
     {
         $action = new CaptureAction();
 
@@ -42,10 +39,7 @@ final class CaptureActionTest extends TestCase
         $this->assertInstanceOf(GenericTokenFactoryAwareInterface::class, $action);
     }
 
-    /**
-     * @test
-     */
-    public function shouldDoASyncIfPaymentHasId()
+    public function testShouldDoASyncIfPaymentHasId()
     {
         $model = [
             'id' => 'somethingID',
@@ -64,10 +58,7 @@ final class CaptureActionTest extends TestCase
         $action->execute(new Capture($model));
     }
 
-    /**
-     * @test
-     */
-    public function shouldThrowExceptionWhenThereIsNoTokenAvailable()
+    public function testShouldThrowExceptionWhenThereIsNoTokenAvailable()
     {
         $model = [];
 
@@ -144,10 +135,7 @@ final class CaptureActionTest extends TestCase
         $this->assertEquals($token->getHash(), $data['metadata']['token_hash']);
     }
 
-    /**
-     * @test
-     */
-    public function shouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsAPaymentIntentDataField()
+    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsAPaymentIntentDataField()
     {
         $model = [];
         $objectName = PaymentIntent::OBJECT_NAME;
@@ -155,10 +143,7 @@ final class CaptureActionTest extends TestCase
         $this->executeCaptureAction($model, $objectName);
     }
 
-    /**
-     * @test
-     */
-    public function shouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsASetupIntentDataField()
+    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsASetupIntentDataField()
     {
         $model = [
             'setup_intent_data' => [],
@@ -168,10 +153,7 @@ final class CaptureActionTest extends TestCase
         $this->executeCaptureAction($model, $objectName);
     }
 
-    /**
-     * @test
-     */
-    public function shouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsASubscriptionDataField()
+    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsASubscriptionDataField()
     {
         $model = [
             'subscription_data' => [],

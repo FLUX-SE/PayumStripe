@@ -10,10 +10,7 @@ use Stripe\Event;
 
 final class WebhookEventTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function shouldBeSubClassOfGeneric()
+    public function testShouldBeSubClassOfGeneric()
     {
         $event = new Event();
         $eventWrapper = new EventWrapper('', $event);

@@ -20,10 +20,7 @@ final class NotifyActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
-    /**
-     * @test
-     */
-    public function shouldImplements()
+    public function testShouldImplements()
     {
         $action = new NotifyAction();
 
@@ -32,10 +29,7 @@ final class NotifyActionTest extends TestCase
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
     }
 
-    /**
-     * @test
-     */
-    public function shouldThrowExceptionWhenResolveWebhookEventReturnANullEventWrapper()
+    public function testShouldThrowExceptionWhenResolveWebhookEventReturnANullEventWrapper()
     {
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock
@@ -59,10 +53,7 @@ final class NotifyActionTest extends TestCase
         $action->execute($request);
     }
 
-    /**
-     * @test
-     */
-    public function shouldExecuteResolveWebhookEventWhenNotifyUnsafeIsCalled()
+    public function testShouldExecuteResolveWebhookEventWhenNotifyUnsafeIsCalled()
     {
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock
@@ -87,10 +78,7 @@ final class NotifyActionTest extends TestCase
         $action->execute($request);
     }
 
-    /**
-     * @test
-     */
-    public function shouldExecuteSyncWhenNotifyIsCalled()
+    public function testShouldExecuteSyncWhenNotifyIsCalled()
     {
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock

@@ -11,10 +11,7 @@ use Stripe\Event;
 
 final class ConstructEventTest extends TestCase
 {
-    /**
-     * @test
-     */
-    public function shouldBeSubClassOfGeneric()
+    public function testShouldBeSubClassOfGeneric()
     {
         $constructEvent = new ConstructEvent('', '', '');
 

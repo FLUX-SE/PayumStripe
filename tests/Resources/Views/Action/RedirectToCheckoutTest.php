@@ -47,14 +47,12 @@ final class RedirectToCheckoutTest extends TestCase
     }
 
     /**
-     * @test
-     *
      * @throws ReflectionException
      * @throws LoaderError
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function shouldRenderRedirectToCheckoutTemplate()
+    public function testShouldRenderRedirectToCheckoutTemplate()
     {
         $twig = $this->buildTwigEnvironment();
 

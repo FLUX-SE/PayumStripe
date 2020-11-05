@@ -27,10 +27,7 @@ class AbstractWebhookEventActionTest extends TestCase
         };
     }
 
-    /**
-     * @test
-     */
-    public function shouldThrowExceptionWhenNullMetadata()
+    public function testShouldThrowExceptionWhenNullMetadata()
     {
         $event = Event::constructFrom([]);
         $eventWrapper = new EventWrapper('', $event);

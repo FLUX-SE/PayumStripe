@@ -24,10 +24,7 @@ final class ResolveWebhookEventActionTest extends TestCase
     use ApiAwareActionTestTrait;
     use GatewayAwareTestTrait;
 
-    /**
-     * @test
-     */
-    public function shouldImplements()
+    public function testShouldImplements()
     {
         $action = new ResolveWebhookEventAction();
 
@@ -36,10 +33,7 @@ final class ResolveWebhookEventActionTest extends TestCase
         $this->assertInstanceOf(GatewayAwareInterface::class, $action);
     }
 
-    /**
-     * @test
-     */
-    public function shouldThrowLogicExceptionWhenNoStripeSignatureIsFound()
+    public function testShouldThrowLogicExceptionWhenNoStripeSignatureIsFound()
     {
         $action = new ResolveWebhookEventAction();
 
@@ -63,10 +57,7 @@ final class ResolveWebhookEventActionTest extends TestCase
         $action->execute($request);
     }
 
-    /**
-     * @test
-     */
-    public function shouldThrowExceptionWhenSignatureFailed()
+    public function testShouldThrowExceptionWhenSignatureFailed()
     {
         $action = new ResolveWebhookEventAction();
 
@@ -105,10 +96,7 @@ final class ResolveWebhookEventActionTest extends TestCase
         $action->execute($request);
     }
 
-    /**
-     * @test
-     */
-    public function shouldResolveWebhookEventWithSymfonyRequestBridge()
+    public function testShouldResolveWebhookEventWithSymfonyRequestBridge()
     {
         $action = new ResolveWebhookEventAction();
 
@@ -158,10 +146,7 @@ final class ResolveWebhookEventActionTest extends TestCase
         $this->assertEquals($request->getEventWrapper(), $request->getResult());
     }
 
-    /**
-     * @test
-     */
-    public function shouldResolveWebhookEventWithPlainPHP()
+    public function testShouldResolveWebhookEventWithPlainPHP()
     {
         $action = new ResolveWebhookEventAction();
 
@@ -209,10 +194,7 @@ final class ResolveWebhookEventActionTest extends TestCase
         $this->assertEquals($request->getEventWrapper(), $request->getResult());
     }
 
-    /**
-     * @test
-     */
-    public function shouldRequestNotSupportedExceptionWhenTheWebhookCanNotBeResolved()
+    public function testShouldRequestNotSupportedExceptionWhenTheWebhookCanNotBeResolved()
     {
         $action = new ResolveWebhookEventAction();
 
