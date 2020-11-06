@@ -1,6 +1,10 @@
 {# @var model \Stripe\PaymentIntent #}
 {% extends layout ?: "@PayumCore/layout.html.twig" %}
 
+{% block payum_stripejs_head %}
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+{% endblock %}
+
 {% block payum_body %}
     {{ parent() }}
 
@@ -135,14 +139,19 @@
     </style>
 {% endblock %}
 
-{% block payum_javascripts %}
+{% block payum_vendor_javascripts %}
     {{ parent() }}
     {{ block('payum_javascripts_stripejs_global') }}
+{% endblock %}
+
+{% block payum_javascripts %}
+    {{ parent() }}
     {{ block('payum_javascripts_stripejs_style') }}
     {{ block('payum_javascripts_stripejs_common') }}
 {% endblock %}
 
 {% block payum_stylesheets %}
     {{ parent() }}
+    {{ block('payum_stripejs_head') }}
     {{ block('payum_stylesheets_stripejs_common') }}
 {% endblock %}
