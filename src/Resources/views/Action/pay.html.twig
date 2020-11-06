@@ -49,8 +49,48 @@
         var stripe = Stripe('{{ publishable_key }}');
         var elements = stripe.elements();
 
+        var confirmCardPaymentData = {};
+
+        var submitPaymentIntent = function() {
+            changeLoadingState(true);
+
+            stripe.confirmCardPayment(form.dataset['secret'], confirmCardPaymentData)
+                .then(function (result) {
+                    if (result.error) {
+                        changeLoadingState(false);
+                        // Show error to your customer
+                        showError(result.error.message);
+                    } else {
+                        // The payment has been processed!
+                        var paymentIntent = result.paymentIntent;
+                        if (paymentIntent.status === 'succeeded') {
+                            // Show a success message to your customer
+                            // There's a risk of the customer closing the window before callback
+                            // execution. Set up a webhook or plugin to listen for the
+                            // payment_intent.succeeded event that handles any business critical
+                            // post-payment actions.
+                            form.submit();
+                        }
+                    }
+                });
+        };
+
+        var showError = function(errorMsgText) {
+            var displayError = document.getElementById('card-errors');
+            displayError.textContent = errorMsgText;
+        };
+
+        // Show a spinner on payment submission
+        var changeLoadingState = function(isLoading) {
+            form.querySelector("button").disabled = !!isLoading;
+        };
+
         // Create an instance of the card Element.
         var card = elements.create('card', {style: style});
+
+        confirmCardPaymentData['payment_method'] = {
+            card: card,
+        };
 
         // Add an instance of the card Element into the `card-element` <div>.
         card.mount('#card-element');
@@ -64,46 +104,8 @@
         var form = document.getElementById('payment-form');
         form.addEventListener('submit', function(event) {
             event.preventDefault();
-
-            changeLoadingState(true);
-
-            stripe.confirmCardPayment(form.dataset['secret'], {
-                payment_method: {
-                    card: card,
-                }
-            }).then(function(result) {
-                if (result.error) {
-                    changeLoadingState(false);
-                    // Show error to your customer
-                    showError(result.error.message);
-                } else {
-                    // The payment has been processed!
-                    var paymentIntent = result.paymentIntent;
-                    if (paymentIntent.status === 'succeeded') {
-                        // Show a success message to your customer
-                        // There's a risk of the customer closing the window before callback
-                        // execution. Set up a webhook or plugin to listen for the
-                        // payment_intent.succeeded event that handles any business critical
-                        // post-payment actions.
-                        form.submit();
-                    }
-                }
-            });
+            submitPaymentIntent();
         });
-
-        var showError = function(errorMsgText) {
-            var displayError = document.getElementById('card-errors');
-            displayError.textContent = errorMsgText;
-        };
-
-        // Show a spinner on payment submission
-        var changeLoadingState = function(isLoading) {
-            if (isLoading) {
-                form.querySelector("button").disabled = true;
-            } else {
-                form.querySelector("button").disabled = false;
-            }
-        };
     </script>
 {% endblock %}
 
