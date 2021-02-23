@@ -43,7 +43,7 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
     protected function retrieveSessionModeObject(WebhookEvent $request): ?StripeObject
     {
         $eventWrapper = $request->getEventWrapper();
-        /**
+        /*
          * This should never be true because the method
          * `$this->supportTypes()` already check this
          * @see AbstractWebhookEventAction::supportsTypes()
