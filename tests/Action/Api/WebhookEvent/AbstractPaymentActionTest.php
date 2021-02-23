@@ -30,6 +30,7 @@ final class AbstractPaymentActionTest extends TestCase
     {
         $model = [
             'id' => 'event_1',
+            'type' => '',
         ];
 
         $event = Event::constructFrom($model);

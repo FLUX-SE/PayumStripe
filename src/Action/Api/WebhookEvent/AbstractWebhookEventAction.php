@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace FluxSE\PayumStripe\Action\Api\WebhookEvent;
 
 use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
-use FluxSE\PayumStripe\Wrapper\EventWrapperInterface;
 use Payum\Core\Action\ActionInterface;
 
 abstract class AbstractWebhookEventAction implements ActionInterface
@@ -26,7 +25,7 @@ abstract class AbstractWebhookEventAction implements ActionInterface
     {
         $eventWrapper = $request->getEventWrapper();
 
-        if (false === $eventWrapper instanceof EventWrapperInterface) {
+        if (null === $eventWrapper) {
             return false;
         }
 
