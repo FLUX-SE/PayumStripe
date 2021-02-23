@@ -26,6 +26,55 @@ final class AbstractPaymentActionTest extends TestCase
         };
     }
 
+    public function testShouldThrowExceptionWhenNullEventWrapper()
+    {
+        $model = [
+            'id' => 'event_1',
+        ];
+
+        $event = Event::constructFrom($model);
+        $eventWrapper = new EventWrapper('', $event);
+        $webhookEvent = new WebhookEvent($eventWrapper);
+        $webhookEvent->setModel(null);
+
+        $this->expectException(RequestNotSupportedException::class);
+        $this->action->execute($webhookEvent);
+    }
+
+    public function testShouldThrowExceptionWhenNullData()
+    {
+        $model = [
+            'id' => 'event_1',
+            'data' => null,
+            'type' => '',
+        ];
+
+        $event = Event::constructFrom($model);
+        $eventWrapper = new EventWrapper('', $event);
+        $webhookEvent = new WebhookEvent($eventWrapper);
+
+        $this->expectException(RequestNotSupportedException::class);
+        $this->action->execute($webhookEvent);
+    }
+
+    public function testShouldThrowExceptionWhenNullObject()
+    {
+        $model = [
+            'id' => 'event_1',
+            'data' => [
+                'object' => null,
+            ],
+            'type' => '',
+        ];
+
+        $event = Event::constructFrom($model);
+        $eventWrapper = new EventWrapper('', $event);
+        $webhookEvent = new WebhookEvent($eventWrapper);
+
+        $this->expectException(RequestNotSupportedException::class);
+        $this->action->execute($webhookEvent);
+    }
+
     public function testShouldThrowExceptionWhenNullMetadata()
     {
         $model = [

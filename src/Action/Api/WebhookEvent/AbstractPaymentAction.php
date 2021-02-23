@@ -11,9 +11,7 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\GetToken;
 use Payum\Core\Request\Notify;
 use Payum\Core\Security\TokenInterface;
-use Stripe\Checkout\Session;
-use Stripe\PaymentIntent;
-use Stripe\SetupIntent;
+use Stripe\StripeObject;
 
 abstract class AbstractPaymentAction extends AbstractWebhookEventAction implements GatewayAwareInterface
 {
@@ -23,22 +21,14 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        /** @var WebhookEvent $request */
-        $eventWrapper = $request->getEventWrapper();
-
-        $event = $eventWrapper->getEvent();
-
-        /** @var Session|PaymentIntent|SetupIntent $sessionModeObject */
-        $sessionModeObject = $event->data->offsetGet('object');
-
-        // 1. Retrieve the token hash into the metadata
-        $metadata = $sessionModeObject->metadata;
-        if (null === $metadata) {
+        // 0. Retrieve the Session|PaymentIntent|SetupIntent into the WebhookEvent
+        $sessionModeObject = $this->retrieveSessionModeObject($request);
+        if (null === $sessionModeObject) {
             throw RequestNotSupportedException::createActionNotSupported($this, $request);
         }
 
-        /** @var string|null $tokenHash */
-        $tokenHash = $metadata->offsetGet('token_hash');
+        // 1. Retrieve the token hash into the metadata
+        $tokenHash = $this->retrieveTokenHash($sessionModeObject);
         if (null === $tokenHash) {
             throw RequestNotSupportedException::createActionNotSupported($this, $request);
         }
@@ -48,6 +38,41 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
 
         // 3. Redirect to the notify URL
         $this->gateway->execute(new Notify($token));
+    }
+
+    protected function retrieveSessionModeObject(WebhookEvent $request): ?StripeObject
+    {
+        $eventWrapper = $request->getEventWrapper();
+        if (null === $eventWrapper) {
+            return null;
+        }
+
+        /** @var StripeObject|null $stripeObject */
+        $stripeObject = $eventWrapper->getEvent()->offsetGet('data');
+        if (null === $stripeObject) {
+            return null;
+        }
+
+        /** @var StripeObject|null $sessionModeObject */
+        $sessionModeObject = $stripeObject->offsetGet('object');
+
+        return $sessionModeObject;
+    }
+
+    private function retrieveTokenHash(StripeObject $sessionModeObject): ?string
+    {
+        $metadata = $sessionModeObject->offsetGet('metadata');
+        if (null === $metadata) {
+            return null;
+        }
+
+        /** @var string|null $tokenHash */
+        $tokenHash = $metadata->offsetGet('token_hash');
+        if (null === $tokenHash) {
+            return null;
+        }
+
+        return $tokenHash;
     }
 
     private function findTokenByHash(string $tokenHash): TokenInterface
