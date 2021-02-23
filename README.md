@@ -1,6 +1,6 @@
 [![Latest Version on Packagist][ico-version]][link-packagist]
 [![Software License][ico-license]](LICENSE)
-[![Build Status][ico-travis]][link-travis]
+[![Build Status][ico-github-actions]][link-github-actions]
 [![Quality Score][ico-code-quality]][link-code-quality]
 [![codecov][ico-codecov]][link-codecov]
 
@@ -56,12 +56,12 @@ composer require  php-http/guzzle6-adapter
 
 [ico-version]: https://img.shields.io/packagist/v/FLUX-SE/payum-stripe.svg?style=flat-square
 [ico-license]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/FLUX-SE/PayumStripe/master.svg?style=flat-square
+[ico-github-actions]: https://github.com/FLUX-SE/PayumStripe/workflows/Build/badge.svg
 [ico-code-quality]: https://img.shields.io/scrutinizer/g/FLUX-SE/PayumStripe.svg?style=flat-square
 [ico-codecov]: https://codecov.io/gh/FLUX-SE/PayumStripe/branch/master/graph/badge.svg
 
 [link-packagist]: https://packagist.org/packages/flux-se/payum-stripe
-[link-travis]: https://travis-ci.org/FLUX-SE/PayumStripe
+[link-github-actions]: https://github.com/FLUX-SE/PayumStripe/actions?query=workflow%3A"Build"
 [link-scrutinizer]: https://scrutinizer-ci.com/g/FLUX-SE/PayumStripe/code-structure
 [link-code-quality]: https://scrutinizer-ci.com/g/FLUX-SE/PayumStripe
 [link-codecov]: https://codecov.io/gh/FLUX-SE/PayumStripe

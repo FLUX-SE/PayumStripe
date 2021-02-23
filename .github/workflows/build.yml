@@ -1,0 +1,72 @@
+name: Build
+
+on:
+    push: ~
+    pull_request: ~
+    release:
+        types: [created]
+    schedule:
+        -
+            cron: "0 1 * * 6" # Run at 1am every Saturday
+
+jobs:
+    tests:
+        runs-on: ubuntu-latest
+
+        name: "PHP ${{ matrix.php }}, MySQL ${{ matrix.mysql }}"
+
+        strategy:
+            fail-fast: false
+            matrix:
+                php: [7.2, 7.3, 7.4]
+
+        steps:
+            -
+                uses: actions/checkout@v2
+
+            -
+                name: Setup PHP
+                uses: shivammathur/setup-php@v2
+                with:
+                    php-version: "${{ matrix.php }}"
+                    coverage: none
+
+            -
+                name: Get Composer cache directory
+                id: composer-cache
+                run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+            -
+                name: Cache Composer
+                uses: actions/cache@v2
+                with:
+                    path: ${{ steps.composer-cache.outputs.dir }}
+                    key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json **/composer.lock') }}
+                    restore-keys: |
+                        ${{ runner.os }}-php-${{ matrix.php }}-composer-
+
+            -
+                name: Install PHP dependencies
+                run: composer install --no-interaction
+
+            -
+                name: Check Composer
+                run: composer validate --strict
+
+            -
+                name: ECS analysis
+                run: vendor/bin/ecs check .
+
+            -
+                name: PHPStan analysis
+                run: vendor/bin/phpstan analyse -c phpstan.neon -l max src/
+
+            -
+                name: Run PHPUnit
+                run: vendor/bin/phpunit --coverage-clover coverage.xml
+
+            -
+                uses: codecov/codecov-action@v1
+                with:
+                    files: coverage.xml
+                    verbose: true
