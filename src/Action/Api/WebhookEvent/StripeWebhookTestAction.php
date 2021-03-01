@@ -6,6 +6,7 @@ namespace FluxSE\PayumStripe\Action\Api\WebhookEvent;
 
 use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Core\Reply\HttpResponse;
 use Stripe\Event;
 
 /**
@@ -31,7 +32,7 @@ final class StripeWebhookTestAction extends AbstractWebhookEventAction
             throw RequestNotSupportedException::createActionNotSupported($this, $request);
         }
 
-        // Nothing else to do here the webhook will response a 200 HTTP code
+        throw new HttpResponse('Webhook test succeeded !');
     }
 
     private function retrieveEventId(WebhookEvent $request): ?string
