@@ -9,7 +9,7 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Stripe\Event;
 
 /**
- * This class exists to avoid 500 error when testing the Stripe Webhook
+ * This class exists to avoid 500 error when testing the Stripe Webhook.
  */
 final class StripeWebhookTestAction extends AbstractWebhookEventAction
 {
@@ -22,7 +22,7 @@ final class StripeWebhookTestAction extends AbstractWebhookEventAction
         ];
     }
 
-    public function execute($request)
+    public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
         $id = $this->retrieveEventId($request);
