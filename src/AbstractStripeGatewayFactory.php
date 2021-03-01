@@ -30,6 +30,7 @@ use FluxSE\PayumStripe\Action\Api\Resource\UpdateSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\CheckoutSessionCompletedAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentCanceledAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\SetupIntentCanceledAction;
+use FluxSE\PayumStripe\Action\Api\WebhookEvent\StripeWebhookTestAction;
 use FluxSE\PayumStripe\Action\NotifyAction;
 use FluxSE\PayumStripe\Action\StatusAction;
 use FluxSE\PayumStripe\Action\SyncAction;
@@ -75,6 +76,7 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
             'payum.action.construct_event' => new ConstructEventAction(),
 
             // Webhook event resolver
+            'payum.action.stripe_webhook_test' => new StripeWebhookTestAction(),
             'payum.action.checkout_session_completed' => new CheckoutSessionCompletedAction(),
             'payum.action.payment_intent_canceled' => new PaymentIntentCanceledAction(),
             'payum.action.setup_intent_canceled' => new SetupIntentCanceledAction(),
