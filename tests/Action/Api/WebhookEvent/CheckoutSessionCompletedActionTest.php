@@ -73,6 +73,9 @@ final class CheckoutSessionCompletedActionTest extends TestCase
         $eventWrapper = new EventWrapper('', $event);
         $webhookEvent = new WebhookEvent($eventWrapper);
 
+        $supports = $action->supports($webhookEvent);
+        $this->assertTrue($supports);
+
         $action->execute($webhookEvent);
     }
 }

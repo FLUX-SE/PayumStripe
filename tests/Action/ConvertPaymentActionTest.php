@@ -29,10 +29,16 @@ final class ConvertPaymentActionTest extends TestCase
         $payment->setTotalAmount(123);
         $payment->setCurrencyCode('USD');
 
-        $action = new ConvertPaymentAction();
-        $action->execute($convert = new Convert($payment, 'array'));
+        $request = new Convert($payment, 'array');
 
-        $details = $convert->getResult();
+        $action = new ConvertPaymentAction();
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $details = $request->getResult();
 
         $this->assertNotEmpty($details);
         $this->assertArrayHasKey('customer_email', $details);
@@ -63,11 +69,16 @@ final class ConvertPaymentActionTest extends TestCase
             'foo' => 'fooVal',
         ]);
 
+        $request = new Convert($payment, 'array');
+
         $action = new ConvertPaymentAction();
 
-        $action->execute($convert = new Convert($payment, 'array'));
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
 
-        $details = $convert->getResult();
+        $action->execute($request);
+
+        $details = $request->getResult();
 
         $this->assertNotEmpty($details);
 

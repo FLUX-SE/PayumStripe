@@ -64,8 +64,10 @@ final class RedirectToCheckoutActionTest extends TestCase
 
         $request = new RedirectToCheckout($model);
 
-        $this->expectException(HttpResponse::class);
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
 
+        $this->expectException(HttpResponse::class);
         $action->execute($request);
     }
 }

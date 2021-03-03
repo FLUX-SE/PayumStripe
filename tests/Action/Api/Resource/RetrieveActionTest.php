@@ -95,6 +95,12 @@ final class RetrieveActionTest extends TestCase
             ]
         );
 
+        $supportAlso = $action->supportAlso($request);
+        $this->assertTrue($supportAlso);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
         $action->execute($request);
         $this->assertInstanceOf($retrieveClass, $request->getApiResource());
     }
@@ -112,9 +118,14 @@ final class RetrieveActionTest extends TestCase
         $action->setApiResourceClass(CardDetails::class);
         $this->assertEquals(CardDetails::class, $action->getApiResourceClass());
 
-        $request = new class($id) extends AbstractRetrieve {
-        };
-        $this->assertTrue($action->supportAlso($request));
+        $request = new class($id) extends AbstractRetrieve {};
+
+        $supportAlso = $action->supportAlso($request);
+        $this->assertTrue($supportAlso);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
         $this->expectException(LogicException::class);
         $action->execute($request);
     }

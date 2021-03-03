@@ -30,6 +30,10 @@ final class ConstructEventActionTest extends TestCase
         $action = new ConstructEventAction();
 
         $request = new ConstructEvent($payload, $sigHeader, $webhookSecretKey);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
         $this->expectException(SignatureVerificationException::class);
         $action->execute($request);
 
@@ -56,6 +60,10 @@ final class ConstructEventActionTest extends TestCase
         $action = new ConstructEventAction();
 
         $request = new ConstructEvent($payload, $sigHeader, $webhookSecretKey);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
         $action->execute($request);
 
         $this->assertNotNull($request->getEventWrapper());

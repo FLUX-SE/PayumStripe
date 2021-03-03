@@ -30,10 +30,14 @@ final class StatusActionTest extends TestCase
             'object' => Session::OBJECT_NAME,
         ];
 
-        $status = new GetHumanStatus($model);
-        $action->execute($status);
+        $request = new GetHumanStatus($model);
 
-        $this->assertTrue($status->isFailed());
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $this->assertTrue($request->isFailed());
     }
 
     public function testShouldMarkNewIfDetailsEmpty()
@@ -42,10 +46,14 @@ final class StatusActionTest extends TestCase
 
         $model = [];
 
-        $status = new GetHumanStatus($model);
-        $action->execute($status);
+        $request = new GetHumanStatus($model);
 
-        $this->assertTrue($status->isNew());
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $this->assertTrue($request->isNew());
     }
 
     public function testShouldMarkFailedIfDetailsHasErrorSet()
@@ -60,10 +68,14 @@ final class StatusActionTest extends TestCase
             ],
         ];
 
-        $status = new GetHumanStatus($model);
-        $action->execute($status);
+        $request = new GetHumanStatus($model);
 
-        $this->assertTrue($status->isFailed());
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $this->assertTrue($request->isFailed());
     }
 
     public function testShouldMarkRefundedIfIsARefundObjectAndStatusSucceeded()
@@ -75,10 +87,14 @@ final class StatusActionTest extends TestCase
             'status' => Refund::STATUS_SUCCEEDED,
         ];
 
-        $status = new GetHumanStatus($model);
-        $action->execute($status);
+        $request = new GetHumanStatus($model);
 
-        $this->assertTrue($status->isRefunded());
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $this->assertTrue($request->isRefunded());
     }
 
     public function testShouldNotMarkRefundedIfIsARefundObjectAndStatusNotSet()
@@ -89,11 +105,15 @@ final class StatusActionTest extends TestCase
             'object' => Refund::OBJECT_NAME,
         ];
 
-        $status = new GetHumanStatus($model);
-        $action->execute($status);
+        $request = new GetHumanStatus($model);
 
-        $this->assertFalse($status->isRefunded());
-        $this->assertTrue($status->isNew());
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $this->assertFalse($request->isRefunded());
+        $this->assertTrue($request->isNew());
     }
 
     public function testShouldMarkUnknownIfItsNotARefundWithUnknownStatus()
@@ -105,12 +125,15 @@ final class StatusActionTest extends TestCase
             'status' => 'test',
         ];
 
-        $status = new GetHumanStatus($model);
-        $status->markPending();
+        $request = new GetHumanStatus($model);
+        $request->markPending();
 
-        $action->execute($status);
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
 
-        $this->assertTrue($status->isUnknown());
+        $action->execute($request);
+
+        $this->assertTrue($request->isUnknown());
     }
 
     public function testShouldMarkUnknownIfStatusCouldNotBeGuessed()
@@ -121,11 +144,14 @@ final class StatusActionTest extends TestCase
             'status' => 'test',
         ];
 
-        $status = new GetHumanStatus($model);
-        $status->markPending();
+        $request = new GetHumanStatus($model);
+        $request->markPending();
 
-        $action->execute($status);
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
 
-        $this->assertTrue($status->isUnknown());
+        $action->execute($request);
+
+        $this->assertTrue($request->isUnknown());
     }
 }

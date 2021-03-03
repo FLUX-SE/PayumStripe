@@ -48,6 +48,10 @@ final class SyncActionTest extends TestCase
         $action->setGateway($gatewayMock);
 
         $request = new Sync($model);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
         $action->execute($request);
     }
 
@@ -68,6 +72,10 @@ final class SyncActionTest extends TestCase
         $action->setGateway($gatewayMock);
 
         $request = new Sync($model);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
         $action->execute($request);
     }
 
@@ -88,6 +96,10 @@ final class SyncActionTest extends TestCase
         $action->setGateway($gatewayMock);
 
         $request = new Sync($model);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
         $action->execute($request);
     }
 
@@ -170,6 +182,10 @@ final class SyncActionTest extends TestCase
         $action->setGateway($gatewayMock);
 
         $request = new Sync($model);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage('The synced object should have an "object" attribute !');
         $action->execute($request);
@@ -194,6 +210,10 @@ final class SyncActionTest extends TestCase
         $action->setGateway($gatewayMock);
 
         $request = new Sync($model);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage('The synced object should have a retrievable "id" attribute !');
         $action->execute($request);
@@ -220,6 +240,10 @@ final class SyncActionTest extends TestCase
         $action->setGateway($gatewayMock);
 
         $request = new Sync($model);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
         $action->execute($request);
     }
 }

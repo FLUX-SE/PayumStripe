@@ -18,10 +18,14 @@ final class StatusActionSetupIntentTest extends TestCase
             'status' => SetupIntent::STATUS_SUCCEEDED,
         ];
 
-        $status = new GetHumanStatus($model);
-        $action->execute($status);
+        $request = new GetHumanStatus($model);
 
-        $this->assertTrue($status->isCaptured());
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $this->assertTrue($request->isCaptured());
     }
 
     public function testShouldNotMarkCapturedIfIsASetupIntentObjectAndStatusIsNotAValidStatus()
@@ -33,11 +37,15 @@ final class StatusActionSetupIntentTest extends TestCase
             'status' => 'test',
         ];
 
-        $status = new GetHumanStatus($model);
-        $action->execute($status);
+        $request = new GetHumanStatus($model);
 
-        $this->assertFalse($status->isCaptured());
-        $this->assertTrue($status->isUnknown());
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $this->assertFalse($request->isCaptured());
+        $this->assertTrue($request->isUnknown());
     }
 
     public function testShouldMarkCanceledIfIsASetupIntentObjectAndStatusIsCanceled()
@@ -49,10 +57,14 @@ final class StatusActionSetupIntentTest extends TestCase
             'status' => SetupIntent::STATUS_CANCELED,
         ];
 
-        $status = new GetHumanStatus($model);
-        $action->execute($status);
+        $request = new GetHumanStatus($model);
 
-        $this->assertTrue($status->isCanceled());
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $this->assertTrue($request->isCanceled());
     }
 
     public function testShouldMarkAsCanceledIfIsASetupIntentObjectAndStatusRequiresPaymentMethod()
@@ -64,10 +76,14 @@ final class StatusActionSetupIntentTest extends TestCase
             'status' => SetupIntent::STATUS_REQUIRES_PAYMENT_METHOD,
         ];
 
-        $status = new GetHumanStatus($model);
-        $action->execute($status);
+        $request = new GetHumanStatus($model);
 
-        $this->assertTrue($status->isCanceled());
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $this->assertTrue($request->isCanceled());
     }
 
     public function testShouldMarkAsNewIfIsASetupIntentObjectAndStatusRequiresConfirmation()
@@ -79,10 +95,14 @@ final class StatusActionSetupIntentTest extends TestCase
             'status' => SetupIntent::STATUS_REQUIRES_CONFIRMATION,
         ];
 
-        $status = new GetHumanStatus($model);
-        $action->execute($status);
+        $request = new GetHumanStatus($model);
 
-        $this->assertTrue($status->isNew());
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $this->assertTrue($request->isNew());
     }
 
     public function testShouldMarkAsNewIfIsASetupIntentObjectAndStatusRequiresAction()
@@ -94,10 +114,14 @@ final class StatusActionSetupIntentTest extends TestCase
             'status' => SetupIntent::STATUS_REQUIRES_ACTION,
         ];
 
-        $status = new GetHumanStatus($model);
-        $action->execute($status);
+        $request = new GetHumanStatus($model);
 
-        $this->assertTrue($status->isNew());
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $this->assertTrue($request->isNew());
     }
 
     public function testShouldMarkPendingIfIsASetupIntentObjectAndStatusIsProcessing()
@@ -109,9 +133,13 @@ final class StatusActionSetupIntentTest extends TestCase
             'status' => SetupIntent::STATUS_PROCESSING,
         ];
 
-        $status = new GetHumanStatus($model);
-        $action->execute($status);
+        $request = new GetHumanStatus($model);
 
-        $this->assertTrue($status->isPending());
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+        
+        $action->execute($request);
+
+        $this->assertTrue($request->isPending());
     }
 }

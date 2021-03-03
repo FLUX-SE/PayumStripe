@@ -67,8 +67,10 @@ final class PayActionTest extends TestCase
 
         $request = new Pay($model, $actionUrl);
 
-        $this->expectException(HttpResponse::class);
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
 
+        $this->expectException(HttpResponse::class);
         $action->execute($request);
     }
 }

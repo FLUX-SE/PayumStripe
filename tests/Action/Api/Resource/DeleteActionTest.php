@@ -99,6 +99,12 @@ final class DeleteActionTest extends TestCase
             )
         ;
 
+        $supportAlso = $action->supportAlso($request);
+        $this->assertTrue($supportAlso);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
         $action->execute($request);
         $this->assertInstanceOf($deleteClass, $request->getApiResource());
     }

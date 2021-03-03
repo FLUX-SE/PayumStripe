@@ -33,10 +33,14 @@ final class StatusActionSubscriptionTest extends TestCase
             'status' => Subscription::STATUS_TRIALING,
         ];
 
-        $status = new GetHumanStatus($model);
-        $action->execute($status);
+        $request = new GetHumanStatus($model);
 
-        $this->assertTrue($status->isCaptured());
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+        
+        $action->execute($request);
+
+        $this->assertTrue($request->isCaptured());
     }
 
     public function testShouldNotMarkCapturedIfIsASubscriptionObjectAndStatusIsNotAValidStatus()

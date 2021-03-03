@@ -52,20 +52,30 @@ final class CaptureActionTest extends TestCase
             ->with($this->isInstanceOf(Sync::class))
         ;
 
+        $request = new Capture($model);
+
         $action = new CaptureAction();
         $action->setGateway($gatewayMock);
 
-        $action->execute(new Capture($model));
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
     }
 
     public function testShouldThrowExceptionWhenThereIsNoTokenAvailable()
     {
         $model = [];
 
+        $request = new Capture($model);
+
         $action = new CaptureAction();
 
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
         $this->expectException(LogicException::class);
-        $action->execute(new Capture($model));
+        $action->execute($request);
     }
 
     public function executeCaptureAction(array $model, string $objectName): void
@@ -115,6 +125,9 @@ final class CaptureActionTest extends TestCase
 
         $request = new Capture($token);
         $request->setModel($model);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
 
         $this->expectException(HttpResponse::class);
         $action->execute($request);

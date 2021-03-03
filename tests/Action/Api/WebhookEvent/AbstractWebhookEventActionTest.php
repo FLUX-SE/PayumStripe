@@ -29,11 +29,16 @@ class AbstractWebhookEventActionTest extends TestCase
 
     public function testShouldThrowExceptionWhenNullMetadata()
     {
-        $event = Event::constructFrom([]);
+        $model = [
+
+        ];
+
+        $event = Event::constructFrom($model);
         $eventWrapper = new EventWrapper('', $event);
         $webhookEvent = new WebhookEvent($eventWrapper);
         $webhookEvent->setModel(null);
 
-        $this->assertFalse($this->action->supports($webhookEvent));
+        $supports = $this->action->supports($webhookEvent);
+        $this->assertFalse($supports);
     }
 }

@@ -49,6 +49,10 @@ final class NotifyActionTest extends TestCase
         $action->setGateway($gatewayMock);
 
         $request = new Notify(null);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
         $this->expectException(LogicException::class);
         $action->execute($request);
     }
@@ -75,6 +79,10 @@ final class NotifyActionTest extends TestCase
         $action->setGateway($gatewayMock);
 
         $request = new Notify(null);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
         $action->execute($request);
     }
 
@@ -91,6 +99,10 @@ final class NotifyActionTest extends TestCase
         $action->setGateway($gatewayMock);
 
         $request = new Notify(new Token());
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
         $action->execute($request);
     }
 }

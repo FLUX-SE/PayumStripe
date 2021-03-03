@@ -51,9 +51,11 @@ final class ResolveWebhookEventActionTest extends TestCase
 
         $request = new ResolveWebhookEvent();
 
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage('A Stripe header signature is required !');
-
         $action->execute($request);
     }
 
@@ -91,6 +93,9 @@ final class ResolveWebhookEventActionTest extends TestCase
         $action->setApi($apiMock);
 
         $request = new ResolveWebhookEvent();
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
 
         $this->expectException(RequestNotSupportedException::class);
         $action->execute($request);
@@ -138,6 +143,9 @@ final class ResolveWebhookEventActionTest extends TestCase
         $action->setApi($apiMock);
 
         $request = new ResolveWebhookEvent();
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
 
         $action->execute($request);
 
@@ -187,6 +195,9 @@ final class ResolveWebhookEventActionTest extends TestCase
 
         $request = new ResolveWebhookEvent();
 
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
         $action->execute($request);
 
         $this->assertInstanceOf(EventWrapperInterface::class, $request->getEventWrapper());
@@ -232,8 +243,10 @@ final class ResolveWebhookEventActionTest extends TestCase
 
         $request = new ResolveWebhookEvent();
 
-        $this->expectException(RequestNotSupportedException::class);
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
 
+        $this->expectException(RequestNotSupportedException::class);
         $action->execute($request);
     }
 }

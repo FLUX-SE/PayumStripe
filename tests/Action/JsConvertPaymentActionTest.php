@@ -27,10 +27,16 @@ final class JsConvertPaymentActionTest extends TestCase
         $payment->setTotalAmount(123);
         $payment->setCurrencyCode('USD');
 
-        $action = new JsConvertPaymentAction();
-        $action->execute($convert = new Convert($payment, 'array'));
+        $request = new Convert($payment, 'array');
 
-        $details = $convert->getResult();
+        $action = new JsConvertPaymentAction();
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $details = $request->getResult();
 
         $this->assertNotEmpty($details);
         $this->assertArrayHasKey('amount', $details);
@@ -49,11 +55,16 @@ final class JsConvertPaymentActionTest extends TestCase
             'foo' => 'fooVal',
         ]);
 
+        $request = new Convert($payment, 'array');
+
         $action = new JsConvertPaymentAction();
 
-        $action->execute($convert = new Convert($payment, 'array'));
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
 
-        $details = $convert->getResult();
+        $action->execute($request);
+
+        $details = $request->getResult();
 
         $this->assertNotEmpty($details);
 
