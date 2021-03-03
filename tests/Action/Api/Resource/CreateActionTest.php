@@ -112,7 +112,8 @@ final class CreateActionTest extends TestCase
         $action->setApiResourceClass(CardDetails::class);
         $this->assertEquals(CardDetails::class, $action->getApiResourceClass());
 
-        $request = new class($model) extends AbstractCreate {};
+        $request = new class($model) extends AbstractCreate {
+        };
 
         $this->assertTrue($action->supportAlso($request));
         $this->expectException(LogicException::class);

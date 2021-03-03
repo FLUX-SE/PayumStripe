@@ -118,7 +118,8 @@ final class RetrieveActionTest extends TestCase
         $action->setApiResourceClass(CardDetails::class);
         $this->assertEquals(CardDetails::class, $action->getApiResourceClass());
 
-        $request = new class($id) extends AbstractRetrieve {};
+        $request = new class($id) extends AbstractRetrieve {
+        };
 
         $supportAlso = $action->supportAlso($request);
         $this->assertTrue($supportAlso);

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\FluxSE\PayumStripe\Action\Api\WebhookEvent;
 
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\AbstractPaymentAction;
-use FluxSE\PayumStripe\Action\Api\WebhookEvent\CheckoutSessionCompletedAction;
 use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use FluxSE\PayumStripe\Wrapper\EventWrapper;
 use Payum\Core\Exception\RequestNotSupportedException;

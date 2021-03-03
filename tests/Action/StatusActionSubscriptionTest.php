@@ -37,7 +37,7 @@ final class StatusActionSubscriptionTest extends TestCase
 
         $supports = $action->supports($request);
         $this->assertTrue($supports);
-        
+
         $action->execute($request);
 
         $this->assertTrue($request->isCaptured());

@@ -107,7 +107,8 @@ final class AllActionTest extends TestCase
         $action->setApiResourceClass(CardDetails::class);
         $this->assertEquals(CardDetails::class, $action->getApiResourceClass());
 
-        $request = new class() extends AbstractAll {};
+        $request = new class() extends AbstractAll {
+        };
 
         $supportAlso = $action->supportAlso($request);
         $this->assertTrue($supportAlso);

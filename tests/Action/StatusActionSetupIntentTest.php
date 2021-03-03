@@ -137,7 +137,7 @@ final class StatusActionSetupIntentTest extends TestCase
 
         $supports = $action->supports($request);
         $this->assertTrue($supports);
-        
+
         $action->execute($request);
 
         $this->assertTrue($request->isPending());
