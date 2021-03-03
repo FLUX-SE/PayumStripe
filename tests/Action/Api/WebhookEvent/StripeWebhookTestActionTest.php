@@ -43,6 +43,9 @@ final class StripeWebhookTestActionTest extends TestCase
         $eventWrapper = new EventWrapper('', $event);
         $webhookEvent = new WebhookEvent($eventWrapper);
 
+        $supports = $action->supports($webhookEvent);
+        $this->assertTrue($supports);
+
         $this->expectException(HttpResponse::class);
         $action->execute($webhookEvent);
     }
@@ -59,6 +62,9 @@ final class StripeWebhookTestActionTest extends TestCase
         $action = new StripeWebhookTestAction();
         $eventWrapper = new EventWrapper('', $event);
         $webhookEvent = new WebhookEvent($eventWrapper);
+
+        $supports = $action->supports($webhookEvent);
+        $this->assertFalse($supports);
 
         $this->expectException(RequestNotSupportedException::class);
         $action->execute($webhookEvent);

@@ -24,13 +24,13 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
         // 0. Retrieve the Session|PaymentIntent|SetupIntent into the WebhookEvent
         $sessionModeObject = $this->retrieveSessionModeObject($request);
         if (null === $sessionModeObject) {
-            throw RequestNotSupportedException::createActionNotSupported($this, $request);
+            return;
         }
 
         // 1. Retrieve the token hash into the metadata
         $tokenHash = $this->retrieveTokenHash($sessionModeObject);
         if (null === $tokenHash) {
-            throw RequestNotSupportedException::createActionNotSupported($this, $request);
+            return;
         }
 
         // 2. Try to found the Token
@@ -87,5 +87,24 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
         $this->gateway->execute($getTokenRequest);
 
         return $getTokenRequest->getToken();
+    }
+
+    public function supports($request): bool
+    {
+        if (false === parent::supports($request)) {
+            return false;
+        }
+
+        $sessionModeObject = $this->retrieveSessionModeObject($request);
+        if (null === $sessionModeObject) {
+            return false;
+        }
+
+        $tokenHash = $this->retrieveTokenHash($sessionModeObject);
+        if (null === $tokenHash) {
+            return false;
+        }
+
+        return true;
     }
 }

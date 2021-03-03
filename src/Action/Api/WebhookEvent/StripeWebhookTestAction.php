@@ -26,13 +26,22 @@ final class StripeWebhookTestAction extends AbstractWebhookEventAction
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
-        $id = $this->retrieveEventId($request);
-
-        if ('evt_00000000000000' !== $id) {
-            throw RequestNotSupportedException::createActionNotSupported($this, $request);
-        }
 
         throw new HttpResponse('Webhook test succeeded !');
+    }
+
+    public function supports($request): bool
+    {
+        if (false === parent::supports($request)) {
+            return false;
+        }
+
+        $id = $this->retrieveEventId($request);
+        if ('evt_00000000000000' === $id) {
+            return true;
+        }
+
+        return false;
     }
 
     private function retrieveEventId(WebhookEvent $request): ?string
