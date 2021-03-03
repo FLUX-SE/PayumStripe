@@ -37,11 +37,8 @@ final class StripeWebhookTestAction extends AbstractWebhookEventAction
         }
 
         $id = $this->retrieveEventId($request);
-        if ('evt_00000000000000' === $id) {
-            return true;
-        }
 
-        return false;
+        return 'evt_00000000000000' === $id;
     }
 
     private function retrieveEventId(WebhookEvent $request): ?string
