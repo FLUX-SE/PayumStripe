@@ -23,7 +23,15 @@ class StatusAction implements ActionInterface
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        if ($model['error']) {
+        // This should be possible only when we have a previous payment
+        // with a different gateway
+        if (false === $model->offsetExists('object')) {
+            $request->markNew();
+
+            return;
+        }
+
+        if (null !== $model->offsetGet('error')) {
             $request->markFailed();
 
             return;
@@ -32,14 +40,8 @@ class StatusAction implements ActionInterface
         // PaymentIntent, Subscription, SetupIntent are the only object name allowed
         // if it's a Session this means the process has been stop somewhere and the
         // payment has to be retried
-        if (Session::OBJECT_NAME === $model['object']) {
+        if (Session::OBJECT_NAME === $model->offsetGet('object')) {
             $request->markFailed();
-
-            return;
-        }
-
-        if (false == $model['status']) {
-            $request->markNew();
 
             return;
         }

@@ -9,6 +9,7 @@ use Payum\Core\GatewayInterface;
 use Payum\Core\Request\GetHumanStatus;
 use PHPUnit\Framework\TestCase;
 use Stripe\Checkout\Session;
+use Stripe\PaymentIntent;
 use Stripe\Refund;
 
 final class StatusActionTest extends TestCase
@@ -61,6 +62,7 @@ final class StatusActionTest extends TestCase
         $action = new StatusAction();
 
         $model = [
+            'object' => PaymentIntent::OBJECT_NAME,
             'error' => [
                 'type' => 'invalid_request_error',
                 'message' => 'Amount must be at least 50 cents',
@@ -113,7 +115,7 @@ final class StatusActionTest extends TestCase
         $action->execute($request);
 
         $this->assertFalse($request->isRefunded());
-        $this->assertTrue($request->isNew());
+        $this->assertTrue($request->isUnknown());
     }
 
     public function testShouldMarkUnknownIfItsNotARefundWithUnknownStatus()
@@ -136,7 +138,7 @@ final class StatusActionTest extends TestCase
         $this->assertTrue($request->isUnknown());
     }
 
-    public function testShouldMarkUnknownIfStatusCouldNotBeGuessed()
+    public function testShouldMarkNewIfStatusCouldNotBeGuessed()
     {
         $action = new StatusAction();
 
@@ -152,6 +154,6 @@ final class StatusActionTest extends TestCase
 
         $action->execute($request);
 
-        $this->assertTrue($request->isUnknown());
+        $this->assertTrue($request->isNew());
     }
 }
