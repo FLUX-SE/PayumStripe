@@ -33,6 +33,10 @@ use FluxSE\PayumStripe\Action\Api\WebhookEvent\SetupIntentCanceledAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\StripeWebhookTestAction;
 use FluxSE\PayumStripe\Action\NotifyAction;
 use FluxSE\PayumStripe\Action\StatusAction;
+use FluxSE\PayumStripe\Action\StatusPaymentIntentAction;
+use FluxSE\PayumStripe\Action\StatusRefundAction;
+use FluxSE\PayumStripe\Action\StatusSetupIntentAction;
+use FluxSE\PayumStripe\Action\StatusSubscriptionAction;
 use FluxSE\PayumStripe\Action\SyncAction;
 use FluxSE\PayumStripe\Api\Keys;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -45,6 +49,10 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
         $config->defaults([
             // Actions
             'payum.action.notify_unsafe' => new NotifyAction(),
+            'payum.action.payment_intent_status' => new StatusPaymentIntentAction(),
+            'payum.action.setup_intent_status' => new StatusSetupIntentAction(),
+            'payum.action.subscription_status' => new StatusSubscriptionAction(),
+            'payum.action.refund_status' => new StatusRefundAction(),
             'payum.action.status' => new StatusAction(),
             'payum.action.sync' => new SyncAction(),
 

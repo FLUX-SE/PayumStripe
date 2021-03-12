@@ -6,11 +6,12 @@ use FluxSE\PayumStripe\Action\StatusAction;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
+use Payum\Core\Request\Capture;
+use Payum\Core\Request\GetBinaryStatus;
 use Payum\Core\Request\GetHumanStatus;
 use PHPUnit\Framework\TestCase;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
-use Stripe\Refund;
 
 final class StatusActionTest extends TestCase
 {
@@ -21,6 +22,38 @@ final class StatusActionTest extends TestCase
         $this->assertInstanceOf(ActionInterface::class, $action);
         $this->assertNotInstanceOf(GatewayInterface::class, $action);
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
+    }
+
+    public function testSupportOnlyGetStatusInterface()
+    {
+        $action = new StatusAction();
+
+        $support = $action->supports(new GetHumanStatus([]));
+        $this->assertTrue($support);
+
+        $support = $action->supports(new GetBinaryStatus([]));
+        $this->assertTrue($support);
+
+        $support = $action->supports(new Capture([]));
+        $this->assertFalse($support);
+    }
+
+    public function testShouldMarkUnknownIfNoTestsIsPassed()
+    {
+        $action = new StatusAction();
+
+        $model = [
+            'object' => PaymentIntent::OBJECT_NAME,
+        ];
+
+        $request = new GetHumanStatus($model);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $this->assertTrue($request->isUnknown());
     }
 
     public function testShouldMarkFailedIfObjectIsASession()
@@ -78,64 +111,6 @@ final class StatusActionTest extends TestCase
         $action->execute($request);
 
         $this->assertTrue($request->isFailed());
-    }
-
-    public function testShouldMarkRefundedIfIsARefundObjectAndStatusSucceeded()
-    {
-        $action = new StatusAction();
-
-        $model = [
-            'object' => Refund::OBJECT_NAME,
-            'status' => Refund::STATUS_SUCCEEDED,
-        ];
-
-        $request = new GetHumanStatus($model);
-
-        $supports = $action->supports($request);
-        $this->assertTrue($supports);
-
-        $action->execute($request);
-
-        $this->assertTrue($request->isRefunded());
-    }
-
-    public function testShouldNotMarkRefundedIfIsARefundObjectAndStatusNotSet()
-    {
-        $action = new StatusAction();
-
-        $model = [
-            'object' => Refund::OBJECT_NAME,
-        ];
-
-        $request = new GetHumanStatus($model);
-
-        $supports = $action->supports($request);
-        $this->assertTrue($supports);
-
-        $action->execute($request);
-
-        $this->assertFalse($request->isRefunded());
-        $this->assertTrue($request->isUnknown());
-    }
-
-    public function testShouldMarkUnknownIfItsNotARefundWithUnknownStatus()
-    {
-        $action = new StatusAction();
-
-        $model = [
-            'object' => Refund::OBJECT_NAME,
-            'status' => 'test',
-        ];
-
-        $request = new GetHumanStatus($model);
-        $request->markPending();
-
-        $supports = $action->supports($request);
-        $this->assertTrue($supports);
-
-        $action->execute($request);
-
-        $this->assertTrue($request->isUnknown());
     }
 
     public function testShouldMarkNewIfStatusCouldNotBeGuessed()

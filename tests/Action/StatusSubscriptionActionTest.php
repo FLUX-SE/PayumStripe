@@ -2,16 +2,88 @@
 
 namespace Tests\FluxSE\PayumStripe\Action;
 
-use FluxSE\PayumStripe\Action\StatusAction;
+use FluxSE\PayumStripe\Action\StatusSubscriptionAction;
+use Payum\Core\Action\ActionInterface;
+use Payum\Core\ApiAwareInterface;
+use Payum\Core\GatewayInterface;
+use Payum\Core\Request\Capture;
+use Payum\Core\Request\GetBinaryStatus;
 use Payum\Core\Request\GetHumanStatus;
 use PHPUnit\Framework\TestCase;
 use Stripe\Subscription;
 
-final class StatusActionSubscriptionTest extends TestCase
+final class StatusSubscriptionActionTest extends TestCase
 {
+    public function testShouldImplements()
+    {
+        $action = new StatusSubscriptionAction();
+
+        $this->assertInstanceOf(ActionInterface::class, $action);
+        $this->assertNotInstanceOf(GatewayInterface::class, $action);
+        $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
+    }
+
+    public function testSupportOnlyGetStatusInterfaceAndArrayAccessObject()
+    {
+        $action = new StatusSubscriptionAction();
+
+        $model = [
+            'object' => Subscription::OBJECT_NAME,
+        ];
+
+        $support = $action->supports(new GetHumanStatus($model));
+        $this->assertTrue($support);
+
+        $support = $action->supports(new GetBinaryStatus($model));
+        $this->assertTrue($support);
+
+        $support = $action->supports(new GetHumanStatus(''));
+        $this->assertFalse($support);
+
+        $support = $action->supports(new Capture($model));
+        $this->assertFalse($support);
+    }
+
+    public function testShouldMarkUnknownIfNoStatusIsFound()
+    {
+        $action = new StatusSubscriptionAction();
+
+        $model = [
+            'object' => Subscription::OBJECT_NAME,
+        ];
+
+        $request = new GetHumanStatus($model);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $this->assertTrue($request->isUnknown());
+    }
+
+    public function testShouldMarkFailedIfErrorIsFound()
+    {
+        $action = new StatusSubscriptionAction();
+
+        $model = [
+            'object' => Subscription::OBJECT_NAME,
+            'error' => 'an error',
+        ];
+
+        $request = new GetHumanStatus($model);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $this->assertTrue($request->isFailed());
+    }
+
     public function testShouldMarkCapturedIfIsASubscriptionObjectAndStatusActive()
     {
-        $action = new StatusAction();
+        $action = new StatusSubscriptionAction();
 
         $model = [
             'object' => Subscription::OBJECT_NAME,
@@ -26,7 +98,7 @@ final class StatusActionSubscriptionTest extends TestCase
 
     public function testShouldMarkCapturedIfIsASubscriptionObjectAndStatusIsTrialing()
     {
-        $action = new StatusAction();
+        $action = new StatusSubscriptionAction();
 
         $model = [
             'object' => Subscription::OBJECT_NAME,
@@ -45,7 +117,7 @@ final class StatusActionSubscriptionTest extends TestCase
 
     public function testShouldNotMarkCapturedIfIsASubscriptionObjectAndStatusIsNotAValidStatus()
     {
-        $action = new StatusAction();
+        $action = new StatusSubscriptionAction();
 
         $model = [
             'object' => Subscription::OBJECT_NAME,
@@ -61,7 +133,7 @@ final class StatusActionSubscriptionTest extends TestCase
 
     public function testShouldMarkCanceledIfIsASubscriptionObjectAndStatusIsCanceled()
     {
-        $action = new StatusAction();
+        $action = new StatusSubscriptionAction();
 
         $model = [
             'object' => Subscription::OBJECT_NAME,
@@ -76,7 +148,7 @@ final class StatusActionSubscriptionTest extends TestCase
 
     public function testShouldMarkAsCanceledIfIsASubscriptionObjectAndStatusIncomplete()
     {
-        $action = new StatusAction();
+        $action = new StatusSubscriptionAction();
 
         $model = [
             'object' => Subscription::OBJECT_NAME,
@@ -91,7 +163,7 @@ final class StatusActionSubscriptionTest extends TestCase
 
     public function testShouldMarkAsCanceledIfIsASubscriptionObjectAndStatusIncompleteExpired()
     {
-        $action = new StatusAction();
+        $action = new StatusSubscriptionAction();
 
         $model = [
             'object' => Subscription::OBJECT_NAME,
