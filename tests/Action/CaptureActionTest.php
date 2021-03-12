@@ -189,7 +189,7 @@ final class CaptureActionTest extends TestCase
     public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndSubscriptionModeIsSet()
     {
         $model = [
-            'mode' => 'subscription'
+            'mode' => 'subscription',
         ];
         $objectName = Subscription::OBJECT_NAME;
 

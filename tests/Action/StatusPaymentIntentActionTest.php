@@ -80,7 +80,7 @@ final class StatusPaymentIntentActionTest extends TestCase
 
         $this->assertTrue($request->isFailed());
     }
-    
+
     public function testShouldMarkCapturedIfIsAPaymentIntentObjectAndStatusSucceeded()
     {
         $action = new StatusPaymentIntentAction();

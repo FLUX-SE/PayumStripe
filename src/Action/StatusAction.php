@@ -51,7 +51,7 @@ class StatusAction implements ActionInterface
             return;
         }
 
-        /**
+        /*
          * @see StatusPaymentIntentAction for PaymentIntent status changes
          * @see StatusSetupIntentAction for Setupntent status changes
          * @see StatusSubscriptionAction for SubscriptionIntent status changes
