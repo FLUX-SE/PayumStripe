@@ -166,10 +166,30 @@ final class CaptureActionTest extends TestCase
         $this->executeCaptureAction($model, $objectName);
     }
 
+    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndSetupModeIsSet()
+    {
+        $model = [
+            'mode' => 'setup',
+        ];
+        $objectName = SetupIntent::OBJECT_NAME;
+
+        $this->executeCaptureAction($model, $objectName);
+    }
+
     public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsASubscriptionDataField()
     {
         $model = [
             'subscription_data' => [],
+        ];
+        $objectName = Subscription::OBJECT_NAME;
+
+        $this->executeCaptureAction($model, $objectName);
+    }
+
+    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndSubscriptionModeIsSet()
+    {
+        $model = [
+            'mode' => 'subscription'
         ];
         $objectName = Subscription::OBJECT_NAME;
 

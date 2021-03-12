@@ -28,6 +28,7 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
+
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
         if (false === $model->offsetExists('id')) {
@@ -87,15 +88,15 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
 
     public function embedOnModeData(ArrayObject $model, TokenInterface $token, string $modeDataKey): void
     {
-        $paymentIntentData = $model->offsetGet($modeDataKey);
-        if (null === $paymentIntentData) {
-            $paymentIntentData = [];
+        $embeddedModeData = $model->offsetGet($modeDataKey);
+        if (null === $embeddedModeData) {
+            $embeddedModeData = [];
         }
-        if (false === isset($paymentIntentData['metadata'])) {
-            $paymentIntentData['metadata'] = [];
+        if (false === isset($embeddedModeData['metadata'])) {
+            $embeddedModeData['metadata'] = [];
         }
-        $paymentIntentData['metadata']['token_hash'] = $token->getHash();
-        $model[$modeDataKey] = $paymentIntentData;
+        $embeddedModeData['metadata']['token_hash'] = $token->getHash();
+        $model[$modeDataKey] = $embeddedModeData;
     }
 
     protected function detectModeData(ArrayObject $model): string
@@ -104,7 +105,15 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
             return 'subscription_data';
         }
 
+        if ('subscription' === $model->offsetGet('mode')) {
+            return 'subscription_data';
+        }
+
         if ($model->offsetExists('setup_intent_data')) {
+            return 'setup_intent_data';
+        }
+
+        if ('setup' === $model->offsetGet('mode')) {
             return 'setup_intent_data';
         }
 
