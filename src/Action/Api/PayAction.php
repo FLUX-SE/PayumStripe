@@ -45,7 +45,7 @@ final class PayAction implements ActionInterface, ApiAwareInterface, GatewayAwar
         throw new HttpResponse($renderTemplate->getResult());
     }
 
-    public function supports($request)
+    public function supports($request): bool
     {
         return $request instanceof Pay;
     }
