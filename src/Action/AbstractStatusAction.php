@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace FluxSE\PayumStripe\Action;
 
 use ArrayAccess;
+use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Request\GetStatusInterface;
 
-trait StatusActionTrait
+abstract class AbstractStatusAction implements ActionInterface
 {
     /**
      * @param GetStatusInterface $request

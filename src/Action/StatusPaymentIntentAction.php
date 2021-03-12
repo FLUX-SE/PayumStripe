@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Action;
 
-use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Request\GetStatusInterface;
 use Stripe\PaymentIntent;
 
-class StatusPaymentIntentAction implements ActionInterface
+class StatusPaymentIntentAction extends AbstractStatusAction
 {
-    use StatusActionTrait;
-
     public function isMarkedStatus(GetStatusInterface $request, ArrayObject $model): bool
     {
         $status = (string) $model->offsetGet('status');
