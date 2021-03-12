@@ -37,6 +37,6 @@ class JsCaptureAction extends CaptureAction
 
     public function embedOnModeData(ArrayObject $model, TokenInterface $token, string $modeDataKey): void
     {
-        // not need for this on Stripe JS
+        // not needed for this on Stripe JS
     }
 }
