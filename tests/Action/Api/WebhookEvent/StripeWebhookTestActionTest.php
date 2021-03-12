@@ -12,6 +12,7 @@ use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Reply\HttpResponse;
+use Payum\Core\Request\Capture;
 use PHPUnit\Framework\TestCase;
 use Stripe\Event;
 use Tests\FluxSE\PayumStripe\Action\GatewayAwareTestTrait;
@@ -28,6 +29,21 @@ final class StripeWebhookTestActionTest extends TestCase
         $this->assertInstanceOf(ActionInterface::class, $action);
 
         $this->assertInstanceOf(AbstractWebhookEventAction::class, $action);
+    }
+
+    public function testOnlyAcceptWebhookEventWithNotNullEventWrapper()
+    {
+        $action = new StripeWebhookTestAction();
+
+        $supports = $action->supports(new Capture([]));
+        $this->assertFalse($supports);
+
+        $eventWrapper = new EventWrapper('', new Event());
+        $webhookEvent = new WebhookEvent($eventWrapper);
+        $webhookEvent->setModel([]);
+
+        $supports = $action->supports($webhookEvent);
+        $this->assertFalse($supports);
     }
 
     public function testShouldConsumeTheWebhookEvent()
