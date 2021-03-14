@@ -9,11 +9,13 @@ use FluxSE\PayumStripe\Action\Api\ResolveWebhookEventAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllCustomerAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllTaxRateAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CancelSubscriptionAction;
+use FluxSE\PayumStripe\Action\Api\Resource\CapturePaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateCustomerAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreatePaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreatePaymentMethodAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreatePlanAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateSessionAction;
+use FluxSE\PayumStripe\Action\Api\Resource\CreateSetupIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateTaxRateAction;
 use FluxSE\PayumStripe\Action\Api\Resource\DeletePlanAction;
@@ -27,7 +29,6 @@ use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSessionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSetupIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdateSubscriptionAction;
-use FluxSE\PayumStripe\Action\Api\WebhookEvent\CheckoutSessionCompletedAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentCanceledAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\SetupIntentCanceledAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\StripeWebhookTestAction;
@@ -60,10 +61,12 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
             'payum.action.all_customer' => new AllCustomerAction(),
             'payum.action.all_tax_rate' => new AllTaxRateAction(),
             'payum.action.cancel_subscription' => new CancelSubscriptionAction(),
+            'payum.action.capture_payment_intent' => new CapturePaymentIntentAction(),
             'payum.action.create_customer' => new CreateCustomerAction(),
             'payum.action.create_payment_intent' => new CreatePaymentIntentAction(),
             'payum.action.create_payment_method' => new CreatePaymentMethodAction(),
             'payum.action.create_plan' => new CreatePlanAction(),
+            'payum.action.create_setup_intent' => new CreateSetupIntentAction(),
             'payum.action.create_session' => new CreateSessionAction(),
             'payum.action.create_subscription' => new CreateSubscriptionAction(),
             'payum.action.create_tax_rate' => new CreateTaxRateAction(),
@@ -85,7 +88,6 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
 
             // Webhook event resolver
             'payum.action.stripe_webhook_test' => new StripeWebhookTestAction(),
-            'payum.action.checkout_session_completed' => new CheckoutSessionCompletedAction(),
             'payum.action.payment_intent_canceled' => new PaymentIntentCanceledAction(),
             'payum.action.setup_intent_canceled' => new SetupIntentCanceledAction(),
         ]);

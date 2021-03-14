@@ -63,7 +63,10 @@
                     } else {
                         // The payment has been processed!
                         var paymentIntent = result.paymentIntent;
-                        if (paymentIntent.status === 'succeeded') {
+                        if (
+                            paymentIntent.status === '{{ constant('Stripe\\PaymentIntent::STATUS_SUCCEEDED') }}'
+                            || paymentIntent.status === '{{ constant('Stripe\\PaymentIntent::STATUS_REQUIRES_CAPTURE') }}'
+                        ) {
                             // Show a success message to your customer
                             // There's a risk of the customer closing the window before callback
                             // execution. Set up a webhook or plugin to listen for the

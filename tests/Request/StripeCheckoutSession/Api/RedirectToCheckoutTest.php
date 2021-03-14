@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\FluxSE\PayumStripe\Request\Api;
+namespace Tests\FluxSE\PayumStripe\Request\StripeCheckoutSession\Api;
 
-use FluxSE\PayumStripe\Request\Api\RedirectToCheckout;
+use FluxSE\PayumStripe\Request\StripeCheckoutSession\Api\RedirectToCheckout;
 use Payum\Core\Request\Generic;
 use PHPUnit\Framework\TestCase;
 

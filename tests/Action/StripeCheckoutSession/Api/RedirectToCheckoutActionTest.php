@@ -1,27 +1,28 @@
 <?php
 
-namespace Tests\FluxSE\PayumStripe\Action\Api;
+namespace Tests\FluxSE\PayumStripe\Action\StripeCheckoutSession\Api;
 
-use FluxSE\PayumStripe\Action\Api\PayAction;
+use ArrayObject;
+use FluxSE\PayumStripe\Action\StripeCheckoutSession\Api\RedirectToCheckoutAction;
 use FluxSE\PayumStripe\Api\KeysInterface;
-use FluxSE\PayumStripe\Request\Api\Pay;
+use FluxSE\PayumStripe\Request\StripeCheckoutSession\Api\RedirectToCheckout;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\RenderTemplate;
 use PHPUnit\Framework\TestCase;
-use Stripe\PaymentIntent;
+use Tests\FluxSE\PayumStripe\Action\Api\ApiAwareActionTestTrait;
 use Tests\FluxSE\PayumStripe\Action\GatewayAwareTestTrait;
 
-final class PayActionTest extends TestCase
+final class RedirectToCheckoutActionTest extends TestCase
 {
     use ApiAwareActionTestTrait;
     use GatewayAwareTestTrait;
 
     public function testShouldImplements()
     {
-        $action = new PayAction('aTemplateName');
+        $action = new RedirectToCheckoutAction('aTemplateName');
 
         $this->assertInstanceOf(ActionInterface::class, $action);
         $this->assertInstanceOf(ApiAwareInterface::class, $action);
@@ -30,26 +31,23 @@ final class PayActionTest extends TestCase
 
     public function testShouldNotSupportObtainTokenRequestWithNotArrayAccessModel()
     {
-        $model = new PaymentIntent();
-        $actionUrl = '';
-        $action = new PayAction('aTemplateName');
+        $model = [];
+        $action = new RedirectToCheckoutAction('aTemplateName');
 
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock
             ->expects($this->once())
             ->method('execute')
             ->with($this->isInstanceOf(RenderTemplate::class))
-            ->will($this->returnCallback(function (RenderTemplate $request) use ($model, $actionUrl) {
+            ->will($this->returnCallback(function (RenderTemplate $request) use ($model) {
                 $parameters = $request->getParameters();
                 $this->assertEquals('aTemplateName', $request->getTemplateName());
                 $this->assertIsArray($parameters);
                 $this->assertArrayHasKey('model', $parameters);
                 $this->assertArrayHasKey('publishable_key', $parameters);
-                $this->assertArrayHasKey('action_url', $parameters);
                 $this->assertEquals([
-                    'model' => $model,
+                    'model' => new ArrayObject($model),
                     'publishable_key' => '',
-                    'action_url' => $actionUrl,
                 ], $parameters);
                 $request->setResult('');
             }));
@@ -65,7 +63,7 @@ final class PayActionTest extends TestCase
         $action->setGateway($gatewayMock);
         $action->setApi($apiMock);
 
-        $request = new Pay($model, $actionUrl);
+        $request = new RedirectToCheckout($model);
 
         $supports = $action->supports($request);
         $this->assertTrue($supports);

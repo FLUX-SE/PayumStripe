@@ -2,16 +2,19 @@
 
 declare(strict_types=1);
 
-namespace FluxSE\PayumStripe\Action;
+namespace FluxSE\PayumStripe\Action\StripeJs;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Model\PaymentInterface;
 use Payum\Core\Request\Convert;
 
 final class ConvertPaymentAction implements ActionInterface
 {
+    use GatewayAwareTrait;
+
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -21,28 +24,27 @@ final class ConvertPaymentAction implements ActionInterface
 
         $details = ArrayObject::ensureArrayObject($payment->getDetails());
 
-        $details->offsetSet('customer_email', $payment->getClientEmail());
-        $details->offsetSet('line_items', [
-            [
-                'name' => $payment->getDescription(),
-                'amount' => $payment->getTotalAmount(),
-                'currency' => $payment->getCurrencyCode(),
-                'quantity' => 1,
-            ],
-        ]);
-        $details->offsetSet('payment_method_types', [
-            'card',
-        ]);
+        $details->offsetSet('amount', $payment->getTotalAmount());
+        $details->offsetSet('currency', $payment->getCurrencyCode());
 
         $request->setResult($details);
     }
 
     public function supports($request): bool
     {
-        return
-            $request instanceof Convert &&
-            $request->getSource() instanceof PaymentInterface &&
-            'array' === $request->getTo()
-        ;
+        if (false === $request instanceof Convert) {
+            return false;
+        }
+
+        if ('array' !== $request->getTo()) {
+            return false;
+        }
+
+        $payment = $request->getSource();
+        if (false === $payment instanceof PaymentInterface) {
+            return false;
+        }
+
+        return true;
     }
 }

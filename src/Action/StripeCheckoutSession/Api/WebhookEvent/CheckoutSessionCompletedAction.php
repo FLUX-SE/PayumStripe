@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace FluxSE\PayumStripe\Action\Api\WebhookEvent;
+namespace FluxSE\PayumStripe\Action\StripeCheckoutSession\Api\WebhookEvent;
 
+use FluxSE\PayumStripe\Action\Api\WebhookEvent\AbstractPaymentAction;
 use Stripe\Event;
 
 final class CheckoutSessionCompletedAction extends AbstractPaymentAction

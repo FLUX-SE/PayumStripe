@@ -19,6 +19,12 @@ class StatusPaymentIntentAction extends AbstractStatusAction
             return true;
         }
 
+        if (PaymentIntent::STATUS_REQUIRES_CAPTURE === $status) {
+            $request->markAuthorized();
+
+            return true;
+        }
+
         if (PaymentIntent::STATUS_PROCESSING === $status) {
             $request->markPending();
 

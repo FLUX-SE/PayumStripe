@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace FluxSE\PayumStripe\Action;
 
 use ArrayAccess;
-use FluxSE\PayumStripe\Request\Api\RedirectToCheckout;
-use FluxSE\PayumStripe\Request\Api\Resource\CreateSession;
 use LogicException;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -14,13 +12,14 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Capture;
+use Payum\Core\Request\Generic;
 use Payum\Core\Request\Sync;
 use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryAwareTrait;
 use Payum\Core\Security\TokenInterface;
 use Stripe\ApiResource;
 
-class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTokenFactoryAwareInterface
+abstract class AbstractCaptureAction implements ActionInterface, GatewayAwareInterface, GenericTokenFactoryAwareInterface
 {
     use GatewayAwareTrait;
     use GenericTokenFactoryAwareTrait;
@@ -43,7 +42,7 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
             // 1. Use the capture URL to `Sync` the payment
             //    after the customer get back from Stripe Checkout Session
             // 2. Create a new `Session`
-            $session = $this->createCaptureResource($model, $request);
+            $apiResource = $this->createApiResource($model, $request);
 
             // 3. Prepare storing of a `Session` object synced to one of this object :
             //      - `PaymentIntent`
@@ -51,11 +50,11 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
             //      - `Subscription`
             //      - `Session`
             //    (legacy Stripe payments were storing `Charge` object)
-            $model->exchangeArray($session->toArray());
+            $model->exchangeArray($apiResource->toArray());
             $this->gateway->execute(new Sync($model));
 
             // 4. Display the page to redirect to Stripe Checkout portal
-            $this->renderCapture($session, $request);
+            $this->render($apiResource, $request);
             // Nothing else will be execute after this line because of the rendering of the template
         }
 
@@ -81,46 +80,9 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
 
         $metadata['token_hash'] = $token->getHash();
         $model['metadata'] = $metadata;
-
-        $modeDataKey = $this->detectModeData($model);
-        $this->embedOnModeData($model, $token, $modeDataKey);
     }
 
-    public function embedOnModeData(ArrayObject $model, TokenInterface $token, string $modeDataKey): void
-    {
-        $embeddedModeData = $model->offsetGet($modeDataKey);
-        if (null === $embeddedModeData) {
-            $embeddedModeData = [];
-        }
-        if (false === isset($embeddedModeData['metadata'])) {
-            $embeddedModeData['metadata'] = [];
-        }
-        $embeddedModeData['metadata']['token_hash'] = $token->getHash();
-        $model[$modeDataKey] = $embeddedModeData;
-    }
-
-    protected function detectModeData(ArrayObject $model): string
-    {
-        if ($model->offsetExists('subscription_data')) {
-            return 'subscription_data';
-        }
-
-        if ('subscription' === $model->offsetGet('mode')) {
-            return 'subscription_data';
-        }
-
-        if ($model->offsetExists('setup_intent_data')) {
-            return 'setup_intent_data';
-        }
-
-        if ('setup' === $model->offsetGet('mode')) {
-            return 'setup_intent_data';
-        }
-
-        return 'payment_intent_data';
-    }
-
-    protected function getRequestToken(Capture $request): TokenInterface
+    protected function getRequestToken(Generic $request): TokenInterface
     {
         $token = $request->getToken();
 
@@ -131,29 +93,16 @@ class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTo
         return $token;
     }
 
-    protected function createCaptureResource(ArrayObject $model, Capture $request): ApiResource
-    {
-        $token = $this->getRequestToken($request);
-        $model->offsetSet('success_url', $token->getTargetUrl());
-        $model->offsetSet('cancel_url', $token->getTargetUrl());
+    abstract protected function createApiResource(ArrayObject $model, Generic $request): ApiResource;
 
-        $createCheckoutSession = new CreateSession($model->getArrayCopy());
-        $this->gateway->execute($createCheckoutSession);
-
-        return $createCheckoutSession->getApiResource();
-    }
-
-    protected function renderCapture(ApiResource $captureResource, Capture $request): void
-    {
-        $redirectToCheckout = new RedirectToCheckout($captureResource->toArray());
-        $this->gateway->execute($redirectToCheckout);
-    }
+    abstract protected function render(ApiResource $captureResource, Generic $request): void;
 
     public function supports($request): bool
     {
-        return
-            $request instanceof Capture &&
-            $request->getModel() instanceof ArrayAccess
-            ;
+        if (false === $request instanceof Capture) {
+            return false;
+        }
+
+        return $request->getModel() instanceof ArrayAccess;
     }
 }

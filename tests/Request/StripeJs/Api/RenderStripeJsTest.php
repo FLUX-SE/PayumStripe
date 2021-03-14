@@ -1,20 +1,19 @@
 <?php
 
-namespace Tests\FluxSE\PayumStripe\Request\Api;
+namespace Tests\FluxSE\PayumStripe\Request\StripeJs\Api;
 
-use FluxSE\PayumStripe\Request\Api\Pay;
-use LogicException;
+use FluxSE\PayumStripe\Request\StripeJs\Api\RenderStripeJs;
 use PHPUnit\Framework\TestCase;
 use Stripe\PaymentIntent;
 
-final class PayTest extends TestCase
+final class RenderStripeJsTest extends TestCase
 {
-    /** @var Pay */
+    /** @var RenderStripeJs */
     private $request;
 
     protected function setUp(): void
     {
-        $this->request = new Pay(new PaymentIntent(), '');
+        $this->request = new RenderStripeJs(new PaymentIntent(), '');
     }
 
     public function testGetSetActionUrl()
@@ -27,11 +26,10 @@ final class PayTest extends TestCase
     public function testGetSetPaymentIntent()
     {
         $paymentIntent = new PaymentIntent('test_1');
-        $this->request->setPaymentIntent($paymentIntent);
-        $this->assertEquals($paymentIntent, $this->request->getPaymentIntent());
+        $this->request->setApiResource($paymentIntent);
+        $this->assertEquals($paymentIntent, $this->request->getApiResource());
 
         $this->request->setModel(null);
-        $this->expectException(LogicException::class);
-        $this->request->getPaymentIntent();
+        $this->assertEquals(null, $this->request->getApiResource());
     }
 }

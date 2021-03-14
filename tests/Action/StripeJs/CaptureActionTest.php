@@ -1,42 +1,44 @@
 <?php
 
-namespace Tests\FluxSE\PayumStripe\Action;
+namespace Tests\FluxSE\PayumStripe\Action\StripeJs;
 
 use ArrayObject;
-use FluxSE\PayumStripe\Action\CaptureAction;
-use FluxSE\PayumStripe\Request\Api\RedirectToCheckout;
-use FluxSE\PayumStripe\Request\Api\Resource\CreateSession;
+use FluxSE\PayumStripe\Action\AbstractCaptureAction;
+use FluxSE\PayumStripe\Action\StripeJs\CaptureAction;
+use FluxSE\PayumStripe\Request\Api\Resource\CreatePaymentIntent;
+use FluxSE\PayumStripe\Request\StripeJs\Api\RenderStripeJs;
 use LogicException;
-use Payum\Core\Action\ActionInterface;
-use Payum\Core\ApiAwareInterface;
-use Payum\Core\GatewayAwareInterface;
 use Payum\Core\Model\Identity;
 use Payum\Core\Model\PaymentInterface;
 use Payum\Core\Model\Token;
 use Payum\Core\Reply\HttpResponse;
+use Payum\Core\Request\Authorize;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\Sync;
-use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Storage\IdentityInterface;
 use PHPUnit\Framework\TestCase;
-use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
-use Stripe\SetupIntent;
-use Stripe\Subscription;
+use Tests\FluxSE\PayumStripe\Action\GatewayAwareTestTrait;
 
 final class CaptureActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
-    public function testShouldImplements()
+    public function testShouldBeAnInstanceOf()
     {
         $action = new CaptureAction();
 
-        $this->assertInstanceOf(GatewayAwareInterface::class, $action);
-        $this->assertInstanceOf(ActionInterface::class, $action);
-        $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
-        $this->assertInstanceOf(GenericTokenFactoryAwareInterface::class, $action);
+        $this->assertInstanceOf(AbstractCaptureAction::class, $action);
+    }
+
+    public function testShouldSupportOnlyCaptureAndArrayAccessModel()
+    {
+        $action = new CaptureAction();
+
+        $this->assertTrue($action->supports(new Capture([])));
+        $this->assertFalse($action->supports(new Capture(null)));
+        $this->assertFalse($action->supports(new Authorize(null)));
     }
 
     public function testShouldDoASyncIfPaymentHasId()
@@ -63,7 +65,7 @@ final class CaptureActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function testShouldThrowExceptionWhenThereIsNoTokenAvailable()
+    public function shouldThrowExceptionWhenThereIsNoTokenAvailable()
     {
         $model = [];
 
@@ -78,11 +80,12 @@ final class CaptureActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function executeCaptureAction(array $model, string $objectName): void
+    public function executeCaptureAction(array $model): void
     {
         $token = new Token();
         $token->setDetails(new Identity(1, PaymentInterface::class));
         $token->setGatewayName('stripe_checkout_session');
+        $token->setTargetUrl('test/url');
 
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock
@@ -93,14 +96,14 @@ final class CaptureActionTest extends TestCase
             ->expects($this->exactly(3))
             ->method('execute')
             ->withConsecutive(
-                [$this->isInstanceOf(CreateSession::class)],
+                [$this->isInstanceOf(CreatePaymentIntent::class)],
                 [$this->isInstanceOf(Sync::class)],
-                [$this->isInstanceOf(RedirectToCheckout::class)]
+                [$this->isInstanceOf(RenderStripeJs::class)]
             )
             ->willReturnOnConsecutiveCalls(
-                $this->returnCallback(function (CreateSession $request) {
+                $this->returnCallback(function (CreatePaymentIntent $request) {
                     $this->assertInstanceOf(ArrayObject::class, $request->getModel());
-                    $request->setApiResource(new Session('sess_0001'));
+                    $request->setApiResource(new PaymentIntent('pi_0001'));
                 }),
                 $this->returnCallback(function (Sync $request) {
                     $model = $request->getModel();
@@ -134,65 +137,15 @@ final class CaptureActionTest extends TestCase
 
         /** @var ArrayObject $resultModel */
         $resultModel = $request->getModel();
-        $this->assertTrue($resultModel->offsetExists($objectName.'_data'));
-        $data = $resultModel->offsetGet($objectName.'_data');
-        $this->assertArrayHasKey('metadata', $data);
-        $this->assertArrayHasKey('token_hash', $data['metadata']);
-        $this->assertEquals($token->getHash(), $data['metadata']['token_hash']);
-
-        // Session metadata
-        $this->assertTrue($resultModel->offsetExists('metadata'));
-        $data = $resultModel->offsetGet('metadata');
-        $this->assertArrayHasKey('metadata', $data);
-        $this->assertArrayHasKey('token_hash', $data['metadata']);
-        $this->assertEquals($token->getHash(), $data['metadata']['token_hash']);
+        $this->assertArrayHasKey('metadata', $resultModel);
+        $this->assertArrayHasKey('token_hash', $resultModel['metadata']);
+        $this->assertEquals($token->getHash(), $resultModel['metadata']['token_hash']);
     }
 
-    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsAPaymentIntentDataField()
+    public function testShouldRenderPayTemplatePaymentIsNew()
     {
         $model = [];
-        $objectName = PaymentIntent::OBJECT_NAME;
 
-        $this->executeCaptureAction($model, $objectName);
-    }
-
-    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsASetupIntentDataField()
-    {
-        $model = [
-            'setup_intent_data' => [],
-        ];
-        $objectName = SetupIntent::OBJECT_NAME;
-
-        $this->executeCaptureAction($model, $objectName);
-    }
-
-    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndSetupModeIsSet()
-    {
-        $model = [
-            'mode' => 'setup',
-        ];
-        $objectName = SetupIntent::OBJECT_NAME;
-
-        $this->executeCaptureAction($model, $objectName);
-    }
-
-    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsASubscriptionDataField()
-    {
-        $model = [
-            'subscription_data' => [],
-        ];
-        $objectName = Subscription::OBJECT_NAME;
-
-        $this->executeCaptureAction($model, $objectName);
-    }
-
-    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndSubscriptionModeIsSet()
-    {
-        $model = [
-            'mode' => 'subscription',
-        ];
-        $objectName = Subscription::OBJECT_NAME;
-
-        $this->executeCaptureAction($model, $objectName);
+        $this->executeCaptureAction($model);
     }
 }

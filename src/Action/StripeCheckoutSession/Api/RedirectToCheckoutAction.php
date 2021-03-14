@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace FluxSE\PayumStripe\Action\Api;
+namespace FluxSE\PayumStripe\Action\StripeCheckoutSession\Api;
 
-use FluxSE\PayumStripe\Request\Api\RedirectToCheckout;
+use FluxSE\PayumStripe\Action\Api\StripeApiAwareTrait;
+use FluxSE\PayumStripe\Request\StripeCheckoutSession\Api\RedirectToCheckout;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -44,9 +45,6 @@ final class RedirectToCheckoutAction implements ActionInterface, ApiAwareInterfa
         throw new HttpResponse($renderTemplate->getResult());
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function supports($request): bool
     {
         return $request instanceof RedirectToCheckout;
