@@ -23,6 +23,11 @@ class StatusRefundAction extends AbstractStatusAction
 
             return true;
         }
+        if (Refund::STATUS_FAILED === $status) {
+            $request->markFailed();
+
+            return true;
+        }
         if (Refund::STATUS_SUCCEEDED === $status) {
             $request->markRefunded();
 

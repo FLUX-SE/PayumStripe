@@ -68,9 +68,9 @@ final class NotifyActionTest extends TestCase
                 [$this->isInstanceOf(WebhookEvent::class)]
             )
             ->willReturnOnConsecutiveCalls(
-                $this->returnCallback(function (ResolveWebhookEvent $request) {
-                    $request->setEventWrapper(new EventWrapper('', new Event()));
-                }),
+        $this->returnCallback(function (ResolveWebhookEvent $request) {
+            $request->setEventWrapper(new EventWrapper('', new Event()));
+        }),
                 null
             )
         ;

@@ -9,10 +9,10 @@ abstract class AbstractDelete extends AbstractRetrieve implements DeleteInterfac
     use OptionsAwareTrait;
     use ResourceAwareTrait;
 
-    public function __construct(string $id, array $options = [])
+    public function __construct(string $id, array $retrieveOptions = [])
     {
         parent::__construct($id);
-        $this->setOptions($options);
+        $this->setOptions($retrieveOptions);
     }
 
     public function getId(): string

@@ -9,11 +9,14 @@ use Payum\Core\GatewayInterface;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\GetBinaryStatus;
 use Payum\Core\Request\GetHumanStatus;
+use Payum\Core\Request\Sync;
 use PHPUnit\Framework\TestCase;
 use Stripe\SetupIntent;
 
 final class StatusSetupIntentActionTest extends TestCase
 {
+    use GatewayAwareTestTrait;
+
     public function testShouldImplements()
     {
         $action = new StatusSetupIntentAction();
@@ -46,7 +49,7 @@ final class StatusSetupIntentActionTest extends TestCase
 
     public function testShouldMarkUnknownIfNoStatusIsFound()
     {
-        $action = new StatusSetupIntentAction();
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => SetupIntent::OBJECT_NAME,
@@ -64,7 +67,7 @@ final class StatusSetupIntentActionTest extends TestCase
 
     public function testShouldMarkFailedIfErrorIsFound()
     {
-        $action = new StatusSetupIntentAction();
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => SetupIntent::OBJECT_NAME,
@@ -83,7 +86,7 @@ final class StatusSetupIntentActionTest extends TestCase
 
     public function testShouldMarkCapturedIfIsASetupIntentObjectAndStatusSucceeded()
     {
-        $action = new StatusSetupIntentAction();
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => SetupIntent::OBJECT_NAME,
@@ -102,7 +105,7 @@ final class StatusSetupIntentActionTest extends TestCase
 
     public function testShouldNotMarkCapturedIfIsASetupIntentObjectAndStatusIsNotAValidStatus()
     {
-        $action = new StatusSetupIntentAction();
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => SetupIntent::OBJECT_NAME,
@@ -122,7 +125,7 @@ final class StatusSetupIntentActionTest extends TestCase
 
     public function testShouldMarkCanceledIfIsASetupIntentObjectAndStatusIsCanceled()
     {
-        $action = new StatusSetupIntentAction();
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => SetupIntent::OBJECT_NAME,
@@ -141,7 +144,7 @@ final class StatusSetupIntentActionTest extends TestCase
 
     public function testShouldMarkAsCanceledIfIsASetupIntentObjectAndStatusRequiresPaymentMethod()
     {
-        $action = new StatusSetupIntentAction();
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => SetupIntent::OBJECT_NAME,
@@ -160,7 +163,7 @@ final class StatusSetupIntentActionTest extends TestCase
 
     public function testShouldMarkAsNewIfIsASetupIntentObjectAndStatusRequiresConfirmation()
     {
-        $action = new StatusSetupIntentAction();
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => SetupIntent::OBJECT_NAME,
@@ -179,7 +182,7 @@ final class StatusSetupIntentActionTest extends TestCase
 
     public function testShouldMarkAsNewIfIsASetupIntentObjectAndStatusRequiresAction()
     {
-        $action = new StatusSetupIntentAction();
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => SetupIntent::OBJECT_NAME,
@@ -198,7 +201,7 @@ final class StatusSetupIntentActionTest extends TestCase
 
     public function testShouldMarkPendingIfIsASetupIntentObjectAndStatusIsProcessing()
     {
-        $action = new StatusSetupIntentAction();
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => SetupIntent::OBJECT_NAME,
@@ -213,5 +216,19 @@ final class StatusSetupIntentActionTest extends TestCase
         $action->execute($request);
 
         $this->assertTrue($request->isPending());
+    }
+
+    protected function createStatusWithGateway(): StatusSetupIntentAction
+    {
+        $gatewayMock = $this->createGatewayMock();
+        $gatewayMock
+            ->expects($this->once())
+            ->method('execute')
+            ->with($this->isInstanceOf(Sync::class));
+
+        $action = new StatusSetupIntentAction();
+        $action->setGateway($gatewayMock);
+
+        return $action;
     }
 }

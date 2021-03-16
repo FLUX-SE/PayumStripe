@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\FluxSE\PayumStripe;
 
 use FluxSE\PayumStripe\AbstractStripeGatewayFactory;
-use FluxSE\PayumStripe\Action\Api\PayAction;
-use FluxSE\PayumStripe\Action\Api\RedirectToCheckoutAction;
+use FluxSE\PayumStripe\Action\StripeCheckoutSession\Api\RedirectToCheckoutAction;
+use FluxSE\PayumStripe\Action\StripeJs\Api\RenderStripeJsAction;
 use FluxSE\PayumStripe\Api\KeysInterface;
 use FluxSE\PayumStripe\StripeCheckoutSessionGatewayFactory;
 use FluxSE\PayumStripe\StripeJsGatewayFactory;
@@ -14,6 +14,7 @@ use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\GatewayFactoryInterface;
 use PHPUnit\Framework\TestCase;
+use Stripe\PaymentIntent;
 
 final class StripeGatewayFactoryTest extends TestCase
 {
@@ -204,7 +205,10 @@ final class StripeGatewayFactoryTest extends TestCase
         $this->assertArrayHasKey('payum.factory_title', $config);
         $this->assertEquals('Stripe JS', $config['payum.factory_title']);
 
-        $payAction = $config['payum.action.pay'](ArrayObject::ensureArrayObject($config));
-        $this->assertInstanceOf(PayAction::class, $payAction);
+        /** @var RenderStripeJsAction $payAction */
+        $payAction = $config['payum.action.render_stripe_js.payment_intent'](ArrayObject::ensureArrayObject($config));
+        $this->assertInstanceOf(RenderStripeJsAction::class, $payAction);
+        $this->assertEquals(PaymentIntent::class, $payAction->getApiResourceClass());
+        $this->assertEquals($config['payum.template.render_stripe_js.payment_intent'], $payAction->getTemplateName());
     }
 }

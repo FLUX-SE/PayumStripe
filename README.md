@@ -38,14 +38,16 @@ composer require  php-http/guzzle6-adapter
  - [Stripe Checkout Session](docs/stripe-checkout-session/README.md)
 
    Support :
-    - ["One-time payments"](https://stripe.com/docs/payments/checkout/one-time)
-    - ["Subscription"](https://stripe.com/docs/payments/checkout/subscriptions/starting)
-    - ["Update payment details"](https://stripe.com/docs/payments/checkout/subscriptions/updating)
+   - ["One-time payments"](https://stripe.com/docs/payments/checkout/one-time)
+   - ["Place a hold on a card" (Authorize)](https://stripe.com/docs/payments/capture-later)
+   - ["Subscription"](https://stripe.com/docs/payments/checkout/subscriptions/starting)
+   - ["Set up future payments"](https://stripe.com/docs/payments/save-and-reuse#checkout)
     
  - [Stripe JS](docs/stripe-js/README.md)
 
    Support :
-    - ["Accept a payment"](https://stripe.com/docs/payments/accept-a-payment?integration=elements)
+   - ["Accept a payment"](https://stripe.com/docs/payments/accept-a-payment?integration=elements)
+   - ["Place a hold on a card" (Authorize)](https://stripe.com/docs/payments/capture-later)
 
 ## More
 

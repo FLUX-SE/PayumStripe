@@ -2,6 +2,12 @@
     "name": "flux-se/payum-stripe",
     "description": "Payum Stripe gateways",
     "type": "library",
+    "keywords": [
+        "stripe",
+        "payum",
+        "payment",
+        "authorize"
+    ],
     "require": {
         "payum/core": "^1.6",
         "stripe/stripe-php": "^7"

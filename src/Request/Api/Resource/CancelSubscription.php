@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Request\Api\Resource;
 
-final class CancelSubscription extends AbstractDelete
+final class CancelSubscription extends AbstractCustomCall
 {
 }

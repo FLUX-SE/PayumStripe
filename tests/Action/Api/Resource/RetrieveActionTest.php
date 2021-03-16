@@ -64,7 +64,7 @@ final class RetrieveActionTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testShouldRetrieveAPaymentIntent(
+    public function testShouldBeRetrieved(
         string $retrieveActionClass,
         string $retrieveRequestClass,
         string $retrieveClass
@@ -85,7 +85,7 @@ final class RetrieveActionTest extends TestCase
 
         $this->stubRequest(
             'get',
-            sprintf('%s/%s', $retrieveClass::classUrl(), $id),
+            $retrieveClass::resourceUrl($id),
             [],
             null,
             false,

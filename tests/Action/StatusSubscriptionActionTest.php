@@ -9,11 +9,14 @@ use Payum\Core\GatewayInterface;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\GetBinaryStatus;
 use Payum\Core\Request\GetHumanStatus;
+use Payum\Core\Request\Sync;
 use PHPUnit\Framework\TestCase;
 use Stripe\Subscription;
 
 final class StatusSubscriptionActionTest extends TestCase
 {
+    use GatewayAwareTestTrait;
+
     public function testShouldImplements()
     {
         $action = new StatusSubscriptionAction();
@@ -46,7 +49,7 @@ final class StatusSubscriptionActionTest extends TestCase
 
     public function testShouldMarkUnknownIfNoStatusIsFound()
     {
-        $action = new StatusSubscriptionAction();
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => Subscription::OBJECT_NAME,
@@ -64,7 +67,7 @@ final class StatusSubscriptionActionTest extends TestCase
 
     public function testShouldMarkFailedIfErrorIsFound()
     {
-        $action = new StatusSubscriptionAction();
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => Subscription::OBJECT_NAME,
@@ -83,7 +86,7 @@ final class StatusSubscriptionActionTest extends TestCase
 
     public function testShouldMarkCapturedIfIsASubscriptionObjectAndStatusActive()
     {
-        $action = new StatusSubscriptionAction();
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => Subscription::OBJECT_NAME,
@@ -98,7 +101,7 @@ final class StatusSubscriptionActionTest extends TestCase
 
     public function testShouldMarkCapturedIfIsASubscriptionObjectAndStatusIsTrialing()
     {
-        $action = new StatusSubscriptionAction();
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => Subscription::OBJECT_NAME,
@@ -117,7 +120,7 @@ final class StatusSubscriptionActionTest extends TestCase
 
     public function testShouldNotMarkCapturedIfIsASubscriptionObjectAndStatusIsNotAValidStatus()
     {
-        $action = new StatusSubscriptionAction();
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => Subscription::OBJECT_NAME,
@@ -133,7 +136,7 @@ final class StatusSubscriptionActionTest extends TestCase
 
     public function testShouldMarkCanceledIfIsASubscriptionObjectAndStatusIsCanceled()
     {
-        $action = new StatusSubscriptionAction();
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => Subscription::OBJECT_NAME,
@@ -148,7 +151,7 @@ final class StatusSubscriptionActionTest extends TestCase
 
     public function testShouldMarkAsCanceledIfIsASubscriptionObjectAndStatusIncomplete()
     {
-        $action = new StatusSubscriptionAction();
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => Subscription::OBJECT_NAME,
@@ -163,7 +166,7 @@ final class StatusSubscriptionActionTest extends TestCase
 
     public function testShouldMarkAsCanceledIfIsASubscriptionObjectAndStatusIncompleteExpired()
     {
-        $action = new StatusSubscriptionAction();
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => Subscription::OBJECT_NAME,
@@ -174,5 +177,19 @@ final class StatusSubscriptionActionTest extends TestCase
         $action->execute($status);
 
         $this->assertTrue($status->isCanceled());
+    }
+
+    protected function createStatusWithGateway(): StatusSubscriptionAction
+    {
+        $gatewayMock = $this->createGatewayMock();
+        $gatewayMock
+            ->expects($this->once())
+            ->method('execute')
+            ->with($this->isInstanceOf(Sync::class));
+
+        $action = new StatusSubscriptionAction();
+        $action->setGateway($gatewayMock);
+
+        return $action;
     }
 }

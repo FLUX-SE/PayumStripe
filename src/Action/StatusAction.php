@@ -53,7 +53,7 @@ class StatusAction implements ActionInterface
 
         /*
          * @see StatusPaymentIntentAction for PaymentIntent status changes
-         * @see StatusSetupIntentAction for Setupntent status changes
+         * @see StatusSetupIntentAction for SetupIntent status changes
          * @see StatusSubscriptionAction for SubscriptionIntent status changes
          * @see StatusRefundAction for RefundIntent status changes
          */
