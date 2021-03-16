@@ -57,7 +57,7 @@ final class CaptureActionTest extends TestCase
             ->method('execute')
             ->withConsecutive(
                 [$this->isInstanceOf(Sync::class)],
-                [$this->isInstanceOf(CaptureAuthorized::class)],
+                [$this->isInstanceOf(CaptureAuthorized::class)]
             )
         ;
 
