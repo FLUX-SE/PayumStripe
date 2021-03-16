@@ -8,10 +8,15 @@ use ArrayAccess;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Core\GatewayAwareInterface;
+use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\GetStatusInterface;
+use Payum\Core\Request\Sync;
 
-abstract class AbstractStatusAction implements ActionInterface
+abstract class AbstractStatusAction implements ActionInterface, GatewayAwareInterface
 {
+    use GatewayAwareTrait;
+
     /**
      * @param GetStatusInterface $request
      */
@@ -20,6 +25,9 @@ abstract class AbstractStatusAction implements ActionInterface
         RequestNotSupportedException::assertSupports($this, $request);
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
+
+        $syncRequest = new Sync($model);
+        $this->gateway->execute($syncRequest);
 
         if (null !== $model->offsetGet('error')) {
             $request->markFailed();

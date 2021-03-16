@@ -16,7 +16,7 @@ Then get a `webhook_secret_key` configured with at least two events :
 The URL to fill is the url to your `notify.php`, here is an example :
 
 ```
-https://localhost/notify.php?gateway=stripe_checkout_session
+https://localhost/notify.php?gatewayName=stripe_checkout_session
 ```
 
 https://dashboard.stripe.com/test/webhooks

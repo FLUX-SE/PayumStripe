@@ -9,11 +9,14 @@ use Payum\Core\GatewayInterface;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\GetBinaryStatus;
 use Payum\Core\Request\GetHumanStatus;
+use Payum\Core\Request\Sync;
 use PHPUnit\Framework\TestCase;
 use Stripe\Refund;
 
 final class StatusRefundActionTest extends TestCase
 {
+    use GatewayAwareTestTrait;
+
     public function testShouldImplements()
     {
         $action = new StatusRefundAction();
@@ -46,7 +49,7 @@ final class StatusRefundActionTest extends TestCase
 
     public function testShouldMarkUnknownIfNoStatusIsFound()
     {
-        $action = new StatusRefundAction();
+        $action = $this->getStatusRefundAction();
 
         $model = [
             'object' => Refund::OBJECT_NAME,
@@ -64,7 +67,7 @@ final class StatusRefundActionTest extends TestCase
 
     public function testShouldMarkFailedIfErrorIsFound()
     {
-        $action = new StatusRefundAction();
+        $action = $this->getStatusRefundAction();
 
         $model = [
             'object' => Refund::OBJECT_NAME,
@@ -81,9 +84,28 @@ final class StatusRefundActionTest extends TestCase
         $this->assertTrue($request->isFailed());
     }
 
+    public function testShouldMarkFailedIfIsARefundObjectAndStatusFailed()
+    {
+        $action = $this->getStatusRefundAction();
+
+        $model = [
+            'object' => Refund::OBJECT_NAME,
+            'status' => Refund::STATUS_FAILED,
+        ];
+
+        $request = new GetHumanStatus($model);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $this->assertTrue($request->isFailed());
+    }
+
     public function testShouldMarkCapturedIfIsARefundObjectAndStatusSucceeded()
     {
-        $action = new StatusRefundAction();
+        $action = $this->getStatusRefundAction();
 
         $model = [
             'object' => Refund::OBJECT_NAME,
@@ -102,7 +124,7 @@ final class StatusRefundActionTest extends TestCase
 
     public function testShouldNotMarkCapturedIfIsARefundObjectAndStatusIsNotAValidStatus()
     {
-        $action = new StatusRefundAction();
+        $action = $this->getStatusRefundAction();
 
         $model = [
             'object' => Refund::OBJECT_NAME,
@@ -122,7 +144,7 @@ final class StatusRefundActionTest extends TestCase
 
     public function testShouldMarkCanceledIfIsARefundObjectAndStatusIsCanceled()
     {
-        $action = new StatusRefundAction();
+        $action = $this->getStatusRefundAction();
 
         $model = [
             'object' => Refund::OBJECT_NAME,
@@ -141,7 +163,7 @@ final class StatusRefundActionTest extends TestCase
 
     public function testShouldMarkPendingIfIsARefundObjectAndStatusIsPending()
     {
-        $action = new StatusRefundAction();
+        $action = $this->getStatusRefundAction();
 
         $model = [
             'object' => Refund::OBJECT_NAME,
@@ -156,5 +178,19 @@ final class StatusRefundActionTest extends TestCase
         $action->execute($request);
 
         $this->assertTrue($request->isPending());
+    }
+
+    protected function getStatusRefundAction(): StatusRefundAction
+    {
+        $gatewayMock = $this->createGatewayMock();
+        $gatewayMock
+            ->expects($this->once())
+            ->method('execute')
+            ->with($this->isInstanceOf(Sync::class));
+
+        $action = new StatusRefundAction();
+        $action->setGateway($gatewayMock);
+
+        return $action;
     }
 }

@@ -7,6 +7,7 @@ namespace FluxSE\PayumStripe\Action\StripeJs;
 use ArrayAccess;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Request\Authorize;
+use Payum\Core\Request\Generic;
 use Payum\Core\Security\TokenInterface;
 
 /**
@@ -16,11 +17,11 @@ use Payum\Core\Security\TokenInterface;
  */
 final class AuthorizeAction extends CaptureAction
 {
-    public function embedNotifyTokenHash(ArrayObject $model, TokenInterface $token): void
+    public function embedNotifyTokenHash(ArrayObject $model, Generic $request): TokenInterface
     {
-        parent::embedNotifyTokenHash($model, $token);
-
         $model->offsetSet('capture_method', 'manual');
+
+        return parent::embedNotifyTokenHash($model, $request);
     }
 
     public function supports($request): bool

@@ -4,6 +4,7 @@ namespace Tests\FluxSE\PayumStripe\Action\StripeJs;
 
 use ArrayObject;
 use FluxSE\PayumStripe\Action\AbstractCaptureAction;
+use FluxSE\PayumStripe\Action\StripeJs\AuthorizeAction;
 use FluxSE\PayumStripe\Action\StripeJs\CaptureAction;
 use FluxSE\PayumStripe\Request\Api\Resource\CreatePaymentIntent;
 use FluxSE\PayumStripe\Request\CaptureAuthorized;
@@ -22,24 +23,25 @@ use PHPUnit\Framework\TestCase;
 use Stripe\PaymentIntent;
 use Tests\FluxSE\PayumStripe\Action\GatewayAwareTestTrait;
 
-final class CaptureActionTest extends TestCase
+class AuthorizeActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
     public function testShouldBeAnInstanceOf()
     {
-        $action = new CaptureAction();
+        $action = new AuthorizeAction();
 
         $this->assertInstanceOf(AbstractCaptureAction::class, $action);
+        $this->assertInstanceOf(CaptureAction::class, $action);
     }
 
-    public function testShouldSupportOnlyCaptureAndArrayAccessModel()
+    public function testShouldSupportOnlyAuthorizeAndArrayAccessModel()
     {
-        $action = new CaptureAction();
+        $action = new AuthorizeAction();
 
-        $this->assertTrue($action->supports(new Capture([])));
-        $this->assertFalse($action->supports(new Capture(null)));
+        $this->assertTrue($action->supports(new Authorize([])));
         $this->assertFalse($action->supports(new Authorize(null)));
+        $this->assertFalse($action->supports(new Capture(null)));
     }
 
     public function testShouldDoASyncIfPaymentHasId()
@@ -59,10 +61,10 @@ final class CaptureActionTest extends TestCase
         ;
 
         $token = new Token();
-        $request = new Capture($token);
+        $request = new Authorize($token);
         $request->setModel($model);
 
-        $action = new CaptureAction();
+        $action = new AuthorizeAction();
         $action->setGateway($gatewayMock);
 
         $supports = $action->supports($request);
@@ -75,9 +77,9 @@ final class CaptureActionTest extends TestCase
     {
         $model = [];
 
-        $request = new Capture($model);
+        $request = new Authorize($model);
 
-        $action = new CaptureAction();
+        $action = new AuthorizeAction();
 
         $supports = $action->supports($request);
         $this->assertTrue($supports);
@@ -86,7 +88,7 @@ final class CaptureActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function executeCaptureAction(array $model): void
+    public function executeAuthorizeAction(array $model): void
     {
         $token = new Token();
         $token->setDetails(new Identity(1, PaymentInterface::class));
@@ -128,11 +130,11 @@ final class CaptureActionTest extends TestCase
             ->willReturn(new Token())
         ;
 
-        $action = new CaptureAction();
+        $action = new AuthorizeAction();
         $action->setGateway($gatewayMock);
         $action->setGenericTokenFactory($genericGatewayFactory);
 
-        $request = new Capture($token);
+        $request = new Authorize($token);
         $request->setModel($model);
 
         $supports = $action->supports($request);
@@ -143,6 +145,8 @@ final class CaptureActionTest extends TestCase
 
         /** @var ArrayObject $resultModel */
         $resultModel = $request->getModel();
+        $this->assertArrayHasKey('capture_method', $resultModel);
+        $this->assertEquals('manual', $resultModel['capture_method']);
         $this->assertArrayHasKey('metadata', $resultModel);
         $this->assertArrayHasKey('token_hash', $resultModel['metadata']);
         $this->assertEquals($token->getHash(), $resultModel['metadata']['token_hash']);
@@ -152,6 +156,6 @@ final class CaptureActionTest extends TestCase
     {
         $model = [];
 
-        $this->executeCaptureAction($model);
+        $this->executeAuthorizeAction($model);
     }
 }

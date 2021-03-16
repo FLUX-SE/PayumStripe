@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace FluxSE\PayumStripe\Action\StripeCheckoutSession;
 
 use ArrayAccess;
+use LogicException;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Request\Authorize;
+use Payum\Core\Request\Generic;
 use Payum\Core\Security\TokenInterface;
 
 /**
@@ -16,6 +18,16 @@ use Payum\Core\Security\TokenInterface;
  */
 final class AuthorizeAction extends CaptureAction
 {
+    public function embedNotifyTokenHash(ArrayObject $model, Generic $request): TokenInterface
+    {
+        $modeDataKey = $this->detectModeData($model);
+        if ('payment_intent_data' !== $modeDataKey) {
+            throw new LogicException('Authorize is reserved to `mode`=`payment` !');
+        }
+
+        return parent::embedNotifyTokenHash($model, $request);
+    }
+
     public function embedOnModeData(ArrayObject $model, TokenInterface $token, string $modeDataKey): void
     {
         parent::embedOnModeData($model, $token, $modeDataKey);

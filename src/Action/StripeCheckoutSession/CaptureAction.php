@@ -17,8 +17,8 @@ class CaptureAction extends AbstractCaptureAction
     protected function createApiResource(ArrayObject $model, Generic $request): ApiResource
     {
         $token = $this->getRequestToken($request);
-        $model->offsetSet('success_url', $token->getTargetUrl());
-        $model->offsetSet('cancel_url', $token->getTargetUrl());
+        $model->offsetSet('success_url', $token->getAfterUrl());
+        $model->offsetSet('cancel_url', $token->getAfterUrl());
 
         $createRequest = new CreateSession($model->getArrayCopy());
         $this->gateway->execute($createRequest);
@@ -26,12 +26,14 @@ class CaptureAction extends AbstractCaptureAction
         return $createRequest->getApiResource();
     }
 
-    public function embedNotifyTokenHash(ArrayObject $model, TokenInterface $token): void
+    public function embedNotifyTokenHash(ArrayObject $model, Generic $request): TokenInterface
     {
-        parent::embedNotifyTokenHash($model, $token);
+        $notifyToken = parent::embedNotifyTokenHash($model, $request);
 
         $modeDataKey = $this->detectModeData($model);
-        $this->embedOnModeData($model, $token, $modeDataKey);
+        $this->embedOnModeData($model, $notifyToken, $modeDataKey);
+
+        return $notifyToken;
     }
 
     public function embedOnModeData(ArrayObject $model, TokenInterface $token, string $modeDataKey): void

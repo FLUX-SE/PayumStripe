@@ -3,12 +3,10 @@
 namespace Tests\FluxSE\PayumStripe\Action\Api\Resource;
 
 use FluxSE\PayumStripe\Action\Api\Resource\AbstractDeleteAction;
-use FluxSE\PayumStripe\Action\Api\Resource\CancelSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\DeletePlanAction;
 use FluxSE\PayumStripe\Action\Api\Resource\DeleteResourceActionInterface;
 use FluxSE\PayumStripe\Api\KeysInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractDelete;
-use FluxSE\PayumStripe\Request\Api\Resource\CancelSubscription;
 use FluxSE\PayumStripe\Request\Api\Resource\DeleteInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\DeletePlan;
 use LogicException;
@@ -21,7 +19,6 @@ use Stripe\Issuing\Card;
 use Stripe\Issuing\CardDetails;
 use Stripe\Plan;
 use Stripe\Stripe;
-use Stripe\Subscription;
 use Tests\FluxSE\PayumStripe\Action\Api\ApiAwareActionTestTrait;
 use Tests\FluxSE\PayumStripe\Stripe\StripeApiTestHelper;
 
@@ -46,7 +43,7 @@ final class DeleteActionTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testShouldDeleteAPaymentIntent(
+    public function testShouldBeDeleted(
         string $deleteActionClass,
         string $deleteRequestClass,
         string $deleteClass
@@ -71,13 +68,13 @@ final class DeleteActionTest extends TestCase
             ->method('request')
             ->withConsecutive([
                 'get',
-                Stripe::$apiBase.sprintf('%s/%s', $deleteClass::classUrl(), $id),
+                Stripe::$apiBase.$deleteClass::resourceUrl($id),
                 $this->anything(),
                 $this->anything(),
                 false,
             ], [
                 'delete',
-                Stripe::$apiBase.sprintf('%s/%s', $deleteClass::classUrl(), $id),
+                Stripe::$apiBase.$deleteClass::resourceUrl($id),
                 $this->anything(),
                 $this->anything(),
                 false,
@@ -133,24 +130,6 @@ final class DeleteActionTest extends TestCase
         $action->execute($request);
     }
 
-    /**
-     * @dataProvider faultList
-     */
-    public function testShouldThrowExceptionIfItsNotACancelableApiResource(string $faultClass)
-    {
-        $id = 'test_1';
-        $action = new CancelSubscriptionAction();
-
-        $action->setApiResourceClass($faultClass);
-        $this->assertEquals($faultClass, $action->getApiResourceClass());
-
-        $request = new CancelSubscription($id);
-
-        $this->assertTrue($action->supportAlso($request));
-        $this->expectException(LogicException::class);
-        $action->execute($request);
-    }
-
     public function faultList(): array
     {
         return [
@@ -163,7 +142,6 @@ final class DeleteActionTest extends TestCase
     {
         return [
             [DeletePlanAction::class, DeletePlan::class, Plan::class],
-            [CancelSubscriptionAction::class, CancelSubscription::class, Subscription::class],
         ];
     }
 }

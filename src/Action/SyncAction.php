@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FluxSE\PayumStripe\Action;
 
 use ArrayAccess;
-use FluxSE\PayumStripe\Request\Api\Resource\AbstractRetrieve;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrievePaymentIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSession;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSetupIntent;
@@ -42,26 +42,26 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
 
         $objectName = (string) $model->offsetGet('object');
         if (empty($objectName)) {
-            throw new LogicException('The synced object should have an "object" attribute !');
+            throw new LogicException('The synced object must have an "object" attribute !');
         }
 
         $id = (string) $model->offsetGet('id');
-        if ('' === $id) {
-            throw new LogicException('The synced object should have a retrievable "id" attribute !');
+        if (empty($id)) {
+            throw new LogicException('The synced object must have a retrievable "id" attribute !');
         }
 
         $this->syncSession($model);
 
-        $retrieveSessionModeObject = $this->findRetrievableSessionModeObject($model);
+        $retrieveRequest = $this->findRetrievableSessionModeObject($model);
 
-        if (null === $retrieveSessionModeObject) {
-            // Case where Session mode is "subscription" and the customer
-            // is canceling it payment
+        if (null === $retrieveRequest) {
+            // Case where Session mode is "subscription" and
+            // the customer is canceling his payment
             return;
         }
 
-        $this->gateway->execute($retrieveSessionModeObject);
-        $sessionModeObject = $retrieveSessionModeObject->getApiResource();
+        $this->gateway->execute($retrieveRequest);
+        $sessionModeObject = $retrieveRequest->getApiResource();
 
         $model->exchangeArray($sessionModeObject->toArray());
     }
@@ -79,7 +79,7 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
             return;
         }
 
-        // if not retrieve the newest session from it's id
+        // if not, retrieve the newest session from its id
         $sessionRequest = new RetrieveSession($model->offsetGet('id'));
         $this->gateway->execute($sessionRequest);
         $session = $sessionRequest->getApiResource();
@@ -87,7 +87,7 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         $model->exchangeArray($session->toArray());
     }
 
-    protected function findRetrievableSessionModeObject(ArrayObject $model): ?AbstractRetrieve
+    protected function findRetrievableSessionModeObject(ArrayObject $model): ?RetrieveInterface
     {
         $objectName = (string) $model->offsetGet('object');
         if (Session::OBJECT_NAME === $objectName) {
@@ -97,15 +97,11 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         return $this->findSessionModeIdInModeObject($model);
     }
 
-    private function findSessionModeIdInSession(ArrayObject $model): ?AbstractRetrieve
+    private function findSessionModeIdInSession(ArrayObject $model): ?RetrieveInterface
     {
         foreach ($this->sessionModes as $sessionObject => $retrieveRequest) {
-            if (false === $model->offsetExists($sessionObject)) {
-                continue;
-            }
-
             $sessionModeId = $model->offsetGet($sessionObject);
-            if (null === $sessionModeId || '' === $sessionModeId) {
+            if (empty($sessionModeId)) {
                 continue;
             }
 
@@ -115,7 +111,7 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         return null;
     }
 
-    private function findSessionModeIdInModeObject(ArrayObject $model): ?AbstractRetrieve
+    private function findSessionModeIdInModeObject(ArrayObject $model): ?RetrieveInterface
     {
         $objectName = (string) $model->offsetGet('object');
         foreach ($this->sessionModes as $sessionModeObject => $retrieveRequest) {
@@ -133,9 +129,10 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
 
     public function supports($request): bool
     {
-        return
-            $request instanceof Sync &&
-            $request->getModel() instanceof ArrayAccess
-            ;
+        if (false === $request instanceof Sync) {
+            return false;
+        }
+
+        return $request->getModel() instanceof ArrayAccess;
     }
 }

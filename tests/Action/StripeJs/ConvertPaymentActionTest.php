@@ -7,6 +7,7 @@ use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Model\Payment;
+use Payum\Core\Request\Capture;
 use Payum\Core\Request\Convert;
 use PHPUnit\Framework\TestCase;
 
@@ -19,6 +20,16 @@ final class ConvertPaymentActionTest extends TestCase
         $this->assertInstanceOf(ActionInterface::class, $action);
         $this->assertNotInstanceOf(GatewayInterface::class, $action);
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
+    }
+
+    public function testSupports()
+    {
+        $action = new ConvertPaymentAction();
+
+        $this->assertFalse($action->supports(new Capture([])));
+        $this->assertFalse($action->supports(new Convert(null, 'string')));
+        $this->assertFalse($action->supports(new Convert([], 'array')));
+        $this->assertTrue($action->supports(new Convert(new Payment(), 'array')));
     }
 
     public function testShouldCorrectlyConvertPaymentToDetailsAndSetItBack()

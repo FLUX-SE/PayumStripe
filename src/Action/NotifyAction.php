@@ -14,7 +14,7 @@ use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Notify;
 use Payum\Core\Request\Sync;
 
-final class NotifyAction implements ActionInterface, GatewayAwareInterface
+class NotifyAction implements ActionInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
 

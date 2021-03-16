@@ -5,18 +5,18 @@ declare(strict_types=1);
 namespace FluxSE\PayumStripe\Action\Api\Resource;
 
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractCustomCall;
-use FluxSE\PayumStripe\Request\Api\Resource\CancelSubscription;
+use FluxSE\PayumStripe\Request\Api\Resource\CancelPaymentIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInterface;
 use Stripe\ApiResource;
-use Stripe\Subscription;
+use Stripe\PaymentIntent;
 
-final class CancelSubscriptionAction extends AbstractRetrieveAction
+final class CancelPaymentIntentAction extends AbstractRetrieveAction
 {
-    protected $apiResourceClass = Subscription::class;
+    protected $apiResourceClass = PaymentIntent::class;
 
     public function supportAlso(RetrieveInterface $request): bool
     {
-        return $request instanceof CancelSubscription;
+        return $request instanceof CancelPaymentIntent;
     }
 
     /**
@@ -24,7 +24,7 @@ final class CancelSubscriptionAction extends AbstractRetrieveAction
      */
     public function retrieveApiResource(RetrieveInterface $request): ApiResource
     {
-        /** @var Subscription $apiResource */
+        /** @var PaymentIntent $apiResource */
         $apiResource = parent::retrieveApiResource($request);
 
         $apiResource->cancel(

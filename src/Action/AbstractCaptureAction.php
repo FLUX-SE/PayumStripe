@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FluxSE\PayumStripe\Action;
 
 use ArrayAccess;
+use FluxSE\PayumStripe\Request\CaptureAuthorized;
 use LogicException;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -32,12 +33,7 @@ abstract class AbstractCaptureAction implements ActionInterface, GatewayAwareInt
 
         if (false === $model->offsetExists('id')) {
             // 0. Create another token to allow payment webhooks to use `Notify`
-            $token = $this->getRequestToken($request);
-            $notifyToken = $this->tokenFactory->createNotifyToken(
-                $token->getGatewayName(),
-                $token->getDetails()
-            );
-            $this->embedNotifyTokenHash($model, $notifyToken);
+            $this->embedNotifyTokenHash($model, $request);
 
             // 1. Use the capture URL to `Sync` the payment
             //    after the customer get back from Stripe Checkout Session
@@ -58,8 +54,24 @@ abstract class AbstractCaptureAction implements ActionInterface, GatewayAwareInt
             // Nothing else will be execute after this line because of the rendering of the template
         }
 
-        // 0. Retrieve `PaymentIntent` object and update it
+        // 0. Retrieve the `PaymentIntent`|`SetupIntent`|`Subscription` object and update it
         $this->gateway->execute(new Sync($model));
+
+        // 1. Specific case of authorized payments being captured
+        // If it isn't an authorized PaymentIntent then nothing is done
+        $captureAuthorizedRequest = new CaptureAuthorized($this->getRequestToken($request));
+        $captureAuthorizedRequest->setModel($model);
+        $this->gateway->execute($captureAuthorizedRequest);
+    }
+
+    public function createNotifyToken(Generic $request): TokenInterface
+    {
+        $token = $this->getRequestToken($request);
+
+        return $this->tokenFactory->createNotifyToken(
+            $token->getGatewayName(),
+            $token->getDetails()
+        );
     }
 
     /**
@@ -71,15 +83,18 @@ abstract class AbstractCaptureAction implements ActionInterface, GatewayAwareInt
      *
      * So the token hash have to be stored both on `Session` metadata and other mode metadata
      */
-    public function embedNotifyTokenHash(ArrayObject $model, TokenInterface $token): void
+    public function embedNotifyTokenHash(ArrayObject $model, Generic $request): TokenInterface
     {
         $metadata = $model->offsetGet('metadata');
         if (null === $metadata) {
             $metadata = [];
         }
 
-        $metadata['token_hash'] = $token->getHash();
+        $notifyToken = $this->createNotifyToken($request);
+        $metadata['token_hash'] = $notifyToken->getHash();
         $model['metadata'] = $metadata;
+
+        return $notifyToken;
     }
 
     protected function getRequestToken(Generic $request): TokenInterface

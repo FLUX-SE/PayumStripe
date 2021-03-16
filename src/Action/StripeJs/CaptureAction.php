@@ -24,7 +24,7 @@ class CaptureAction extends AbstractCaptureAction
     protected function render(ApiResource $captureResource, Generic $request): void
     {
         $token = $this->getRequestToken($request);
-        $actionUrl = $token->getTargetUrl();
+        $actionUrl = $token->getAfterUrl();
 
         $renderRequest = new RenderStripeJs($captureResource, $actionUrl);
         $this->gateway->execute($renderRequest);

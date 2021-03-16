@@ -1,4 +1,4 @@
-# UPGRADE FROM `v1.2.3` TO `v1.3.0`
+# UPGRADE FROM `v1.2.3` TO `v2.0.0`
 
 **BC BREAK**: The class `FluxSE\PayumStripe\CaptureAction` has been moved and split into two classes :
 

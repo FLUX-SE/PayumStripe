@@ -4,6 +4,7 @@ namespace Tests\FluxSE\PayumStripe\Action\StripeCheckoutSession;
 
 use ArrayObject;
 use FluxSE\PayumStripe\Action\AbstractCaptureAction;
+use FluxSE\PayumStripe\Action\StripeCheckoutSession\AuthorizeAction;
 use FluxSE\PayumStripe\Action\StripeCheckoutSession\CaptureAction;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateSession;
 use FluxSE\PayumStripe\Request\CaptureAuthorized;
@@ -21,28 +22,27 @@ use Payum\Core\Storage\IdentityInterface;
 use PHPUnit\Framework\TestCase;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
-use Stripe\SetupIntent;
-use Stripe\Subscription;
 use Tests\FluxSE\PayumStripe\Action\GatewayAwareTestTrait;
 
-final class CaptureActionTest extends TestCase
+final class AuthorizeActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
     public function testShouldImplements()
     {
-        $action = new CaptureAction();
+        $action = new AuthorizeAction();
 
         $this->assertInstanceOf(AbstractCaptureAction::class, $action);
+        $this->assertInstanceOf(CaptureAction::class, $action);
     }
 
-    public function testShouldSupportOnlyCaptureAndArrayAccessModel()
+    public function testShouldSupportOnlyAuthorizeAndArrayAccessModel()
     {
-        $action = new CaptureAction();
+        $action = new AuthorizeAction();
 
-        $this->assertTrue($action->supports(new Capture([])));
-        $this->assertFalse($action->supports(new Capture(null)));
+        $this->assertTrue($action->supports(new Authorize([])));
         $this->assertFalse($action->supports(new Authorize(null)));
+        $this->assertFalse($action->supports(new Capture(null)));
     }
 
     public function testShouldDoASyncIfPaymentHasId()
@@ -62,10 +62,10 @@ final class CaptureActionTest extends TestCase
         ;
 
         $token = new Token();
-        $request = new Capture($token);
+        $request = new Authorize($token);
         $request->setModel($model);
 
-        $action = new CaptureAction();
+        $action = new AuthorizeAction();
         $action->setGateway($gatewayMock);
 
         $supports = $action->supports($request);
@@ -78,9 +78,9 @@ final class CaptureActionTest extends TestCase
     {
         $model = [];
 
-        $request = new Capture($model);
+        $request = new Authorize($model);
 
-        $action = new CaptureAction();
+        $action = new AuthorizeAction();
 
         $supports = $action->supports($request);
         $this->assertTrue($supports);
@@ -89,7 +89,7 @@ final class CaptureActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function executeCaptureAction(array $model, string $objectName): void
+    public function executeCaptureAction(array $model): void
     {
         $token = new Token();
         $token->setDetails(new Identity(1, PaymentInterface::class));
@@ -131,11 +131,11 @@ final class CaptureActionTest extends TestCase
             ->willReturn(new Token())
         ;
 
-        $action = new CaptureAction();
+        $action = new AuthorizeAction();
         $action->setGateway($gatewayMock);
         $action->setGenericTokenFactory($genericGatewayFactory);
 
-        $request = new Capture($token);
+        $request = new Authorize($token);
         $request->setModel($model);
 
         $supports = $action->supports($request);
@@ -146,8 +146,11 @@ final class CaptureActionTest extends TestCase
 
         /** @var ArrayObject $resultModel */
         $resultModel = $request->getModel();
+        $objectName = PaymentIntent::OBJECT_NAME;
         $this->assertTrue($resultModel->offsetExists($objectName.'_data'));
         $data = $resultModel->offsetGet($objectName.'_data');
+        $this->assertArrayHasKey('capture_method', $data);
+        $this->assertEquals('manual', $data['capture_method']);
         $this->assertArrayHasKey('metadata', $data);
         $this->assertArrayHasKey('token_hash', $data['metadata']);
         $this->assertEquals($token->getHash(), $data['metadata']['token_hash']);
@@ -165,48 +168,83 @@ final class CaptureActionTest extends TestCase
     public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsAPaymentIntentDataField()
     {
         $model = [];
-        $objectName = PaymentIntent::OBJECT_NAME;
 
-        $this->executeCaptureAction($model, $objectName);
+        $this->executeCaptureAction($model);
     }
 
-    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsASetupIntentDataField()
+    public function testShouldThrowExceptionIfPaymentIsNewAndThereIsASetupIntentDataField()
     {
         $model = [
             'setup_intent_data' => [],
         ];
-        $objectName = SetupIntent::OBJECT_NAME;
 
-        $this->executeCaptureAction($model, $objectName);
+        $request = new Authorize(new Token());
+        $request->setModel($model);
+
+        $action = new AuthorizeAction();
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('Authorize is reserved to `mode`=`payment` !');
+        $action->execute($request);
     }
 
-    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndSetupModeIsSet()
+    public function testShouldThrowExceptionIfPaymentIsNewAndSetupModeIsSet()
     {
         $model = [
             'mode' => 'setup',
         ];
-        $objectName = SetupIntent::OBJECT_NAME;
 
-        $this->executeCaptureAction($model, $objectName);
+        $request = new Authorize(new Token());
+        $request->setModel($model);
+
+        $action = new AuthorizeAction();
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('Authorize is reserved to `mode`=`payment` !');
+        $action->execute($request);
     }
 
-    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsASubscriptionDataField()
+    public function testShouldThrowExceptionIfPaymentIsNewAndThereIsASubscriptionDataField()
     {
         $model = [
             'subscription_data' => [],
         ];
-        $objectName = Subscription::OBJECT_NAME;
 
-        $this->executeCaptureAction($model, $objectName);
+        $request = new Authorize(new Token());
+        $request->setModel($model);
+
+        $action = new AuthorizeAction();
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('Authorize is reserved to `mode`=`payment` !');
+        $action->execute($request);
     }
 
-    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndSubscriptionModeIsSet()
+    public function testShouldThrowExceptionIfPaymentIsNewAndSubscriptionModeIsSet()
     {
         $model = [
             'mode' => 'subscription',
         ];
-        $objectName = Subscription::OBJECT_NAME;
 
-        $this->executeCaptureAction($model, $objectName);
+        $request = new Authorize(new Token());
+        $request->setModel($model);
+
+        $action = new AuthorizeAction();
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $this->expectException(LogicException::class);
+        $this->expectExceptionMessage('Authorize is reserved to `mode`=`payment` !');
+        $action->execute($request);
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Action\Api\Resource;
 
+use FluxSE\PayumStripe\Request\Api\Resource\AbstractCustomCall;
 use FluxSE\PayumStripe\Request\Api\Resource\CapturePaymentIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInterface;
 use Stripe\ApiResource;
@@ -18,13 +19,19 @@ class CapturePaymentIntentAction extends AbstractRetrieveAction
         return $request instanceof CapturePaymentIntent;
     }
 
+    /**
+     * @param AbstractCustomCall&RetrieveInterface $request
+     */
     public function retrieveApiResource(RetrieveInterface $request): ApiResource
     {
-        /** @var PaymentIntent $paymentIntent */
-        $paymentIntent = parent::retrieveApiResource($request);
+        /** @var PaymentIntent $apiResource */
+        $apiResource = parent::retrieveApiResource($request);
 
-        $paymentIntent->capture();
+        $apiResource->capture(
+            $request->getCustomCallParameters(),
+            $request->getCustomCallOptions()
+        );
 
-        return $paymentIntent;
+        return $apiResource;
     }
 }
