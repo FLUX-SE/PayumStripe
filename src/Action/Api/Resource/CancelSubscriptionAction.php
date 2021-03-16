@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Action\Api\Resource;
 
-use FluxSE\PayumStripe\Request\Api\Resource\AbstractCustomCall;
 use FluxSE\PayumStripe\Request\Api\Resource\CancelSubscription;
+use FluxSE\PayumStripe\Request\Api\Resource\CustomCallInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInterface;
 use Stripe\ApiResource;
 use Stripe\Subscription;
@@ -20,18 +20,21 @@ final class CancelSubscriptionAction extends AbstractRetrieveAction
     }
 
     /**
-     * @param AbstractCustomCall&RetrieveInterface $request
+     * @param CustomCallInterface&RetrieveInterface $request
      */
     public function retrieveApiResource(RetrieveInterface $request): ApiResource
     {
         /** @var Subscription $apiResource */
         $apiResource = parent::retrieveApiResource($request);
 
-        $apiResource->cancel(
+        return $this->cancelSubscription($apiResource, $request);
+    }
+
+    public function cancelSubscription(Subscription $apiResource, CustomCallInterface $request): Subscription
+    {
+        return $apiResource->cancel(
             $request->getCustomCallParameters(),
             $request->getCustomCallOptions()
         );
-
-        return $apiResource;
     }
 }

@@ -111,7 +111,7 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
                 'webhook_secret_keys',
             ]);
 
-            $config->offsetSet('payum.api', function (ArrayObject $config) {
+            $config->offsetSet('payum.api', function(ArrayObject $config) {
                 $config->validateNotEmpty($config['payum.required_options']);
 
                 return new Keys(
@@ -123,7 +123,7 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
         }
 
         $config->offsetSet('payum.paths', array_replace([
-            'FluxSEPayumStripe' => __DIR__.'/Resources/views',
+            'FluxSEPayumStripe' => __DIR__ . '/Resources/views',
         ], $config['payum.paths'] ?: []));
     }
 }

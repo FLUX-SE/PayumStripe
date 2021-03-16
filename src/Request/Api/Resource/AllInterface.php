@@ -12,20 +12,17 @@ use Stripe\Collection;
 
 interface AllInterface extends OptionsAwareInterface, ModelAwareInterface, ModelAggregateInterface, TokenAggregateInterface
 {
-    /**
-     * @return array
-     */
     public function getParameters(): ?array;
 
     public function setParameters(array $parameters): void;
 
     /**
-     * @return Collection<ApiResource>
+     * @return ApiResource[]|Collection
      */
     public function getApiResources(): Collection;
 
     /**
-     * @param Collection<ApiResource> $apiResources
+     * @param ApiResource[]|Collection $apiResources
      */
     public function setApiResources(Collection $apiResources): void;
 }

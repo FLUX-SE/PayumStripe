@@ -22,7 +22,7 @@ trait ResourceAwareTrait
     public function getApiResource(): ApiResource
     {
         if (null === $this->apiResource) {
-            throw new LogicException('The API Resource is null !'.'You should send this request to `Payum->execute($request)` before using this getter.');
+            throw new LogicException('The API Resource is null ! You should send this request to `Payum->execute($request)` before using this getter.');
         }
 
         return $this->apiResource;

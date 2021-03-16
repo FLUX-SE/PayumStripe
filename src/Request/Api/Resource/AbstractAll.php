@@ -23,9 +23,6 @@ abstract class AbstractAll extends Generic implements AllInterface
         $this->setOptions($options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getParameters(): ?array
     {
         $model = $this->getModel();
@@ -36,17 +33,11 @@ abstract class AbstractAll extends Generic implements AllInterface
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setParameters(array $parameters): void
     {
         $this->setModel($parameters);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getApiResources(): Collection
     {
         if (null === $this->apiResources) {
@@ -56,9 +47,6 @@ abstract class AbstractAll extends Generic implements AllInterface
         return $this->apiResources;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setApiResources(Collection $apiResources): void
     {
         $this->apiResources = $apiResources;
