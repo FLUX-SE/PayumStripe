@@ -31,6 +31,7 @@ use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSetupIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdatePaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdateSubscriptionAction;
+use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentAuthorizedSucceedAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentCanceledAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\SetupIntentCanceledAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\StripeWebhookTestAction;
@@ -48,10 +49,9 @@ use Payum\Core\GatewayFactory;
 
 abstract class AbstractStripeGatewayFactory extends GatewayFactory
 {
-    protected function populateConfig(ArrayObject $config): void
+    protected function getDefaultActions(): array
     {
-        $config->defaults([
-            // Actions
+        return [
             'payum.action.capture_authorized' => new CaptureAuthorizedAction(),
             'payum.action.notify_unsafe' => new NotifyAction(),
             'payum.action.payment_intent_status' => new StatusPaymentIntentAction(),
@@ -60,8 +60,12 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
             'payum.action.refund_status' => new StatusRefundAction(),
             'payum.action.status' => new StatusAction(),
             'payum.action.sync' => new SyncAction(),
+        ];
+    }
 
-            // API Resources
+    protected function getDefaultApiResources(): array
+    {
+        return [
             'payum.action.all_customer' => new AllCustomerAction(),
             'payum.action.all_tax_rate' => new AllTaxRateAction(),
             'payum.action.cancel_payment_intent' => new CancelPaymentIntentAction(),
@@ -87,16 +91,33 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
             'payum.action.retrieve_subscription' => new RetrieveSubscriptionAction(),
             'payum.action.update_payment_intent' => new UpdatePaymentIntentAction(),
             'payum.action.update_subscription' => new UpdateSubscriptionAction(),
+        ];
+    }
 
-            // Webhooks
+    protected function getDefaultWebhooks(): array
+    {
+        return [
             'payum.action.resolve_webhook_event' => new ResolveWebhookEventAction(),
             'payum.action.construct_event' => new ConstructEventAction(),
+        ];
+    }
 
-            // Webhook event resolver
+    protected function getDefaultWebhookEventResolvers(): array
+    {
+        return [
             'payum.action.stripe_webhook_test' => new StripeWebhookTestAction(),
             'payum.action.payment_intent_canceled' => new PaymentIntentCanceledAction(),
+            'payum.action.payment_intent_succeeded' => new PaymentIntentAuthorizedSucceedAction(),
             'payum.action.setup_intent_canceled' => new SetupIntentCanceledAction(),
-        ]);
+        ];
+    }
+
+    protected function populateConfig(ArrayObject $config): void
+    {
+        $config->defaults($this->getDefaultActions());
+        $config->defaults($this->getDefaultApiResources());
+        $config->defaults($this->getDefaultWebhooks());
+        $config->defaults($this->getDefaultWebhookEventResolvers());
 
         if (false === $config->offsetExists('payum.api')) {
             $config->offsetSet('payum.default_options', [
@@ -111,7 +132,7 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
                 'webhook_secret_keys',
             ]);
 
-            $config->offsetSet('payum.api', function(ArrayObject $config) {
+            $config->offsetSet('payum.api', function (ArrayObject $config) {
                 $config->validateNotEmpty($config['payum.required_options']);
 
                 return new Keys(
@@ -123,7 +144,7 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
         }
 
         $config->offsetSet('payum.paths', array_replace([
-            'FluxSEPayumStripe' => __DIR__ . '/Resources/views',
+            'FluxSEPayumStripe' => __DIR__.'/Resources/views',
         ], $config['payum.paths'] ?: []));
     }
 }

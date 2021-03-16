@@ -32,7 +32,7 @@ final class StripeCheckoutSessionGatewayFactory extends AbstractStripeGatewayFac
             'payum.action.capture' => new CaptureAction(),
             'payum.action.authorize' => new AuthorizeAction(),
             'payum.action.convert_payment' => new ConvertPaymentAction(),
-            'payum.action.redirect_to_checkout' => function(ArrayObject $config) {
+            'payum.action.redirect_to_checkout' => function (ArrayObject $config) {
                 return new RedirectToCheckoutAction($config['payum.template.redirect_to_checkout']);
             },
         ]);

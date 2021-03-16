@@ -29,7 +29,7 @@ final class StripeJsGatewayFactory extends AbstractStripeGatewayFactory
             'payum.action.capture' => new CaptureAction(),
             'payum.action.authorize' => new AuthorizeAction(),
             'payum.action.convert_payment' => new ConvertPaymentAction(),
-            'payum.action.render_stripe_js.payment_intent' => function(ArrayObject $config) {
+            'payum.action.render_stripe_js.payment_intent' => function (ArrayObject $config) {
                 return new RenderStripeJsAction(
                     $config['payum.template.render_stripe_js.payment_intent'],
                     PaymentIntent::class
