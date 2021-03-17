@@ -10,7 +10,6 @@ use FluxSE\PayumStripe\Request\CaptureAuthorized;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Stripe\PaymentIntent;
-use Stripe\Refund as StripeRefund;
 
 final class CaptureAuthorizedAction extends AbstractPaymentIntentAwareAction
 {
