@@ -4,7 +4,7 @@ namespace Tests\FluxSE\PayumStripe\Action\Api\WebhookEvent;
 
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\AbstractPaymentAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\AbstractWebhookEventAction;
-use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentAuthorizedSucceedAction;
+use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentSucceedAction;
 use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use FluxSE\PayumStripe\Wrapper\EventWrapper;
 use Payum\Core\Action\ActionInterface;
@@ -17,13 +17,13 @@ use PHPUnit\Framework\TestCase;
 use Stripe\Event;
 use Tests\FluxSE\PayumStripe\Action\GatewayAwareTestTrait;
 
-final class PaymentIntentAuthorizedSucceedActionTest extends TestCase
+final class PaymentIntentSucceedActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
     public function testShouldImplements()
     {
-        $action = new PaymentIntentAuthorizedSucceedAction();
+        $action = new PaymentIntentSucceedAction();
 
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
         $this->assertInstanceOf(ActionInterface::class, $action);
@@ -35,7 +35,7 @@ final class PaymentIntentAuthorizedSucceedActionTest extends TestCase
 
     public function testSupports()
     {
-        $action = new PaymentIntentAuthorizedSucceedAction();
+        $action = new PaymentIntentSucceedAction();
 
         $model = [
             'id' => 'event_1',
@@ -54,7 +54,6 @@ final class PaymentIntentAuthorizedSucceedActionTest extends TestCase
             'id' => 'event_1',
             'data' => [
                 'object' => [
-                    'capture_method' => 'manual',
                     'metadata' => [
                         'token_hash' => 'test_hash',
                     ],
@@ -105,7 +104,7 @@ final class PaymentIntentAuthorizedSucceedActionTest extends TestCase
                 })
             );
 
-        $action = new PaymentIntentAuthorizedSucceedAction();
+        $action = new PaymentIntentSucceedAction();
         $action->setGateway($gatewayMock);
         $eventWrapper = new EventWrapper('', $event);
         $webhookEvent = new WebhookEvent($eventWrapper);

@@ -90,14 +90,9 @@ final class CaptureActionTest extends TestCase
     {
         $token = new Token();
         $token->setDetails(new Identity(1, PaymentInterface::class));
-        $token->setGatewayName('stripe_js');
         $token->setAfterUrl('test/url');
 
         $gatewayMock = $this->createGatewayMock();
-        $gatewayMock
-            ->expects($this->exactly(3))
-            ->method('execute')
-        ;
         $gatewayMock
             ->expects($this->exactly(3))
             ->method('execute')

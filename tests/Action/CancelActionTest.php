@@ -3,10 +3,9 @@
 namespace Tests\FluxSE\PayumStripe\Action;
 
 use ArrayObject;
-use FluxSE\PayumStripe\Action\CaptureAuthorizedAction;
-use FluxSE\PayumStripe\Request\Api\Resource\CapturePaymentIntent;
+use FluxSE\PayumStripe\Action\CancelAction;
+use FluxSE\PayumStripe\Request\Api\Resource\CancelPaymentIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\UpdatePaymentIntent;
-use FluxSE\PayumStripe\Request\CaptureAuthorized;
 use LogicException;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -15,20 +14,20 @@ use Payum\Core\Model\Identity;
 use Payum\Core\Model\PaymentInterface;
 use Payum\Core\Model\Token;
 use Payum\Core\Request\Authorize;
-use Payum\Core\Request\Capture;
+use Payum\Core\Request\Cancel;
 use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Storage\IdentityInterface;
 use PHPUnit\Framework\TestCase;
 use Stripe\PaymentIntent;
 
-final class CaptureAuthorizedActionTest extends TestCase
+final class CancelActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
     public function testShouldImplements()
     {
-        $action = new CaptureAuthorizedAction();
+        $action = new CancelAction();
 
         $this->assertInstanceOf(GatewayAwareInterface::class, $action);
         $this->assertInstanceOf(ActionInterface::class, $action);
@@ -36,22 +35,21 @@ final class CaptureAuthorizedActionTest extends TestCase
         $this->assertInstanceOf(GenericTokenFactoryAwareInterface::class, $action);
     }
 
-    public function testShouldSupportOnlyCaptureAuthorizedWithAnArrayAccessModel()
+    public function testShouldSupportOnlyCancelWithAnArrayAccessModel()
     {
-        $action = new CaptureAuthorizedAction();
+        $action = new CancelAction();
 
-        $this->assertTrue($action->supports(new CaptureAuthorized([])));
-        $this->assertFalse($action->supports(new CaptureAuthorized(null)));
-        $this->assertFalse($action->supports(new Capture(null)));
+        $this->assertTrue($action->supports(new Cancel([])));
+        $this->assertFalse($action->supports(new Cancel(null)));
         $this->assertFalse($action->supports(new Authorize(null)));
     }
 
     public function testShouldDoNothingWhenRequiredModelInfoAreNotAvailable()
     {
-        $action = new CaptureAuthorizedAction();
+        $action = new CancelAction();
 
         $model = [];
-        $request = new CaptureAuthorized($model);
+        $request = new Cancel($model);
         $supports = $action->supports($request);
         $this->assertTrue($supports);
         $action->execute($request);
@@ -59,16 +57,15 @@ final class CaptureAuthorizedActionTest extends TestCase
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
         ];
-        $request = new CaptureAuthorized($model);
+        $request = new Cancel($model);
         $supports = $action->supports($request);
         $this->assertTrue($supports);
         $action->execute($request);
 
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
-            'status' => PaymentIntent::STATUS_REQUIRES_CAPTURE,
         ];
-        $request = new CaptureAuthorized($model);
+        $request = new Cancel($model);
         $supports = $action->supports($request);
         $this->assertTrue($supports);
         $action->execute($request);
@@ -76,14 +73,13 @@ final class CaptureAuthorizedActionTest extends TestCase
 
     public function testShouldThrowAnExceptionWhenNoTokenIsProvided()
     {
-        $action = new CaptureAuthorizedAction();
+        $action = new CancelAction();
 
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
-            'status' => PaymentIntent::STATUS_REQUIRES_CAPTURE,
             'id' => 'pi_0000',
         ];
-        $request = new CaptureAuthorized($model);
+        $request = new Cancel($model);
 
         $supports = $action->supports($request);
         $this->assertTrue($supports);
@@ -93,11 +89,10 @@ final class CaptureAuthorizedActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function testShouldCaptureThePaymentIntent()
+    public function testShouldCancelThePaymentIntent()
     {
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
-            'status' => PaymentIntent::STATUS_REQUIRES_CAPTURE,
             'id' => 'pi_0000',
         ];
 
@@ -113,7 +108,7 @@ final class CaptureAuthorizedActionTest extends TestCase
             ->method('execute')
             ->withConsecutive(
                 [$this->isInstanceOf(UpdatePaymentIntent::class)],
-                [$this->isInstanceOf(CapturePaymentIntent::class)]
+                [$this->isInstanceOf(CancelPaymentIntent::class)]
             )
             ->willReturnOnConsecutiveCalls(
                 $this->returnCallback(function (UpdatePaymentIntent $request) use ($token, $notifyTokenHash) {
@@ -129,12 +124,12 @@ final class CaptureAuthorizedActionTest extends TestCase
                         $parameters
                     )));
                 }),
-                $this->returnCallback(function (CapturePaymentIntent $request) use ($notifyTokenHash) {
+                $this->returnCallback(function (CancelPaymentIntent $request) use ($notifyTokenHash) {
                     $id = $request->getModel();
                     $this->assertIsString($id);
                     $request->setApiResource(PaymentIntent::constructFrom([
                         'id' => $id,
-                        'status' => PaymentIntent::STATUS_SUCCEEDED,
+                        'status' => PaymentIntent::STATUS_CANCELED,
                         'metadata' => [
                             'token_hash' => $notifyTokenHash,
                         ],
@@ -151,12 +146,12 @@ final class CaptureAuthorizedActionTest extends TestCase
             ->willReturn(new Token())
         ;
 
-        $action = new CaptureAuthorizedAction();
+        $action = new CancelAction();
 
         $action->setGateway($gatewayMock);
         $action->setGenericTokenFactory($genericGatewayFactory);
 
-        $request = new CaptureAuthorized($token);
+        $request = new Cancel($token);
         $request->setModel($model);
 
         $supports = $action->supports($request);
@@ -169,7 +164,7 @@ final class CaptureAuthorizedActionTest extends TestCase
 
         $this->assertInstanceOf(ArrayObject::class, $resultModel);
         $this->assertArrayHasKey('status', $resultModel);
-        $this->assertEquals(PaymentIntent::STATUS_SUCCEEDED, $resultModel->offsetGet('status'));
+        $this->assertEquals(PaymentIntent::STATUS_CANCELED, $resultModel->offsetGet('status'));
         $this->assertArrayHasKey('metadata', $resultModel);
         $data = $resultModel->offsetGet('metadata');
         $this->assertArrayHasKey('token_hash', $data);
