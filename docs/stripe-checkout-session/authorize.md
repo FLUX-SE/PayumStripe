@@ -80,17 +80,19 @@ $payum->getHttpRequestVerifier()->invalidate($token);
 header("Location: ".$token->getAfterUrl());
 ```
 
-## Finally, capture the authorized payment
+## Capture the authorized payment
 
 Complete the content of [`done.php`](payment.md#donephp) with those lines at the end of the file :
 
 ```php
 if ($status->getValue() === $status::STATUS_AUTHORIZED) {
     $tokenFactory = $payum->getTokenFactory();
-    $token = $tokenFactory->createCaptureToken($gatewayName, $payment, 'done.php');
-    echo '<a href="'.$token->getTargetUrl().'">Capture</a>';
+    $captureToken = $tokenFactory->createCaptureToken($gatewayName, $payment, 'done.php');
+    echo '<p><a href="'.$captureToken->getTargetUrl().'">Capture</a></p>';
 }
 ```
 
+## Or Cancel the authorized payment
 
+See the dedicated [chapter to `Cancel` a `PaymentIntent`](../cancel.md).
 

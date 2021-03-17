@@ -42,7 +42,9 @@ composer require  php-http/guzzle6-adapter
    - ["Place a hold on a card" (Authorize)](https://stripe.com/docs/payments/capture-later)
    - ["Subscription"](https://stripe.com/docs/payments/checkout/subscriptions/starting)
    - ["Set up future payments"](https://stripe.com/docs/payments/save-and-reuse#checkout)
-    
+
+   > Canceling a `PaymentIntent` is also possible using `Payum\Core\Request\Cancel`.    
+
  - [Stripe JS](docs/stripe-js/README.md)
 
    Support :
