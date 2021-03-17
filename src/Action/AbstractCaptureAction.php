@@ -6,7 +6,6 @@ namespace FluxSE\PayumStripe\Action;
 
 use ArrayAccess;
 use FluxSE\PayumStripe\Request\CaptureAuthorized;
-use LogicException;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -16,14 +15,12 @@ use Payum\Core\Request\Capture;
 use Payum\Core\Request\Generic;
 use Payum\Core\Request\Sync;
 use Payum\Core\Security\GenericTokenFactoryAwareInterface;
-use Payum\Core\Security\GenericTokenFactoryAwareTrait;
-use Payum\Core\Security\TokenInterface;
 use Stripe\ApiResource;
 
 abstract class AbstractCaptureAction implements ActionInterface, GatewayAwareInterface, GenericTokenFactoryAwareInterface
 {
     use GatewayAwareTrait;
-    use GenericTokenFactoryAwareTrait;
+    use EmbeddableTokenTrait;
 
     public function execute($request): void
     {
@@ -62,50 +59,6 @@ abstract class AbstractCaptureAction implements ActionInterface, GatewayAwareInt
         $captureAuthorizedRequest = new CaptureAuthorized($this->getRequestToken($request));
         $captureAuthorizedRequest->setModel($model);
         $this->gateway->execute($captureAuthorizedRequest);
-    }
-
-    public function createNotifyToken(Generic $request): TokenInterface
-    {
-        $token = $this->getRequestToken($request);
-
-        return $this->tokenFactory->createNotifyToken(
-            $token->getGatewayName(),
-            $token->getDetails()
-        );
-    }
-
-    /**
-     * Save the token hash for future webhook consuming retrieval.
-     *
-     *  - A `Session` can be completed.
-     *  - or its `PaymentIntent` can be canceled.
-     *  - or its `SetupIntent` can be canceled.
-     *
-     * So the token hash have to be stored both on `Session` metadata and other mode metadata
-     */
-    public function embedNotifyTokenHash(ArrayObject $model, Generic $request): TokenInterface
-    {
-        $metadata = $model->offsetGet('metadata');
-        if (null === $metadata) {
-            $metadata = [];
-        }
-
-        $notifyToken = $this->createNotifyToken($request);
-        $metadata['token_hash'] = $notifyToken->getHash();
-        $model['metadata'] = $metadata;
-
-        return $notifyToken;
-    }
-
-    protected function getRequestToken(Generic $request): TokenInterface
-    {
-        $token = $request->getToken();
-
-        if (null === $token) {
-            throw new LogicException('The request token should not be null !');
-        }
-
-        return $token;
     }
 
     abstract protected function createApiResource(ArrayObject $model, Generic $request): ApiResource;

@@ -93,14 +93,9 @@ final class AuthorizeActionTest extends TestCase
     {
         $token = new Token();
         $token->setDetails(new Identity(1, PaymentInterface::class));
-        $token->setGatewayName('stripe_checkout_session');
         $token->setTargetUrl('test/url');
 
         $gatewayMock = $this->createGatewayMock();
-        $gatewayMock
-            ->expects($this->exactly(3))
-            ->method('execute')
-        ;
         $gatewayMock
             ->expects($this->exactly(3))
             ->method('execute')
