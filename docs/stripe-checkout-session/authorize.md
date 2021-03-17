@@ -92,6 +92,8 @@ if ($status->getValue() === $status::STATUS_AUTHORIZED) {
 }
 ```
 
+See the dedicated [chapter to `Refund` a `PaymentIntent`](../refund.md) if you need to refund a captured payment.
+
 ## Or Cancel the authorized payment
 
 See the dedicated [chapter to `Cancel` a `PaymentIntent`](../cancel.md).

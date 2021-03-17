@@ -15,6 +15,7 @@ use FluxSE\PayumStripe\Action\Api\Resource\CreateCustomerAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreatePaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreatePaymentMethodAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreatePlanAction;
+use FluxSE\PayumStripe\Action\Api\Resource\CreateRefundAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateSessionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateSetupIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateSubscriptionAction;
@@ -35,8 +36,10 @@ use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentCanceledAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentSucceedAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\SetupIntentCanceledAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\StripeWebhookTestAction;
+use FluxSE\PayumStripe\Action\CancelAction;
 use FluxSE\PayumStripe\Action\CaptureAuthorizedAction;
 use FluxSE\PayumStripe\Action\NotifyAction;
+use FluxSE\PayumStripe\Action\RefundAction;
 use FluxSE\PayumStripe\Action\StatusAction;
 use FluxSE\PayumStripe\Action\StatusPaymentIntentAction;
 use FluxSE\PayumStripe\Action\StatusRefundAction;
@@ -52,6 +55,8 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
     protected function getDefaultActions(): array
     {
         return [
+            'payum.action.cancel' => new CancelAction(),
+            'payum.action.refund' => new RefundAction(),
             'payum.action.capture_authorized' => new CaptureAuthorizedAction(),
             'payum.action.notify_unsafe' => new NotifyAction(),
             'payum.action.payment_intent_status' => new StatusPaymentIntentAction(),
@@ -75,6 +80,7 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
             'payum.action.create_payment_intent' => new CreatePaymentIntentAction(),
             'payum.action.create_payment_method' => new CreatePaymentMethodAction(),
             'payum.action.create_plan' => new CreatePlanAction(),
+            'payum.action.create_refund' => new CreateRefundAction(),
             'payum.action.create_setup_intent' => new CreateSetupIntentAction(),
             'payum.action.create_session' => new CreateSessionAction(),
             'payum.action.create_subscription' => new CreateSubscriptionAction(),
