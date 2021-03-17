@@ -1,6 +1,6 @@
 # Cancel a PaymentIntent
 
-Add those line to the payum builder in `config.php` :
+Add those lines to the payum builder in `config.php` :
 
 ```php
     ->setGenericTokenFactoryPaths([
