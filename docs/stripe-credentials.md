@@ -12,7 +12,7 @@ Then get a `webhook_secret_key` configured with at those events :
 
 | Gateway | `stripe_checkout_session` | `stripe_js` |
 |-|-|-|
-| Webhook events |  - `checkout.session.completed` - `payment_intent.canceled`<br> - `payment_intent.succeeded` (⚠️ Only when using `Authorize` flow) |  - `payment_intent.canceled`<br> - `payment_intent.succeeded` |
+| Webhook events |  - `checkout.session.completed`<br> - `payment_intent.canceled`<br> - `payment_intent.succeeded` (⚠️ Only when using `Authorize` flow) |  - `payment_intent.canceled`<br> - `payment_intent.succeeded` |
 
 The URL to fill is the url to your `notify.php`, here is an example :
 
