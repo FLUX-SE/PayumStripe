@@ -8,6 +8,7 @@ use FluxSE\PayumStripe\Request\Api\Resource\CreateInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\CreatePaymentIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\CreatePaymentMethod;
 use FluxSE\PayumStripe\Request\Api\Resource\CreatePlan;
+use FluxSE\PayumStripe\Request\Api\Resource\CreateRefund;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateSession;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateSubscription;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateTaxRate;
@@ -23,6 +24,7 @@ use Stripe\Customer;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
 use Stripe\Plan;
+use Stripe\Refund;
 use Stripe\Subscription;
 use Stripe\TaxRate;
 
@@ -124,6 +126,7 @@ final class CreateTest extends TestCase
             [CreatePaymentIntent::class, PaymentIntent::class],
             [CreatePaymentMethod::class, PaymentMethod::class],
             [CreatePlan::class, Plan::class],
+            [CreateRefund::class, Refund::class],
             [CreateSubscription::class, Subscription::class],
             [CreateTaxRate::class, TaxRate::class],
         ];

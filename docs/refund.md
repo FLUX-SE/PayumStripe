@@ -1,31 +1,16 @@
-# Cancel a PaymentIntent
-
-Add those lines to the payum builder in `config.php` :
-
-```php
-    ->setGenericTokenFactoryPaths([
-        'cancel' => 'cancel.php',
-    ])
-```
+# Refund a PaymentIntent
 
 Complete the content of [`done.php`](payment.md#donephp) with those lines at the end of the file :
 
 ```php
-if (in_array($status->getValue(), [
-    $status::STATUS_AUTHORIZED,
-    $status::STATUS_PENDING,
-    $status::STATUS_REFUNDED
-])) {
+if ($status->getValue() === $status::STATUS_CAPTURED) {
     $tokenFactory = $payum->getTokenFactory();
-    $cancelToken = $tokenFactory->createCancelToken($gatewayName, $payment, 'done.php');
-    echo '<p><a href="'.$cancelToken->getTargetUrl().'">Cancel</a></p>';
+    $refundToken = $tokenFactory->createCancelToken($gatewayName, $payment, 'done.php');
+    echo '<p><a href="'.$refundToken->getTargetUrl().'">Refund</a></p>';
 }
 ```
 
-Finally, create the `cancel.php` file :
-
-> `Cancel` is like the `Refund` action, you can see the base file I used here to make it :
-> https://github.com/Payum/Payum/blob/master/docs/examples/refund-script.md
+Finally, create the `refund.php` file :
 
 ```php
 <?php
@@ -34,7 +19,7 @@ declare(strict_types=1);
 
 use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Reply\ReplyInterface;
-use Payum\Core\Request\Cancel;
+use Payum\Core\Request\Refund;
 
 include __DIR__.'/config.php';
 
@@ -42,7 +27,7 @@ $token = $payum->getHttpRequestVerifier()->verify($_REQUEST);
 $gateway = $payum->getGateway($token->getGatewayName());
 
 try {
-    $gateway->execute(new Cancel($token));
+    $gateway->execute(new Refund($token));
 
     if (false == isset($_REQUEST['noinvalidate'])) {
         $payum->getHttpRequestVerifier()->invalidate($token);

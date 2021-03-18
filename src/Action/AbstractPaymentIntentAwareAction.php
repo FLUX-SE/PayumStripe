@@ -27,14 +27,14 @@ abstract class AbstractPaymentIntentAwareAction implements ActionInterface, Gate
         }
 
         $id = $model['id'] ?? null;
-        if (null === $id) {
+        if (empty($id)) {
             return null;
         }
 
         $updatedModel = new ArrayObject();
         $this->embedNotifyTokenHash($updatedModel, $request);
 
-        $updateRequest = new UpdatePaymentIntent($id, $updatedModel->toUnsafeArray());
+        $updateRequest = new UpdatePaymentIntent($id, $updatedModel->getArrayCopy());
         $this->gateway->execute($updateRequest);
 
         /** @var PaymentIntent $paymentIntent */

@@ -3,9 +3,8 @@
 namespace Tests\FluxSE\PayumStripe\Action;
 
 use ArrayObject;
-use FluxSE\PayumStripe\Action\CancelAction;
-use FluxSE\PayumStripe\Request\Api\Resource\CancelPaymentIntent;
-use FluxSE\PayumStripe\Request\Api\Resource\UpdatePaymentIntent;
+use FluxSE\PayumStripe\Action\RefundAction;
+use FluxSE\PayumStripe\Request\Api\Resource\CreateRefund;
 use LogicException;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -14,21 +13,22 @@ use Payum\Core\Model\Identity;
 use Payum\Core\Model\PaymentInterface;
 use Payum\Core\Model\Token;
 use Payum\Core\Request\Authorize;
-use Payum\Core\Request\Cancel;
+use Payum\Core\Request\Refund;
 use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Storage\IdentityInterface;
 use PHPUnit\Framework\TestCase;
 use Stripe\PaymentIntent;
+use Stripe\Refund as StripeRefund;
 use Stripe\SetupIntent;
 
-final class CancelActionTest extends TestCase
+final class RefundActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
     public function testShouldImplements()
     {
-        $action = new CancelAction();
+        $action = new RefundAction();
 
         $this->assertInstanceOf(GatewayAwareInterface::class, $action);
         $this->assertInstanceOf(ActionInterface::class, $action);
@@ -36,21 +36,21 @@ final class CancelActionTest extends TestCase
         $this->assertInstanceOf(GenericTokenFactoryAwareInterface::class, $action);
     }
 
-    public function testShouldSupportOnlyCancelWithAnArrayAccessModel()
+    public function testShouldSupportOnlyRefundWithAnArrayAccessModel()
     {
-        $action = new CancelAction();
+        $action = new RefundAction();
 
-        $this->assertTrue($action->supports(new Cancel([])));
-        $this->assertFalse($action->supports(new Cancel(null)));
+        $this->assertTrue($action->supports(new Refund([])));
+        $this->assertFalse($action->supports(new Refund(null)));
         $this->assertFalse($action->supports(new Authorize(null)));
     }
 
     public function testShouldDoNothingWhenRequiredModelInfoAreNotAvailable()
     {
-        $action = new CancelAction();
+        $action = new RefundAction();
 
         $model = [];
-        $request = new Cancel($model);
+        $request = new Refund($model);
         $supports = $action->supports($request);
         $this->assertTrue($supports);
         $action->execute($request);
@@ -58,7 +58,7 @@ final class CancelActionTest extends TestCase
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
         ];
-        $request = new Cancel($model);
+        $request = new Refund($model);
         $supports = $action->supports($request);
         $this->assertTrue($supports);
         $action->execute($request);
@@ -66,7 +66,7 @@ final class CancelActionTest extends TestCase
         $model = [
             'object' => SetupIntent::OBJECT_NAME,
         ];
-        $request = new Cancel($model);
+        $request = new Refund($model);
         $supports = $action->supports($request);
         $this->assertTrue($supports);
         $action->execute($request);
@@ -75,7 +75,7 @@ final class CancelActionTest extends TestCase
             'object' => PaymentIntent::OBJECT_NAME,
             'id' => '',
         ];
-        $request = new Cancel($model);
+        $request = new Refund($model);
         $supports = $action->supports($request);
         $this->assertTrue($supports);
         $action->execute($request);
@@ -83,13 +83,13 @@ final class CancelActionTest extends TestCase
 
     public function testShouldThrowAnExceptionWhenNoTokenIsProvided()
     {
-        $action = new CancelAction();
+        $action = new RefundAction();
 
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
             'id' => 'pi_0000',
         ];
-        $request = new Cancel($model);
+        $request = new Refund($model);
 
         $supports = $action->supports($request);
         $this->assertTrue($supports);
@@ -99,7 +99,7 @@ final class CancelActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function testShouldCancelThePaymentIntent()
+    public function testShouldRefundThePaymentIntent()
     {
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
@@ -114,35 +114,20 @@ final class CancelActionTest extends TestCase
 
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock
-            ->expects($this->exactly(2))
+            ->expects($this->once())
             ->method('execute')
             ->withConsecutive(
-                [$this->isInstanceOf(UpdatePaymentIntent::class)],
-                [$this->isInstanceOf(CancelPaymentIntent::class)]
+                [$this->isInstanceOf(CreateRefund::class)]
             )
             ->willReturnOnConsecutiveCalls(
-                $this->returnCallback(function (UpdatePaymentIntent $request) use ($notifyToken) {
-                    $id = $request->getModel();
-                    $this->assertIsString($id);
-                    $parameters = $request->getParameters();
-                    $this->assertArrayHasKey('metadata', $parameters);
-                    $this->assertArrayHasKey('token_hash', $parameters['metadata']);
-                    $this->assertEquals($notifyToken->getHash(), $parameters['metadata']['token_hash']);
-                    $request->setApiResource(PaymentIntent::constructFrom(array_merge(
-                        ['id' => $id],
-                        $parameters
-                    )));
-                }),
-                $this->returnCallback(function (CancelPaymentIntent $request) use ($notifyToken) {
-                    $id = $request->getModel();
-                    $this->assertIsString($id);
-                    $request->setApiResource(PaymentIntent::constructFrom([
-                        'id' => $id,
-                        'status' => PaymentIntent::STATUS_CANCELED,
-                        'metadata' => [
-                            'token_hash' => $notifyToken->getHash(),
-                        ],
-                    ]));
+                $this->returnCallback(function (CreateRefund $request) use ($notifyToken) {
+                    /** @var ArrayObject $model */
+                    $model = $request->getModel();
+                    $this->assertInstanceOf(ArrayObject::class, $model);
+                    $this->assertArrayHasKey('metadata', $model);
+                    $this->assertArrayHasKey('token_hash', $model['metadata']);
+                    $this->assertEquals($notifyToken->getHash(), $model['metadata']['token_hash']);
+                    $request->setApiResource(StripeRefund::constructFrom($model->getArrayCopy()));
                 })
             )
         ;
@@ -155,12 +140,12 @@ final class CancelActionTest extends TestCase
             ->willReturn($notifyToken)
         ;
 
-        $action = new CancelAction();
+        $action = new RefundAction();
 
         $action->setGateway($gatewayMock);
         $action->setGenericTokenFactory($genericGatewayFactory);
 
-        $request = new Cancel($token);
+        $request = new Refund($token);
         $request->setModel($model);
 
         $supports = $action->supports($request);
@@ -172,8 +157,8 @@ final class CancelActionTest extends TestCase
         $resultModel = $request->getModel();
 
         $this->assertInstanceOf(ArrayObject::class, $resultModel);
-        $this->assertArrayHasKey('status', $resultModel);
-        $this->assertEquals(PaymentIntent::STATUS_CANCELED, $resultModel->offsetGet('status'));
+        $this->assertArrayHasKey('payment_intent', $resultModel);
+        $this->assertEquals('pi_0000', $resultModel['payment_intent']);
         $this->assertArrayHasKey('metadata', $resultModel);
         $data = $resultModel->offsetGet('metadata');
         $this->assertArrayHasKey('token_hash', $data);

@@ -7,6 +7,7 @@ namespace FluxSE\PayumStripe\Action;
 use ArrayAccess;
 use FluxSE\PayumStripe\Request\Api\Resource\CapturePaymentIntent;
 use FluxSE\PayumStripe\Request\CaptureAuthorized;
+use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Stripe\PaymentIntent;
 
@@ -29,7 +30,9 @@ final class CaptureAuthorizedAction extends AbstractPaymentIntentAwareAction
 
         /** @var PaymentIntent $paymentIntent */
         $paymentIntent = $captureRequest->getApiResource();
-        $request->setModel($paymentIntent->toArray());
+        /** @var ArrayObject $model */
+        $model = $request->getModel();
+        $model->exchangeArray($paymentIntent->toArray());
     }
 
     public function supports($request): bool

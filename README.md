@@ -43,13 +43,17 @@ composer require  php-http/guzzle6-adapter
    - ["Subscription"](https://stripe.com/docs/payments/checkout/subscriptions/starting)
    - ["Set up future payments"](https://stripe.com/docs/payments/save-and-reuse#checkout)
 
-   > Canceling a `PaymentIntent` is also possible using `Payum\Core\Request\Cancel`.    
+   > Canceling a `PaymentIntent` is also available using `Payum\Core\Request\Cancel`.    
+   > Refunding a `PaymentIntent` is also available using `Payum\Core\Request\Refund`.    
 
  - [Stripe JS](docs/stripe-js/README.md)
 
    Support :
    - ["Accept a payment"](https://stripe.com/docs/payments/accept-a-payment?integration=elements)
    - ["Place a hold on a card" (Authorize)](https://stripe.com/docs/payments/capture-later)
+
+   > Canceling a `PaymentIntent` is also available using `Payum\Core\Request\Cancel`.    
+   > Refunding a `PaymentIntent` is also available using `Payum\Core\Request\Refund`.
 
 ## More
 

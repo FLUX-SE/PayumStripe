@@ -105,7 +105,7 @@ final class CaptureAuthorizedActionTest extends TestCase
         $token->setDetails(new Identity(1, PaymentInterface::class));
         $token->setTargetUrl('test/url');
 
-        $notifyTokenHash = '';
+        $notifyToken = new Token();
 
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock
@@ -116,27 +116,26 @@ final class CaptureAuthorizedActionTest extends TestCase
                 [$this->isInstanceOf(CapturePaymentIntent::class)]
             )
             ->willReturnOnConsecutiveCalls(
-                $this->returnCallback(function (UpdatePaymentIntent $request) use ($token, $notifyTokenHash) {
+                $this->returnCallback(function (UpdatePaymentIntent $request) use ($notifyToken) {
                     $id = $request->getModel();
                     $this->assertIsString($id);
                     $parameters = $request->getParameters();
                     $this->assertArrayHasKey('metadata', $parameters);
                     $this->assertArrayHasKey('token_hash', $parameters['metadata']);
-                    $this->assertNotEquals($token->getHash(), $parameters['metadata']['token_hash']);
-                    $notifyTokenHash = $parameters['metadata']['token_hash'];
+                    $this->assertEquals($notifyToken->getHash(), $parameters['metadata']['token_hash']);
                     $request->setApiResource(PaymentIntent::constructFrom(array_merge(
                         ['id' => $id],
                         $parameters
                     )));
                 }),
-                $this->returnCallback(function (CapturePaymentIntent $request) use ($notifyTokenHash) {
+                $this->returnCallback(function (CapturePaymentIntent $request) use ($notifyToken) {
                     $id = $request->getModel();
                     $this->assertIsString($id);
                     $request->setApiResource(PaymentIntent::constructFrom([
                         'id' => $id,
                         'status' => PaymentIntent::STATUS_SUCCEEDED,
                         'metadata' => [
-                            'token_hash' => $notifyTokenHash,
+                            'token_hash' => $notifyToken->getHash(),
                         ],
                     ]));
                 })
@@ -148,7 +147,7 @@ final class CaptureAuthorizedActionTest extends TestCase
             ->expects($this->once())
             ->method('createNotifyToken')
             ->with($token->getGatewayName(), $this->isInstanceOf(IdentityInterface::class))
-            ->willReturn(new Token())
+            ->willReturn($notifyToken)
         ;
 
         $action = new CaptureAuthorizedAction();
@@ -174,6 +173,6 @@ final class CaptureAuthorizedActionTest extends TestCase
         $data = $resultModel->offsetGet('metadata');
         $this->assertArrayHasKey('token_hash', $data);
         $this->assertNotEquals($token->getHash(), $data['token_hash']);
-        $this->assertEquals($notifyTokenHash, $data['token_hash']);
+        $this->assertEquals($notifyToken->getHash(), $data['token_hash']);
     }
 }

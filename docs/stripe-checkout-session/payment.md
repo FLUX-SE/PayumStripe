@@ -142,16 +142,19 @@ $gateway = $payum->getGateway($gatewayName);
 $gateway->execute($status = new GetHumanStatus($token));
 $payment = $status->getFirstModel();
 
-header('Content-Type: application/json');
-echo json_encode([
+echo '<pre>';
+print_r([
     'status' => $status->getValue(),
-    'order' => [
+    'payment' => [
         'total_amount' => $payment->getTotalAmount(),
         'currency_code' => $payment->getCurrencyCode(),
         'details' => $payment->getDetails(),
     ],
-], JSON_PRETTY_PRINT);
+]);
+echo '</pre>';
 ```
+
+See the dedicated [chapter to `Refund` a `PaymentIntent`](../refund.md) if you need to refund a captured payment.
 
 ### notify.php
 
