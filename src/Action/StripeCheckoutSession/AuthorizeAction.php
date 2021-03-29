@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace FluxSE\PayumStripe\Action\StripeCheckoutSession;
 
 use ArrayAccess;
+use ArrayObject;
 use LogicException;
-use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Request\Authorize;
 use Payum\Core\Request\Generic;
 use Payum\Core\Security\TokenInterface;

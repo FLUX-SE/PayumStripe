@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Action;
 
+use ArrayObject;
 use LogicException;
-use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Request\Generic;
 use Payum\Core\Security\GenericTokenFactoryAwareTrait;
 use Payum\Core\Security\TokenInterface;
@@ -25,14 +25,15 @@ trait EmbeddableTokenTrait
      */
     public function embedNotifyTokenHash(ArrayObject $model, Generic $request): TokenInterface
     {
-        $metadata = $model->offsetGet('metadata');
-        if (null === $metadata) {
-            $metadata = [];
+        $metadata = [];
+        if ($model->offsetExists('metadata')) {
+            $metadata = $model->offsetGet('metadata');
         }
 
         $notifyToken = $this->createNotifyToken($request);
         $metadata['token_hash'] = $notifyToken->getHash();
-        $model['metadata'] = $metadata;
+
+        $model->offsetSet('metadata', $metadata);
 
         return $notifyToken;
     }

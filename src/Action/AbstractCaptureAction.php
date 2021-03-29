@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FluxSE\PayumStripe\Action;
 
 use ArrayAccess;
+use ArrayObject as BaseArrayObject;
 use FluxSE\PayumStripe\Request\CaptureAuthorized;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -61,7 +62,7 @@ abstract class AbstractCaptureAction implements ActionInterface, GatewayAwareInt
         $this->gateway->execute($captureAuthorizedRequest);
     }
 
-    abstract protected function createApiResource(ArrayObject $model, Generic $request): ApiResource;
+    abstract protected function createApiResource(BaseArrayObject $model, Generic $request): ApiResource;
 
     abstract protected function render(ApiResource $captureResource, Generic $request): void;
 

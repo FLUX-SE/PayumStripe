@@ -151,7 +151,7 @@ final class StripeGatewayFactoryTest extends TestCase
         $this->assertEquals($defaults['webhook_secret_keys'], $config['webhook_secret_keys']);
 
         // Allow to update the credentials
-        $newCredentials = ArrayObject::ensureArrayObject([
+        $newCredentials = new ArrayObject([
             'payum.required_options' => $config['payum.required_options'],
             'publishable_key' => '654321',
             'secret_key' => '654321',

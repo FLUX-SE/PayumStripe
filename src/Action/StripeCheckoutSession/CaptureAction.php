@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Action\StripeCheckoutSession;
 
+use ArrayObject;
 use FluxSE\PayumStripe\Action\AbstractCaptureAction;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateSession;
 use FluxSE\PayumStripe\Request\StripeCheckoutSession\Api\RedirectToCheckout;
-use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Request\Generic;
 use Payum\Core\Security\TokenInterface;
 use Stripe\ApiResource;
@@ -51,11 +51,16 @@ class CaptureAction extends AbstractCaptureAction
 
     protected function detectModeData(ArrayObject $model): string
     {
+        $mode = 'payment';
+        if ($model->offsetExists('mode')) {
+            $mode = $model->offsetGet('mode');
+        }
+
         if ($model->offsetExists('subscription_data')) {
             return 'subscription_data';
         }
 
-        if ('subscription' === $model->offsetGet('mode')) {
+        if ('subscription' === $mode) {
             return 'subscription_data';
         }
 
@@ -63,7 +68,7 @@ class CaptureAction extends AbstractCaptureAction
             return 'setup_intent_data';
         }
 
-        if ('setup' === $model->offsetGet('mode')) {
+        if ('setup' === $mode) {
             return 'setup_intent_data';
         }
 

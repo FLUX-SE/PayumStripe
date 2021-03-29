@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace FluxSE\PayumStripe\Action\StripeJs;
 
 use ArrayAccess;
-use Payum\Core\Bridge\Spl\ArrayObject;
+use ArrayObject;
 use Payum\Core\Request\Authorize;
 use Payum\Core\Request\Generic;
 use Payum\Core\Security\TokenInterface;
