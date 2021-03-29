@@ -116,7 +116,7 @@ final class CaptureAuthorizedActionTest extends TestCase
                 [$this->isInstanceOf(CapturePaymentIntent::class)]
             )
             ->willReturnOnConsecutiveCalls(
-                $this->returnCallback(function (UpdatePaymentIntent $request) use ($notifyToken) {
+                $this->returnCallback(function (UpdatePaymentIntent $request) use ($notifyToken, $model) {
                     $id = $request->getModel();
                     $this->assertIsString($id);
                     $parameters = $request->getParameters();
@@ -124,7 +124,7 @@ final class CaptureAuthorizedActionTest extends TestCase
                     $this->assertArrayHasKey('token_hash', $parameters['metadata']);
                     $this->assertEquals($notifyToken->getHash(), $parameters['metadata']['token_hash']);
                     $request->setApiResource(PaymentIntent::constructFrom(array_merge(
-                        ['id' => $id],
+                        $model,
                         $parameters
                     )));
                 }),

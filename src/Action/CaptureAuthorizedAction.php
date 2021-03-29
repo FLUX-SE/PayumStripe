@@ -24,6 +24,10 @@ final class CaptureAuthorizedAction extends AbstractPaymentIntentAwareAction
             return;
         }
 
+        if (PaymentIntent::STATUS_REQUIRES_CAPTURE !== $paymentIntent->status) {
+            return;
+        }
+
         $captureRequest = new CapturePaymentIntent($paymentIntent->id);
         $this->gateway->execute($captureRequest);
 
