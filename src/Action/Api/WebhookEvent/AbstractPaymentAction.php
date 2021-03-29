@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Action\Api\WebhookEvent;
 
+use FluxSE\PayumStripe\Action\TokenHashKeysInterface;
 use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
@@ -39,11 +40,7 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
     protected function retrieveSessionModeObject(WebhookEvent $request): ?StripeObject
     {
         $eventWrapper = $request->getEventWrapper();
-        /*
-         * This should never be true because the method
-         * `$this->supportTypes()` already check this
-         * @see AbstractWebhookEventAction::supportsTypes()
-         */
+
         if (null === $eventWrapper) {
             return null;
         }
@@ -67,13 +64,19 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
             return null;
         }
 
+        $tokenHashMetadataKeyName = $this->getTokenHashMetadataKeyName();
         /** @var string|null $tokenHash */
-        $tokenHash = $metadata->offsetGet('token_hash');
+        $tokenHash = $metadata->offsetGet($tokenHashMetadataKeyName);
         if (null === $tokenHash) {
             return null;
         }
 
         return $tokenHash;
+    }
+
+    public function getTokenHashMetadataKeyName(): string
+    {
+        return TokenHashKeysInterface::DEFAULT_TOKEN_HASH_KEY_NAME;
     }
 
     private function findTokenByHash(string $tokenHash): TokenInterface

@@ -126,8 +126,8 @@ final class CancelActionTest extends TestCase
                     $this->assertIsString($id);
                     $parameters = $request->getParameters();
                     $this->assertArrayHasKey('metadata', $parameters);
-                    $this->assertArrayHasKey('token_hash', $parameters['metadata']);
-                    $this->assertEquals($notifyToken->getHash(), $parameters['metadata']['token_hash']);
+                    $this->assertArrayHasKey('cancel_token_hash', $parameters['metadata']);
+                    $this->assertEquals($notifyToken->getHash(), $parameters['metadata']['cancel_token_hash']);
                     $request->setApiResource(PaymentIntent::constructFrom(array_merge(
                         ['id' => $id],
                         $parameters
@@ -140,7 +140,7 @@ final class CancelActionTest extends TestCase
                         'id' => $id,
                         'status' => PaymentIntent::STATUS_CANCELED,
                         'metadata' => [
-                            'token_hash' => $notifyToken->getHash(),
+                            'cancel_token_hash' => $notifyToken->getHash(),
                         ],
                     ]));
                 })
@@ -176,8 +176,8 @@ final class CancelActionTest extends TestCase
         $this->assertEquals(PaymentIntent::STATUS_CANCELED, $resultModel->offsetGet('status'));
         $this->assertArrayHasKey('metadata', $resultModel);
         $data = $resultModel->offsetGet('metadata');
-        $this->assertArrayHasKey('token_hash', $data);
-        $this->assertNotEquals($token->getHash(), $data['token_hash']);
-        $this->assertEquals($notifyToken->getHash(), $data['token_hash']);
+        $this->assertArrayHasKey('cancel_token_hash', $data);
+        $this->assertNotEquals($token->getHash(), $data['cancel_token_hash']);
+        $this->assertEquals($notifyToken->getHash(), $data['cancel_token_hash']);
     }
 }

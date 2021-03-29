@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Action\Api\WebhookEvent;
 
+use FluxSE\PayumStripe\Action\TokenHashKeysInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Stripe\Event;
 use Stripe\PaymentIntent;
@@ -24,6 +25,11 @@ final class PaymentIntentManualSucceedAction extends AbstractPaymentAction
         }
 
         parent::execute($request);
+    }
+
+    public function getTokenHashMetadataKeyName(): string
+    {
+        return TokenHashKeysInterface::CAPTURE_AUTHORIZE_TOKEN_HASH_KEY_NAME;
     }
 
     protected function getSupportedEventTypes(): array

@@ -45,7 +45,8 @@ class CaptureAction extends AbstractCaptureAction
         if (false === isset($embeddedModeData['metadata'])) {
             $embeddedModeData['metadata'] = [];
         }
-        $embeddedModeData['metadata']['token_hash'] = $token->getHash();
+        $tokenHashMetadataKeyName = $this->getTokenHashMetadataKeyName();
+        $embeddedModeData['metadata'][$tokenHashMetadataKeyName] = $token->getHash();
         $model->offsetSet($modeDataKey, $embeddedModeData);
     }
 

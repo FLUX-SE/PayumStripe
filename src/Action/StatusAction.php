@@ -17,7 +17,7 @@ use Stripe\Subscription;
 class StatusAction implements ActionInterface
 {
     /**
-     * This action is the last one to be executed if the object found is not one of the supported ones
+     * This action is the last one to be executed if the object found is not one of the supported ones.
      *
      * @see StatusSetupIntentAction for SetupIntent status changes
      * @see StatusSubscriptionAction for SubscriptionIntent status changes

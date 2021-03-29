@@ -46,6 +46,15 @@ final class RefundAction extends AbstractPaymentIntentAwareAction
         $model->exchangeArray($refund->toArray());
     }
 
+    /**
+     * The token hash will be stored to a different
+     * metadata key to avoid consuming the default one.
+     */
+    public function getTokenHashMetadataKeyName(): string
+    {
+        return TokenHashKeysInterface::REFUND_TOKEN_HASH_KEY_NAME;
+    }
+
     public function supports($request): bool
     {
         if (false === $request instanceof Refund) {

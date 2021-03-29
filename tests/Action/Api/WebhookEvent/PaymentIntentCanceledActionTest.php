@@ -40,7 +40,7 @@ final class PaymentIntentCanceledActionTest extends TestCase
             'data' => [
                 'object' => [
                     'metadata' => [
-                        'token_hash' => 'test_hash',
+                        'cancel_token_hash' => 'test_hash',
                     ],
                 ],
             ],

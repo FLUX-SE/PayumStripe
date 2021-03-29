@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 use Stripe\Event;
 use Tests\FluxSE\PayumStripe\Action\GatewayAwareTestTrait;
 
-final class PaymentIntentSucceedActionTest extends TestCase
+final class PaymentIntentManualSucceedActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
@@ -55,7 +55,7 @@ final class PaymentIntentSucceedActionTest extends TestCase
             'data' => [
                 'object' => [
                     'metadata' => [
-                        'token_hash' => 'test_hash',
+                        'capture_authorize_token_hash' => 'test_hash',
                     ],
                 ],
             ],
@@ -76,7 +76,7 @@ final class PaymentIntentSucceedActionTest extends TestCase
                 'object' => [
                     'capture_method' => 'manual',
                     'metadata' => [
-                        'token_hash' => 'test_hash',
+                        'capture_authorize_token_hash' => 'test_hash',
                     ],
                 ],
             ],

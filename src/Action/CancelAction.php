@@ -35,6 +35,15 @@ final class CancelAction extends AbstractPaymentIntentAwareAction
         $model->exchangeArray($paymentIntent->toArray());
     }
 
+    /**
+     * The token hash will be stored to a different
+     * metadata key to avoid consuming the default one.
+     */
+    public function getTokenHashMetadataKeyName(): string
+    {
+        return TokenHashKeysInterface::CANCEL_TOKEN_HASH_KEY_NAME;
+    }
+
     public function supports($request): bool
     {
         if (false === $request instanceof Cancel) {

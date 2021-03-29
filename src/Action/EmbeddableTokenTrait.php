@@ -30,8 +30,9 @@ trait EmbeddableTokenTrait
             $metadata = $model->offsetGet('metadata');
         }
 
+        $tokenHashMetadataKeyName = $this->getTokenHashMetadataKeyName();
         $notifyToken = $this->createNotifyToken($request);
-        $metadata['token_hash'] = $notifyToken->getHash();
+        $metadata[$tokenHashMetadataKeyName] = $notifyToken->getHash();
 
         $model->offsetSet('metadata', $metadata);
 
@@ -57,5 +58,10 @@ trait EmbeddableTokenTrait
         }
 
         return $token;
+    }
+
+    public function getTokenHashMetadataKeyName(): string
+    {
+        return TokenHashKeysInterface::DEFAULT_TOKEN_HASH_KEY_NAME;
     }
 }

@@ -125,8 +125,8 @@ final class RefundActionTest extends TestCase
                     $model = $request->getModel();
                     $this->assertInstanceOf(ArrayObject::class, $model);
                     $this->assertArrayHasKey('metadata', $model);
-                    $this->assertArrayHasKey('token_hash', $model['metadata']);
-                    $this->assertEquals($notifyToken->getHash(), $model['metadata']['token_hash']);
+                    $this->assertArrayHasKey('refund_token_hash', $model['metadata']);
+                    $this->assertEquals($notifyToken->getHash(), $model['metadata']['refund_token_hash']);
                     $request->setApiResource(StripeRefund::constructFrom($model->getArrayCopy()));
                 })
             )
@@ -161,8 +161,8 @@ final class RefundActionTest extends TestCase
         $this->assertEquals('pi_0000', $resultModel['payment_intent']);
         $this->assertArrayHasKey('metadata', $resultModel);
         $data = $resultModel->offsetGet('metadata');
-        $this->assertArrayHasKey('token_hash', $data);
-        $this->assertNotEquals($token->getHash(), $data['token_hash']);
-        $this->assertEquals($notifyToken->getHash(), $data['token_hash']);
+        $this->assertArrayHasKey('refund_token_hash', $data);
+        $this->assertNotEquals($token->getHash(), $data['refund_token_hash']);
+        $this->assertEquals($notifyToken->getHash(), $data['refund_token_hash']);
     }
 }
