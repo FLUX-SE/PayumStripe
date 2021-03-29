@@ -16,6 +16,14 @@ use Stripe\Subscription;
 
 class StatusAction implements ActionInterface
 {
+    /**
+     * This action is the last one to be executed if the object found is not one of the supported ones
+     *
+     * @see StatusSetupIntentAction for SetupIntent status changes
+     * @see StatusSubscriptionAction for SubscriptionIntent status changes
+     * @see StatusRefundAction for RefundIntent status changes
+     * @see StatusPaymentIntentAction for PaymentIntent status changes
+     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -50,13 +58,6 @@ class StatusAction implements ActionInterface
 
             return;
         }
-
-        /*
-         * @see StatusPaymentIntentAction for PaymentIntent status changes
-         * @see StatusSetupIntentAction for SetupIntent status changes
-         * @see StatusSubscriptionAction for SubscriptionIntent status changes
-         * @see StatusRefundAction for RefundIntent status changes
-         */
 
         $request->markUnknown();
     }
