@@ -4,7 +4,7 @@ namespace Tests\FluxSE\PayumStripe\Action\Api\WebhookEvent;
 
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\AbstractPaymentAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\AbstractWebhookEventAction;
-use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentSucceedAction;
+use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentManualSucceedAction;
 use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use FluxSE\PayumStripe\Wrapper\EventWrapper;
 use Payum\Core\Action\ActionInterface;
@@ -23,7 +23,7 @@ final class PaymentIntentSucceedActionTest extends TestCase
 
     public function testShouldImplements()
     {
-        $action = new PaymentIntentSucceedAction();
+        $action = new PaymentIntentManualSucceedAction();
 
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
         $this->assertInstanceOf(ActionInterface::class, $action);
@@ -35,7 +35,7 @@ final class PaymentIntentSucceedActionTest extends TestCase
 
     public function testSupports()
     {
-        $action = new PaymentIntentSucceedAction();
+        $action = new PaymentIntentManualSucceedAction();
 
         $model = [
             'id' => 'event_1',
@@ -104,7 +104,7 @@ final class PaymentIntentSucceedActionTest extends TestCase
                 })
             );
 
-        $action = new PaymentIntentSucceedAction();
+        $action = new PaymentIntentManualSucceedAction();
         $action->setGateway($gatewayMock);
         $eventWrapper = new EventWrapper('', $event);
         $webhookEvent = new WebhookEvent($eventWrapper);
