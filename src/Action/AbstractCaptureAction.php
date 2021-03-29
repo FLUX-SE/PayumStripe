@@ -37,29 +37,27 @@ abstract class AbstractCaptureAction implements ActionInterface, GatewayAwareInt
             //    after the customer get back from Stripe Checkout Session
             // 2. Create a new `Session`
             $apiResource = $this->createApiResource($model, $request);
+            $model->exchangeArray($apiResource->toArray());
 
-            // 3. Prepare storing of a `Session` object synced to one of this object :
+            // 3. [stripe_checkout_session] A `Session` object synced to one of those objects :
             //      - `PaymentIntent`
             //      - `SetupIntent`
             //      - `Subscription`
-            //      - `Session`
             //    (legacy Stripe payments were storing `Charge` object)
-            $model->exchangeArray($apiResource->toArray());
             $this->gateway->execute(new Sync($model));
 
             // 4. Display the page to redirect to Stripe Checkout portal
             $this->render($apiResource, $request);
-            // Nothing else will be execute after this line because of the rendering of the template
+        } else {
+            // 0. Retrieve the `PaymentIntent`|`SetupIntent`|`Subscription` object and update it
+            $this->gateway->execute(new Sync($model));
+
+            // 1. Specific case of authorized payments being captured
+            // If it isn't an authorized PaymentIntent then nothing is done
+            $captureAuthorizedRequest = new CaptureAuthorized($this->getRequestToken($request));
+            $captureAuthorizedRequest->setModel($model);
+            $this->gateway->execute($captureAuthorizedRequest);
         }
-
-        // 0. Retrieve the `PaymentIntent`|`SetupIntent`|`Subscription` object and update it
-        $this->gateway->execute(new Sync($model));
-
-        // 1. Specific case of authorized payments being captured
-        // If it isn't an authorized PaymentIntent then nothing is done
-        $captureAuthorizedRequest = new CaptureAuthorized($this->getRequestToken($request));
-        $captureAuthorizedRequest->setModel($model);
-        $this->gateway->execute($captureAuthorizedRequest);
     }
 
     abstract protected function createApiResource(BaseArrayObject $model, Generic $request): ApiResource;
