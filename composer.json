@@ -29,7 +29,7 @@
     "license": "MIT",
     "extra": {
         "branch-alias": {
-            "dev-master": "1.2-dev"
+            "dev-master": "2.0-dev"
         }
     },
     "authors": [
