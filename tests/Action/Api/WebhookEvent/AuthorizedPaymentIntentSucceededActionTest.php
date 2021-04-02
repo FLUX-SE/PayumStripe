@@ -67,7 +67,7 @@ final class AuthorizedPaymentIntentSucceededActionTest extends TestCase
                     ],
                 ],
                 'type' => Event::PAYMENT_INTENT_SUCCEEDED,
-            ]]
+            ]],
         ];
     }
 

@@ -67,7 +67,7 @@ final class PaymentIntentCanceledActionTest extends TestCase
                     ],
                 ],
                 'type' => Event::PAYMENT_INTENT_CANCELED,
-            ]]
+            ]],
         ];
     }
 

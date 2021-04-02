@@ -51,14 +51,13 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
             return null;
         }
 
-        /** @var StripeObject|null $sessionModeObject */
         $sessionModeObject = $stripeObject->offsetGet('object');
 
         if (null === $sessionModeObject) {
             return null;
         }
 
-        if (false === $sessionModeObject instanceof StripeObject) {
+        if (false === ($sessionModeObject instanceof StripeObject)) {
             return null;
         }
 

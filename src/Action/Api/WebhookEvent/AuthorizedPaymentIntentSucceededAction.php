@@ -20,6 +20,7 @@ final class AuthorizedPaymentIntentSucceededAction extends AbstractPaymentIntent
     {
         return 'manual';
     }
+
     public function getTokenHashMetadataKeyName(): string
     {
         return TokenHashKeysInterface::CAPTURE_AUTHORIZE_TOKEN_HASH_KEY_NAME;

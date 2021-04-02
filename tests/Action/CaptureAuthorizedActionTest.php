@@ -73,6 +73,7 @@ final class CaptureAuthorizedActionTest extends TestCase
         $this->assertTrue($supports);
         $action->execute($request);
     }
+
     public function testShouldThrowAnExceptionWhenNoTokenIsProvided()
     {
         $action = new CaptureAuthorizedAction();
@@ -91,7 +92,6 @@ final class CaptureAuthorizedActionTest extends TestCase
         $this->expectExceptionMessage('The request token should not be null !');
         $action->execute($request);
     }
-
 
     public function testShouldOnlyRetrieveAPaymentIntentWhenCurrentStatusIsNotRequiresCapture()
     {

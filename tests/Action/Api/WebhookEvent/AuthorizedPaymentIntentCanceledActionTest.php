@@ -16,7 +16,6 @@ use Payum\Core\Request\GetToken;
 use Payum\Core\Request\Notify;
 use PHPUnit\Framework\TestCase;
 use Stripe\Event;
-use Stripe\PaymentIntent;
 use Tests\FluxSE\PayumStripe\Action\GatewayAwareTestTrait;
 
 final class AuthorizedPaymentIntentCanceledActionTest extends TestCase
@@ -68,7 +67,7 @@ final class AuthorizedPaymentIntentCanceledActionTest extends TestCase
                     ],
                 ],
                 'type' => Event::PAYMENT_INTENT_CANCELED,
-            ]]
+            ]],
         ];
     }
 
