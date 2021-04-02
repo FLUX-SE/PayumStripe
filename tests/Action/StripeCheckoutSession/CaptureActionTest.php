@@ -204,4 +204,25 @@ final class CaptureActionTest extends TestCase
 
         $this->executeCaptureAction($model, $objectName);
     }
+
+    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndPaymentModeIsSet()
+    {
+        $model = [
+            'mode' => 'payment',
+        ];
+        $objectName = Subscription::OBJECT_NAME;
+
+        $this->executeCaptureAction($model, $objectName);
+    }
+
+    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndPaymentModeIsSetWithMetadata()
+    {
+        $model = [
+            'mode' => 'payment',
+            'metadata' => [],
+        ];
+        $objectName = Subscription::OBJECT_NAME;
+
+        $this->executeCaptureAction($model, $objectName);
+    }
 }

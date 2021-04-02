@@ -4,7 +4,7 @@ namespace Tests\FluxSE\PayumStripe\Action\Api\WebhookEvent;
 
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\AbstractPaymentAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\AbstractWebhookEventAction;
-use FluxSE\PayumStripe\Action\Api\WebhookEvent\SetupIntentCanceledAction;
+use FluxSE\PayumStripe\Action\Api\WebhookEvent\SetupIntentSucceededAction;
 use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use FluxSE\PayumStripe\Wrapper\EventWrapper;
 use Payum\Core\Action\ActionInterface;
@@ -17,13 +17,13 @@ use PHPUnit\Framework\TestCase;
 use Stripe\Event;
 use Tests\FluxSE\PayumStripe\Action\GatewayAwareTestTrait;
 
-final class SetupIntentCanceledActionTest extends TestCase
+final class SetupIntentSucceededActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
     public function testShouldImplements()
     {
-        $action = new SetupIntentCanceledAction();
+        $action = new SetupIntentSucceededAction();
 
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
         $this->assertInstanceOf(ActionInterface::class, $action);
@@ -44,7 +44,7 @@ final class SetupIntentCanceledActionTest extends TestCase
                     ],
                 ],
             ],
-            'type' => Event::SETUP_INTENT_CANCELED,
+            'type' => Event::SETUP_INTENT_SUCCEEDED,
         ];
 
         $event = Event::constructFrom($model);
@@ -68,7 +68,7 @@ final class SetupIntentCanceledActionTest extends TestCase
                 })
             );
 
-        $action = new SetupIntentCanceledAction();
+        $action = new SetupIntentSucceededAction();
         $action->setGateway($gatewayMock);
         $eventWrapper = new EventWrapper('', $event);
         $webhookEvent = new WebhookEvent($eventWrapper);

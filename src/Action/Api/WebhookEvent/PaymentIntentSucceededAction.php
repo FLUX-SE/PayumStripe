@@ -6,12 +6,12 @@ namespace FluxSE\PayumStripe\Action\Api\WebhookEvent;
 
 use Stripe\Event;
 
-final class PaymentIntentCanceledAction extends AbstractPaymentIntentAction
+final class PaymentIntentSucceededAction extends AbstractPaymentIntentAction
 {
     protected function getSupportedEventTypes(): array
     {
         return [
-            Event::PAYMENT_INTENT_CANCELED,
+            Event::PAYMENT_INTENT_SUCCEEDED,
         ];
     }
 

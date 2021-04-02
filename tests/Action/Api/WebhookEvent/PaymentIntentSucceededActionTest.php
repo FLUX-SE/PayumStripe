@@ -5,7 +5,7 @@ namespace Tests\FluxSE\PayumStripe\Action\Api\WebhookEvent;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\AbstractPaymentAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\AbstractPaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\AbstractWebhookEventAction;
-use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentCanceledAction;
+use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentSucceededAction;
 use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use FluxSE\PayumStripe\Wrapper\EventWrapper;
 use Payum\Core\Action\ActionInterface;
@@ -18,13 +18,13 @@ use PHPUnit\Framework\TestCase;
 use Stripe\Event;
 use Tests\FluxSE\PayumStripe\Action\GatewayAwareTestTrait;
 
-final class PaymentIntentCanceledActionTest extends TestCase
+final class PaymentIntentSucceededActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
     public function testShouldImplements()
     {
-        $action = new PaymentIntentCanceledAction();
+        $action = new PaymentIntentSucceededAction();
 
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
         $this->assertInstanceOf(ActionInterface::class, $action);
@@ -43,7 +43,7 @@ final class PaymentIntentCanceledActionTest extends TestCase
                 'data' => [
                     'object' => [],
                 ],
-                'type' => Event::PAYMENT_INTENT_CANCELED,
+                'type' => Event::PAYMENT_INTENT_SUCCEEDED,
             ]],
             [[
                 'id' => 'event_1',
@@ -54,7 +54,7 @@ final class PaymentIntentCanceledActionTest extends TestCase
                         ],
                     ],
                 ],
-                'type' => Event::PAYMENT_INTENT_CANCELED,
+                'type' => Event::PAYMENT_INTENT_SUCCEEDED,
             ]],
             [[
                 'id' => 'event_1',
@@ -66,7 +66,7 @@ final class PaymentIntentCanceledActionTest extends TestCase
                         ],
                     ],
                 ],
-                'type' => Event::PAYMENT_INTENT_CANCELED,
+                'type' => Event::PAYMENT_INTENT_SUCCEEDED,
             ]]
         ];
     }
@@ -74,7 +74,7 @@ final class PaymentIntentCanceledActionTest extends TestCase
     /** @dataProvider provideNotSupportedModels */
     public function testDoNotSupports(array $model)
     {
-        $action = new PaymentIntentCanceledAction();
+        $action = new PaymentIntentSucceededAction();
 
         $event = Event::constructFrom($model);
         $eventWrapper = new EventWrapper('', $event);
@@ -85,7 +85,7 @@ final class PaymentIntentCanceledActionTest extends TestCase
 
     public function testSupports()
     {
-        $action = new PaymentIntentCanceledAction();
+        $action = new PaymentIntentSucceededAction();
 
         $model = [
             'id' => 'event_1',
@@ -97,7 +97,7 @@ final class PaymentIntentCanceledActionTest extends TestCase
                     ],
                 ],
             ],
-            'type' => Event::PAYMENT_INTENT_CANCELED,
+            'type' => Event::PAYMENT_INTENT_SUCCEEDED,
         ];
         $event = Event::constructFrom($model);
         $eventWrapper = new EventWrapper('', $event);
@@ -118,7 +118,7 @@ final class PaymentIntentCanceledActionTest extends TestCase
                     ],
                 ],
             ],
-            'type' => Event::PAYMENT_INTENT_CANCELED,
+            'type' => Event::PAYMENT_INTENT_SUCCEEDED,
         ];
 
         $event = Event::constructFrom($model);
@@ -142,7 +142,7 @@ final class PaymentIntentCanceledActionTest extends TestCase
                 })
             );
 
-        $action = new PaymentIntentCanceledAction();
+        $action = new PaymentIntentSucceededAction();
         $action->setGateway($gatewayMock);
         $eventWrapper = new EventWrapper('', $event);
         $webhookEvent = new WebhookEvent($eventWrapper);

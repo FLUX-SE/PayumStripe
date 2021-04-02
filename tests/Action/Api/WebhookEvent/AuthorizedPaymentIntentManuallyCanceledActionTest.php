@@ -3,8 +3,9 @@
 namespace Tests\FluxSE\PayumStripe\Action\Api\WebhookEvent;
 
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\AbstractPaymentAction;
+use FluxSE\PayumStripe\Action\Api\WebhookEvent\AbstractPaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\AbstractWebhookEventAction;
-use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentManualSucceedAction;
+use FluxSE\PayumStripe\Action\Api\WebhookEvent\AuthorizedPaymentIntentManuallyCanceledAction;
 use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use FluxSE\PayumStripe\Wrapper\EventWrapper;
 use Payum\Core\Action\ActionInterface;
@@ -17,49 +18,85 @@ use PHPUnit\Framework\TestCase;
 use Stripe\Event;
 use Tests\FluxSE\PayumStripe\Action\GatewayAwareTestTrait;
 
-final class PaymentIntentManualSucceedActionTest extends TestCase
+final class AuthorizedPaymentIntentManuallyCanceledActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
     public function testShouldImplements()
     {
-        $action = new PaymentIntentManualSucceedAction();
+        $action = new AuthorizedPaymentIntentManuallyCanceledAction();
 
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
         $this->assertInstanceOf(ActionInterface::class, $action);
         $this->assertInstanceOf(GatewayAwareInterface::class, $action);
 
+        $this->assertInstanceOf(AbstractPaymentIntentAction::class, $action);
         $this->assertInstanceOf(AbstractPaymentAction::class, $action);
         $this->assertInstanceOf(AbstractWebhookEventAction::class, $action);
     }
 
-    public function testSupports()
+    public function provideNotSupportedModels(): array
     {
-        $action = new PaymentIntentManualSucceedAction();
-
-        $model = [
-            'id' => 'event_1',
-            'data' => [
-                'object' => [],
-            ],
-            'type' => Event::PAYMENT_INTENT_CANCELED,
+        return [
+            [[
+                'id' => 'event_1',
+                'data' => [
+                    'object' => [],
+                ],
+                'type' => Event::PAYMENT_INTENT_CANCELED,
+            ]],
+            [[
+                'id' => 'event_1',
+                'data' => [
+                    'object' => [
+                        'metadata' => [
+                            'cancel_authorized_token_hash' => 'test_hash',
+                        ],
+                    ],
+                ],
+                'type' => Event::PAYMENT_INTENT_CANCELED,
+            ]],
+            [[
+                'id' => 'event_1',
+                'data' => [
+                    'object' => [
+                        'capture_method' => 'automatic',
+                        'metadata' => [
+                            'cancel_authorized_token_hash' => 'test_hash',
+                        ],
+                    ],
+                ],
+                'type' => Event::PAYMENT_INTENT_CANCELED,
+            ]]
         ];
+    }
+
+    /** @dataProvider provideNotSupportedModels */
+    public function testDoNotSupports(array $model)
+    {
+        $action = new AuthorizedPaymentIntentManuallyCanceledAction();
+
         $event = Event::constructFrom($model);
         $eventWrapper = new EventWrapper('', $event);
         $webhookEvent = new WebhookEvent($eventWrapper);
         $supports = $action->supports($webhookEvent);
         $this->assertFalse($supports);
+    }
 
+    public function testSupports()
+    {
+        $action = new AuthorizedPaymentIntentManuallyCanceledAction();
         $model = [
             'id' => 'event_1',
             'data' => [
                 'object' => [
+                    'capture_method' => 'manual',
                     'metadata' => [
-                        'capture_authorize_token_hash' => 'test_hash',
+                        'cancel_authorized_token_hash' => 'test_hash',
                     ],
                 ],
             ],
-            'type' => Event::PAYMENT_INTENT_SUCCEEDED,
+            'type' => Event::PAYMENT_INTENT_CANCELED,
         ];
         $event = Event::constructFrom($model);
         $eventWrapper = new EventWrapper('', $event);
@@ -76,11 +113,11 @@ final class PaymentIntentManualSucceedActionTest extends TestCase
                 'object' => [
                     'capture_method' => 'manual',
                     'metadata' => [
-                        'capture_authorize_token_hash' => 'test_hash',
+                        'cancel_authorized_token_hash' => 'test_hash',
                     ],
                 ],
             ],
-            'type' => Event::PAYMENT_INTENT_SUCCEEDED,
+            'type' => Event::PAYMENT_INTENT_CANCELED,
         ];
 
         $event = Event::constructFrom($model);
@@ -104,7 +141,7 @@ final class PaymentIntentManualSucceedActionTest extends TestCase
                 })
             );
 
-        $action = new PaymentIntentManualSucceedAction();
+        $action = new AuthorizedPaymentIntentManuallyCanceledAction();
         $action->setGateway($gatewayMock);
         $eventWrapper = new EventWrapper('', $event);
         $webhookEvent = new WebhookEvent($eventWrapper);

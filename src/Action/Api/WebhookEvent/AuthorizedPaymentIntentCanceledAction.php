@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Action\Api\WebhookEvent;
 
+use FluxSE\PayumStripe\Token\TokenHashKeysInterface;
 use Stripe\Event;
 
-final class PaymentIntentCanceledAction extends AbstractPaymentIntentAction
+final class AuthorizedPaymentIntentCanceledAction extends AbstractPaymentIntentAction
 {
     protected function getSupportedEventTypes(): array
     {
@@ -17,6 +18,11 @@ final class PaymentIntentCanceledAction extends AbstractPaymentIntentAction
 
     protected function getSupportedCaptureMethod(): string
     {
-        return 'automatic';
+        return 'manual';
+    }
+
+    public function getTokenHashMetadataKeyName(): string
+    {
+        return TokenHashKeysInterface::CAPTURE_AUTHORIZE_TOKEN_HASH_KEY_NAME;
     }
 }

@@ -5,7 +5,7 @@ namespace Tests\FluxSE\PayumStripe\Action\Api\WebhookEvent;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\AbstractPaymentAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\AbstractPaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\AbstractWebhookEventAction;
-use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentCanceledAction;
+use FluxSE\PayumStripe\Action\Api\WebhookEvent\AuthorizedPaymentIntentCanceledAction;
 use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use FluxSE\PayumStripe\Wrapper\EventWrapper;
 use Payum\Core\Action\ActionInterface;
@@ -16,15 +16,16 @@ use Payum\Core\Request\GetToken;
 use Payum\Core\Request\Notify;
 use PHPUnit\Framework\TestCase;
 use Stripe\Event;
+use Stripe\PaymentIntent;
 use Tests\FluxSE\PayumStripe\Action\GatewayAwareTestTrait;
 
-final class PaymentIntentCanceledActionTest extends TestCase
+final class AuthorizedPaymentIntentCanceledActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
     public function testShouldImplements()
     {
-        $action = new PaymentIntentCanceledAction();
+        $action = new AuthorizedPaymentIntentCanceledAction();
 
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
         $this->assertInstanceOf(ActionInterface::class, $action);
@@ -50,7 +51,7 @@ final class PaymentIntentCanceledActionTest extends TestCase
                 'data' => [
                     'object' => [
                         'metadata' => [
-                            'token_hash' => 'test_hash',
+                            'capture_authorize_token_hash' => 'test_hash',
                         ],
                     ],
                 ],
@@ -60,9 +61,9 @@ final class PaymentIntentCanceledActionTest extends TestCase
                 'id' => 'event_1',
                 'data' => [
                     'object' => [
-                        'capture_method' => 'manual',
+                        'capture_method' => 'automatic',
                         'metadata' => [
-                            'token_hash' => 'test_hash',
+                            'capture_authorize_token_hash' => 'test_hash',
                         ],
                     ],
                 ],
@@ -74,7 +75,7 @@ final class PaymentIntentCanceledActionTest extends TestCase
     /** @dataProvider provideNotSupportedModels */
     public function testDoNotSupports(array $model)
     {
-        $action = new PaymentIntentCanceledAction();
+        $action = new AuthorizedPaymentIntentCanceledAction();
 
         $event = Event::constructFrom($model);
         $eventWrapper = new EventWrapper('', $event);
@@ -85,15 +86,14 @@ final class PaymentIntentCanceledActionTest extends TestCase
 
     public function testSupports()
     {
-        $action = new PaymentIntentCanceledAction();
-
+        $action = new AuthorizedPaymentIntentCanceledAction();
         $model = [
             'id' => 'event_1',
             'data' => [
                 'object' => [
-                    'capture_method' => 'automatic',
+                    'capture_method' => 'manual',
                     'metadata' => [
-                        'token_hash' => 'test_hash',
+                        'capture_authorize_token_hash' => 'test_hash',
                     ],
                 ],
             ],
@@ -112,9 +112,9 @@ final class PaymentIntentCanceledActionTest extends TestCase
             'id' => 'event_1',
             'data' => [
                 'object' => [
-                    'capture_method' => 'automatic',
+                    'capture_method' => 'manual',
                     'metadata' => [
-                        'token_hash' => 'test_hash',
+                        'capture_authorize_token_hash' => 'test_hash',
                     ],
                 ],
             ],
@@ -142,7 +142,7 @@ final class PaymentIntentCanceledActionTest extends TestCase
                 })
             );
 
-        $action = new PaymentIntentCanceledAction();
+        $action = new AuthorizedPaymentIntentCanceledAction();
         $action->setGateway($gatewayMock);
         $eventWrapper = new EventWrapper('', $event);
         $webhookEvent = new WebhookEvent($eventWrapper);

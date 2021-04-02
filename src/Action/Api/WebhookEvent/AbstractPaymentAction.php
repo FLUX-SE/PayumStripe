@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Action\Api\WebhookEvent;
 
-use FluxSE\PayumStripe\Action\TokenHashKeysInterface;
 use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
+use FluxSE\PayumStripe\Token\TokenHashKeysInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
@@ -53,6 +53,14 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
 
         /** @var StripeObject|null $sessionModeObject */
         $sessionModeObject = $stripeObject->offsetGet('object');
+
+        if (null === $sessionModeObject) {
+            return null;
+        }
+
+        if (false === $sessionModeObject instanceof StripeObject) {
+            return null;
+        }
 
         return $sessionModeObject;
     }

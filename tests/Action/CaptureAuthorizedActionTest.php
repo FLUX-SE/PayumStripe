@@ -73,7 +73,6 @@ final class CaptureAuthorizedActionTest extends TestCase
         $this->assertTrue($supports);
         $action->execute($request);
     }
-
     public function testShouldThrowAnExceptionWhenNoTokenIsProvided()
     {
         $action = new CaptureAuthorizedAction();
@@ -90,6 +89,66 @@ final class CaptureAuthorizedActionTest extends TestCase
 
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage('The request token should not be null !');
+        $action->execute($request);
+    }
+
+
+    public function testShouldOnlyRetrieveAPaymentIntentWhenCurrentStatusIsNotRequiresCapture()
+    {
+        $model = [
+            'object' => PaymentIntent::OBJECT_NAME,
+            'status' => PaymentIntent::STATUS_PROCESSING,
+            'id' => 'pi_0000',
+        ];
+
+        $token = new Token();
+        $token->setDetails(new Identity(1, PaymentInterface::class));
+        $token->setTargetUrl('test/url');
+
+        $notifyToken = new Token();
+
+        $gatewayMock = $this->createGatewayMock();
+        $gatewayMock
+            ->expects($this->once())
+            ->method('execute')
+            ->withConsecutive(
+                [$this->isInstanceOf(UpdatePaymentIntent::class)]
+            )
+            ->willReturnOnConsecutiveCalls(
+                $this->returnCallback(function (UpdatePaymentIntent $request) use ($notifyToken, $model) {
+                    $id = $request->getModel();
+                    $this->assertIsString($id);
+                    $parameters = $request->getParameters();
+                    $this->assertArrayHasKey('metadata', $parameters);
+                    $this->assertArrayHasKey('capture_authorize_token_hash', $parameters['metadata']);
+                    $this->assertEquals($notifyToken->getHash(), $parameters['metadata']['capture_authorize_token_hash']);
+                    $request->setApiResource(PaymentIntent::constructFrom(array_merge(
+                        $model,
+                        $parameters
+                    )));
+                })
+            )
+        ;
+
+        $genericGatewayFactory = $this->createMock(GenericTokenFactoryInterface::class);
+        $genericGatewayFactory
+            ->expects($this->once())
+            ->method('createNotifyToken')
+            ->with($token->getGatewayName(), $this->isInstanceOf(IdentityInterface::class))
+            ->willReturn($notifyToken)
+        ;
+
+        $action = new CaptureAuthorizedAction();
+
+        $action->setGateway($gatewayMock);
+        $action->setGenericTokenFactory($genericGatewayFactory);
+
+        $request = new CaptureAuthorized($token);
+        $request->setModel($model);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
         $action->execute($request);
     }
 

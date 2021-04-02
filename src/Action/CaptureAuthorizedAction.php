@@ -7,6 +7,7 @@ namespace FluxSE\PayumStripe\Action;
 use ArrayObject;
 use FluxSE\PayumStripe\Request\Api\Resource\CapturePaymentIntent;
 use FluxSE\PayumStripe\Request\CaptureAuthorized;
+use FluxSE\PayumStripe\Token\TokenHashKeysInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Stripe\PaymentIntent;
 

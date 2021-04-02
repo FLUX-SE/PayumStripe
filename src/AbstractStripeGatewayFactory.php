@@ -33,8 +33,12 @@ use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdatePaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdateSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentCanceledAction;
-use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentManualSucceedAction;
+use FluxSE\PayumStripe\Action\Api\WebhookEvent\AuthorizedPaymentIntentManuallyCanceledAction;
+use FluxSE\PayumStripe\Action\Api\WebhookEvent\AuthorizedPaymentIntentCanceledAction;
+use FluxSE\PayumStripe\Action\Api\WebhookEvent\AuthorizedPaymentIntentSucceededAction;
+use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentSucceededAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\SetupIntentCanceledAction;
+use FluxSE\PayumStripe\Action\Api\WebhookEvent\SetupIntentSucceededAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\StripeWebhookTestAction;
 use FluxSE\PayumStripe\Action\CancelAction;
 use FluxSE\PayumStripe\Action\CaptureAuthorizedAction;
@@ -112,8 +116,12 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
     {
         return [
             'payum.action.stripe_webhook_test' => new StripeWebhookTestAction(),
+            'payum.action.payment_intent_succeeded' => new PaymentIntentSucceededAction(),
             'payum.action.payment_intent_canceled' => new PaymentIntentCanceledAction(),
-            'payum.action.payment_intent_succeeded' => new PaymentIntentManualSucceedAction(),
+            'payum.action.authorized_payment_intent_succeeded' => new AuthorizedPaymentIntentSucceededAction(),
+            'payum.action.authorized_payment_intent_canceled' => new AuthorizedPaymentIntentCanceledAction(),
+            'payum.action.authorized_payment_intent_manually_canceled' => new AuthorizedPaymentIntentManuallyCanceledAction(),
+            'payum.action.setup_intent_succeeded' => new SetupIntentSucceededAction(),
             'payum.action.setup_intent_canceled' => new SetupIntentCanceledAction(),
         ];
     }

@@ -6,6 +6,7 @@ namespace FluxSE\PayumStripe\Action;
 
 use ArrayAccess;
 use FluxSE\PayumStripe\Request\Api\Resource\CancelPaymentIntent;
+use FluxSE\PayumStripe\Token\TokenHashKeysInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Request\Cancel;
