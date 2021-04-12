@@ -29,7 +29,7 @@ final class ConvertPaymentAction implements ActionInterface
                 'currency' => $payment->getCurrencyCode(),
                 'quantity' => 1,
             ],
-        ]);        
+        ]);
         if (false === $details->offsetExists('payment_method_types')) {
             $details->offsetSet('payment_method_types', ['card']);
         }
