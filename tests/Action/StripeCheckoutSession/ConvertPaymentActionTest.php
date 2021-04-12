@@ -96,4 +96,88 @@ final class ConvertPaymentActionTest extends TestCase
         $this->assertArrayHasKey('foo', $details);
         $this->assertEquals('fooVal', $details['foo']);
     }
+
+    public function testShouldNotOverwriteAlreadySetPaymentMethodTypes()
+    {
+        $payment = new Payment();
+        $payment->setClientEmail('test@domain.tld');
+        $payment->setCurrencyCode('USD');
+        $payment->setTotalAmount(123);
+        $payment->setDescription('the description');
+        $payment->setDetails([
+            'payment_method_types' => ['alipay'],
+        ]);
+
+        $request = new Convert($payment, 'array');
+
+        $action = new ConvertPaymentAction();
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $details = $request->getResult();
+
+        $this->assertNotEmpty($details);
+
+        $this->assertArrayHasKey('payment_method_types', $details);
+        $this->assertEquals(['alipay'], $details['payment_method_types']);
+    }
+
+    public function testShouldNotOverwriteAlreadySetCustomerEmail()
+    {
+        $payment = new Payment();
+        $payment->setClientEmail('test@domain.tld');
+        $payment->setCurrencyCode('USD');
+        $payment->setTotalAmount(123);
+        $payment->setDescription('the description');
+        $payment->setDetails([
+            'customer_email' => 'foo@example.tld',
+        ]);
+
+        $request = new Convert($payment, 'array');
+
+        $action = new ConvertPaymentAction();
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $details = $request->getResult();
+
+        $this->assertNotEmpty($details);
+
+        $this->assertArrayHasKey('customer_email', $details);
+        $this->assertEquals('foo@example.tld', $details['customer_email']);
+    }
+
+    public function testShouldNotOverwriteAlreadySetLineItems()
+    {
+        $payment = new Payment();
+        $payment->setClientEmail('test@domain.tld');
+        $payment->setCurrencyCode('USD');
+        $payment->setTotalAmount(123);
+        $payment->setDescription('the description');
+        $payment->setDetails([
+            'line_items' => [],
+        ]);
+
+        $request = new Convert($payment, 'array');
+
+        $action = new ConvertPaymentAction();
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $details = $request->getResult();
+
+        $this->assertNotEmpty($details);
+
+        $this->assertArrayHasKey('line_items', $details);
+        $this->assertEquals([], $details['line_items']);
+    }
 }
