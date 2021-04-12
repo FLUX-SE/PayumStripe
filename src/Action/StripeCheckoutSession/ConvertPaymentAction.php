@@ -30,9 +30,9 @@ final class ConvertPaymentAction implements ActionInterface
                 'quantity' => 1,
             ],
         ]);
-        $details->offsetSet('payment_method_types', [
-            'card',
-        ]);
+        if (false === $details->offsetExists('payment_method_types')) {
+            $details->offsetSet('payment_method_types', ['card']);
+        }
 
         $request->setResult($details);
     }
