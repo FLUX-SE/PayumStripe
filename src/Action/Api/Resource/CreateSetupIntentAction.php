@@ -8,7 +8,7 @@ use FluxSE\PayumStripe\Request\Api\Resource\CreateInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateSetupIntent;
 use Stripe\SetupIntent;
 
-class CreateSetupIntentAction extends AbstractCreateAction
+final class CreateSetupIntentAction extends AbstractCreateAction
 {
     protected $apiResourceClass = SetupIntent::class;
 

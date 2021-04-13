@@ -8,7 +8,7 @@ use FluxSE\PayumStripe\Request\Api\Resource\CreateCustomer;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateInterface;
 use Stripe\Customer;
 
-class CreateCustomerAction extends AbstractCreateAction
+final class CreateCustomerAction extends AbstractCreateAction
 {
     protected $apiResourceClass = Customer::class;
 

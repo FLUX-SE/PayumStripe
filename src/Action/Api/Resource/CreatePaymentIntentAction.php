@@ -8,7 +8,7 @@ use FluxSE\PayumStripe\Request\Api\Resource\CreateInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\CreatePaymentIntent;
 use Stripe\PaymentIntent;
 
-class CreatePaymentIntentAction extends AbstractCreateAction
+final class CreatePaymentIntentAction extends AbstractCreateAction
 {
     protected $apiResourceClass = PaymentIntent::class;
 

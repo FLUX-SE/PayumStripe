@@ -8,7 +8,7 @@ use FluxSE\PayumStripe\Request\Api\Resource\CreateInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\CreatePlan;
 use Stripe\Plan;
 
-class CreatePlanAction extends AbstractCreateAction
+final class CreatePlanAction extends AbstractCreateAction
 {
     protected $apiResourceClass = Plan::class;
 

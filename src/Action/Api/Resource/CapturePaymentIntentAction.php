@@ -10,7 +10,7 @@ use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInterface;
 use Stripe\ApiResource;
 use Stripe\PaymentIntent;
 
-class CapturePaymentIntentAction extends AbstractRetrieveAction
+final class CapturePaymentIntentAction extends AbstractRetrieveAction
 {
     protected $apiResourceClass = PaymentIntent::class;
 

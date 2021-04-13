@@ -8,7 +8,7 @@ use FluxSE\PayumStripe\Wrapper\EventWrapperInterface;
 use LogicException;
 use Payum\Core\Request\Generic;
 
-class ConstructEvent extends Generic
+final class ConstructEvent extends Generic
 {
     /** @var string */
     private $webhookSecretKey;

@@ -8,7 +8,7 @@ use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrievePaymentMethod;
 use Stripe\PaymentMethod;
 
-class RetrievePaymentMethodAction extends AbstractRetrieveAction
+final class RetrievePaymentMethodAction extends AbstractRetrieveAction
 {
     protected $apiResourceClass = PaymentMethod::class;
 

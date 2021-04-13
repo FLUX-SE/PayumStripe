@@ -8,7 +8,7 @@ use FluxSE\PayumStripe\Request\Api\Resource\CreateInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateRefund;
 use Stripe\Refund;
 
-class CreateRefundAction extends AbstractCreateAction
+final class CreateRefundAction extends AbstractCreateAction
 {
     protected $apiResourceClass = Refund::class;
 

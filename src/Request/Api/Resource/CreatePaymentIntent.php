@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Request\Api\Resource;
 
-class CreatePaymentIntent extends AbstractCreate
+final class CreatePaymentIntent extends AbstractCreate
 {
 }

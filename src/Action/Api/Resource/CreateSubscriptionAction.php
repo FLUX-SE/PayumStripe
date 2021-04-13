@@ -8,7 +8,7 @@ use FluxSE\PayumStripe\Request\Api\Resource\CreateInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateSubscription;
 use Stripe\Subscription;
 
-class CreateSubscriptionAction extends AbstractCreateAction
+final class CreateSubscriptionAction extends AbstractCreateAction
 {
     protected $apiResourceClass = Subscription::class;
 
