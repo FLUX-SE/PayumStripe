@@ -26,6 +26,7 @@ use FluxSE\PayumStripe\Action\Api\Resource\RetrieveCustomerAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveInvoiceAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrievePaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrievePaymentMethodAction;
+use FluxSE\PayumStripe\Action\Api\Resource\RetrievePlanAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveProductAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSessionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSetupIntentAction;
@@ -95,6 +96,7 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
             'payum.action.retrieve_invoice' => new RetrieveInvoiceAction(),
             'payum.action.retrieve_payment_intent' => new RetrievePaymentIntentAction(),
             'payum.action.retrieve_payment_method' => new RetrievePaymentMethodAction(),
+            'payum.action.retrieve_plan' => new RetrievePlanAction(),
             'payum.action.retrieve_product' => new RetrieveProductAction(),
             'payum.action.retrieve_session' => new RetrieveSessionAction(),
             'payum.action.retrieve_setup_intent' => new RetrieveSetupIntentAction(),

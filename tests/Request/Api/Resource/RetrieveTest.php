@@ -11,6 +11,7 @@ use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInvoice;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrievePaymentIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrievePaymentMethod;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrievePlan;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveProduct;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSession;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSetupIntent;
@@ -26,6 +27,7 @@ use Stripe\Customer;
 use Stripe\Invoice;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
+use Stripe\Plan;
 use Stripe\Product;
 use Stripe\SetupIntent;
 use Stripe\Subscription;
@@ -117,6 +119,7 @@ final class RetrieveTest extends TestCase
             [RetrieveInvoice::class, Invoice::class],
             [RetrievePaymentIntent::class, PaymentIntent::class],
             [RetrievePaymentMethod::class, PaymentMethod::class],
+            [RetrievePlan::class, Plan::class],
             [RetrieveProduct::class, Product::class],
             [RetrieveSession::class, Session::class],
             [RetrieveSetupIntent::class, SetupIntent::class],
