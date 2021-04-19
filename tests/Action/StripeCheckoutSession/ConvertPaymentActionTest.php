@@ -5,7 +5,6 @@ namespace Tests\FluxSE\PayumStripe\Action\StripeCheckoutSession;
 use FluxSE\PayumStripe\Action\StripeCheckoutSession\ConvertPaymentAction;
 use FluxSE\PayumStripe\Api\KeysInterface;
 use Payum\Core\Action\ActionInterface;
-use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Model\Payment;
 use Payum\Core\Request\Capture;

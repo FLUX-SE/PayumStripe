@@ -140,7 +140,7 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
                 'publishable_key' => '',
                 'secret_key' => '',
                 'webhook_secret_keys' => [],
-                'payment_method_types' => ['card']
+                'payment_method_types' => ['card'],
             ]);
             $config->defaults($config['payum.default_options']);
             $config->offsetSet('payum.required_options', [

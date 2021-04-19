@@ -16,7 +16,6 @@ use Payum\Core\Request\Convert;
 
 final class ConvertPaymentAction implements ActionInterface, ApiAwareInterface, GatewayAwareInterface
 {
-
     use GatewayAwareTrait;
     use StripeApiAwareTrait {
         StripeApiAwareTrait::__construct as private __stripeApiAwareTraitConstruct;

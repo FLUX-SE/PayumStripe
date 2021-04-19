@@ -74,7 +74,7 @@ final class Keys implements KeysInterface
 
     public function addPaymentMethodType(string $paymentMethodType): void
     {
-        if(!$this->hasPaymentMethodType($paymentMethodType)) {
+        if (!$this->hasPaymentMethodType($paymentMethodType)) {
             $this->paymentMethodTypes[] = $paymentMethodType;
         }
     }
