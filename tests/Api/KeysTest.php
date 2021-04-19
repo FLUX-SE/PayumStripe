@@ -61,7 +61,7 @@ final class KeysTest extends TestCase
         $keys = new Keys('', '', [], ['card']);
 
         $this->assertTrue($keys->hasPaymentMethodType('card'));
-        $this->assertFalse($keys->hasPaymentMethodType('sepa_debit'));
+        $this->assertFalse($keys->hasPaymentMethodType('ideal'));
     }
 
     public function testGetPaymentMethodTypes()
