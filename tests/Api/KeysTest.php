@@ -55,4 +55,33 @@ final class KeysTest extends TestCase
         $keys->addWebhookSecretKey('webhookKeyAdded');
         $this->assertEquals(['webhookKeyAdded'], $keys->getWebhookSecretKeys());
     }
+
+    public function testHasPaymentMethodType()
+    {
+        $keys = new Keys('', '', [], ['card']);
+
+        $this->assertTrue($keys->hasPaymentMethodType('card'));
+        $this->assertFalse($keys->hasPaymentMethodType('sepa_debit'));
+    }
+
+    public function testGetPaymentMethodTypes()
+    {
+        $keys = new Keys('', '', [], ['card']);
+
+        $this->assertEquals(['card'], $keys->getPaymentMethodTypes());
+    }
+
+    public function testSetPaymentMethodTypes()
+    {
+        $keys = new Keys('', '', [], ['card']);
+        $keys->setPaymentMethodTypes([]);
+        $this->assertEquals([], $keys->getPaymentMethodTypes());
+    }
+
+    public function testAddPaymentMethodType()
+    {
+        $keys = new Keys('', '', [], []);
+        $keys->addPaymentMethodType('card');
+        $this->assertEquals(['card'], $keys->getPaymentMethodTypes());
+    }
 }
