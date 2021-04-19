@@ -12,6 +12,8 @@ final class Keys implements KeysInterface
     private $publishable;
     /** @var string */
     private $secret;
+    /** @var string[] */
+    private $paymentMethodTypes;
 
     /**
      * @param string[] $webhookSecretKeys
@@ -19,11 +21,13 @@ final class Keys implements KeysInterface
     public function __construct(
         string $publishable,
         string $secret,
-        array $webhookSecretKeys = []
+        array $webhookSecretKeys = [],
+        array $paymentMethodTypes = []
     ) {
         $this->publishable = $publishable;
         $this->secret = $secret;
         $this->webhookSecretKeys = $webhookSecretKeys;
+        $this->paymentMethodTypes = $paymentMethodTypes;
     }
 
     public function getSecretKey(): string
@@ -56,5 +60,27 @@ final class Keys implements KeysInterface
     public function setWebhookSecretKeys(array $webhookSecretKeys): void
     {
         $this->webhookSecretKeys = $webhookSecretKeys;
+    }
+
+    public function getPaymentMethodTypes(): array
+    {
+        return $this->paymentMethodTypes;
+    }
+
+    public function hasPaymentMethodType(string $paymentMethodType): bool
+    {
+        return in_array($paymentMethodType, $this->paymentMethodTypes);
+    }
+
+    public function addPaymentMethodType(string $paymentMethodType): void
+    {
+        if(!$this->hasPaymentMethodType($paymentMethodType)) {
+            $this->paymentMethodTypes[] = $paymentMethodType;
+        }
+    }
+
+    public function setPaymentMethodTypes(array $paymentMethodTypes): void
+    {
+        $this->paymentMethodTypes = $paymentMethodTypes;
     }
 }
