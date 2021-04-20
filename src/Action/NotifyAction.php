@@ -11,6 +11,7 @@ use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
+use Payum\Core\Request\Generic;
 use Payum\Core\Request\Notify;
 use Payum\Core\Request\Sync;
 
@@ -25,7 +26,9 @@ class NotifyAction implements ActionInterface, GatewayAwareInterface
         if (null === $request->getToken()) {
             $this->executeWebhook();
         } else {
-            $this->gateway->execute(new Sync($request->getModel()));
+            $sync = new Sync($request->getModel());
+            $this->gateway->execute($sync);
+            $request->setModel($sync->getModel());
         }
     }
 
