@@ -64,7 +64,7 @@ final class CreateActionTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testShouldCreateACustomer(
+    public function testShouldCreateAnApiRessource(
         string $createActionClass,
         string $createRequestClass,
         string $createClass
