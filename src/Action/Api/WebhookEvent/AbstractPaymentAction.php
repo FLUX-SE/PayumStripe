@@ -33,7 +33,7 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
         // 2. Try to found the Token
         $token = $this->findTokenByHash($tokenHash);
 
-        // 3. Redirect to the notify URL
+        // 3. Execute a notify with the retrieved token
         $this->gateway->execute(new Notify($token));
     }
 

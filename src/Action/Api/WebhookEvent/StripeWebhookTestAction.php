@@ -44,11 +44,7 @@ final class StripeWebhookTestAction extends AbstractWebhookEventAction
     private function retrieveEventId(WebhookEvent $request): ?string
     {
         $eventWrapper = $request->getEventWrapper();
-        /*
-         * This should never be true because the method
-         * `$this->supportTypes()` already check this
-         * @see AbstractWebhookEventAction::supportsTypes()
-         */
+
         if (null === $eventWrapper) {
             return null;
         }
