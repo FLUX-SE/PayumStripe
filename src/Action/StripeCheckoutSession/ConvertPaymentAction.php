@@ -4,14 +4,28 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Action\StripeCheckoutSession;
 
+use FluxSE\PayumStripe\Action\Api\StripeApiAwareTrait;
 use Payum\Core\Action\ActionInterface;
+use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Core\GatewayAwareInterface;
+use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Model\PaymentInterface;
 use Payum\Core\Request\Convert;
 
-final class ConvertPaymentAction implements ActionInterface
+final class ConvertPaymentAction implements ActionInterface, ApiAwareInterface, GatewayAwareInterface
 {
+    use GatewayAwareTrait;
+    use StripeApiAwareTrait {
+        StripeApiAwareTrait::__construct as private __stripeApiAwareTraitConstruct;
+    }
+
+    public function __construct()
+    {
+        $this->__stripeApiAwareTraitConstruct();
+    }
+
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -37,7 +51,7 @@ final class ConvertPaymentAction implements ActionInterface
         }
 
         if (false === $details->offsetExists('payment_method_types')) {
-            $details->offsetSet('payment_method_types', ['card']);
+            $details->offsetSet('payment_method_types', $this->api->getPaymentMethodTypes());
         }
 
         $request->setResult($details);

@@ -3,23 +3,25 @@
 namespace Tests\FluxSE\PayumStripe\Action\StripeCheckoutSession;
 
 use FluxSE\PayumStripe\Action\StripeCheckoutSession\ConvertPaymentAction;
+use FluxSE\PayumStripe\Api\KeysInterface;
 use Payum\Core\Action\ActionInterface;
-use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Model\Payment;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\Convert;
 use PHPUnit\Framework\TestCase;
+use Tests\FluxSE\PayumStripe\Action\Api\ApiAwareActionTestTrait;
 
 final class ConvertPaymentActionTest extends TestCase
 {
+    use ApiAwareActionTestTrait;
+
     public function testShouldImplements()
     {
         $action = new ConvertPaymentAction();
 
         $this->assertInstanceOf(ActionInterface::class, $action);
         $this->assertNotInstanceOf(GatewayInterface::class, $action);
-        $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
     }
 
     public function testSupports()
@@ -43,6 +45,16 @@ final class ConvertPaymentActionTest extends TestCase
         $request = new Convert($payment, 'array');
 
         $action = new ConvertPaymentAction();
+
+        $apiMock = $this->createApiMock(false);
+        $apiMock
+            ->expects($this->once())
+            ->method('getPaymentMethodTypes')
+            ->willReturn(['card'])
+        ;
+
+        $action->setApiClass(KeysInterface::class);
+        $action->setApi($apiMock);
 
         $supports = $action->supports($request);
         $this->assertTrue($supports);
@@ -83,6 +95,16 @@ final class ConvertPaymentActionTest extends TestCase
         $request = new Convert($payment, 'array');
 
         $action = new ConvertPaymentAction();
+
+        $apiMock = $this->createApiMock(false);
+        $apiMock
+            ->expects($this->once())
+            ->method('getPaymentMethodTypes')
+            ->willReturn(['card'])
+        ;
+
+        $action->setApiClass(KeysInterface::class);
+        $action->setApi($apiMock);
 
         $supports = $action->supports($request);
         $this->assertTrue($supports);
@@ -140,6 +162,16 @@ final class ConvertPaymentActionTest extends TestCase
 
         $action = new ConvertPaymentAction();
 
+        $apiMock = $this->createApiMock(false);
+        $apiMock
+            ->expects($this->once())
+            ->method('getPaymentMethodTypes')
+            ->willReturn(['card'])
+        ;
+
+        $action->setApiClass(KeysInterface::class);
+        $action->setApi($apiMock);
+
         $supports = $action->supports($request);
         $this->assertTrue($supports);
 
@@ -167,6 +199,16 @@ final class ConvertPaymentActionTest extends TestCase
         $request = new Convert($payment, 'array');
 
         $action = new ConvertPaymentAction();
+
+        $apiMock = $this->createApiMock(false);
+        $apiMock
+            ->expects($this->once())
+            ->method('getPaymentMethodTypes')
+            ->willReturn(['card'])
+        ;
+
+        $action->setApiClass(KeysInterface::class);
+        $action->setApi($apiMock);
 
         $supports = $action->supports($request);
         $this->assertTrue($supports);

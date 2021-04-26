@@ -86,6 +86,7 @@ final class StripeGatewayFactoryTest extends TestCase
             'publishable_key' => '',
             'secret_key' => '',
             'webhook_secret_keys' => [],
+            'payment_method_types' => ['card'],
         ], $config['payum.default_options']);
     }
 
@@ -139,6 +140,7 @@ final class StripeGatewayFactoryTest extends TestCase
             'webhook_secret_keys' => [
                 '123456',
             ],
+            'payment_method_types' => ['card'],
         ];
 
         /** @var AbstractStripeGatewayFactory $factory */
@@ -149,6 +151,7 @@ final class StripeGatewayFactoryTest extends TestCase
         $this->assertEquals($defaults['publishable_key'], $config['publishable_key']);
         $this->assertEquals($defaults['secret_key'], $config['secret_key']);
         $this->assertEquals($defaults['webhook_secret_keys'], $config['webhook_secret_keys']);
+        $this->assertEquals($defaults['payment_method_types'], $config['payment_method_types']);
 
         // Allow to update the credentials
         $newCredentials = new ArrayObject([
@@ -158,6 +161,7 @@ final class StripeGatewayFactoryTest extends TestCase
             'webhook_secret_keys' => [
                 '654321',
             ],
+            'payment_method_types' => ['card'],
         ]);
         $api = $config['payum.api']($newCredentials);
         $this->assertInstanceOf(KeysInterface::class, $api);
