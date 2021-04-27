@@ -49,12 +49,17 @@
         var stripe = Stripe('{{ publishable_key }}');
         var elements = stripe.elements();
 
-        var confirmCardPaymentData = {};
+        if (typeof confirmCardPaymentData === 'undefined') {
+            window.confirmCardPaymentData = {};
+        }
+        if (typeof confirmCardPaymentOptions === 'undefined') {
+            window.confirmCardPaymentOptions = {};
+        }
 
         var submitPaymentIntent = function() {
             changeLoadingState(true);
 
-            stripe.confirmCardPayment(form.dataset['secret'], confirmCardPaymentData)
+            stripe.confirmCardPayment(form.dataset['secret'], confirmCardPaymentData, confirmCardPaymentOptions)
                 .then(function (result) {
                     if (result.error) {
                         changeLoadingState(false);
