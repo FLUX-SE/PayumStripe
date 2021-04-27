@@ -8,6 +8,8 @@ use FluxSE\PayumStripe\Action\StripeJs\Api\RenderStripeJsAction;
 use FluxSE\PayumStripe\Action\StripeJs\AuthorizeAction;
 use FluxSE\PayumStripe\Action\StripeJs\CaptureAction;
 use FluxSE\PayumStripe\Action\StripeJs\ConvertPaymentAction;
+use FluxSE\PayumStripe\Api\KeysAwareInterface;
+use FluxSE\PayumStripe\Api\StripeCheckoutSessionApi;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Stripe\PaymentIntent;
 
@@ -36,5 +38,14 @@ final class StripeJsGatewayFactory extends AbstractStripeGatewayFactory
                 );
             },
         ]);
+    }
+
+    protected function initApi(ArrayObject $config): KeysAwareInterface
+    {
+        return new StripeCheckoutSessionApi(
+            $config['publishable_key'],
+            $config['secret_key'],
+            $config['webhook_secret_keys']
+        );
     }
 }

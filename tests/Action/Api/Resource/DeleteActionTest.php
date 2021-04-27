@@ -5,7 +5,7 @@ namespace Tests\FluxSE\PayumStripe\Action\Api\Resource;
 use FluxSE\PayumStripe\Action\Api\Resource\AbstractDeleteAction;
 use FluxSE\PayumStripe\Action\Api\Resource\DeletePlanAction;
 use FluxSE\PayumStripe\Action\Api\Resource\DeleteResourceActionInterface;
-use FluxSE\PayumStripe\Api\KeysInterface;
+use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractDelete;
 use FluxSE\PayumStripe\Request\Api\Resource\DeleteInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\DeletePlan;
@@ -54,7 +54,7 @@ final class DeleteActionTest extends TestCase
 
         /** @var AbstractDeleteAction $action */
         $action = new $deleteActionClass();
-        $action->setApiClass(KeysInterface::class);
+        $action->setApiClass(KeysAwareInterface::class);
         $action->setApi($apiMock);
         $this->assertEquals($deleteClass, $action->getApiResourceClass());
 

@@ -3,7 +3,8 @@
 namespace Tests\FluxSE\PayumStripe\Action\StripeCheckoutSession;
 
 use FluxSE\PayumStripe\Action\StripeCheckoutSession\ConvertPaymentAction;
-use FluxSE\PayumStripe\Api\KeysInterface;
+use FluxSE\PayumStripe\Api\KeysAwareInterface;
+use FluxSE\PayumStripe\Api\StripeCheckoutSessionApiInterface;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Model\Payment;
@@ -53,7 +54,7 @@ final class ConvertPaymentActionTest extends TestCase
             ->willReturn(['card'])
         ;
 
-        $action->setApiClass(KeysInterface::class);
+        $action->setApiClass(KeysAwareInterface::class);
         $action->setApi($apiMock);
 
         $supports = $action->supports($request);
@@ -103,7 +104,7 @@ final class ConvertPaymentActionTest extends TestCase
             ->willReturn(['card'])
         ;
 
-        $action->setApiClass(KeysInterface::class);
+        $action->setApiClass(KeysAwareInterface::class);
         $action->setApi($apiMock);
 
         $supports = $action->supports($request);
@@ -169,7 +170,7 @@ final class ConvertPaymentActionTest extends TestCase
             ->willReturn(['card'])
         ;
 
-        $action->setApiClass(KeysInterface::class);
+        $action->setApiClass(KeysAwareInterface::class);
         $action->setApi($apiMock);
 
         $supports = $action->supports($request);
@@ -207,7 +208,7 @@ final class ConvertPaymentActionTest extends TestCase
             ->willReturn(['card'])
         ;
 
-        $action->setApiClass(KeysInterface::class);
+        $action->setApiClass(KeysAwareInterface::class);
         $action->setApi($apiMock);
 
         $supports = $action->supports($request);
@@ -221,5 +222,10 @@ final class ConvertPaymentActionTest extends TestCase
 
         $this->assertArrayHasKey('line_items', $details);
         $this->assertEquals([], $details['line_items']);
+    }
+
+    protected function getApiClass(): string
+    {
+        return StripeCheckoutSessionApiInterface::class;
     }
 }

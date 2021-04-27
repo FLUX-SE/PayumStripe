@@ -3,7 +3,7 @@
 namespace Tests\FluxSE\PayumStripe\Action\StripeJs\Api;
 
 use FluxSE\PayumStripe\Action\StripeJs\Api\RenderStripeJsAction;
-use FluxSE\PayumStripe\Api\KeysInterface;
+use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Request\Api\ConstructEvent;
 use FluxSE\PayumStripe\Request\StripeJs\Api\RenderStripeJs;
 use Payum\Core\Action\ActionInterface;
@@ -90,7 +90,7 @@ final class RenderStripeJsActionTest extends TestCase
             ->willReturn('')
         ;
 
-        $action->setApiClass(KeysInterface::class);
+        $action->setApiClass(KeysAwareInterface::class);
         $action->setGateway($gatewayMock);
         $action->setApi($apiMock);
 

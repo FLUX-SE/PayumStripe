@@ -8,7 +8,7 @@ use FluxSE\PayumStripe\Action\Api\Resource\AbstractAllAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllCustomerAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllResourceActionInterface;
 use FluxSE\PayumStripe\Action\Api\Resource\AllTaxRateAction;
-use FluxSE\PayumStripe\Api\KeysInterface;
+use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractAll;
 use FluxSE\PayumStripe\Request\Api\Resource\AllCustomer;
 use FluxSE\PayumStripe\Request\Api\Resource\AllInterface;
@@ -54,7 +54,7 @@ final class AllActionTest extends TestCase
 
         /** @var AbstractAllAction $action */
         $action = new $allActionClass();
-        $action->setApiClass(KeysInterface::class);
+        $action->setApiClass(KeysAwareInterface::class);
         $action->setApi($apiMock);
         $this->assertEquals($allClass, $action->getApiResourceClass());
 

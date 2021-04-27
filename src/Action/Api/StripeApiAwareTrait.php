@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Action\Api;
 
-use FluxSE\PayumStripe\Api\Keys;
-use FluxSE\PayumStripe\Api\KeysInterface;
+use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use Payum\Core\ApiAwareTrait;
 
 /**
- * @property KeysInterface $api
+ * @property KeysAwareInterface $api
  */
 trait StripeApiAwareTrait
 {
@@ -17,7 +16,12 @@ trait StripeApiAwareTrait
 
     public function __construct()
     {
-        $this->apiClass = Keys::class;
+        $this->initApiClass();
+    }
+
+    protected function initApiClass(): void
+    {
+        $this->apiClass = KeysAwareInterface::class;
     }
 
     /**

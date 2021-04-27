@@ -4,7 +4,7 @@ namespace Tests\FluxSE\PayumStripe\Action\StripeCheckoutSession\Api;
 
 use ArrayObject;
 use FluxSE\PayumStripe\Action\StripeCheckoutSession\Api\RedirectToCheckoutAction;
-use FluxSE\PayumStripe\Api\KeysInterface;
+use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Request\StripeCheckoutSession\Api\RedirectToCheckout;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -59,7 +59,7 @@ final class RedirectToCheckoutActionTest extends TestCase
             ->willReturn('')
         ;
 
-        $action->setApiClass(KeysInterface::class);
+        $action->setApiClass(KeysAwareInterface::class);
         $action->setGateway($gatewayMock);
         $action->setApi($apiMock);
 

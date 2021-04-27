@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\FluxSE\PayumStripe\Action\Api;
 
-use FluxSE\PayumStripe\Api\KeysInterface;
+use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 
 trait ApiAwareActionTestTrait
@@ -19,11 +19,11 @@ trait ApiAwareActionTestTrait
     abstract protected function createMock(string $originalClassName): MockObject;
 
     /**
-     * @return MockObject&KeysInterface
+     * @return MockObject&KeysAwareInterface
      */
-    protected function createApiMock(bool $shouldGetSecretKey = true): KeysInterface
+    protected function createApiMock(bool $shouldGetSecretKey = true): KeysAwareInterface
     {
-        $apiMock = $this->createMock(KeysInterface::class);
+        $apiMock = $this->createMock($this->getApiClass());
 
         if ($shouldGetSecretKey) {
             $apiMock
@@ -34,5 +34,10 @@ trait ApiAwareActionTestTrait
         }
 
         return $apiMock;
+    }
+
+    protected function getApiClass(): string
+    {
+        return KeysAwareInterface::class;
     }
 }

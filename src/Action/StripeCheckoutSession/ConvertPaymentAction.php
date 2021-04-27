@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Action\StripeCheckoutSession;
 
-use FluxSE\PayumStripe\Action\Api\StripeApiAwareTrait;
+use FluxSE\PayumStripe\Action\StripeCheckoutSession\Api\StripeCheckoutSessionApiAwareTrait;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -17,14 +17,7 @@ use Payum\Core\Request\Convert;
 final class ConvertPaymentAction implements ActionInterface, ApiAwareInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
-    use StripeApiAwareTrait {
-        StripeApiAwareTrait::__construct as private __stripeApiAwareTraitConstruct;
-    }
-
-    public function __construct()
-    {
-        $this->__stripeApiAwareTraitConstruct();
-    }
+    use StripeCheckoutSessionApiAwareTrait;
 
     public function execute($request): void
     {
