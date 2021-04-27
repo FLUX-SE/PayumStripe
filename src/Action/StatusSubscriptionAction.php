@@ -25,6 +25,12 @@ class StatusSubscriptionAction extends AbstractStatusAction
             return true;
         }
 
+        if ($this->isNewStatus($status)) {
+            $request->markNew();
+
+            return true;
+        }
+
         return false;
     }
 
@@ -39,9 +45,15 @@ class StatusSubscriptionAction extends AbstractStatusAction
     protected function isCanceledStatus(string $status): bool
     {
         return in_array($status, [
-            Subscription::STATUS_INCOMPLETE, // Customer use the "cancel_url"
-            Subscription::STATUS_INCOMPLETE_EXPIRED, // Customer use the "cancel_url" after 23h (weird but possible)
+            Subscription::STATUS_INCOMPLETE_EXPIRED, // Customer use the "cancel_url" after 23h timeout (weird but possible)
             Subscription::STATUS_CANCELED,
+        ]);
+    }
+
+    protected function isNewStatus(string $status): bool
+    {
+        return in_array($status, [
+            Subscription::STATUS_INCOMPLETE, // Customer use the "cancel_url"
         ]);
     }
 

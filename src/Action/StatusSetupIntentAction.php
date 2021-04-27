@@ -46,7 +46,6 @@ class StatusSetupIntentAction extends AbstractStatusAction
     protected function isCanceledStatus(string $status): bool
     {
         return in_array($status, [
-            SetupIntent::STATUS_REQUIRES_PAYMENT_METHOD, // Customer use the "cancel_url"
             SetupIntent::STATUS_CANCELED,
         ]);
     }
@@ -54,6 +53,7 @@ class StatusSetupIntentAction extends AbstractStatusAction
     protected function isNewStatus(string $status): bool
     {
         return in_array($status, [
+            SetupIntent::STATUS_REQUIRES_PAYMENT_METHOD, // Customer use the "cancel_url"
             SetupIntent::STATUS_REQUIRES_CONFIRMATION,
             SetupIntent::STATUS_REQUIRES_ACTION,
         ]);
