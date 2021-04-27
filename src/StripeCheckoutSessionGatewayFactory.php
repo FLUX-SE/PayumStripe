@@ -43,7 +43,7 @@ final class StripeCheckoutSessionGatewayFactory extends AbstractStripeGatewayFac
     protected function getStripeDefaultOptions(): array
     {
         $defaultOptions = parent::getStripeDefaultOptions();
-        $defaultOptions['payment_method_types'] = ['card'];
+        $defaultOptions['payment_method_types'] = [];
 
         return $defaultOptions;
     }

@@ -28,23 +28,26 @@ final class StripeCheckoutSessionApiTest extends TestCase
     {
         $api = new StripeCheckoutSessionApi('', '');
 
-        $this->assertTrue($api->hasPaymentMethodType('card'));
+        $this->assertFalse($api->hasPaymentMethodType('card'));
         $this->assertFalse($api->hasPaymentMethodType('ideal'));
+
+        $api->addPaymentMethodType('card');
+        $this->assertTrue($api->hasPaymentMethodType('card'));
     }
 
     public function testGetPaymentMethodTypes()
     {
         $api = new StripeCheckoutSessionApi('', '');
 
-        $this->assertEquals(['card'], $api->getPaymentMethodTypes());
+        $this->assertEquals(StripeCheckoutSessionApi::DEFAULT_PAYMENT_METHOD_TYPES, $api->getPaymentMethodTypes());
     }
 
     public function testSetPaymentMethodTypes()
     {
         $api = new StripeCheckoutSessionApi('', '');
 
-        $api->setPaymentMethodTypes([]);
-        $this->assertEquals([], $api->getPaymentMethodTypes());
+        $api->setPaymentMethodTypes(['card']);
+        $this->assertEquals(['card'], $api->getPaymentMethodTypes());
     }
 
     public function testAddPaymentMethodType()
@@ -52,7 +55,6 @@ final class StripeCheckoutSessionApiTest extends TestCase
         $api = new StripeCheckoutSessionApi('', '');
 
         $api->addPaymentMethodType('ideal');
-        $this->assertContains('card', $api->getPaymentMethodTypes());
         $this->assertContains('ideal', $api->getPaymentMethodTypes());
     }
 }

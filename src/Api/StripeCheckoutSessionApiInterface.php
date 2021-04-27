@@ -6,5 +6,5 @@ namespace FluxSE\PayumStripe\Api;
 
 interface StripeCheckoutSessionApiInterface extends KeysAwareInterface, PaymentMethodTypesAwareInterface
 {
-    public const DEFAULT_PAYMENT_METHOD_TYPES = ['card'];
+    public const DEFAULT_PAYMENT_METHOD_TYPES = [];
 }
