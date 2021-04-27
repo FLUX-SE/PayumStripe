@@ -161,7 +161,7 @@ final class StatusSubscriptionActionTest extends TestCase
         $status = new GetHumanStatus($model);
         $action->execute($status);
 
-        $this->assertTrue($status->isCanceled());
+        $this->assertTrue($status->isNew());
     }
 
     public function testShouldMarkAsCanceledIfIsASubscriptionObjectAndStatusIncompleteExpired()

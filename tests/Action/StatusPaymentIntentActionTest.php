@@ -233,7 +233,7 @@ final class StatusPaymentIntentActionTest extends TestCase
 
         $action->execute($request);
 
-        $this->assertTrue($request->isCanceled());
+        $this->assertTrue($request->isNew());
     }
 
     public function testShouldMarkAsNewIfIsAPaymentIntentObjectAndStatusRequiresConfirmation()
