@@ -21,7 +21,7 @@ final class StripeCheckoutSessionApi implements StripeCheckoutSessionApiInterfac
         string $publishable,
         string $secret,
         array $webhookSecretKeys = [],
-        array $paymentMethodTypes = []
+        array $paymentMethodTypes = self::DEFAULT_PAYMENT_METHOD_TYPES
     ) {
         $this->__keysAwareTraitConstruct($publishable, $secret, $webhookSecretKeys);
         $this->__paymentMethodTypesAwareTraitConstruct($paymentMethodTypes);

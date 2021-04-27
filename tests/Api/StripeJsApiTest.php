@@ -17,8 +17,8 @@ final class StripeJsApiTest extends TestCase
 
     public function test__construct2()
     {
-        $keys = new StripeJsApi('', '');
+        $api = new StripeJsApi('', '');
 
-        $this->assertInstanceOf(StripeJsApiInterface::class, $keys);
+        $this->assertInstanceOf(StripeJsApiInterface::class, $api);
     }
 }

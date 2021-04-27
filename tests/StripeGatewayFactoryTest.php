@@ -8,6 +8,7 @@ use FluxSE\PayumStripe\AbstractStripeGatewayFactory;
 use FluxSE\PayumStripe\Action\StripeCheckoutSession\Api\RedirectToCheckoutAction;
 use FluxSE\PayumStripe\Action\StripeJs\Api\RenderStripeJsAction;
 use FluxSE\PayumStripe\Api\KeysAwareInterface;
+use FluxSE\PayumStripe\Api\StripeCheckoutSessionApiInterface;
 use FluxSE\PayumStripe\StripeCheckoutSessionGatewayFactory;
 use FluxSE\PayumStripe\StripeJsGatewayFactory;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -82,12 +83,19 @@ final class StripeGatewayFactoryTest extends TestCase
         $this->assertIsArray($config);
 
         $this->assertArrayHasKey('payum.default_options', $config);
-        $this->assertEquals([
-            'publishable_key' => '',
-            'secret_key' => '',
-            'webhook_secret_keys' => [],
-            'payment_method_types' => ['card'],
-        ], $config['payum.default_options']);
+        $this->assertArrayHasKey('publishable_key', $config['payum.default_options']);
+        $this->assertEquals('', $config['payum.default_options']['publishable_key']);
+        $this->assertArrayHasKey('secret_key', $config['payum.default_options']);
+        $this->assertEquals('', $config['payum.default_options']['secret_key']);
+        $this->assertArrayHasKey('webhook_secret_keys', $config['payum.default_options']);
+        $this->assertEquals([], $config['payum.default_options']['webhook_secret_keys']);
+        if (StripeCheckoutSessionGatewayFactory::class === $gatewayClass) {
+            $this->assertArrayHasKey('payment_method_types', $config['payum.default_options']);
+            $this->assertEquals(
+                StripeCheckoutSessionApiInterface::DEFAULT_PAYMENT_METHOD_TYPES,
+                $config['payum.default_options']['payment_method_types']
+            );
+        }
     }
 
     /**

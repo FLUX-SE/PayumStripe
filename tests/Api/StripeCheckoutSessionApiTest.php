@@ -18,38 +18,41 @@ final class StripeCheckoutSessionApiTest extends TestCase
 
     public function test__construct2()
     {
-        $keys = new StripeCheckoutSessionApi('', '');
+        $api = new StripeCheckoutSessionApi('', '');
 
-        $this->assertInstanceOf(StripeCheckoutSessionApiInterface::class, $keys);
-        $this->assertInstanceOf(PaymentMethodTypesAwareInterface::class, $keys);
+        $this->assertInstanceOf(StripeCheckoutSessionApiInterface::class, $api);
+        $this->assertInstanceOf(PaymentMethodTypesAwareInterface::class, $api);
     }
 
     public function testHasPaymentMethodType()
     {
-        $keys = new StripeCheckoutSessionApi('', '', [], ['card']);
+        $api = new StripeCheckoutSessionApi('', '');
 
-        $this->assertTrue($keys->hasPaymentMethodType('card'));
-        $this->assertFalse($keys->hasPaymentMethodType('ideal'));
+        $this->assertTrue($api->hasPaymentMethodType('card'));
+        $this->assertFalse($api->hasPaymentMethodType('ideal'));
     }
 
     public function testGetPaymentMethodTypes()
     {
-        $keys = new StripeCheckoutSessionApi('', '', [], ['card']);
+        $api = new StripeCheckoutSessionApi('', '');
 
-        $this->assertEquals(['card'], $keys->getPaymentMethodTypes());
+        $this->assertEquals(['card'], $api->getPaymentMethodTypes());
     }
 
     public function testSetPaymentMethodTypes()
     {
-        $keys = new StripeCheckoutSessionApi('', '', [], ['card']);
-        $keys->setPaymentMethodTypes([]);
-        $this->assertEquals([], $keys->getPaymentMethodTypes());
+        $api = new StripeCheckoutSessionApi('', '');
+
+        $api->setPaymentMethodTypes([]);
+        $this->assertEquals([], $api->getPaymentMethodTypes());
     }
 
     public function testAddPaymentMethodType()
     {
-        $keys = new StripeCheckoutSessionApi('', '', [], []);
-        $keys->addPaymentMethodType('card');
-        $this->assertEquals(['card'], $keys->getPaymentMethodTypes());
+        $api = new StripeCheckoutSessionApi('', '');
+
+        $api->addPaymentMethodType('ideal');
+        $this->assertContains('card', $api->getPaymentMethodTypes());
+        $this->assertContains('ideal', $api->getPaymentMethodTypes());
     }
 }

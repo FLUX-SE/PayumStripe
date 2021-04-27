@@ -11,51 +11,56 @@ trait KeysAwareApiTest
 {
     abstract protected function getApiClass(): string;
 
+    protected function getReflectionApiClass(): ReflectionClass
+    {
+        return new ReflectionClass($this->getApiClass());
+    }
+
     public function test__construct()
     {
-        $keys = (new ReflectionClass($this->getApiClass()))->newInstance('', '');
+        $api = $this->getReflectionApiClass()->newInstance('', '');
 
-        $this->assertInstanceOf(KeysAwareInterface::class, $keys);
+        $this->assertInstanceOf(KeysAwareInterface::class, $api);
     }
 
     public function testHasWebhookSecretKey()
     {
-        $keys = (new ReflectionClass($this->getApiClass()))->newInstance('', '', ['webhookKey1']);
+        $api = $this->getReflectionApiClass()->newInstance('', '', ['webhookKey1']);
 
-        $this->assertTrue($keys->hasWebhookSecretKey('webhookKey1'));
-        $this->assertFalse($keys->hasWebhookSecretKey('webhookKey2'));
+        $this->assertTrue($api->hasWebhookSecretKey('webhookKey1'));
+        $this->assertFalse($api->hasWebhookSecretKey('webhookKey2'));
     }
 
     public function testGetWebhookSecretKeys()
     {
-        $keys = (new ReflectionClass($this->getApiClass()))->newInstance('', '', ['webhookKey1']);
+        $api = $this->getReflectionApiClass()->newInstance('', '', ['webhookKey1']);
 
-        $this->assertEquals(['webhookKey1'], $keys->getWebhookSecretKeys());
+        $this->assertEquals(['webhookKey1'], $api->getWebhookSecretKeys());
     }
 
     public function testSetWebhookSecretKeys()
     {
-        $keys = (new ReflectionClass($this->getApiClass()))->newInstance('', '', ['webhookKey1']);
-        $keys->setWebhookSecretKeys([]);
-        $this->assertEquals([], $keys->getWebhookSecretKeys());
+        $api = $this->getReflectionApiClass()->newInstance('', '', ['webhookKey1']);
+        $api->setWebhookSecretKeys([]);
+        $this->assertEquals([], $api->getWebhookSecretKeys());
     }
 
     public function testGetSecretKey()
     {
-        $keys = (new ReflectionClass($this->getApiClass()))->newInstance('', 'secretKey');
-        $this->assertEquals('secretKey', $keys->getSecretKey());
+        $api = $this->getReflectionApiClass()->newInstance('', 'secretKey');
+        $this->assertEquals('secretKey', $api->getSecretKey());
     }
 
     public function testGetPublishableKey()
     {
-        $keys = (new ReflectionClass($this->getApiClass()))->newInstance('publishableKey', '');
-        $this->assertEquals('publishableKey', $keys->getPublishableKey());
+        $api = $this->getReflectionApiClass()->newInstance('publishableKey', '');
+        $this->assertEquals('publishableKey', $api->getPublishableKey());
     }
 
     public function testAddWebhookSecretKey()
     {
-        $keys = (new ReflectionClass($this->getApiClass()))->newInstance('', '', []);
-        $keys->addWebhookSecretKey('webhookKeyAdded');
-        $this->assertEquals(['webhookKeyAdded'], $keys->getWebhookSecretKeys());
+        $api = $this->getReflectionApiClass()->newInstance('', '', []);
+        $api->addWebhookSecretKey('webhookKeyAdded');
+        $this->assertEquals(['webhookKeyAdded'], $api->getWebhookSecretKeys());
     }
 }

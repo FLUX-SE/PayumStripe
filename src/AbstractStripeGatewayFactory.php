@@ -136,18 +136,9 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
         $config->defaults($this->getDefaultWebhookEventResolvers());
 
         if (false === $config->offsetExists('payum.api')) {
-            $config->offsetSet('payum.default_options', [
-                'publishable_key' => '',
-                'secret_key' => '',
-                'webhook_secret_keys' => [],
-                'payment_method_types' => ['card'],
-            ]);
+            $config->offsetSet('payum.default_options', $this->getStripeDefaultOptions());
             $config->defaults($config['payum.default_options']);
-            $config->offsetSet('payum.required_options', [
-                'publishable_key',
-                'secret_key',
-                'webhook_secret_keys',
-            ]);
+            $config->offsetSet('payum.required_options', $this->getStripeRequiredOptions());
 
             $config->offsetSet('payum.api', function (ArrayObject $config) {
                 $config->validateNotEmpty($config['payum.required_options']);
@@ -162,4 +153,25 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
     }
 
     abstract protected function initApi(ArrayObject $config): KeysAwareInterface;
+
+    protected function getStripeDefaultOptions(): array
+    {
+        return [
+            'publishable_key' => '',
+            'secret_key' => '',
+            'webhook_secret_keys' => [],
+        ];
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function getStripeRequiredOptions(): array
+    {
+        return [
+            'publishable_key',
+            'secret_key',
+            'webhook_secret_keys',
+        ];
+    }
 }

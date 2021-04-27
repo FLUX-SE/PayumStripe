@@ -40,6 +40,14 @@ final class StripeCheckoutSessionGatewayFactory extends AbstractStripeGatewayFac
         ]);
     }
 
+    protected function getStripeDefaultOptions(): array
+    {
+        $defaultOptions = parent::getStripeDefaultOptions();
+        $defaultOptions['payment_method_types'] = ['card'];
+
+        return $defaultOptions;
+    }
+
     protected function initApi(ArrayObject $config): KeysAwareInterface
     {
         return new StripeCheckoutSessionApi(
