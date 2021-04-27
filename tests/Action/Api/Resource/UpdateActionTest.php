@@ -6,7 +6,7 @@ use FluxSE\PayumStripe\Action\Api\Resource\AbstractUpdateAction;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdatePaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdateResourceActionInterface;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdateSubscriptionAction;
-use FluxSE\PayumStripe\Api\KeysInterface;
+use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractUpdate;
 use FluxSE\PayumStripe\Request\Api\Resource\UpdateInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\UpdatePaymentIntent;
@@ -55,7 +55,7 @@ final class UpdateActionTest extends TestCase
 
         /** @var AbstractUpdateAction $action */
         $action = new $updateActionClass();
-        $action->setApiClass(KeysInterface::class);
+        $action->setApiClass(KeysAwareInterface::class);
         $action->setApi($apiMock);
         $this->assertEquals($updateClass, $action->getApiResourceClass());
 

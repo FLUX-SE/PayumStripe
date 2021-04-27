@@ -7,7 +7,7 @@ namespace Tests\FluxSE\PayumStripe;
 use FluxSE\PayumStripe\AbstractStripeGatewayFactory;
 use FluxSE\PayumStripe\Action\StripeCheckoutSession\Api\RedirectToCheckoutAction;
 use FluxSE\PayumStripe\Action\StripeJs\Api\RenderStripeJsAction;
-use FluxSE\PayumStripe\Api\KeysInterface;
+use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\StripeCheckoutSessionGatewayFactory;
 use FluxSE\PayumStripe\StripeJsGatewayFactory;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -164,7 +164,7 @@ final class StripeGatewayFactoryTest extends TestCase
             'payment_method_types' => ['card'],
         ]);
         $api = $config['payum.api']($newCredentials);
-        $this->assertInstanceOf(KeysInterface::class, $api);
+        $this->assertInstanceOf(KeysAwareInterface::class, $api);
     }
 
     public function gatewayList(): array

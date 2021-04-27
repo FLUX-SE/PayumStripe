@@ -14,7 +14,7 @@ use FluxSE\PayumStripe\Action\Api\Resource\RetrieveResourceActionInterface;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSessionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSetupIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSubscriptionAction;
-use FluxSE\PayumStripe\Api\KeysInterface;
+use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractRetrieve;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveCharge;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveCustomer;
@@ -78,7 +78,7 @@ final class RetrieveActionTest extends TestCase
 
         /** @var AbstractRetrieveAction $action */
         $action = new $retrieveActionClass();
-        $action->setApiClass(KeysInterface::class);
+        $action->setApiClass(KeysAwareInterface::class);
         $action->setApi($apiMock);
         $this->assertEquals($retrieveClass, $action->getApiResourceClass());
 

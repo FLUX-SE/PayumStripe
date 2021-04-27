@@ -3,7 +3,7 @@
 namespace Tests\FluxSE\PayumStripe\Action\Api;
 
 use FluxSE\PayumStripe\Action\Api\ResolveWebhookEventAction;
-use FluxSE\PayumStripe\Api\KeysInterface;
+use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Request\Api\ConstructEvent;
 use FluxSE\PayumStripe\Request\Api\ResolveWebhookEvent;
 use FluxSE\PayumStripe\Wrapper\EventWrapper;
@@ -45,7 +45,7 @@ final class ResolveWebhookEventActionTest extends TestCase
 
         $apiMock = $this->createApiMock(false);
 
-        $action->setApiClass(KeysInterface::class);
+        $action->setApiClass(KeysAwareInterface::class);
         $action->setGateway($gatewayMock);
         $action->setApi($apiMock);
 
@@ -88,7 +88,7 @@ final class ResolveWebhookEventActionTest extends TestCase
             ->willReturn(['whsec_test'])
         ;
 
-        $action->setApiClass(KeysInterface::class);
+        $action->setApiClass(KeysAwareInterface::class);
         $action->setGateway($gatewayMock);
         $action->setApi($apiMock);
 
@@ -138,7 +138,7 @@ final class ResolveWebhookEventActionTest extends TestCase
             ->willReturn(['whsec_test'])
         ;
 
-        $action->setApiClass(KeysInterface::class);
+        $action->setApiClass(KeysAwareInterface::class);
         $action->setGateway($gatewayMock);
         $action->setApi($apiMock);
 
@@ -189,7 +189,7 @@ final class ResolveWebhookEventActionTest extends TestCase
             ->willReturn(['whsec_test'])
         ;
 
-        $action->setApiClass(KeysInterface::class);
+        $action->setApiClass(KeysAwareInterface::class);
         $action->setGateway($gatewayMock);
         $action->setApi($apiMock);
 
@@ -237,7 +237,7 @@ final class ResolveWebhookEventActionTest extends TestCase
             ->willReturn(['whsec_test'])
         ;
 
-        $action->setApiClass(KeysInterface::class);
+        $action->setApiClass(KeysAwareInterface::class);
         $action->setGateway($gatewayMock);
         $action->setApi($apiMock);
 

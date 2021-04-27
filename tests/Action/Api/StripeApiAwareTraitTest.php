@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Tests\FluxSE\PayumStripe\Action\Api;
 
 use FluxSE\PayumStripe\Action\Api\StripeApiAwareTrait;
-use FluxSE\PayumStripe\Api\Keys;
-use FluxSE\PayumStripe\Api\KeysInterface;
+use FluxSE\PayumStripe\Api\KeysAwareInterface;
+use FluxSE\PayumStripe\Api\KeysAwareTrait;
 use PHPUnit\Framework\TestCase;
 
 final class StripeApiAwareTraitTest extends TestCase
@@ -14,13 +14,13 @@ final class StripeApiAwareTraitTest extends TestCase
     public function testShouldGetApiClass()
     {
         $trait = $this->getObjectForTrait(StripeApiAwareTrait::class);
-        $this->assertEquals(Keys::class, $trait->getApiClass());
+        $this->assertEquals(KeysAwareInterface::class, $trait->getApiClass());
     }
 
     public function testShouldSetApiClass()
     {
         $trait = $this->getObjectForTrait(StripeApiAwareTrait::class);
-        $trait->setApiClass(KeysInterface::class);
-        $this->assertEquals(KeysInterface::class, $trait->getApiClass());
+        $trait->setApiClass(KeysAwareTrait::class);
+        $this->assertEquals(KeysAwareTrait::class, $trait->getApiClass());
     }
 }

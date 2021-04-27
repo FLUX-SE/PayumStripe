@@ -9,7 +9,7 @@ use FluxSE\PayumStripe\Action\Api\Resource\CancelPaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CancelSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CapturePaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveResourceActionInterface;
-use FluxSE\PayumStripe\Api\KeysInterface;
+use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractCustomCall;
 use FluxSE\PayumStripe\Request\Api\Resource\CancelPaymentIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\CancelSubscription;
@@ -58,7 +58,7 @@ final class CustomCallActionTest extends TestCase
 
         /** @var AbstractRetrieveAction $action */
         $action = new $customCallActionClass();
-        $action->setApiClass(KeysInterface::class);
+        $action->setApiClass(KeysAwareInterface::class);
         $action->setApi($apiMock);
         $this->assertEquals($customCallClass, $action->getApiResourceClass());
 

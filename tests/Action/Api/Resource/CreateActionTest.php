@@ -13,7 +13,7 @@ use FluxSE\PayumStripe\Action\Api\Resource\CreateSessionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateSetupIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateTaxRateAction;
-use FluxSE\PayumStripe\Api\KeysInterface;
+use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractCreate;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateCustomer;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateInterface;
@@ -75,7 +75,7 @@ final class CreateActionTest extends TestCase
 
         /** @var AbstractCreateAction $action */
         $action = new $createActionClass();
-        $action->setApiClass(KeysInterface::class);
+        $action->setApiClass(KeysAwareInterface::class);
         $this->assertEquals($createClass, $action->getApiResourceClass());
         $action->setApi($apiMock);
 

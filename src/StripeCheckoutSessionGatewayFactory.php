@@ -9,6 +9,8 @@ use FluxSE\PayumStripe\Action\StripeCheckoutSession\Api\WebhookEvent\CheckoutSes
 use FluxSE\PayumStripe\Action\StripeCheckoutSession\AuthorizeAction;
 use FluxSE\PayumStripe\Action\StripeCheckoutSession\CaptureAction;
 use FluxSE\PayumStripe\Action\StripeCheckoutSession\ConvertPaymentAction;
+use FluxSE\PayumStripe\Api\KeysAwareInterface;
+use FluxSE\PayumStripe\Api\StripeCheckoutSessionApi;
 use Payum\Core\Bridge\Spl\ArrayObject;
 
 final class StripeCheckoutSessionGatewayFactory extends AbstractStripeGatewayFactory
@@ -36,5 +38,15 @@ final class StripeCheckoutSessionGatewayFactory extends AbstractStripeGatewayFac
                 return new RedirectToCheckoutAction($config['payum.template.redirect_to_checkout']);
             },
         ]);
+    }
+
+    protected function initApi(ArrayObject $config): KeysAwareInterface
+    {
+        return new StripeCheckoutSessionApi(
+            $config['publishable_key'],
+            $config['secret_key'],
+            $config['webhook_secret_keys'],
+            $config['payment_method_types']
+        );
     }
 }
