@@ -28,7 +28,6 @@ class NotifyAction implements ActionInterface, GatewayAwareInterface
         } else {
             $sync = new Sync($request->getModel());
             $this->gateway->execute($sync);
-            $request->setModel($sync->getModel());
         }
     }
 
