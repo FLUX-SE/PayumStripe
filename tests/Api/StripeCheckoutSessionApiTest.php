@@ -28,11 +28,8 @@ final class StripeCheckoutSessionApiTest extends TestCase
     {
         $api = new StripeCheckoutSessionApi('', '');
 
-        $this->assertFalse($api->hasPaymentMethodType('card'));
-        $this->assertFalse($api->hasPaymentMethodType('ideal'));
-
-        $api->addPaymentMethodType('card');
         $this->assertTrue($api->hasPaymentMethodType('card'));
+        $this->assertFalse($api->hasPaymentMethodType('ideal'));
     }
 
     public function testGetPaymentMethodTypes()
@@ -56,5 +53,6 @@ final class StripeCheckoutSessionApiTest extends TestCase
 
         $api->addPaymentMethodType('ideal');
         $this->assertContains('ideal', $api->getPaymentMethodTypes());
+        $this->assertContains('card', $api->getPaymentMethodTypes());
     }
 }

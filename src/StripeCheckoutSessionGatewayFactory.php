@@ -11,6 +11,7 @@ use FluxSE\PayumStripe\Action\StripeCheckoutSession\CaptureAction;
 use FluxSE\PayumStripe\Action\StripeCheckoutSession\ConvertPaymentAction;
 use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Api\StripeCheckoutSessionApi;
+use FluxSE\PayumStripe\Api\StripeCheckoutSessionApiInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 
 final class StripeCheckoutSessionGatewayFactory extends AbstractStripeGatewayFactory
@@ -43,7 +44,7 @@ final class StripeCheckoutSessionGatewayFactory extends AbstractStripeGatewayFac
     protected function getStripeDefaultOptions(): array
     {
         $defaultOptions = parent::getStripeDefaultOptions();
-        $defaultOptions['payment_method_types'] = [];
+        $defaultOptions['payment_method_types'] = StripeCheckoutSessionApiInterface::DEFAULT_PAYMENT_METHOD_TYPES;
 
         return $defaultOptions;
     }
