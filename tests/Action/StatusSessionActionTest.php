@@ -7,7 +7,6 @@ use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayInterface;
-use Payum\Core\Request\BaseGetStatus;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\GetBinaryStatus;
 use Payum\Core\Request\GetHumanStatus;
