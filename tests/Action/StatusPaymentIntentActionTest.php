@@ -49,15 +49,7 @@ final class StatusPaymentIntentActionTest extends TestCase
 
     public function testShouldMarkUnknownIfNoStatusIsFound()
     {
-        $gatewayMock = $this->createGatewayMock();
-        $gatewayMock
-            ->expects($this->once())
-            ->method('execute')
-            ->with($this->isInstanceOf(Sync::class))
-        ;
-
-        $action = new StatusPaymentIntentAction();
-        $action->setGateway($gatewayMock);
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
@@ -75,15 +67,7 @@ final class StatusPaymentIntentActionTest extends TestCase
 
     public function testShouldMarkFailedIfErrorIsFound()
     {
-        $gatewayMock = $this->createGatewayMock();
-        $gatewayMock
-            ->expects($this->once())
-            ->method('execute')
-            ->with($this->isInstanceOf(Sync::class))
-        ;
-
-        $action = new StatusPaymentIntentAction();
-        $action->setGateway($gatewayMock);
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
@@ -102,15 +86,7 @@ final class StatusPaymentIntentActionTest extends TestCase
 
     public function testShouldMarkCapturedIfIsAPaymentIntentObjectAndStatusSucceeded()
     {
-        $gatewayMock = $this->createGatewayMock();
-        $gatewayMock
-            ->expects($this->once())
-            ->method('execute')
-            ->with($this->isInstanceOf(Sync::class))
-        ;
-
-        $action = new StatusPaymentIntentAction();
-        $action->setGateway($gatewayMock);
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
@@ -129,15 +105,7 @@ final class StatusPaymentIntentActionTest extends TestCase
 
     public function testShouldMarkAuthorizedIfIsAPaymentIntentObjectAndStatusRequiresCapture()
     {
-        $gatewayMock = $this->createGatewayMock();
-        $gatewayMock
-            ->expects($this->once())
-            ->method('execute')
-            ->with($this->isInstanceOf(Sync::class))
-        ;
-
-        $action = new StatusPaymentIntentAction();
-        $action->setGateway($gatewayMock);
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
@@ -156,15 +124,7 @@ final class StatusPaymentIntentActionTest extends TestCase
 
     public function testShouldNotMarkCapturedIfIsAPaymentIntentObjectAndStatusIsNotAValidStatus()
     {
-        $gatewayMock = $this->createGatewayMock();
-        $gatewayMock
-            ->expects($this->once())
-            ->method('execute')
-            ->with($this->isInstanceOf(Sync::class))
-        ;
-
-        $action = new StatusPaymentIntentAction();
-        $action->setGateway($gatewayMock);
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
@@ -184,15 +144,7 @@ final class StatusPaymentIntentActionTest extends TestCase
 
     public function testShouldMarkCanceledIfIsAPaymentIntentObjectAndStatusIsCanceled()
     {
-        $gatewayMock = $this->createGatewayMock();
-        $gatewayMock
-            ->expects($this->once())
-            ->method('execute')
-            ->with($this->isInstanceOf(Sync::class))
-        ;
-
-        $action = new StatusPaymentIntentAction();
-        $action->setGateway($gatewayMock);
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
@@ -211,15 +163,7 @@ final class StatusPaymentIntentActionTest extends TestCase
 
     public function testShouldMarkAsCanceledIfIsAPaymentIntentObjectAndStatusRequiresPaymentMethod()
     {
-        $gatewayMock = $this->createGatewayMock();
-        $gatewayMock
-            ->expects($this->once())
-            ->method('execute')
-            ->with($this->isInstanceOf(Sync::class))
-        ;
-
-        $action = new StatusPaymentIntentAction();
-        $action->setGateway($gatewayMock);
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
@@ -238,15 +182,7 @@ final class StatusPaymentIntentActionTest extends TestCase
 
     public function testShouldMarkAsNewIfIsAPaymentIntentObjectAndStatusRequiresConfirmation()
     {
-        $gatewayMock = $this->createGatewayMock();
-        $gatewayMock
-            ->expects($this->once())
-            ->method('execute')
-            ->with($this->isInstanceOf(Sync::class))
-        ;
-
-        $action = new StatusPaymentIntentAction();
-        $action->setGateway($gatewayMock);
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
@@ -265,15 +201,7 @@ final class StatusPaymentIntentActionTest extends TestCase
 
     public function testShouldMarkAsNewIfIsAPaymentIntentObjectAndStatusRequiresAction()
     {
-        $gatewayMock = $this->createGatewayMock();
-        $gatewayMock
-            ->expects($this->once())
-            ->method('execute')
-            ->with($this->isInstanceOf(Sync::class))
-        ;
-
-        $action = new StatusPaymentIntentAction();
-        $action->setGateway($gatewayMock);
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
@@ -292,15 +220,7 @@ final class StatusPaymentIntentActionTest extends TestCase
 
     public function testShouldMarkPendingIfIsAPaymentIntentObjectAndStatusIsProcessing()
     {
-        $gatewayMock = $this->createGatewayMock();
-        $gatewayMock
-            ->expects($this->once())
-            ->method('execute')
-            ->with($this->isInstanceOf(Sync::class))
-        ;
-
-        $action = new StatusPaymentIntentAction();
-        $action->setGateway($gatewayMock);
+        $action = $this->createStatusWithGateway();
 
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
@@ -323,7 +243,8 @@ final class StatusPaymentIntentActionTest extends TestCase
         $gatewayMock
             ->expects($this->once())
             ->method('execute')
-            ->with($this->isInstanceOf(Sync::class));
+            ->with($this->isInstanceOf(Sync::class))
+        ;
 
         $action = new StatusPaymentIntentAction();
         $action->setGateway($gatewayMock);

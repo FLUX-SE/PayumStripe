@@ -49,7 +49,7 @@ final class StatusRefundActionTest extends TestCase
 
     public function testShouldMarkUnknownIfNoStatusIsFound()
     {
-        $action = $this->getStatusRefundAction();
+        $action = $this->createStatusRefundAction();
 
         $model = [
             'object' => Refund::OBJECT_NAME,
@@ -67,7 +67,7 @@ final class StatusRefundActionTest extends TestCase
 
     public function testShouldMarkFailedIfErrorIsFound()
     {
-        $action = $this->getStatusRefundAction();
+        $action = $this->createStatusRefundAction();
 
         $model = [
             'object' => Refund::OBJECT_NAME,
@@ -86,7 +86,7 @@ final class StatusRefundActionTest extends TestCase
 
     public function testShouldMarkFailedIfIsARefundObjectAndStatusFailed()
     {
-        $action = $this->getStatusRefundAction();
+        $action = $this->createStatusRefundAction();
 
         $model = [
             'object' => Refund::OBJECT_NAME,
@@ -105,7 +105,7 @@ final class StatusRefundActionTest extends TestCase
 
     public function testShouldMarkCapturedIfIsARefundObjectAndStatusSucceeded()
     {
-        $action = $this->getStatusRefundAction();
+        $action = $this->createStatusRefundAction();
 
         $model = [
             'object' => Refund::OBJECT_NAME,
@@ -124,7 +124,7 @@ final class StatusRefundActionTest extends TestCase
 
     public function testShouldNotMarkCapturedIfIsARefundObjectAndStatusIsNotAValidStatus()
     {
-        $action = $this->getStatusRefundAction();
+        $action = $this->createStatusRefundAction();
 
         $model = [
             'object' => Refund::OBJECT_NAME,
@@ -144,7 +144,7 @@ final class StatusRefundActionTest extends TestCase
 
     public function testShouldMarkCanceledIfIsARefundObjectAndStatusIsCanceled()
     {
-        $action = $this->getStatusRefundAction();
+        $action = $this->createStatusRefundAction();
 
         $model = [
             'object' => Refund::OBJECT_NAME,
@@ -163,7 +163,7 @@ final class StatusRefundActionTest extends TestCase
 
     public function testShouldMarkPendingIfIsARefundObjectAndStatusIsPending()
     {
-        $action = $this->getStatusRefundAction();
+        $action = $this->createStatusRefundAction();
 
         $model = [
             'object' => Refund::OBJECT_NAME,
@@ -180,7 +180,7 @@ final class StatusRefundActionTest extends TestCase
         $this->assertTrue($request->isPending());
     }
 
-    protected function getStatusRefundAction(): StatusRefundAction
+    protected function createStatusRefundAction(): StatusRefundAction
     {
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock
