@@ -48,6 +48,7 @@ use FluxSE\PayumStripe\Action\RefundAction;
 use FluxSE\PayumStripe\Action\StatusAction;
 use FluxSE\PayumStripe\Action\StatusPaymentIntentAction;
 use FluxSE\PayumStripe\Action\StatusRefundAction;
+use FluxSE\PayumStripe\Action\StatusSessionAction;
 use FluxSE\PayumStripe\Action\StatusSetupIntentAction;
 use FluxSE\PayumStripe\Action\StatusSubscriptionAction;
 use FluxSE\PayumStripe\Action\SyncAction;
@@ -64,6 +65,7 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
             'payum.action.refund' => new RefundAction(),
             'payum.action.capture_authorized' => new CaptureAuthorizedAction(),
             'payum.action.notify_unsafe' => new NotifyAction(),
+            'payum.action.session_status' => new StatusSessionAction(),
             'payum.action.payment_intent_status' => new StatusPaymentIntentAction(),
             'payum.action.setup_intent_status' => new StatusSetupIntentAction(),
             'payum.action.subscription_status' => new StatusSubscriptionAction(),
