@@ -3,11 +3,13 @@
 namespace Tests\FluxSE\PayumStripe\Action\Api\Resource;
 
 use FluxSE\PayumStripe\Action\Api\Resource\AbstractUpdateAction;
+use FluxSE\PayumStripe\Action\Api\Resource\UpdateCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdatePaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdateResourceActionInterface;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdateSubscriptionAction;
 use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractUpdate;
+use FluxSE\PayumStripe\Request\Api\Resource\UpdateCoupon;
 use FluxSE\PayumStripe\Request\Api\Resource\UpdateInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\UpdatePaymentIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\UpdateSubscription;
@@ -16,6 +18,7 @@ use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
+use Stripe\Coupon;
 use Stripe\Issuing\CardDetails;
 use Stripe\PaymentIntent;
 use Stripe\Subscription;
@@ -115,6 +118,7 @@ final class UpdateActionTest extends TestCase
     public function requestList(): array
     {
         return [
+            [UpdateCouponAction::class, UpdateCoupon::class, Coupon::class],
             [UpdatePaymentIntentAction::class, UpdatePaymentIntent::class, PaymentIntent::class],
             [UpdateSubscriptionAction::class, UpdateSubscription::class, Subscription::class],
         ];

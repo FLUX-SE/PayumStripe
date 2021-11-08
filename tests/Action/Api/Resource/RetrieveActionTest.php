@@ -4,6 +4,7 @@ namespace Tests\FluxSE\PayumStripe\Action\Api\Resource;
 
 use FluxSE\PayumStripe\Action\Api\Resource\AbstractRetrieveAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveChargeAction;
+use FluxSE\PayumStripe\Action\Api\Resource\RetrieveCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveCustomerAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveInvoiceAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrievePaymentIntentAction;
@@ -17,6 +18,7 @@ use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSubscriptionAction;
 use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractRetrieve;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveCharge;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrieveCoupon;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveCustomer;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInvoice;
@@ -34,6 +36,7 @@ use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
 use Stripe\Charge;
 use Stripe\Checkout\Session;
+use Stripe\Coupon;
 use Stripe\Customer;
 use Stripe\Invoice;
 use Stripe\Issuing\CardDetails;
@@ -138,6 +141,7 @@ final class RetrieveActionTest extends TestCase
     {
         return [
             [RetrieveChargeAction::class, RetrieveCharge::class, Charge::class],
+            [RetrieveCouponAction::class, RetrieveCoupon::class, Coupon::class],
             [RetrieveCustomerAction::class, RetrieveCustomer::class, Customer::class],
             [RetrieveInvoiceAction::class, RetrieveInvoice::class, Invoice::class],
             [RetrievePaymentIntentAction::class, RetrievePaymentIntent::class, PaymentIntent::class],

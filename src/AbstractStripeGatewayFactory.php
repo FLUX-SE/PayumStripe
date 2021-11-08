@@ -6,11 +6,13 @@ namespace FluxSE\PayumStripe;
 
 use FluxSE\PayumStripe\Action\Api\ConstructEventAction;
 use FluxSE\PayumStripe\Action\Api\ResolveWebhookEventAction;
+use FluxSE\PayumStripe\Action\Api\Resource\AllCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllCustomerAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllTaxRateAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CancelPaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CancelSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CapturePaymentIntentAction;
+use FluxSE\PayumStripe\Action\Api\Resource\CreateCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateCustomerAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreatePaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreatePaymentMethodAction;
@@ -20,8 +22,10 @@ use FluxSE\PayumStripe\Action\Api\Resource\CreateSessionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateSetupIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateTaxRateAction;
+use FluxSE\PayumStripe\Action\Api\Resource\DeleteCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\DeletePlanAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveChargeAction;
+use FluxSE\PayumStripe\Action\Api\Resource\RetrieveCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveCustomerAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveInvoiceAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrievePaymentIntentAction;
@@ -31,6 +35,7 @@ use FluxSE\PayumStripe\Action\Api\Resource\RetrieveProductAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSessionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSetupIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSubscriptionAction;
+use FluxSE\PayumStripe\Action\Api\Resource\UpdateCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdatePaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdateSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\AuthorizedPaymentIntentCanceledAction;
@@ -79,10 +84,12 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
     {
         return [
             'payum.action.all_customer' => new AllCustomerAction(),
+            'payum.action.all_coupon' => new AllCouponAction(),
             'payum.action.all_tax_rate' => new AllTaxRateAction(),
             'payum.action.cancel_payment_intent' => new CancelPaymentIntentAction(),
             'payum.action.cancel_subscription' => new CancelSubscriptionAction(),
             'payum.action.capture_payment_intent' => new CapturePaymentIntentAction(),
+            'payum.action.create_coupon' => new CreateCouponAction(),
             'payum.action.create_customer' => new CreateCustomerAction(),
             'payum.action.create_payment_intent' => new CreatePaymentIntentAction(),
             'payum.action.create_payment_method' => new CreatePaymentMethodAction(),
@@ -92,8 +99,10 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
             'payum.action.create_session' => new CreateSessionAction(),
             'payum.action.create_subscription' => new CreateSubscriptionAction(),
             'payum.action.create_tax_rate' => new CreateTaxRateAction(),
+            'payum.action.delete_coupon' => new DeleteCouponAction(),
             'payum.action.delete_plan' => new DeletePlanAction(),
             'payum.action.retrieve_charge' => new RetrieveChargeAction(),
+            'payum.action.retrieve_coupon' => new RetrieveCouponAction(),
             'payum.action.retrieve_customer' => new RetrieveCustomerAction(),
             'payum.action.retrieve_invoice' => new RetrieveInvoiceAction(),
             'payum.action.retrieve_payment_intent' => new RetrievePaymentIntentAction(),
@@ -103,6 +112,7 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
             'payum.action.retrieve_session' => new RetrieveSessionAction(),
             'payum.action.retrieve_setup_intent' => new RetrieveSetupIntentAction(),
             'payum.action.retrieve_subscription' => new RetrieveSubscriptionAction(),
+            'payum.action.update_coupon' => new UpdateCouponAction(),
             'payum.action.update_payment_intent' => new UpdatePaymentIntentAction(),
             'payum.action.update_subscription' => new UpdateSubscriptionAction(),
         ];

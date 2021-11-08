@@ -3,10 +3,12 @@
 namespace Tests\FluxSE\PayumStripe\Action\Api\Resource;
 
 use FluxSE\PayumStripe\Action\Api\Resource\AbstractDeleteAction;
+use FluxSE\PayumStripe\Action\Api\Resource\DeleteCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\DeletePlanAction;
 use FluxSE\PayumStripe\Action\Api\Resource\DeleteResourceActionInterface;
 use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractDelete;
+use FluxSE\PayumStripe\Request\Api\Resource\DeleteCoupon;
 use FluxSE\PayumStripe\Request\Api\Resource\DeleteInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\DeletePlan;
 use LogicException;
@@ -15,6 +17,7 @@ use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
 use Stripe\ApiRequestor;
+use Stripe\Coupon;
 use Stripe\Issuing\Card;
 use Stripe\Issuing\CardDetails;
 use Stripe\Plan;
@@ -141,6 +144,7 @@ final class DeleteActionTest extends TestCase
     public function requestList(): array
     {
         return [
+            [DeleteCouponAction::class, DeleteCoupon::class, Coupon::class],
             [DeletePlanAction::class, DeletePlan::class, Plan::class],
         ];
     }
