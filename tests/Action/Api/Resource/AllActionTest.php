@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Tests\FluxSE\PayumStripe\Action\Api\Resource;
 
 use FluxSE\PayumStripe\Action\Api\Resource\AbstractAllAction;
+use FluxSE\PayumStripe\Action\Api\Resource\AllCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllCustomerAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllResourceActionInterface;
 use FluxSE\PayumStripe\Action\Api\Resource\AllTaxRateAction;
 use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractAll;
+use FluxSE\PayumStripe\Request\Api\Resource\AllCoupon;
 use FluxSE\PayumStripe\Request\Api\Resource\AllCustomer;
 use FluxSE\PayumStripe\Request\Api\Resource\AllInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AllTaxRate;
@@ -18,6 +20,7 @@ use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
+use Stripe\Coupon;
 use Stripe\Customer;
 use Stripe\Issuing\CardDetails;
 use Stripe\TaxRate;
@@ -123,6 +126,7 @@ final class AllActionTest extends TestCase
     public function requestList(): array
     {
         return [
+            [AllCouponAction::class, AllCoupon::class, Coupon::class],
             [AllCustomerAction::class, AllCustomer::class, Customer::class],
             [AllTaxRateAction::class, AllTaxRate::class, TaxRate::class],
         ];

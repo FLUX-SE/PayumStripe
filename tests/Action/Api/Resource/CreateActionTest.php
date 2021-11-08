@@ -3,6 +3,7 @@
 namespace Tests\FluxSE\PayumStripe\Action\Api\Resource;
 
 use FluxSE\PayumStripe\Action\Api\Resource\AbstractCreateAction;
+use FluxSE\PayumStripe\Action\Api\Resource\CreateCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateCustomerAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreatePaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreatePaymentMethodAction;
@@ -15,6 +16,7 @@ use FluxSE\PayumStripe\Action\Api\Resource\CreateSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateTaxRateAction;
 use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractCreate;
+use FluxSE\PayumStripe\Request\Api\Resource\CreateCoupon;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateCustomer;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\CreatePaymentIntent;
@@ -31,6 +33,7 @@ use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
 use Stripe\Checkout\Session;
+use Stripe\Coupon;
 use Stripe\Customer;
 use Stripe\Issuing\CardDetails;
 use Stripe\PaymentIntent;
@@ -129,6 +132,7 @@ final class CreateActionTest extends TestCase
     public function requestList(): array
     {
         return [
+            [CreateCouponAction::class, CreateCoupon::class, Coupon::class],
             [CreateCustomerAction::class, CreateCustomer::class, Customer::class],
             [CreateSessionAction::class, CreateSession::class, Session::class],
             [CreatePaymentIntentAction::class, CreatePaymentIntent::class, PaymentIntent::class],
