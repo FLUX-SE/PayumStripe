@@ -16,7 +16,7 @@
         "phpunit/phpunit": "^8|^9",
         "symplify/easy-coding-standard": "^8|^9",
         "php-http/guzzle6-adapter": "^2.0",
-        "phpstan/phpstan": "^0.12",
+        "phpstan/phpstan": "^1",
         "ext-curl": "*",
         "ext-json": "*"
     },
