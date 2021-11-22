@@ -37,7 +37,7 @@ final class RetrieveTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testShouldBeInstanceOf(string $retrieveRequestClass)
+    public function testShouldBeInstanceOf(string $retrieveRequestClass): void
     {
         /** @var AbstractRetrieve $retrieveRequest */
         $retrieveRequest = new $retrieveRequestClass('');
@@ -52,7 +52,7 @@ final class RetrieveTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testGetId(string $retrieveRequestClass)
+    public function testGetId(string $retrieveRequestClass): void
     {
         /** @var AbstractRetrieve $retrieveRequest */
         $retrieveRequest = new $retrieveRequestClass('');
@@ -62,7 +62,7 @@ final class RetrieveTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testSetId(string $retrieveRequestClass)
+    public function testSetId(string $retrieveRequestClass): void
     {
         /** @var AbstractRetrieve $retrieveRequest */
         $retrieveRequest = new $retrieveRequestClass('');
@@ -74,7 +74,7 @@ final class RetrieveTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testOptions(string $retrieveRequestClass)
+    public function testOptions(string $retrieveRequestClass): void
     {
         $options = ['test' => 'test'];
         /** @var AbstractRetrieve $retrieveRequest */
@@ -89,7 +89,7 @@ final class RetrieveTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testApiResource(string $retrieveRequestClass, string $retrieveClass)
+    public function testApiResource(string $retrieveRequestClass, string $retrieveClass): void
     {
         /** @var AbstractRetrieve $retrieveRequest */
         $retrieveRequest = new $retrieveRequestClass('');
@@ -103,7 +103,7 @@ final class RetrieveTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testNullApiResource(string $retrieveRequestClass)
+    public function testNullApiResource(string $retrieveRequestClass): void
     {
         /** @var AbstractRetrieve $retrieveRequest */
         $retrieveRequest = new $retrieveRequestClass('');

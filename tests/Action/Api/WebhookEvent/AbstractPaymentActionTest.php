@@ -32,7 +32,7 @@ final class AbstractPaymentActionTest extends TestCase
         };
     }
 
-    public function testShouldThrowExceptionWhenNullEventWrapper()
+    public function testShouldThrowExceptionWhenNullEventWrapper(): void
     {
         $model = [
             'id' => 'event_1',
@@ -51,7 +51,7 @@ final class AbstractPaymentActionTest extends TestCase
         $this->action->execute($webhookEvent);
     }
 
-    public function testShouldThrowExceptionWhenNullData()
+    public function testShouldThrowExceptionWhenNullData(): void
     {
         $model = [
             'id' => 'event_1',
@@ -70,7 +70,7 @@ final class AbstractPaymentActionTest extends TestCase
         $this->action->execute($webhookEvent);
     }
 
-    public function testShouldThrowExceptionWhenNullObject()
+    public function testShouldThrowExceptionWhenNullObject(): void
     {
         $model = [
             'id' => 'event_1',
@@ -91,7 +91,7 @@ final class AbstractPaymentActionTest extends TestCase
         $this->action->execute($webhookEvent);
     }
 
-    public function testShouldThrowExceptionWhenNullMetadata()
+    public function testShouldThrowExceptionWhenNullMetadata(): void
     {
         $model = [
             'id' => 'event_1',
@@ -114,7 +114,7 @@ final class AbstractPaymentActionTest extends TestCase
         $this->action->execute($webhookEvent);
     }
 
-    public function testShouldThrowExceptionWhenNullTokenHash()
+    public function testShouldThrowExceptionWhenNullTokenHash(): void
     {
         $model = [
             'id' => 'event_1',
@@ -139,7 +139,7 @@ final class AbstractPaymentActionTest extends TestCase
         $this->action->execute($webhookEvent);
     }
 
-    public function testShouldConsumeAWebhookEvent()
+    public function testShouldConsumeAWebhookEvent(): void
     {
         $model = [
             'id' => 'event_1',

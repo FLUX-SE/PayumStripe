@@ -26,14 +26,14 @@ final class CaptureActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
-    public function testShouldBeAnInstanceOf()
+    public function testShouldBeAnInstanceOf(): void
     {
         $action = new CaptureAction();
 
         $this->assertInstanceOf(AbstractCaptureAction::class, $action);
     }
 
-    public function testShouldSupportOnlyCaptureAndArrayAccessModel()
+    public function testShouldSupportOnlyCaptureAndArrayAccessModel(): void
     {
         $action = new CaptureAction();
 
@@ -42,7 +42,7 @@ final class CaptureActionTest extends TestCase
         $this->assertFalse($action->supports(new Authorize(null)));
     }
 
-    public function testShouldDoASyncIfPaymentHasId()
+    public function testShouldDoASyncIfPaymentHasId(): void
     {
         $model = [
             'id' => 'somethingID',
@@ -71,7 +71,7 @@ final class CaptureActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function shouldThrowExceptionWhenThereIsNoTokenAvailable()
+    public function shouldThrowExceptionWhenThereIsNoTokenAvailable(): void
     {
         $model = [];
 
@@ -143,7 +143,7 @@ final class CaptureActionTest extends TestCase
         $this->assertEquals($token->getHash(), $resultModel['metadata']['token_hash']);
     }
 
-    public function testShouldRenderAStripeJsTemplate()
+    public function testShouldRenderAStripeJsTemplate(): void
     {
         $model = [];
 

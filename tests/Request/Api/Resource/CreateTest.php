@@ -33,7 +33,7 @@ final class CreateTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testShouldBeInstanceOf(string $createRequestClass)
+    public function testShouldBeInstanceOf(string $createRequestClass): void
     {
         $model = [];
         $createRequest = new $createRequestClass($model);
@@ -48,7 +48,7 @@ final class CreateTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testOptions(string $createRequestClass)
+    public function testOptions(string $createRequestClass): void
     {
         $model = [];
         /** @var AbstractCreate $createRequest */
@@ -64,7 +64,7 @@ final class CreateTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testApiResource(string $createRequestClass, string $createClass)
+    public function testApiResource(string $createRequestClass, string $createClass): void
     {
         $model = [];
         /** @var AbstractCreate $createRequest */
@@ -80,7 +80,7 @@ final class CreateTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testNullApiResource(string $createRequestClass)
+    public function testNullApiResource(string $createRequestClass): void
     {
         $model = [];
         /** @var AbstractCreate $createRequest */
@@ -92,7 +92,7 @@ final class CreateTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testSetParameters(string $createRequestClass)
+    public function testSetParameters(string $createRequestClass): void
     {
         $model = [];
         $parameters = ['field' => 'value'];
@@ -105,7 +105,7 @@ final class CreateTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testGetParameters(string $createRequestClass)
+    public function testGetParameters(string $createRequestClass): void
     {
         $model = [];
         $parameters = [];

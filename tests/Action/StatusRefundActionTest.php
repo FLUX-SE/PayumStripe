@@ -17,7 +17,7 @@ final class StatusRefundActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
-    public function testShouldImplements()
+    public function testShouldImplements(): void
     {
         $action = new StatusRefundAction();
 
@@ -26,7 +26,7 @@ final class StatusRefundActionTest extends TestCase
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
     }
 
-    public function testSupportOnlyGetStatusInterfaceAndArrayAccessObject()
+    public function testSupportOnlyGetStatusInterfaceAndArrayAccessObject(): void
     {
         $action = new StatusRefundAction();
 
@@ -47,7 +47,7 @@ final class StatusRefundActionTest extends TestCase
         $this->assertFalse($support);
     }
 
-    public function testShouldMarkUnknownIfNoStatusIsFound()
+    public function testShouldMarkUnknownIfNoStatusIsFound(): void
     {
         $action = $this->createStatusRefundAction();
 
@@ -65,7 +65,7 @@ final class StatusRefundActionTest extends TestCase
         $this->assertTrue($request->isUnknown());
     }
 
-    public function testShouldMarkFailedIfErrorIsFound()
+    public function testShouldMarkFailedIfErrorIsFound(): void
     {
         $action = $this->createStatusRefundAction();
 
@@ -84,7 +84,7 @@ final class StatusRefundActionTest extends TestCase
         $this->assertTrue($request->isFailed());
     }
 
-    public function testShouldMarkFailedIfIsARefundObjectAndStatusFailed()
+    public function testShouldMarkFailedIfIsARefundObjectAndStatusFailed(): void
     {
         $action = $this->createStatusRefundAction();
 
@@ -103,7 +103,7 @@ final class StatusRefundActionTest extends TestCase
         $this->assertTrue($request->isFailed());
     }
 
-    public function testShouldMarkCapturedIfIsARefundObjectAndStatusSucceeded()
+    public function testShouldMarkCapturedIfIsARefundObjectAndStatusSucceeded(): void
     {
         $action = $this->createStatusRefundAction();
 
@@ -122,7 +122,7 @@ final class StatusRefundActionTest extends TestCase
         $this->assertTrue($request->isRefunded());
     }
 
-    public function testShouldNotMarkCapturedIfIsARefundObjectAndStatusIsNotAValidStatus()
+    public function testShouldNotMarkCapturedIfIsARefundObjectAndStatusIsNotAValidStatus(): void
     {
         $action = $this->createStatusRefundAction();
 
@@ -142,7 +142,7 @@ final class StatusRefundActionTest extends TestCase
         $this->assertTrue($request->isUnknown());
     }
 
-    public function testShouldMarkCanceledIfIsARefundObjectAndStatusIsCanceled()
+    public function testShouldMarkCanceledIfIsARefundObjectAndStatusIsCanceled(): void
     {
         $action = $this->createStatusRefundAction();
 
@@ -161,7 +161,7 @@ final class StatusRefundActionTest extends TestCase
         $this->assertTrue($request->isCanceled());
     }
 
-    public function testShouldMarkPendingIfIsARefundObjectAndStatusIsPending()
+    public function testShouldMarkPendingIfIsARefundObjectAndStatusIsPending(): void
     {
         $action = $this->createStatusRefundAction();
 

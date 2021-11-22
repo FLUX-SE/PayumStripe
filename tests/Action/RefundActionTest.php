@@ -26,7 +26,7 @@ final class RefundActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
-    public function testShouldImplements()
+    public function testShouldImplements(): void
     {
         $action = new RefundAction();
 
@@ -36,7 +36,7 @@ final class RefundActionTest extends TestCase
         $this->assertInstanceOf(GenericTokenFactoryAwareInterface::class, $action);
     }
 
-    public function testShouldSupportOnlyRefundWithAnArrayAccessModel()
+    public function testShouldSupportOnlyRefundWithAnArrayAccessModel(): void
     {
         $action = new RefundAction();
 
@@ -45,7 +45,7 @@ final class RefundActionTest extends TestCase
         $this->assertFalse($action->supports(new Authorize(null)));
     }
 
-    public function testShouldDoNothingWhenRequiredModelInfoAreNotAvailable()
+    public function testShouldDoNothingWhenRequiredModelInfoAreNotAvailable(): void
     {
         $action = new RefundAction();
 
@@ -81,7 +81,7 @@ final class RefundActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function testShouldThrowAnExceptionWhenNoTokenIsProvided()
+    public function testShouldThrowAnExceptionWhenNoTokenIsProvided(): void
     {
         $action = new RefundAction();
 
@@ -99,7 +99,7 @@ final class RefundActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function testShouldRefundThePaymentIntent()
+    public function testShouldRefundThePaymentIntent(): void
     {
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,

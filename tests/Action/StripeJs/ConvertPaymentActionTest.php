@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ConvertPaymentActionTest extends TestCase
 {
-    public function testShouldImplements()
+    public function testShouldImplements(): void
     {
         $action = new ConvertPaymentAction();
 
@@ -22,7 +22,7 @@ final class ConvertPaymentActionTest extends TestCase
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
     }
 
-    public function testSupports()
+    public function testSupports(): void
     {
         $action = new ConvertPaymentAction();
 
@@ -32,7 +32,7 @@ final class ConvertPaymentActionTest extends TestCase
         $this->assertTrue($action->supports(new Convert(new Payment(), 'array')));
     }
 
-    public function testShouldCorrectlyConvertPaymentToDetailsAndSetItBack()
+    public function testShouldCorrectlyConvertPaymentToDetailsAndSetItBack(): void
     {
         $payment = new Payment();
         $payment->setTotalAmount(123);
@@ -57,7 +57,7 @@ final class ConvertPaymentActionTest extends TestCase
         $this->assertEquals('USD', $details['currency']);
     }
 
-    public function testShouldNotOverwriteAlreadySetExtraDetails()
+    public function testShouldNotOverwriteAlreadySetExtraDetails(): void
     {
         $payment = new Payment();
         $payment->setCurrencyCode('USD');

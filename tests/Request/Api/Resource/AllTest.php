@@ -21,7 +21,7 @@ final class AllTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testShouldBeInstanceOf(string $allRequestClass)
+    public function testShouldBeInstanceOf(string $allRequestClass): void
     {
         /** @var AbstractAll $allRequest */
         $allRequest = new $allRequestClass();
@@ -35,7 +35,7 @@ final class AllTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testOptions(string $allRequestClass)
+    public function testOptions(string $allRequestClass): void
     {
         $options = ['test' => 'test'];
         /** @var AbstractAll $allRequest */
@@ -50,7 +50,7 @@ final class AllTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testSetParameters(string $allRequestClass)
+    public function testSetParameters(string $allRequestClass): void
     {
         $parameters = ['field' => 'value'];
         /** @var AbstractAll $allRequest */
@@ -62,7 +62,7 @@ final class AllTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testGetParameters(string $allRequestClass)
+    public function testGetParameters(string $allRequestClass): void
     {
         $parameters = []; /** @var AbstractAll $allRequest */
         $allRequest = new $allRequestClass();
@@ -74,7 +74,7 @@ final class AllTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testSetApiResources(string $allRequestClass)
+    public function testSetApiResources(string $allRequestClass): void
     {
         /** @var AbstractAll $allRequest */
         $allRequest = new $allRequestClass();
@@ -86,7 +86,7 @@ final class AllTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testGetApiResources(string $allRequestClass)
+    public function testGetApiResources(string $allRequestClass): void
     {
         /** @var AbstractAll $allRequest */
         $allRequest = new $allRequestClass();

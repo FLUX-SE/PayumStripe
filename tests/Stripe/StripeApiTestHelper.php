@@ -99,8 +99,8 @@ trait StripeApiTestHelper
     protected function expectsRequest(
         string $method,
         string $path,
-        $params = null,
-        $headers = null,
+        ?array $params = null,
+        ?array $headers = null,
         bool $hasFile = false,
         ?string $base = null
     ): void {
@@ -133,8 +133,8 @@ trait StripeApiTestHelper
     protected function stubRequest(
         string $method,
         string $path,
-        $params = null,
-        $headers = null,
+        ?array $params = null,
+        ?array $headers = null,
         bool $hasFile = false,
         array $response = [],
         int $rcode = 200,
@@ -164,8 +164,8 @@ trait StripeApiTestHelper
     private function prepareRequestMock(
         string $method,
         string $path,
-        $params = null,
-        $headers = null,
+        ?array $params = null,
+        ?array $headers = null,
         bool $hasFile = false,
         ?string $base = null
     ): InvocationMocker {

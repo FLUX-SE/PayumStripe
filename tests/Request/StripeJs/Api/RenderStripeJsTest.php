@@ -16,14 +16,14 @@ final class RenderStripeJsTest extends TestCase
         $this->request = new RenderStripeJs(new PaymentIntent(), '');
     }
 
-    public function testGetSetActionUrl()
+    public function testGetSetActionUrl(): void
     {
         $actionUrl = 'new/url';
         $this->request->setActionUrl($actionUrl);
         $this->assertEquals($actionUrl, $this->request->getActionUrl());
     }
 
-    public function testGetSetPaymentIntent()
+    public function testGetSetPaymentIntent(): void
     {
         $paymentIntent = new PaymentIntent('test_1');
         $this->request->setApiResource($paymentIntent);

@@ -21,7 +21,7 @@ final class SetupIntentCanceledActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
-    public function testShouldImplements()
+    public function testShouldImplements(): void
     {
         $action = new SetupIntentCanceledAction();
 
@@ -33,7 +33,7 @@ final class SetupIntentCanceledActionTest extends TestCase
         $this->assertInstanceOf(AbstractWebhookEventAction::class, $action);
     }
 
-    public function testShouldConsumeAWebhookEvent()
+    public function testShouldConsumeAWebhookEvent(): void
     {
         $model = [
             'id' => 'event_1',

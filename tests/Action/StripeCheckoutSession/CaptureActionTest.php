@@ -29,14 +29,14 @@ final class CaptureActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
-    public function testShouldImplements()
+    public function testShouldImplements(): void
     {
         $action = new CaptureAction();
 
         $this->assertInstanceOf(AbstractCaptureAction::class, $action);
     }
 
-    public function testShouldSupportOnlyCaptureAndArrayAccessModel()
+    public function testShouldSupportOnlyCaptureAndArrayAccessModel(): void
     {
         $action = new CaptureAction();
 
@@ -45,7 +45,7 @@ final class CaptureActionTest extends TestCase
         $this->assertFalse($action->supports(new Authorize(null)));
     }
 
-    public function testShouldDoASyncIfPaymentHasId()
+    public function testShouldDoASyncIfPaymentHasId(): void
     {
         $model = [
             'id' => 'somethingID',
@@ -74,7 +74,7 @@ final class CaptureActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function testShouldThrowExceptionWhenThereIsNoTokenAvailable()
+    public function testShouldThrowExceptionWhenThereIsNoTokenAvailable(): void
     {
         $model = [];
 
@@ -157,7 +157,7 @@ final class CaptureActionTest extends TestCase
         $this->assertEquals($token->getHash(), $data['metadata']['token_hash']);
     }
 
-    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsAPaymentIntentDataField()
+    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsAPaymentIntentDataField(): void
     {
         $model = [];
         $objectName = PaymentIntent::OBJECT_NAME;
@@ -165,7 +165,7 @@ final class CaptureActionTest extends TestCase
         $this->executeCaptureAction($model, $objectName);
     }
 
-    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsASetupIntentDataField()
+    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsASetupIntentDataField(): void
     {
         $model = [
             'setup_intent_data' => [],
@@ -175,7 +175,7 @@ final class CaptureActionTest extends TestCase
         $this->executeCaptureAction($model, $objectName);
     }
 
-    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndSetupModeIsSet()
+    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndSetupModeIsSet(): void
     {
         $model = [
             'mode' => 'setup',
@@ -185,7 +185,7 @@ final class CaptureActionTest extends TestCase
         $this->executeCaptureAction($model, $objectName);
     }
 
-    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsASubscriptionDataField()
+    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsASubscriptionDataField(): void
     {
         $model = [
             'subscription_data' => [],
@@ -195,7 +195,7 @@ final class CaptureActionTest extends TestCase
         $this->executeCaptureAction($model, $objectName);
     }
 
-    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndSubscriptionModeIsSet()
+    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndSubscriptionModeIsSet(): void
     {
         $model = [
             'mode' => 'subscription',
@@ -205,7 +205,7 @@ final class CaptureActionTest extends TestCase
         $this->executeCaptureAction($model, $objectName);
     }
 
-    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndPaymentModeIsSet()
+    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndPaymentModeIsSet(): void
     {
         $model = [
             'mode' => 'payment',
@@ -215,7 +215,7 @@ final class CaptureActionTest extends TestCase
         $this->executeCaptureAction($model, $objectName);
     }
 
-    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndPaymentModeIsSetWithMetadata()
+    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndPaymentModeIsSetWithMetadata(): void
     {
         $model = [
             'mode' => 'payment',

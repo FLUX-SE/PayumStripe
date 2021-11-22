@@ -28,7 +28,7 @@ final class AuthorizeActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
-    public function testShouldImplements()
+    public function testShouldImplements(): void
     {
         $action = new AuthorizeAction();
 
@@ -36,7 +36,7 @@ final class AuthorizeActionTest extends TestCase
         $this->assertInstanceOf(CaptureAction::class, $action);
     }
 
-    public function testShouldSupportOnlyAuthorizeAndArrayAccessModel()
+    public function testShouldSupportOnlyAuthorizeAndArrayAccessModel(): void
     {
         $action = new AuthorizeAction();
 
@@ -45,7 +45,7 @@ final class AuthorizeActionTest extends TestCase
         $this->assertFalse($action->supports(new Capture(null)));
     }
 
-    public function testShouldDoASyncIfPaymentHasId()
+    public function testShouldDoASyncIfPaymentHasId(): void
     {
         $model = [
             'id' => 'somethingID',
@@ -74,7 +74,7 @@ final class AuthorizeActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function testShouldThrowExceptionWhenThereIsNoTokenAvailable()
+    public function testShouldThrowExceptionWhenThereIsNoTokenAvailable(): void
     {
         $model = [];
 
@@ -160,14 +160,14 @@ final class AuthorizeActionTest extends TestCase
         $this->assertEquals($token->getHash(), $data['metadata']['token_hash']);
     }
 
-    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsAPaymentIntentDataField()
+    public function testShouldDoARedirectToStripeSessionIfPaymentIsNewAndThereIsAPaymentIntentDataField(): void
     {
         $model = [];
 
         $this->executeCaptureAction($model);
     }
 
-    public function testShouldThrowExceptionIfPaymentIsNewAndThereIsASetupIntentDataField()
+    public function testShouldThrowExceptionIfPaymentIsNewAndThereIsASetupIntentDataField(): void
     {
         $model = [
             'setup_intent_data' => [],
@@ -186,7 +186,7 @@ final class AuthorizeActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function testShouldThrowExceptionIfPaymentIsNewAndSetupModeIsSet()
+    public function testShouldThrowExceptionIfPaymentIsNewAndSetupModeIsSet(): void
     {
         $model = [
             'mode' => 'setup',
@@ -205,7 +205,7 @@ final class AuthorizeActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function testShouldThrowExceptionIfPaymentIsNewAndThereIsASubscriptionDataField()
+    public function testShouldThrowExceptionIfPaymentIsNewAndThereIsASubscriptionDataField(): void
     {
         $model = [
             'subscription_data' => [],
@@ -224,7 +224,7 @@ final class AuthorizeActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function testShouldThrowExceptionIfPaymentIsNewAndSubscriptionModeIsSet()
+    public function testShouldThrowExceptionIfPaymentIsNewAndSubscriptionModeIsSet(): void
     {
         $model = [
             'mode' => 'subscription',

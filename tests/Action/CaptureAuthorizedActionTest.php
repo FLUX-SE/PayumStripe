@@ -26,7 +26,7 @@ final class CaptureAuthorizedActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
-    public function testShouldImplements()
+    public function testShouldImplements(): void
     {
         $action = new CaptureAuthorizedAction();
 
@@ -36,7 +36,7 @@ final class CaptureAuthorizedActionTest extends TestCase
         $this->assertInstanceOf(GenericTokenFactoryAwareInterface::class, $action);
     }
 
-    public function testShouldSupportOnlyCaptureAuthorizedWithAnArrayAccessModel()
+    public function testShouldSupportOnlyCaptureAuthorizedWithAnArrayAccessModel(): void
     {
         $action = new CaptureAuthorizedAction();
 
@@ -46,7 +46,7 @@ final class CaptureAuthorizedActionTest extends TestCase
         $this->assertFalse($action->supports(new Authorize(null)));
     }
 
-    public function testShouldDoNothingWhenRequiredModelInfoAreNotAvailable()
+    public function testShouldDoNothingWhenRequiredModelInfoAreNotAvailable(): void
     {
         $action = new CaptureAuthorizedAction();
 
@@ -74,7 +74,7 @@ final class CaptureAuthorizedActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function testShouldThrowAnExceptionWhenNoTokenIsProvided()
+    public function testShouldThrowAnExceptionWhenNoTokenIsProvided(): void
     {
         $action = new CaptureAuthorizedAction();
 
@@ -93,7 +93,7 @@ final class CaptureAuthorizedActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function testShouldOnlyRetrieveAPaymentIntentWhenCurrentStatusIsNotRequiresCapture()
+    public function testShouldOnlyRetrieveAPaymentIntentWhenCurrentStatusIsNotRequiresCapture(): void
     {
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
@@ -152,7 +152,7 @@ final class CaptureAuthorizedActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function testShouldCaptureThePaymentIntent()
+    public function testShouldCaptureThePaymentIntent(): void
     {
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,

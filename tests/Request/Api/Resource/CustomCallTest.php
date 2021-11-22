@@ -22,7 +22,7 @@ final class CustomCallTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testShouldBeInstanceOf(string $customCallRequestClass)
+    public function testShouldBeInstanceOf(string $customCallRequestClass): void
     {
         /** @var AbstractCustomCall $customCallRequest */
         $customCallRequest = new $customCallRequestClass('');
@@ -38,7 +38,7 @@ final class CustomCallTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testGetCustomCallParameters(string $customCallRequestClass)
+    public function testGetCustomCallParameters(string $customCallRequestClass): void
     {
         /** @var AbstractCustomCall $customCallRequest */
         $customCallRequest = new $customCallRequestClass('');
@@ -48,7 +48,7 @@ final class CustomCallTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testSetCustomCallParameters(string $customCallRequestClass)
+    public function testSetCustomCallParameters(string $customCallRequestClass): void
     {
         /** @var AbstractCustomCall $customCallRequest */
         $customCallRequest = new $customCallRequestClass('');
@@ -60,7 +60,7 @@ final class CustomCallTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testGetCustomCallOptions(string $customCallRequestClass)
+    public function testGetCustomCallOptions(string $customCallRequestClass): void
     {
         /** @var AbstractCustomCall $customCallRequest */
         $customCallRequest = new $customCallRequestClass('');
@@ -70,7 +70,7 @@ final class CustomCallTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testSetCustomCallOptions(string $customCallRequestClass)
+    public function testSetCustomCallOptions(string $customCallRequestClass): void
     {
         /** @var AbstractCustomCall $customCallRequest */
         $customCallRequest = new $customCallRequestClass('');

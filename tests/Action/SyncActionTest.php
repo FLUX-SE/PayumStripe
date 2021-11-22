@@ -23,7 +23,7 @@ final class SyncActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
-    public function testShouldImplements()
+    public function testShouldImplements(): void
     {
         $action = new SyncAction();
 
@@ -32,7 +32,7 @@ final class SyncActionTest extends TestCase
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
     }
 
-    public function testSupports()
+    public function testSupports(): void
     {
         $action = new SyncAction();
 
@@ -56,10 +56,10 @@ final class SyncActionTest extends TestCase
             ->expects($this->once())
             ->method('execute')
             ->with($this->isInstanceOf(RetrievePaymentIntent::class))
-            ->will($this->returnCallback(function (RetrievePaymentIntent $request) {
+            ->willReturnCallback(function (RetrievePaymentIntent $request) {
                 $this->assertIsString($request->getModel());
                 $request->setApiResource(new PaymentIntent());
-            }))
+            })
         ;
 
         $action = new SyncAction();
@@ -80,10 +80,10 @@ final class SyncActionTest extends TestCase
             ->expects($this->once())
             ->method('execute')
             ->with($this->isInstanceOf(RetrieveSubscription::class))
-            ->will($this->returnCallback(function (RetrieveSubscription $request) {
+            ->willReturnCallback(function (RetrieveSubscription $request) {
                 $this->assertIsString($request->getModel());
                 $request->setApiResource(new Subscription());
-            }))
+            })
         ;
 
         $action = new SyncAction();
@@ -104,10 +104,10 @@ final class SyncActionTest extends TestCase
             ->expects($this->once())
             ->method('execute')
             ->with($this->isInstanceOf(RetrieveSetupIntent::class))
-            ->will($this->returnCallback(function (RetrieveSetupIntent $request) {
+            ->willReturnCallback(function (RetrieveSetupIntent $request) {
                 $this->assertIsString($request->getModel());
                 $request->setApiResource(new SetupIntent());
-            }))
+            })
         ;
 
         $action = new SyncAction();
@@ -121,7 +121,7 @@ final class SyncActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function testShouldRetrievePaymentIntentWhenSessionObjectContainsPaymentIntentId()
+    public function testShouldRetrievePaymentIntentWhenSessionObjectContainsPaymentIntentId(): void
     {
         $model = [
             'object' => Session::OBJECT_NAME,
@@ -132,7 +132,7 @@ final class SyncActionTest extends TestCase
         $this->retrievePaymentIntentFromModel($model);
     }
 
-    public function testShouldRetrieveAPaymentIntentFromAPaymentIntentObject()
+    public function testShouldRetrieveAPaymentIntentFromAPaymentIntentObject(): void
     {
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
@@ -142,7 +142,7 @@ final class SyncActionTest extends TestCase
         $this->retrievePaymentIntentFromModel($model);
     }
 
-    public function testShouldRetrieveSubscriptionWhenSessionObjectContainsSubscriptionId()
+    public function testShouldRetrieveSubscriptionWhenSessionObjectContainsSubscriptionId(): void
     {
         $model = [
             'object' => Session::OBJECT_NAME,
@@ -153,7 +153,7 @@ final class SyncActionTest extends TestCase
         $this->retrieveSubscriptionFromModel($model);
     }
 
-    public function testShouldRetrieveASubscriptionFromASubscriptionObject()
+    public function testShouldRetrieveASubscriptionFromASubscriptionObject(): void
     {
         $model = [
             'object' => Subscription::OBJECT_NAME,
@@ -163,7 +163,7 @@ final class SyncActionTest extends TestCase
         $this->retrieveSubscriptionFromModel($model);
     }
 
-    public function testShouldRetrieveSetupIntentWhenSessionObjectContainsSetupIntentId()
+    public function testShouldRetrieveSetupIntentWhenSessionObjectContainsSetupIntentId(): void
     {
         $model = [
             'object' => Session::OBJECT_NAME,
@@ -174,7 +174,7 @@ final class SyncActionTest extends TestCase
         $this->retrieveSetupIntentFromModel($model);
     }
 
-    public function testShouldRetrieveASetupIntentFromASetupIntentObject()
+    public function testShouldRetrieveASetupIntentFromASetupIntentObject(): void
     {
         $model = [
             'object' => SetupIntent::OBJECT_NAME,
@@ -184,7 +184,7 @@ final class SyncActionTest extends TestCase
         $this->retrieveSetupIntentFromModel($model);
     }
 
-    public function testShouldOnlyTryToRetrieveASessionWhenTheIdIsNullOrEmpty()
+    public function testShouldOnlyTryToRetrieveASessionWhenTheIdIsNullOrEmpty(): void
     {
         $model = [
             'object' => Session::OBJECT_NAME,
@@ -197,10 +197,10 @@ final class SyncActionTest extends TestCase
             ->expects($this->once())
             ->method('execute')
             ->with($this->isInstanceOf(RetrieveSession::class))
-            ->will($this->returnCallback(function (RetrieveSession $request) {
+            ->willReturnCallback(function (RetrieveSession $request) {
                 $this->assertIsString($request->getModel());
                 $request->setApiResource(new Session());
-            }))
+            })
         ;
 
         $action = new SyncAction();
@@ -214,7 +214,7 @@ final class SyncActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function testShouldThrowExceptionWhenObjectIsNotProvided()
+    public function testShouldThrowExceptionWhenObjectIsNotProvided(): void
     {
         $model = [
             'id' => 'test_1',
@@ -242,7 +242,7 @@ final class SyncActionTest extends TestCase
     /**
      * @throws LogicException
      */
-    public function testShouldThrowExceptionWhenIdIsNotProvided()
+    public function testShouldThrowExceptionWhenIdIsNotProvided(): void
     {
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
@@ -267,7 +267,7 @@ final class SyncActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function testShouldRetrieveSessionWhenRetrievableSessionModeObjectIdIsNotProvided()
+    public function testShouldRetrieveSessionWhenRetrievableSessionModeObjectIdIsNotProvided(): void
     {
         $model = [
             'object' => Session::OBJECT_NAME,
@@ -279,10 +279,10 @@ final class SyncActionTest extends TestCase
             ->expects($this->once())
             ->method('execute')
             ->with($this->isInstanceOf(RetrieveSession::class))
-            ->will($this->returnCallback(function (RetrieveSession $request) use ($model) {
+            ->willReturnCallback(function (RetrieveSession $request) use ($model) {
                 $this->assertIsString($request->getModel());
                 $request->setApiResource(new Session($model));
-            }));
+            });
 
         $action = new SyncAction();
         $action->setGateway($gatewayMock);

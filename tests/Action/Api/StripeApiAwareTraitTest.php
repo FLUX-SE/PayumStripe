@@ -11,13 +11,13 @@ use PHPUnit\Framework\TestCase;
 
 final class StripeApiAwareTraitTest extends TestCase
 {
-    public function testShouldGetApiClass()
+    public function testShouldGetApiClass(): void
     {
         $trait = $this->getObjectForTrait(StripeApiAwareTrait::class);
         $this->assertEquals(KeysAwareInterface::class, $trait->getApiClass());
     }
 
-    public function testShouldSetApiClass()
+    public function testShouldSetApiClass(): void
     {
         $trait = $this->getObjectForTrait(StripeApiAwareTrait::class);
         $trait->setApiClass(KeysAwareTrait::class);

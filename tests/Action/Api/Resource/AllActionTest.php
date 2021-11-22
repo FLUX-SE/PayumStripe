@@ -20,6 +20,7 @@ use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
+use Stripe\ApiResource;
 use Stripe\Coupon;
 use Stripe\Customer;
 use Stripe\Issuing\CardDetails;
@@ -35,7 +36,7 @@ final class AllActionTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testShouldImplements(string $allActionClass)
+    public function testShouldImplements(string $allActionClass): void
     {
         $action = new $allActionClass();
 
@@ -47,12 +48,14 @@ final class AllActionTest extends TestCase
 
     /**
      * @dataProvider requestList
+     *
+     * @param class-string|ApiResource $allClass
      */
     public function testShouldAllAPaymentIntent(
         string $allActionClass,
         string $allRequestClass,
         string $allClass
-    ) {
+    ): void {
         $apiMock = $this->createApiMock();
 
         /** @var AbstractAllAction $action */
@@ -65,9 +68,10 @@ final class AllActionTest extends TestCase
         $request = new $allRequestClass();
         $this->assertTrue($action->supportAlso($request));
 
+        $classUrl = $allClass::classUrl();
         $this->stubRequest(
             'get',
-            $allClass::classUrl(),
+            $classUrl,
             [],
             null,
             false,
@@ -84,7 +88,7 @@ final class AllActionTest extends TestCase
                     ],
                 ],
                 'has_more' => false,
-                'url' => $allClass::classUrl(),
+                'url' => $classUrl,
             ]
         );
 
@@ -98,7 +102,7 @@ final class AllActionTest extends TestCase
         $this->assertContainsOnlyInstancesOf($allClass, $request->getApiResources());
     }
 
-    public function testShouldThrowExceptionIfApiResourceClassIsNotCreatable()
+    public function testShouldThrowExceptionIfApiResourceClassIsNotCreatable(): void
     {
         $action = new class() extends AbstractAllAction {
             public function supportAlso(AllInterface $request): bool

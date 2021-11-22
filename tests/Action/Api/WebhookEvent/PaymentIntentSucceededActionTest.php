@@ -22,7 +22,7 @@ final class PaymentIntentSucceededActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
-    public function testShouldImplements()
+    public function testShouldImplements(): void
     {
         $action = new PaymentIntentSucceededAction();
 
@@ -72,7 +72,7 @@ final class PaymentIntentSucceededActionTest extends TestCase
     }
 
     /** @dataProvider provideNotSupportedModels */
-    public function testDoNotSupports(array $model)
+    public function testDoNotSupports(array $model): void
     {
         $action = new PaymentIntentSucceededAction();
 
@@ -83,7 +83,7 @@ final class PaymentIntentSucceededActionTest extends TestCase
         $this->assertFalse($supports);
     }
 
-    public function testSupports()
+    public function testSupports(): void
     {
         $action = new PaymentIntentSucceededAction();
 
@@ -106,7 +106,7 @@ final class PaymentIntentSucceededActionTest extends TestCase
         $this->assertTrue($supports);
     }
 
-    public function testShouldConsumeAWebhookEvent()
+    public function testShouldConsumeAWebhookEvent(): void
     {
         $model = [
             'id' => 'event_1',

@@ -32,7 +32,7 @@ final class RenderStripeJsActionTest extends TestCase
         ];
     }
 
-    public function testShouldImplements()
+    public function testShouldImplements(): void
     {
         $action = new RenderStripeJsAction('aTemplateName', ApiResource::class);
 
@@ -44,7 +44,7 @@ final class RenderStripeJsActionTest extends TestCase
     /**
      * @dataProvider apiRessourcesList
      */
-    public function testShouldSupportOnlyATypedRequestAndAnApiRessourceClass(string $apiResourceClass)
+    public function testShouldSupportOnlyATypedRequestAndAnApiRessourceClass(string $apiResourceClass): void
     {
         $model = new $apiResourceClass();
         $action = new RenderStripeJsAction('aTemplateName', $apiResourceClass);
@@ -57,7 +57,7 @@ final class RenderStripeJsActionTest extends TestCase
     /**
      * @dataProvider apiRessourcesList
      */
-    public function testShouldNotSupportObtainTokenRequestWithNotArrayAccessModel(string $apiResourceClass)
+    public function testShouldNotSupportObtainTokenRequestWithNotArrayAccessModel(string $apiResourceClass): void
     {
         $model = new $apiResourceClass();
         $actionUrl = '';
@@ -68,7 +68,7 @@ final class RenderStripeJsActionTest extends TestCase
             ->expects($this->once())
             ->method('execute')
             ->with($this->isInstanceOf(RenderTemplate::class))
-            ->will($this->returnCallback(function (RenderTemplate $request) use ($model, $actionUrl) {
+            ->willReturnCallback(function (RenderTemplate $request) use ($model, $actionUrl) {
                 $parameters = $request->getParameters();
                 $this->assertEquals('aTemplateName', $request->getTemplateName());
                 $this->assertIsArray($parameters);
@@ -81,7 +81,7 @@ final class RenderStripeJsActionTest extends TestCase
                     'action_url' => $actionUrl,
                 ], $parameters);
                 $request->setResult('');
-            }));
+            });
 
         $apiMock = $this->createApiMock(false);
         $apiMock

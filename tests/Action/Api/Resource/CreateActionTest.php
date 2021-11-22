@@ -32,6 +32,7 @@ use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
+use Stripe\ApiResource;
 use Stripe\Checkout\Session;
 use Stripe\Coupon;
 use Stripe\Customer;
@@ -54,7 +55,7 @@ final class CreateActionTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testShouldImplements(string $createActionClass)
+    public function testShouldImplements(string $createActionClass): void
     {
         $action = new $createActionClass();
 
@@ -66,12 +67,14 @@ final class CreateActionTest extends TestCase
 
     /**
      * @dataProvider requestList
+     *
+     * @param class-string|ApiResource $createClass
      */
     public function testShouldCreateAnApiRessource(
         string $createActionClass,
         string $createRequestClass,
         string $createClass
-    ) {
+    ): void {
         $model = [];
 
         $apiMock = $this->createApiMock();
@@ -108,7 +111,7 @@ final class CreateActionTest extends TestCase
         $this->assertInstanceOf($createClass, $request->getApiResource());
     }
 
-    public function testShouldThrowExceptionIfApiResourceClassIsNotCreatable()
+    public function testShouldThrowExceptionIfApiResourceClassIsNotCreatable(): void
     {
         $model = [];
         $action = new class() extends AbstractCreateAction {

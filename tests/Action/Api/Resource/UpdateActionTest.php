@@ -18,6 +18,7 @@ use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
+use Stripe\ApiResource;
 use Stripe\Coupon;
 use Stripe\Issuing\CardDetails;
 use Stripe\PaymentIntent;
@@ -33,7 +34,7 @@ final class UpdateActionTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testShouldImplements(string $updateActionClass)
+    public function testShouldImplements(string $updateActionClass): void
     {
         $action = new $updateActionClass();
 
@@ -45,12 +46,14 @@ final class UpdateActionTest extends TestCase
 
     /**
      * @dataProvider requestList
+     *
+     * @param class-string|ApiResource $updateClass
      */
     public function testShouldUpdateAPaymentIntent(
         string $updateActionClass,
         string $updateRequestClass,
         string $updateClass
-    ) {
+    ): void {
         $id = 'pi_1';
         $parameters = [];
 
@@ -88,7 +91,7 @@ final class UpdateActionTest extends TestCase
         $this->assertInstanceOf($updateClass, $request->getApiResource());
     }
 
-    public function testShouldThrowExceptionIfApiResourceClassIsNotCreatable()
+    public function testShouldThrowExceptionIfApiResourceClassIsNotCreatable(): void
     {
         $id = 'test_1';
         $parameters = [];

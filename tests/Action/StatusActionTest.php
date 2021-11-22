@@ -15,7 +15,7 @@ use Stripe\PaymentIntent;
 
 final class StatusActionTest extends TestCase
 {
-    public function testShouldImplements()
+    public function testShouldImplements(): void
     {
         $action = new StatusAction();
 
@@ -24,7 +24,7 @@ final class StatusActionTest extends TestCase
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
     }
 
-    public function testSupportOnlyGetStatusInterface()
+    public function testSupportOnlyGetStatusInterface(): void
     {
         $action = new StatusAction();
 
@@ -38,7 +38,7 @@ final class StatusActionTest extends TestCase
         $this->assertFalse($support);
     }
 
-    public function testShouldMarkUnknownIfNoTestsIsPassed()
+    public function testShouldMarkUnknownIfNoTestsIsPassed(): void
     {
         $action = new StatusAction();
 
@@ -56,7 +56,7 @@ final class StatusActionTest extends TestCase
         $this->assertTrue($request->isUnknown());
     }
 
-    public function testShouldMarkFailedIfObjectIsASession()
+    public function testShouldMarkFailedIfObjectIsASession(): void
     {
         $action = new StatusAction();
 
@@ -74,7 +74,7 @@ final class StatusActionTest extends TestCase
         $this->assertTrue($request->isFailed());
     }
 
-    public function testShouldMarkNewIfDetailsEmpty()
+    public function testShouldMarkNewIfDetailsEmpty(): void
     {
         $action = new StatusAction();
 
@@ -90,7 +90,7 @@ final class StatusActionTest extends TestCase
         $this->assertTrue($request->isNew());
     }
 
-    public function testShouldMarkFailedIfDetailsHasErrorSet()
+    public function testShouldMarkFailedIfDetailsHasErrorSet(): void
     {
         $action = new StatusAction();
 
@@ -113,7 +113,7 @@ final class StatusActionTest extends TestCase
         $this->assertTrue($request->isFailed());
     }
 
-    public function testShouldMarkNewIfStatusCouldNotBeGuessed()
+    public function testShouldMarkNewIfStatusCouldNotBeGuessed(): void
     {
         $action = new StatusAction();
 

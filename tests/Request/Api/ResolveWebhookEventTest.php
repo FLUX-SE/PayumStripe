@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 final class ResolveWebhookEventTest extends TestCase
 {
-    public function testShouldBeSubClassOfConvert()
+    public function testShouldBeSubClassOfConvert(): void
     {
         $resolveWebhookEvent = new ResolveWebhookEvent(new Token());
 

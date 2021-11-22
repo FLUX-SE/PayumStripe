@@ -21,7 +21,7 @@ final class UpdateTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testShouldBeInstanceOf(string $updateRequestClass)
+    public function testShouldBeInstanceOf(string $updateRequestClass): void
     {
         /** @var AbstractUpdate $updateRequest */
         $updateRequest = new $updateRequestClass('', []);
@@ -36,7 +36,7 @@ final class UpdateTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testGetId(string $updateRequestClass)
+    public function testGetId(string $updateRequestClass): void
     {
         /** @var AbstractUpdate $updateRequest */
         $updateRequest = new $updateRequestClass('', []);
@@ -46,7 +46,7 @@ final class UpdateTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testSetId(string $updateRequestClass)
+    public function testSetId(string $updateRequestClass): void
     {
         /** @var AbstractUpdate $updateRequest */
         $updateRequest = new $updateRequestClass('', []);
@@ -58,7 +58,7 @@ final class UpdateTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testOptions(string $updateRequestClass)
+    public function testOptions(string $updateRequestClass): void
     {
         $options = ['test' => 'test'];
         /** @var AbstractUpdate $updateRequest */
@@ -73,7 +73,7 @@ final class UpdateTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testApiResource(string $updateRequestClass, string $updateClass)
+    public function testApiResource(string $updateRequestClass, string $updateClass): void
     {
         /** @var AbstractUpdate $updateRequest */
         $updateRequest = new $updateRequestClass('', []);
@@ -87,7 +87,7 @@ final class UpdateTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testNullApiResource(string $updateRequestClass)
+    public function testNullApiResource(string $updateRequestClass): void
     {
         /** @var AbstractUpdate $updateRequest */
         $updateRequest = new $updateRequestClass('', []);
@@ -98,7 +98,7 @@ final class UpdateTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testGetSetParameters(string $updateRequestClass)
+    public function testGetSetParameters(string $updateRequestClass): void
     {
         $parameters = ['field' => 'value'];
         /** @var AbstractUpdate $updateRequest */

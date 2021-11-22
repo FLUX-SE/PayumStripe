@@ -9,7 +9,7 @@ use Stripe\Event;
 
 final class EventWrapperTest extends TestCase
 {
-    public function testShouldImplementEventWrapperInterface()
+    public function testShouldImplementEventWrapperInterface(): void
     {
         $event = new Event();
         $eventWrapper = new EventWrapper('', $event);
@@ -17,7 +17,7 @@ final class EventWrapperTest extends TestCase
         $this->assertInstanceOf(EventWrapperInterface::class, $eventWrapper);
     }
 
-    public function testShouldNotAlterTheGivenEvent()
+    public function testShouldNotAlterTheGivenEvent(): void
     {
         $event = new Event();
         $eventWrapper = new EventWrapper('', $event);
@@ -25,7 +25,7 @@ final class EventWrapperTest extends TestCase
         $this->assertEquals($event, $eventWrapper->getEvent());
     }
 
-    public function testShouldNotAlterTheGivenUsedWebhookSecretKey()
+    public function testShouldNotAlterTheGivenUsedWebhookSecretKey(): void
     {
         $event = new Event();
         $eventWrapper = new EventWrapper('', $event);

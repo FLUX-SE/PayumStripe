@@ -21,7 +21,7 @@ final class StripeWebhookTestActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
-    public function testShouldImplements()
+    public function testShouldImplements(): void
     {
         $action = new StripeWebhookTestAction();
 
@@ -31,7 +31,7 @@ final class StripeWebhookTestActionTest extends TestCase
         $this->assertInstanceOf(AbstractWebhookEventAction::class, $action);
     }
 
-    public function testOnlyAcceptWebhookEventWithNotNullEventWrapper()
+    public function testOnlyAcceptWebhookEventWithNotNullEventWrapper(): void
     {
         $action = new StripeWebhookTestAction();
 
@@ -46,7 +46,7 @@ final class StripeWebhookTestActionTest extends TestCase
         $this->assertFalse($supports);
     }
 
-    public function testShouldConsumeTheWebhookEvent()
+    public function testShouldConsumeTheWebhookEvent(): void
     {
         $model = [
             'id' => 'evt_00000000000000',
@@ -66,7 +66,7 @@ final class StripeWebhookTestActionTest extends TestCase
         $action->execute($webhookEvent);
     }
 
-    public function testShouldNotConsumeTheWebhookEvent()
+    public function testShouldNotConsumeTheWebhookEvent(): void
     {
         $model = [
             'id' => 'evt_00000000000001',

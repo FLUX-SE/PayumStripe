@@ -20,7 +20,7 @@ final class StatusSessionActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
-    public function testShouldImplements()
+    public function testShouldImplements(): void
     {
         $action = new StatusSessionAction();
 
@@ -29,7 +29,7 @@ final class StatusSessionActionTest extends TestCase
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
     }
 
-    public function testSupportOnlyGetStatusInterfaceAndArrayAccessObject()
+    public function testSupportOnlyGetStatusInterfaceAndArrayAccessObject(): void
     {
         $action = new StatusSessionAction();
 
@@ -50,7 +50,7 @@ final class StatusSessionActionTest extends TestCase
         $this->assertFalse($support);
     }
 
-    public function testShouldMarkUnknownIfNoStatusIsFound()
+    public function testShouldMarkUnknownIfNoStatusIsFound(): void
     {
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock
@@ -76,7 +76,7 @@ final class StatusSessionActionTest extends TestCase
         $this->assertTrue($request->isUnknown());
     }
 
-    public function testShouldMarkFailedIfErrorIsFound()
+    public function testShouldMarkFailedIfErrorIsFound(): void
     {
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock
@@ -103,7 +103,7 @@ final class StatusSessionActionTest extends TestCase
         $this->assertTrue($request->isFailed());
     }
 
-    public function testShouldMarkAsNewIfIsASessionObjectAndPaymentStatusIsUnpaid()
+    public function testShouldMarkAsNewIfIsASessionObjectAndPaymentStatusIsUnpaid(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -122,7 +122,7 @@ final class StatusSessionActionTest extends TestCase
         $this->assertTrue($request->isNew());
     }
 
-    public function testShouldMarkAsNewIfIsASessionObjectAndPaymentStatusIsNoPaymentRequired()
+    public function testShouldMarkAsNewIfIsASessionObjectAndPaymentStatusIsNoPaymentRequired(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -141,7 +141,7 @@ final class StatusSessionActionTest extends TestCase
         $this->assertTrue($request->isNew());
     }
 
-    public function testShouldCallTheSameRequestIfSyncCHangeTheObject()
+    public function testShouldCallTheSameRequestIfSyncCHangeTheObject(): void
     {
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock

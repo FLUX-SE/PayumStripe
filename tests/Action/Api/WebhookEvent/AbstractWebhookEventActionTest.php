@@ -21,13 +21,13 @@ class AbstractWebhookEventActionTest extends TestCase
                 return [''];
             }
 
-            public function execute($request)
+            public function execute($request): void
             {
             }
         };
     }
 
-    public function testShouldThrowExceptionWhenNullMetadata()
+    public function testShouldThrowExceptionWhenNullMetadata(): void
     {
         $model = [
         ];

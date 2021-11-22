@@ -26,7 +26,7 @@ final class CancelActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
-    public function testShouldImplements()
+    public function testShouldImplements(): void
     {
         $action = new CancelAction();
 
@@ -36,7 +36,7 @@ final class CancelActionTest extends TestCase
         $this->assertInstanceOf(GenericTokenFactoryAwareInterface::class, $action);
     }
 
-    public function testShouldSupportOnlyCancelWithAnArrayAccessModel()
+    public function testShouldSupportOnlyCancelWithAnArrayAccessModel(): void
     {
         $action = new CancelAction();
 
@@ -45,7 +45,7 @@ final class CancelActionTest extends TestCase
         $this->assertFalse($action->supports(new Authorize(null)));
     }
 
-    public function testShouldDoNothingWhenRequiredModelInfoAreNotAvailable()
+    public function testShouldDoNothingWhenRequiredModelInfoAreNotAvailable(): void
     {
         $action = new CancelAction();
 
@@ -81,7 +81,7 @@ final class CancelActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function testShouldThrowAnExceptionWhenNoTokenIsProvided()
+    public function testShouldThrowAnExceptionWhenNoTokenIsProvided(): void
     {
         $action = new CancelAction();
 
@@ -99,7 +99,7 @@ final class CancelActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function testShouldCancelThePaymentIntent()
+    public function testShouldCancelThePaymentIntent(): void
     {
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,

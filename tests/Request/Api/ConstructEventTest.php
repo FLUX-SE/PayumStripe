@@ -11,14 +11,14 @@ use Stripe\Event;
 
 final class ConstructEventTest extends TestCase
 {
-    public function testShouldBeSubClassOfGeneric()
+    public function testShouldBeSubClassOfGeneric(): void
     {
         $constructEvent = new ConstructEvent('', '', '');
 
         $this->assertInstanceOf(Generic::class, $constructEvent);
     }
 
-    public function testSetWebhookSecretKey()
+    public function testSetWebhookSecretKey(): void
     {
         $constructEvent = new ConstructEvent('', '', '');
 
@@ -27,21 +27,21 @@ final class ConstructEventTest extends TestCase
         $this->assertEquals('my_whsec', $constructEvent->getWebhookSecretKey());
     }
 
-    public function testGetWebhookSecretKey()
+    public function testGetWebhookSecretKey(): void
     {
         $constructEvent = new ConstructEvent('', '', '');
 
         $this->assertEquals('', $constructEvent->getWebhookSecretKey());
     }
 
-    public function testGetSigHeader()
+    public function testGetSigHeader(): void
     {
         $constructEvent = new ConstructEvent('', 'sigHeader', '');
 
         $this->assertEquals('sigHeader', $constructEvent->getSigHeader());
     }
 
-    public function testSetEventWrapper()
+    public function testSetEventWrapper(): void
     {
         $constructEvent = new ConstructEvent('', 'sigHeader', '');
 
@@ -52,14 +52,14 @@ final class ConstructEventTest extends TestCase
         $this->assertEquals($eventWrapper, $constructEvent->getEventWrapper());
     }
 
-    public function testGetEventWrapper()
+    public function testGetEventWrapper(): void
     {
         $constructEvent = new ConstructEvent('', '', '');
 
         $this->assertEquals(null, $constructEvent->getEventWrapper());
     }
 
-    public function testPayloadIsNotAString()
+    public function testPayloadIsNotAString(): void
     {
         $constructEvent = new ConstructEvent('', '', '');
         $constructEvent->setModel(null);
@@ -67,7 +67,7 @@ final class ConstructEventTest extends TestCase
         $constructEvent->getPayload();
     }
 
-    public function testChangePayload()
+    public function testChangePayload(): void
     {
         $constructEvent = new ConstructEvent('', '', '');
         $constructEvent->setPayload('payload_test');

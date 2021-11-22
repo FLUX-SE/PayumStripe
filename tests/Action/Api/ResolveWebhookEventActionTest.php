@@ -24,7 +24,7 @@ final class ResolveWebhookEventActionTest extends TestCase
     use ApiAwareActionTestTrait;
     use GatewayAwareTestTrait;
 
-    public function testShouldImplements()
+    public function testShouldImplements(): void
     {
         $action = new ResolveWebhookEventAction();
 
@@ -33,7 +33,7 @@ final class ResolveWebhookEventActionTest extends TestCase
         $this->assertInstanceOf(GatewayAwareInterface::class, $action);
     }
 
-    public function testShouldThrowLogicExceptionWhenNoStripeSignatureIsFound()
+    public function testShouldThrowLogicExceptionWhenNoStripeSignatureIsFound(): void
     {
         $action = new ResolveWebhookEventAction();
 
@@ -59,7 +59,7 @@ final class ResolveWebhookEventActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function testShouldThrowExceptionWhenSignatureFailed()
+    public function testShouldThrowExceptionWhenSignatureFailed(): void
     {
         $action = new ResolveWebhookEventAction();
 
@@ -101,7 +101,7 @@ final class ResolveWebhookEventActionTest extends TestCase
         $action->execute($request);
     }
 
-    public function testShouldResolveWebhookEventWithSymfonyRequestBridge()
+    public function testShouldResolveWebhookEventWithSymfonyRequestBridge(): void
     {
         $action = new ResolveWebhookEventAction();
 
@@ -154,7 +154,7 @@ final class ResolveWebhookEventActionTest extends TestCase
         $this->assertEquals($request->getEventWrapper(), $request->getResult());
     }
 
-    public function testShouldResolveWebhookEventWithPlainPHP()
+    public function testShouldResolveWebhookEventWithPlainPHP(): void
     {
         $action = new ResolveWebhookEventAction();
 
@@ -205,7 +205,7 @@ final class ResolveWebhookEventActionTest extends TestCase
         $this->assertEquals($request->getEventWrapper(), $request->getResult());
     }
 
-    public function testShouldRequestNotSupportedExceptionWhenTheWebhookCanNotBeResolved()
+    public function testShouldRequestNotSupportedExceptionWhenTheWebhookCanNotBeResolved(): void
     {
         $action = new ResolveWebhookEventAction();
 

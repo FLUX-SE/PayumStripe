@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\FluxSE\PayumStripe\Resources\Views\Action;
 
-use FluxSE\PayumStripe\StripeCheckoutSessionGatewayFactory;
+use FluxSE\PayumStripe\StripeJsGatewayFactory;
 use Payum\Core\Gateway;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -15,7 +15,7 @@ use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
 use Twig\Loader\FilesystemLoader;
 
-final class RedirectToCheckoutTest extends TestCase
+final class StripeJsPaymentIntentTest extends TestCase
 {
     /**
      * @throws ReflectionException
@@ -39,8 +39,8 @@ final class RedirectToCheckoutTest extends TestCase
             'PayumCore'
         );
         $twigLoader->addPath(
-            $this->guessViewsPath(StripeCheckoutSessionGatewayFactory::class),
-            'FluxSEPayumStripeCheckoutSession'
+            $this->guessViewsPath(StripeJsGatewayFactory::class),
+            'FluxSEPayumStripe'
         );
 
         return new Environment($twigLoader);
@@ -52,19 +52,21 @@ final class RedirectToCheckoutTest extends TestCase
      * @throws RuntimeError
      * @throws SyntaxError
      */
-    public function testShouldRenderRedirectToCheckoutTemplate()
+    public function testShouldRenderRedirectToCheckoutTemplate(): void
     {
         $twig = $this->buildTwigEnvironment();
 
-        $result = $twig->render('@FluxSEPayumStripeCheckoutSession/Action/redirectToCheckout.html.twig', [
+        $result = $twig->render('@FluxSEPayumStripe/Action/stripeJsPaymentIntent.html.twig', [
             'model' => [
-                'id' => 1,
+                'client_secret' => 'aClientSecret',
             ],
             'publishable_key' => 'theKey',
+            'action_url' => 'https://anUrl',
         ]);
 
-        $this->assertStringContainsString('sessionId: \'1\'', $result);
-        $this->assertStringContainsString('(\'theKey\')', $result);
+        $this->assertStringContainsString('action="https://anUrl"', $result);
+        $this->assertStringContainsString('data-secret="aClientSecret"', $result);
         $this->assertStringContainsString('https://js.stripe.com/v3/', $result);
+        $this->assertStringContainsString('Stripe(\'theKey\')', $result);
     }
 }

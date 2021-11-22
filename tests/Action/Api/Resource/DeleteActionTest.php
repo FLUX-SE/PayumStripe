@@ -17,6 +17,7 @@ use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
 use Stripe\ApiRequestor;
+use Stripe\ApiResource;
 use Stripe\Coupon;
 use Stripe\Issuing\Card;
 use Stripe\Issuing\CardDetails;
@@ -33,7 +34,7 @@ final class DeleteActionTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testShouldImplements(string $deleteActionClass)
+    public function testShouldImplements(string $deleteActionClass): void
     {
         $action = new $deleteActionClass();
 
@@ -45,12 +46,14 @@ final class DeleteActionTest extends TestCase
 
     /**
      * @dataProvider requestList
+     *
+     * @param class-string|ApiResource $deleteClass
      */
     public function testShouldBeDeleted(
         string $deleteActionClass,
         string $deleteRequestClass,
         string $deleteClass
-    ) {
+    ): void {
         $id = 'pi_1';
 
         $apiMock = $this->createApiMock();
@@ -66,18 +69,19 @@ final class DeleteActionTest extends TestCase
         $this->assertTrue($action->supportAlso($request));
 
         ApiRequestor::setHttpClient($this->clientMock);
+        $resourceUrl = $deleteClass::resourceUrl($id);
         $this->clientMock
             ->expects($this->exactly(2))
             ->method('request')
             ->withConsecutive([
                 'get',
-                Stripe::$apiBase.$deleteClass::resourceUrl($id),
+                Stripe::$apiBase.$resourceUrl,
                 $this->anything(),
                 $this->anything(),
                 false,
             ], [
                 'delete',
-                Stripe::$apiBase.$deleteClass::resourceUrl($id),
+                Stripe::$apiBase.$resourceUrl,
                 $this->anything(),
                 $this->anything(),
                 false,
@@ -112,7 +116,7 @@ final class DeleteActionTest extends TestCase
     /**
      * @dataProvider faultList
      */
-    public function testShouldThrowExceptionIfApiResourceClassIsNotCreatable(string $faultClass)
+    public function testShouldThrowExceptionIfApiResourceClassIsNotCreatable(string $faultClass): void
     {
         $id = 'test_1';
         $action = new class() extends AbstractDeleteAction {

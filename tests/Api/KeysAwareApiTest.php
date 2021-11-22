@@ -16,14 +16,14 @@ trait KeysAwareApiTest
         return new ReflectionClass($this->getApiClass());
     }
 
-    public function test__construct()
+    public function test__construct(): void
     {
         $api = $this->getReflectionApiClass()->newInstance('', '');
 
         $this->assertInstanceOf(KeysAwareInterface::class, $api);
     }
 
-    public function testHasWebhookSecretKey()
+    public function testHasWebhookSecretKey(): void
     {
         $api = $this->getReflectionApiClass()->newInstance('', '', ['webhookKey1']);
 
@@ -31,33 +31,33 @@ trait KeysAwareApiTest
         $this->assertFalse($api->hasWebhookSecretKey('webhookKey2'));
     }
 
-    public function testGetWebhookSecretKeys()
+    public function testGetWebhookSecretKeys(): void
     {
         $api = $this->getReflectionApiClass()->newInstance('', '', ['webhookKey1']);
 
         $this->assertEquals(['webhookKey1'], $api->getWebhookSecretKeys());
     }
 
-    public function testSetWebhookSecretKeys()
+    public function testSetWebhookSecretKeys(): void
     {
         $api = $this->getReflectionApiClass()->newInstance('', '', ['webhookKey1']);
         $api->setWebhookSecretKeys([]);
         $this->assertEquals([], $api->getWebhookSecretKeys());
     }
 
-    public function testGetSecretKey()
+    public function testGetSecretKey(): void
     {
         $api = $this->getReflectionApiClass()->newInstance('', 'secretKey');
         $this->assertEquals('secretKey', $api->getSecretKey());
     }
 
-    public function testGetPublishableKey()
+    public function testGetPublishableKey(): void
     {
         $api = $this->getReflectionApiClass()->newInstance('publishableKey', '');
         $this->assertEquals('publishableKey', $api->getPublishableKey());
     }
 
-    public function testAddWebhookSecretKey()
+    public function testAddWebhookSecretKey(): void
     {
         $api = $this->getReflectionApiClass()->newInstance('', '', []);
         $api->addWebhookSecretKey('webhookKeyAdded');

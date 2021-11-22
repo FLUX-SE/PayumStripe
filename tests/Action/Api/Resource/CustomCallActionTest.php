@@ -19,6 +19,7 @@ use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
 use Stripe\ApiRequestor;
+use Stripe\ApiResource;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
 use Stripe\Subscription;
@@ -33,7 +34,7 @@ final class CustomCallActionTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testShouldImplements(array $customCall, string $retrieveActionClass)
+    public function testShouldImplements(array $customCall, string $retrieveActionClass): void
     {
         $action = new $retrieveActionClass();
 
@@ -45,13 +46,15 @@ final class CustomCallActionTest extends TestCase
 
     /**
      * @dataProvider requestList
+     *
+     * @param class-string|ApiResource $customCallClass
      */
     public function testShouldCallCustom(
         array $customCall,
         string $customCallActionClass,
         string $customCallRequestClass,
         string $customCallClass
-    ) {
+    ): void {
         $id = 'pi_1';
 
         $apiMock = $this->createApiMock();
@@ -67,18 +70,20 @@ final class CustomCallActionTest extends TestCase
         $this->assertTrue($action->supportAlso($request));
 
         ApiRequestor::setHttpClient($this->clientMock);
+
+        $resourceUrl = $customCallClass::resourceUrl($id);
         $this->clientMock
             ->expects($this->exactly(2))
             ->method('request')
             ->withConsecutive([
                 'get',
-                Stripe::$apiBase.$customCallClass::resourceUrl($id),
+                Stripe::$apiBase.$resourceUrl,
                 $this->anything(),
                 $this->anything(),
                 false,
             ], [
                 $customCall[0],
-                Stripe::$apiBase.sprintf('%s%s', $customCallClass::resourceUrl($id), $customCall[1]),
+                Stripe::$apiBase.sprintf('%s%s', $resourceUrl, $customCall[1]),
                 $this->anything(),
                 $this->anything(),
                 false,

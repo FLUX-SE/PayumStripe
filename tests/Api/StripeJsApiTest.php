@@ -15,7 +15,7 @@ final class StripeJsApiTest extends TestCase
         return StripeJsApi::class;
     }
 
-    public function test__construct2()
+    public function test__construct2(): void
     {
         $api = new StripeJsApi('', '');
 

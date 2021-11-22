@@ -21,7 +21,7 @@ final class DeleteTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testShouldBeInstanceOf(string $deleteRequestClass)
+    public function testShouldBeInstanceOf(string $deleteRequestClass): void
     {
         /** @var AbstractDelete $deleteRequest */
         $deleteRequest = new $deleteRequestClass('');
@@ -36,7 +36,7 @@ final class DeleteTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testGetId(string $deleteRequestClass)
+    public function testGetId(string $deleteRequestClass): void
     {
         /** @var AbstractDelete $deleteRequest */
         $deleteRequest = new $deleteRequestClass('');
@@ -46,7 +46,7 @@ final class DeleteTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testSetId(string $deleteRequestClass)
+    public function testSetId(string $deleteRequestClass): void
     {
         /** @var AbstractDelete $deleteRequest */
         $deleteRequest = new $deleteRequestClass('');
@@ -58,7 +58,7 @@ final class DeleteTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testOptions(string $deleteRequestClass)
+    public function testOptions(string $deleteRequestClass): void
     {
         $options = ['test' => 'test'];
         /** @var AbstractDelete $deleteRequest */
@@ -73,7 +73,7 @@ final class DeleteTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testApiResource(string $deleteRequestClass, string $deleteClass)
+    public function testApiResource(string $deleteRequestClass, string $deleteClass): void
     {
         /** @var AbstractDelete $deleteRequest */
         $deleteRequest = new $deleteRequestClass('');
@@ -87,7 +87,7 @@ final class DeleteTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testNullApiResource(string $deleteRequestClass)
+    public function testNullApiResource(string $deleteRequestClass): void
     {
         /** @var AbstractDelete $deleteRequest */
         $deleteRequest = new $deleteRequestClass('');

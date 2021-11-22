@@ -22,7 +22,7 @@ final class AuthorizedPaymentIntentCanceledActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
-    public function testShouldImplements()
+    public function testShouldImplements(): void
     {
         $action = new AuthorizedPaymentIntentCanceledAction();
 
@@ -72,7 +72,7 @@ final class AuthorizedPaymentIntentCanceledActionTest extends TestCase
     }
 
     /** @dataProvider provideNotSupportedModels */
-    public function testDoNotSupports(array $model)
+    public function testDoNotSupports(array $model): void
     {
         $action = new AuthorizedPaymentIntentCanceledAction();
 
@@ -83,7 +83,7 @@ final class AuthorizedPaymentIntentCanceledActionTest extends TestCase
         $this->assertFalse($supports);
     }
 
-    public function testSupports()
+    public function testSupports(): void
     {
         $action = new AuthorizedPaymentIntentCanceledAction();
         $model = [
@@ -105,7 +105,7 @@ final class AuthorizedPaymentIntentCanceledActionTest extends TestCase
         $this->assertTrue($supports);
     }
 
-    public function testShouldConsumeAWebhookEvent()
+    public function testShouldConsumeAWebhookEvent(): void
     {
         $model = [
             'id' => 'event_1',

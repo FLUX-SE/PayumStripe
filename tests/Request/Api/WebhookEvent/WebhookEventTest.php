@@ -10,7 +10,7 @@ use Stripe\Event;
 
 final class WebhookEventTest extends TestCase
 {
-    public function testShouldBeSubClassOfGeneric()
+    public function testShouldBeSubClassOfGeneric(): void
     {
         $event = new Event();
         $eventWrapper = new EventWrapper('', $event);
@@ -19,7 +19,7 @@ final class WebhookEventTest extends TestCase
         $this->assertInstanceOf(Generic::class, $webhookEvent);
     }
 
-    public function testSetEventWrapper()
+    public function testSetEventWrapper(): void
     {
         $event = new Event();
         $eventWrapper = new EventWrapper('', $event);
@@ -30,7 +30,7 @@ final class WebhookEventTest extends TestCase
         $this->assertEquals($eventWrapper, $webhookEvent->getEventWrapper());
     }
 
-    public function testGetEventWrapper()
+    public function testGetEventWrapper(): void
     {
         $event = new Event();
         $eventWrapper = new EventWrapper('', $event);

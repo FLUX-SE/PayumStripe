@@ -17,7 +17,7 @@ final class StatusSetupIntentActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
-    public function testShouldImplements()
+    public function testShouldImplements(): void
     {
         $action = new StatusSetupIntentAction();
 
@@ -26,7 +26,7 @@ final class StatusSetupIntentActionTest extends TestCase
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
     }
 
-    public function testSupportOnlyGetStatusInterfaceAndArrayAccessObject()
+    public function testSupportOnlyGetStatusInterfaceAndArrayAccessObject(): void
     {
         $action = new StatusSetupIntentAction();
 
@@ -47,7 +47,7 @@ final class StatusSetupIntentActionTest extends TestCase
         $this->assertFalse($support);
     }
 
-    public function testShouldMarkUnknownIfNoStatusIsFound()
+    public function testShouldMarkUnknownIfNoStatusIsFound(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -65,7 +65,7 @@ final class StatusSetupIntentActionTest extends TestCase
         $this->assertTrue($request->isUnknown());
     }
 
-    public function testShouldMarkFailedIfErrorIsFound()
+    public function testShouldMarkFailedIfErrorIsFound(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -84,7 +84,7 @@ final class StatusSetupIntentActionTest extends TestCase
         $this->assertTrue($request->isFailed());
     }
 
-    public function testShouldMarkCapturedIfIsASetupIntentObjectAndStatusSucceeded()
+    public function testShouldMarkCapturedIfIsASetupIntentObjectAndStatusSucceeded(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -103,7 +103,7 @@ final class StatusSetupIntentActionTest extends TestCase
         $this->assertTrue($request->isCaptured());
     }
 
-    public function testShouldNotMarkCapturedIfIsASetupIntentObjectAndStatusIsNotAValidStatus()
+    public function testShouldNotMarkCapturedIfIsASetupIntentObjectAndStatusIsNotAValidStatus(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -123,7 +123,7 @@ final class StatusSetupIntentActionTest extends TestCase
         $this->assertTrue($request->isUnknown());
     }
 
-    public function testShouldMarkCanceledIfIsASetupIntentObjectAndStatusIsCanceled()
+    public function testShouldMarkCanceledIfIsASetupIntentObjectAndStatusIsCanceled(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -142,7 +142,7 @@ final class StatusSetupIntentActionTest extends TestCase
         $this->assertTrue($request->isCanceled());
     }
 
-    public function testShouldMarkAsCanceledIfIsASetupIntentObjectAndStatusRequiresPaymentMethod()
+    public function testShouldMarkAsCanceledIfIsASetupIntentObjectAndStatusRequiresPaymentMethod(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -161,7 +161,7 @@ final class StatusSetupIntentActionTest extends TestCase
         $this->assertTrue($request->isNew());
     }
 
-    public function testShouldMarkAsNewIfIsASetupIntentObjectAndStatusRequiresConfirmation()
+    public function testShouldMarkAsNewIfIsASetupIntentObjectAndStatusRequiresConfirmation(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -180,7 +180,7 @@ final class StatusSetupIntentActionTest extends TestCase
         $this->assertTrue($request->isNew());
     }
 
-    public function testShouldMarkAsNewIfIsASetupIntentObjectAndStatusRequiresAction()
+    public function testShouldMarkAsNewIfIsASetupIntentObjectAndStatusRequiresAction(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -199,7 +199,7 @@ final class StatusSetupIntentActionTest extends TestCase
         $this->assertTrue($request->isNew());
     }
 
-    public function testShouldMarkPendingIfIsASetupIntentObjectAndStatusIsProcessing()
+    public function testShouldMarkPendingIfIsASetupIntentObjectAndStatusIsProcessing(): void
     {
         $action = $this->createStatusWithGateway();
 

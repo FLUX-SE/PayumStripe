@@ -17,7 +17,7 @@ final class ConvertPaymentActionTest extends TestCase
 {
     use ApiAwareActionTestTrait;
 
-    public function testShouldImplements()
+    public function testShouldImplements(): void
     {
         $action = new ConvertPaymentAction();
 
@@ -25,7 +25,7 @@ final class ConvertPaymentActionTest extends TestCase
         $this->assertNotInstanceOf(GatewayInterface::class, $action);
     }
 
-    public function testSupports()
+    public function testSupports(): void
     {
         $action = new ConvertPaymentAction();
 
@@ -35,7 +35,7 @@ final class ConvertPaymentActionTest extends TestCase
         $this->assertTrue($action->supports(new Convert(new Payment(), 'array')));
     }
 
-    public function testShouldCorrectlyConvertPaymentToDetailsAndSetItBack()
+    public function testShouldCorrectlyConvertPaymentToDetailsAndSetItBack(): void
     {
         $payment = new Payment();
         $payment->setClientEmail('test@domain.tld');
@@ -82,7 +82,7 @@ final class ConvertPaymentActionTest extends TestCase
         $this->assertEquals(1, $details['line_items'][0]['quantity']);
     }
 
-    public function testShouldNotOverwriteAlreadySetExtraDetails()
+    public function testShouldNotOverwriteAlreadySetExtraDetails(): void
     {
         $payment = new Payment();
         $payment->setClientEmail('test@domain.tld');
@@ -120,7 +120,7 @@ final class ConvertPaymentActionTest extends TestCase
         $this->assertEquals('fooVal', $details['foo']);
     }
 
-    public function testShouldNotOverwriteAlreadySetPaymentMethodTypes()
+    public function testShouldNotOverwriteAlreadySetPaymentMethodTypes(): void
     {
         $payment = new Payment();
         $payment->setClientEmail('test@domain.tld');
@@ -148,7 +148,7 @@ final class ConvertPaymentActionTest extends TestCase
         $this->assertEquals(['alipay'], $details['payment_method_types']);
     }
 
-    public function testShouldNotOverwriteAlreadySetCustomerEmail()
+    public function testShouldNotOverwriteAlreadySetCustomerEmail(): void
     {
         $payment = new Payment();
         $payment->setClientEmail('test@domain.tld');
@@ -186,7 +186,7 @@ final class ConvertPaymentActionTest extends TestCase
         $this->assertEquals('foo@example.tld', $details['customer_email']);
     }
 
-    public function testShouldNotOverwriteAlreadySetLineItems()
+    public function testShouldNotOverwriteAlreadySetLineItems(): void
     {
         $payment = new Payment();
         $payment->setClientEmail('test@domain.tld');

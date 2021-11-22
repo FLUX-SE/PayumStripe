@@ -34,6 +34,7 @@ use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
+use Stripe\ApiResource;
 use Stripe\Charge;
 use Stripe\Checkout\Session;
 use Stripe\Coupon;
@@ -57,7 +58,7 @@ final class RetrieveActionTest extends TestCase
     /**
      * @dataProvider requestList
      */
-    public function testShouldImplements(string $retrieveActionClass)
+    public function testShouldImplements(string $retrieveActionClass): void
     {
         $action = new $retrieveActionClass();
 
@@ -69,12 +70,14 @@ final class RetrieveActionTest extends TestCase
 
     /**
      * @dataProvider requestList
+     *
+     * @param class-string|ApiResource $retrieveClass
      */
     public function testShouldBeRetrieved(
         string $retrieveActionClass,
         string $retrieveRequestClass,
         string $retrieveClass
-    ) {
+    ): void {
         $id = 'pi_1';
 
         $apiMock = $this->createApiMock();
@@ -111,7 +114,7 @@ final class RetrieveActionTest extends TestCase
         $this->assertInstanceOf($retrieveClass, $request->getApiResource());
     }
 
-    public function testShouldThrowExceptionIfApiResourceClassIsNotCreatable()
+    public function testShouldThrowExceptionIfApiResourceClassIsNotCreatable(): void
     {
         $id = 'test_1';
         $action = new class() extends AbstractRetrieveAction {

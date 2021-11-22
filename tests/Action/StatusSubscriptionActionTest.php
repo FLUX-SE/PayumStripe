@@ -17,7 +17,7 @@ final class StatusSubscriptionActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
-    public function testShouldImplements()
+    public function testShouldImplements(): void
     {
         $action = new StatusSubscriptionAction();
 
@@ -26,7 +26,7 @@ final class StatusSubscriptionActionTest extends TestCase
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
     }
 
-    public function testSupportOnlyGetStatusInterfaceAndArrayAccessObject()
+    public function testSupportOnlyGetStatusInterfaceAndArrayAccessObject(): void
     {
         $action = new StatusSubscriptionAction();
 
@@ -47,7 +47,7 @@ final class StatusSubscriptionActionTest extends TestCase
         $this->assertFalse($support);
     }
 
-    public function testShouldMarkUnknownIfNoStatusIsFound()
+    public function testShouldMarkUnknownIfNoStatusIsFound(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -65,7 +65,7 @@ final class StatusSubscriptionActionTest extends TestCase
         $this->assertTrue($request->isUnknown());
     }
 
-    public function testShouldMarkFailedIfErrorIsFound()
+    public function testShouldMarkFailedIfErrorIsFound(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -84,7 +84,7 @@ final class StatusSubscriptionActionTest extends TestCase
         $this->assertTrue($request->isFailed());
     }
 
-    public function testShouldMarkCapturedIfIsASubscriptionObjectAndStatusActive()
+    public function testShouldMarkCapturedIfIsASubscriptionObjectAndStatusActive(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -99,7 +99,7 @@ final class StatusSubscriptionActionTest extends TestCase
         $this->assertTrue($status->isCaptured());
     }
 
-    public function testShouldMarkCapturedIfIsASubscriptionObjectAndStatusIsTrialing()
+    public function testShouldMarkCapturedIfIsASubscriptionObjectAndStatusIsTrialing(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -118,7 +118,7 @@ final class StatusSubscriptionActionTest extends TestCase
         $this->assertTrue($request->isCaptured());
     }
 
-    public function testShouldNotMarkCapturedIfIsASubscriptionObjectAndStatusIsNotAValidStatus()
+    public function testShouldNotMarkCapturedIfIsASubscriptionObjectAndStatusIsNotAValidStatus(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -134,7 +134,7 @@ final class StatusSubscriptionActionTest extends TestCase
         $this->assertTrue($status->isUnknown());
     }
 
-    public function testShouldMarkCanceledIfIsASubscriptionObjectAndStatusIsCanceled()
+    public function testShouldMarkCanceledIfIsASubscriptionObjectAndStatusIsCanceled(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -149,7 +149,7 @@ final class StatusSubscriptionActionTest extends TestCase
         $this->assertTrue($status->isCanceled());
     }
 
-    public function testShouldMarkAsCanceledIfIsASubscriptionObjectAndStatusIncomplete()
+    public function testShouldMarkAsCanceledIfIsASubscriptionObjectAndStatusIncomplete(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -164,7 +164,7 @@ final class StatusSubscriptionActionTest extends TestCase
         $this->assertTrue($status->isNew());
     }
 
-    public function testShouldMarkAsCanceledIfIsASubscriptionObjectAndStatusIncompleteExpired()
+    public function testShouldMarkAsCanceledIfIsASubscriptionObjectAndStatusIncompleteExpired(): void
     {
         $action = $this->createStatusWithGateway();
 

@@ -17,7 +17,7 @@ final class StatusPaymentIntentActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
-    public function testShouldImplements()
+    public function testShouldImplements(): void
     {
         $action = new StatusPaymentIntentAction();
 
@@ -26,7 +26,7 @@ final class StatusPaymentIntentActionTest extends TestCase
         $this->assertNotInstanceOf(ApiAwareInterface::class, $action);
     }
 
-    public function testSupportOnlyGetStatusInterfaceAndArrayAccessObject()
+    public function testSupportOnlyGetStatusInterfaceAndArrayAccessObject(): void
     {
         $action = new StatusPaymentIntentAction();
 
@@ -47,7 +47,7 @@ final class StatusPaymentIntentActionTest extends TestCase
         $this->assertFalse($support);
     }
 
-    public function testShouldMarkUnknownIfNoStatusIsFound()
+    public function testShouldMarkUnknownIfNoStatusIsFound(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -65,7 +65,7 @@ final class StatusPaymentIntentActionTest extends TestCase
         $this->assertTrue($request->isUnknown());
     }
 
-    public function testShouldMarkFailedIfErrorIsFound()
+    public function testShouldMarkFailedIfErrorIsFound(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -84,7 +84,7 @@ final class StatusPaymentIntentActionTest extends TestCase
         $this->assertTrue($request->isFailed());
     }
 
-    public function testShouldMarkCapturedIfIsAPaymentIntentObjectAndStatusSucceeded()
+    public function testShouldMarkCapturedIfIsAPaymentIntentObjectAndStatusSucceeded(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -103,7 +103,7 @@ final class StatusPaymentIntentActionTest extends TestCase
         $this->assertTrue($request->isCaptured());
     }
 
-    public function testShouldMarkAuthorizedIfIsAPaymentIntentObjectAndStatusRequiresCapture()
+    public function testShouldMarkAuthorizedIfIsAPaymentIntentObjectAndStatusRequiresCapture(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -122,7 +122,7 @@ final class StatusPaymentIntentActionTest extends TestCase
         $this->assertTrue($request->isAuthorized());
     }
 
-    public function testShouldNotMarkCapturedIfIsAPaymentIntentObjectAndStatusIsNotAValidStatus()
+    public function testShouldNotMarkCapturedIfIsAPaymentIntentObjectAndStatusIsNotAValidStatus(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -142,7 +142,7 @@ final class StatusPaymentIntentActionTest extends TestCase
         $this->assertTrue($request->isUnknown());
     }
 
-    public function testShouldMarkCanceledIfIsAPaymentIntentObjectAndStatusIsCanceled()
+    public function testShouldMarkCanceledIfIsAPaymentIntentObjectAndStatusIsCanceled(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -161,7 +161,7 @@ final class StatusPaymentIntentActionTest extends TestCase
         $this->assertTrue($request->isCanceled());
     }
 
-    public function testShouldMarkAsCanceledIfIsAPaymentIntentObjectAndStatusRequiresPaymentMethod()
+    public function testShouldMarkAsCanceledIfIsAPaymentIntentObjectAndStatusRequiresPaymentMethod(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -180,7 +180,7 @@ final class StatusPaymentIntentActionTest extends TestCase
         $this->assertTrue($request->isNew());
     }
 
-    public function testShouldMarkAsNewIfIsAPaymentIntentObjectAndStatusRequiresConfirmation()
+    public function testShouldMarkAsNewIfIsAPaymentIntentObjectAndStatusRequiresConfirmation(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -199,7 +199,7 @@ final class StatusPaymentIntentActionTest extends TestCase
         $this->assertTrue($request->isNew());
     }
 
-    public function testShouldMarkAsNewIfIsAPaymentIntentObjectAndStatusRequiresAction()
+    public function testShouldMarkAsNewIfIsAPaymentIntentObjectAndStatusRequiresAction(): void
     {
         $action = $this->createStatusWithGateway();
 
@@ -218,7 +218,7 @@ final class StatusPaymentIntentActionTest extends TestCase
         $this->assertTrue($request->isNew());
     }
 
-    public function testShouldMarkPendingIfIsAPaymentIntentObjectAndStatusIsProcessing()
+    public function testShouldMarkPendingIfIsAPaymentIntentObjectAndStatusIsProcessing(): void
     {
         $action = $this->createStatusWithGateway();
 
