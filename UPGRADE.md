@@ -1,3 +1,8 @@
+# UPGRADE FROM `v2.0.3` TO `v2.0.4`
+
+- twig template `@FluxSEPayumStripe/Action/redirectToCheckout.html.twig` has been removed, the library will now make 
+  a php redirect from the `\Stripe\Checkout\Session::$url` provided by Stripe after creating a Checkout Session.
+
 # UPGRADE FROM `v1.2.3` TO `v2.0.0`
 
 **BC BREAK**: The class `FluxSE\PayumStripe\CaptureAction` has been moved and split into two classes :
