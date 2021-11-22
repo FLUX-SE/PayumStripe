@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\FluxSE\PayumStripe;
 
 use FluxSE\PayumStripe\AbstractStripeGatewayFactory;
-use FluxSE\PayumStripe\Action\StripeCheckoutSession\Api\RedirectToCheckoutAction;
 use FluxSE\PayumStripe\Action\StripeJs\Api\RenderStripeJsAction;
 use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Api\StripeCheckoutSessionApiInterface;
@@ -22,7 +21,7 @@ final class StripeGatewayFactoryTest extends TestCase
     /**
      * @dataProvider gatewayList
      */
-    public function testShouldBeInstanceOf(string $gatewayClass)
+    public function testShouldBeInstanceOf(string $gatewayClass): void
     {
         /** @var AbstractStripeGatewayFactory $factory */
         $factory = new $gatewayClass();
@@ -35,7 +34,7 @@ final class StripeGatewayFactoryTest extends TestCase
     /**
      * @dataProvider gatewayList
      */
-    public function testShouldAllowCreateGatewayConfig(string $gatewayClass)
+    public function testShouldAllowCreateGatewayConfig(string $gatewayClass): void
     {
         /** @var AbstractStripeGatewayFactory $factory */
         $factory = new $gatewayClass();
@@ -49,7 +48,7 @@ final class StripeGatewayFactoryTest extends TestCase
     /**
      * @dataProvider gatewayList
      */
-    public function testShouldAddDefaultConfigPassedInConstructorWhileCreatingGatewayConfig(string $gatewayClass)
+    public function testShouldAddDefaultConfigPassedInConstructorWhileCreatingGatewayConfig(string $gatewayClass): void
     {
         $defaults = [
             'foo' => 'fooVal',
@@ -73,7 +72,7 @@ final class StripeGatewayFactoryTest extends TestCase
     /**
      * @dataProvider gatewayList
      */
-    public function testShouldConfigContainDefaultOptions(string $gatewayClass)
+    public function testShouldConfigContainDefaultOptions(string $gatewayClass): void
     {
         /** @var AbstractStripeGatewayFactory $factory */
         $factory = new $gatewayClass();
@@ -101,7 +100,7 @@ final class StripeGatewayFactoryTest extends TestCase
     /**
      * @dataProvider gatewayList
      */
-    public function testShouldThrowIfRequiredOptionsNotPassed(string $gatewayClass)
+    public function testShouldThrowIfRequiredOptionsNotPassed(string $gatewayClass): void
     {
         /** @var AbstractStripeGatewayFactory $factory */
         $factory = new $gatewayClass();
@@ -115,7 +114,7 @@ final class StripeGatewayFactoryTest extends TestCase
     /**
      * @dataProvider gatewayList
      */
-    public function testShouldConfigurePaths(string $gatewayClass)
+    public function testShouldConfigurePaths(string $gatewayClass): void
     {
         /** @var AbstractStripeGatewayFactory $factory */
         $factory = new $gatewayClass();
@@ -130,17 +129,17 @@ final class StripeGatewayFactoryTest extends TestCase
 
         $this->assertArrayHasKey('PayumCore', $config['payum.paths']);
         $this->assertStringEndsWith('Resources/views', $config['payum.paths']['PayumCore']);
-        $this->assertTrue(file_exists($config['payum.paths']['PayumCore']));
+        $this->assertFileExists($config['payum.paths']['PayumCore']);
 
         $this->assertArrayHasKey('FluxSEPayumStripe', $config['payum.paths']);
         $this->assertStringEndsWith('Resources/views', $config['payum.paths']['FluxSEPayumStripe']);
-        $this->assertTrue(file_exists($config['payum.paths']['FluxSEPayumStripe']));
+        $this->assertFileExists($config['payum.paths']['FluxSEPayumStripe']);
     }
 
     /**
      * @dataProvider gatewayList
      */
-    public function testShouldAcceptDefaultOptions(string $gatewayClass)
+    public function testShouldAcceptDefaultOptions(string $gatewayClass): void
     {
         $defaults = [
             'publishable_key' => '123456',
@@ -183,7 +182,7 @@ final class StripeGatewayFactoryTest extends TestCase
         ];
     }
 
-    public function testShouldConfigContainFactoryNameAndTitleForCheckoutSession()
+    public function testShouldConfigContainFactoryNameAndTitleForCheckoutSession(): void
     {
         $factory = new StripeCheckoutSessionGatewayFactory();
 
@@ -196,14 +195,9 @@ final class StripeGatewayFactoryTest extends TestCase
 
         $this->assertArrayHasKey('payum.factory_title', $config);
         $this->assertEquals('Stripe Checkout Session', $config['payum.factory_title']);
-
-        $redirectToCheckoutAction = $config['payum.action.redirect_to_checkout'](
-            ArrayObject::ensureArrayObject($config)
-        );
-        $this->assertInstanceOf(RedirectToCheckoutAction::class, $redirectToCheckoutAction);
     }
 
-    public function testShouldConfigContainFactoryNameAndTitle()
+    public function testShouldConfigContainFactoryNameAndTitle(): void
     {
         $factory = new StripeJsGatewayFactory();
 

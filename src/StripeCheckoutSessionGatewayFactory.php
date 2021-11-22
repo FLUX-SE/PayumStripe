@@ -25,9 +25,6 @@ final class StripeCheckoutSessionGatewayFactory extends AbstractStripeGatewayFac
             'payum.factory_name' => 'stripe_checkout_session',
             'payum.factory_title' => 'Stripe Checkout Session',
 
-            // Templates
-            'payum.template.redirect_to_checkout' => '@FluxSEPayumStripe/Action/redirectToCheckout.html.twig',
-
             // Webhook event resolver
             'payum.action.checkout_session_completed' => new CheckoutSessionCompletedAction(),
 
@@ -35,9 +32,7 @@ final class StripeCheckoutSessionGatewayFactory extends AbstractStripeGatewayFac
             'payum.action.capture' => new CaptureAction(),
             'payum.action.authorize' => new AuthorizeAction(),
             'payum.action.convert_payment' => new ConvertPaymentAction(),
-            'payum.action.redirect_to_checkout' => function (ArrayObject $config) {
-                return new RedirectToCheckoutAction($config['payum.template.redirect_to_checkout']);
-            },
+            'payum.action.redirect_to_checkout' => new RedirectToCheckoutAction(),
         ]);
     }
 

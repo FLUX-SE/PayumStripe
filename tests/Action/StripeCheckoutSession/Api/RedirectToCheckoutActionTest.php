@@ -2,15 +2,11 @@
 
 namespace Tests\FluxSE\PayumStripe\Action\StripeCheckoutSession\Api;
 
-use ArrayObject;
 use FluxSE\PayumStripe\Action\StripeCheckoutSession\Api\RedirectToCheckoutAction;
-use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Request\StripeCheckoutSession\Api\RedirectToCheckout;
 use Payum\Core\Action\ActionInterface;
-use Payum\Core\ApiAwareInterface;
-use Payum\Core\GatewayAwareInterface;
-use Payum\Core\Reply\HttpResponse;
-use Payum\Core\Request\RenderTemplate;
+use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Core\Reply\HttpRedirect;
 use PHPUnit\Framework\TestCase;
 use Tests\FluxSE\PayumStripe\Action\Api\ApiAwareActionTestTrait;
 use Tests\FluxSE\PayumStripe\Action\GatewayAwareTestTrait;
@@ -20,55 +16,40 @@ final class RedirectToCheckoutActionTest extends TestCase
     use ApiAwareActionTestTrait;
     use GatewayAwareTestTrait;
 
-    public function testShouldImplements()
+    public function testShouldImplements(): void
     {
-        $action = new RedirectToCheckoutAction('aTemplateName');
+        $action = new RedirectToCheckoutAction();
 
         $this->assertInstanceOf(ActionInterface::class, $action);
-        $this->assertInstanceOf(ApiAwareInterface::class, $action);
-        $this->assertInstanceOf(GatewayAwareInterface::class, $action);
     }
 
-    public function testShouldNotSupportObtainTokenRequestWithNotArrayAccessModel()
+    public function testShouldNotSupportModelWithoutUrl(): void
     {
         $model = [];
-        $action = new RedirectToCheckoutAction('aTemplateName');
-
-        $gatewayMock = $this->createGatewayMock();
-        $gatewayMock
-            ->expects($this->once())
-            ->method('execute')
-            ->with($this->isInstanceOf(RenderTemplate::class))
-            ->will($this->returnCallback(function (RenderTemplate $request) use ($model) {
-                $parameters = $request->getParameters();
-                $this->assertEquals('aTemplateName', $request->getTemplateName());
-                $this->assertIsArray($parameters);
-                $this->assertArrayHasKey('model', $parameters);
-                $this->assertArrayHasKey('publishable_key', $parameters);
-                $this->assertEquals([
-                    'model' => new ArrayObject($model),
-                    'publishable_key' => '',
-                ], $parameters);
-                $request->setResult('');
-            }));
-
-        $apiMock = $this->createApiMock(false);
-        $apiMock
-            ->expects($this->once())
-            ->method('getPublishableKey')
-            ->willReturn('')
-        ;
-
-        $action->setApiClass(KeysAwareInterface::class);
-        $action->setGateway($gatewayMock);
-        $action->setApi($apiMock);
+        $action = new RedirectToCheckoutAction();
 
         $request = new RedirectToCheckout($model);
 
         $supports = $action->supports($request);
         $this->assertTrue($supports);
 
-        $this->expectException(HttpResponse::class);
+        $this->expectException(RequestNotSupportedException::class);
+        $action->execute($request);
+    }
+
+    public function testShouldSupportAndRedirect(): void
+    {
+        $model = [
+            'url' => 'https://localhost',
+        ];
+        $action = new RedirectToCheckoutAction();
+
+        $request = new RedirectToCheckout($model);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $this->expectException(HttpRedirect::class);
         $action->execute($request);
     }
 }
