@@ -8,15 +8,16 @@
 {% block payum_body %}
     {{ parent() }}
 
-    <form action="{{ action_url|default('') }}" method="POST" name="payment-form" id="payment-form" data-secret="{{ model.client_secret }}">
-        <div id="card-element">
-            <!-- Elements will create input elements here -->
+    <form id="payment-form">
+        <div id="payment-element">
+            <!-- Elements will create form elements here -->
         </div>
 
-        <!-- We'll put the error messages in this element -->
-        <div id="card-errors" role="alert"></div>
+        <button type="submit" disabled>Pay</button>
 
-        <button type="submit">Pay</button>
+        <div id="error-message" class="hidden">
+            <!-- Display error message to your customers here -->
+        </div>
     </form>
 {% endblock %}
 
@@ -24,22 +25,10 @@
     <script src="https://js.stripe.com/v3/"></script>
 {% endblock %}
 
-{% block payum_javascripts_stripejs_style %}
+{% block payum_javascripts_stripejs_appearance %}
     <script type="text/javascript">
-        var style = {
-            base: {
-                color: '#32325d',
-                fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-                fontSmoothing: 'antialiased',
-                fontSize: '16px',
-                '::placeholder': {
-                    color: '#aab7c4'
-                }
-            },
-            invalid: {
-                color: '#fa755a',
-                iconColor: '#fa755a'
-            }
+        var appearance = {
+            theme: 'stripe'
         };
     </script>
 {% endblock %}
@@ -47,53 +36,67 @@
 {% block payum_javascripts_stripejs_common %}
     <script type="text/javascript">
         var stripe = Stripe('{{ publishable_key }}');
-        var elements = stripe.elements();
+        var options = {
+            clientSecret: '{{ model.client_secret }}',
+            appearance: appearance,
+        };
+
+        var elements = stripe.elements(options);
 
         if (typeof confirmCardPaymentData === 'undefined') {
             window.confirmCardPaymentData = {};
         }
+
         if (typeof confirmCardPaymentOptions === 'undefined') {
             window.confirmCardPaymentOptions = {};
         }
 
+        confirmCardPaymentData.elements = elements;
+        var action_url = '{{ action_url|default('') }}';
+        confirmCardPaymentData.confirmParams = {
+            return_url: action_url ?? window.location.href,
+        };
+
         var submitPaymentIntent = function() {
             changeLoadingState(true);
+            hideError();
 
-            stripe.confirmCardPayment(form.dataset['secret'], confirmCardPaymentData, confirmCardPaymentOptions)
-                .then(function (result) {
-                    if (result.error) {
+            stripe.confirmPayment(confirmCardPaymentData, confirmCardPaymentOptions)
+                .then(function (e) {
+                    if (e) {
                         changeLoadingState(false);
                         // Show error to your customer
-                        showError(result.error.message);
-                    } else {
-                        form.submit();
+                        showError(e.error.message);
                     }
                 });
         };
 
+        var displayError = document.getElementById('error-message');
+
         var showError = function(errorMsgText) {
-            var displayError = document.getElementById('card-errors');
+            displayError.classList.remove('hidden');
+            displayError.textContent = errorMsgText;
+        };
+
+        var hideError = function(errorMsgText) {
+            displayError.classList.add('hidden');
             displayError.textContent = errorMsgText;
         };
 
         // Show a spinner on payment submission
         var changeLoadingState = function(isLoading) {
-            form.querySelector("button").disabled = !!isLoading;
+            form.querySelector("button[type='submit']").disabled = !!isLoading;
         };
 
-        // Create an instance of the card Element.
-        var card = elements.create('card', {style: style});
-
-        confirmCardPaymentData['payment_method'] = {
-            card: card,
-        };
+        // Create an instance of the payment Element.
+        var paymentElement = elements.create('payment');
 
         // Add an instance of the card Element into the `card-element` <div>.
-        card.mount('#card-element');
+        paymentElement.mount('#payment-element');
 
-        // Handle real-time validation errors from the card Element.
-        card.addEventListener('change', function(event) {
-            showError(event.error ? event.error.message : '');
+        // Enable submit button when the payment elements are ready
+        paymentElement.on('ready', function() {
+            changeLoadingState(false);
         });
 
         // Handle form submission.
@@ -107,32 +110,20 @@
 
 {% block payum_stylesheets_stripejs_common %}
     <style type="text/css">
-        .StripeElement {
-            box-sizing: border-box;
-
-            height: 40px;
-
-            padding: 10px 12px;
-
-            border: 1px solid transparent;
-            border-radius: 4px;
-            background-color: white;
-
-            box-shadow: 0 1px 3px 0 #e6ebf1;
-            -webkit-transition: box-shadow 150ms ease;
-            transition: box-shadow 150ms ease;
+        .hidden {
+            display: none;
         }
 
-        .StripeElement--focus {
-            box-shadow: 0 1px 3px 0 #cfd7df;
+        #payment-element {
+            margin-bottom: 10px;
         }
 
-        .StripeElement--invalid {
-            border-color: #fa755a;
-        }
-
-        .StripeElement--webkit-autofill {
-            background-color: #fefde5 !important;
+        #error-message {
+            text-align: center;
+            margin-top: 10px;
+            padding: 10px;
+            color: #000;
+            background-color: #ff6b68;
         }
     </style>
 {% endblock %}
@@ -144,7 +135,7 @@
 
 {% block payum_javascripts %}
     {{ parent() }}
-    {{ block('payum_javascripts_stripejs_style') }}
+    {{ block('payum_javascripts_stripejs_appearance') }}
     {{ block('payum_javascripts_stripejs_common') }}
 {% endblock %}
 

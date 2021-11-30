@@ -64,8 +64,8 @@ final class StripeJsPaymentIntentTest extends TestCase
             'action_url' => 'https://anUrl',
         ]);
 
-        $this->assertStringContainsString('action="https://anUrl"', $result);
-        $this->assertStringContainsString('data-secret="aClientSecret"', $result);
+        $this->assertStringContainsString('action_url = \'https://anUrl\'', $result);
+        $this->assertStringContainsString('clientSecret: \'aClientSecret\'', $result);
         $this->assertStringContainsString('https://js.stripe.com/v3/', $result);
         $this->assertStringContainsString('Stripe(\'theKey\')', $result);
     }
