@@ -6,14 +6,18 @@ namespace Tests\FluxSE\PayumStripe\Action\Api\Resource;
 
 use FluxSE\PayumStripe\Action\Api\Resource\AbstractRetrieveAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CancelPaymentIntentAction;
+use FluxSE\PayumStripe\Action\Api\Resource\CancelSetupIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CancelSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CapturePaymentIntentAction;
+use FluxSE\PayumStripe\Action\Api\Resource\ExpireSessionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveResourceActionInterface;
 use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractCustomCall;
 use FluxSE\PayumStripe\Request\Api\Resource\CancelPaymentIntent;
+use FluxSE\PayumStripe\Request\Api\Resource\CancelSetupIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\CancelSubscription;
 use FluxSE\PayumStripe\Request\Api\Resource\CapturePaymentIntent;
+use FluxSE\PayumStripe\Request\Api\Resource\ExpireSession;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
@@ -21,6 +25,7 @@ use PHPUnit\Framework\TestCase;
 use Stripe\ApiRequestor;
 use Stripe\ApiResource;
 use Stripe\PaymentIntent;
+use Stripe\SetupIntent;
 use Stripe\Stripe;
 use Stripe\Subscription;
 use Tests\FluxSE\PayumStripe\Action\Api\ApiAwareActionTestTrait;
@@ -119,6 +124,8 @@ final class CustomCallActionTest extends TestCase
     {
         return [
             [['post', '/cancel'], CancelPaymentIntentAction::class, CancelPaymentIntent::class, PaymentIntent::class],
+            [['post', '/cancel'], CancelSetupIntentAction::class, CancelSetupIntent::class, SetupIntent::class],
+            [['post', '/expire'], ExpireSessionAction::class, ExpireSession::class, Subscription::class],
             [['delete', null], CancelSubscriptionAction::class, CancelSubscription::class, Subscription::class],
             [['post', '/capture'], CapturePaymentIntentAction::class, CapturePaymentIntent::class, PaymentIntent::class],
         ];
