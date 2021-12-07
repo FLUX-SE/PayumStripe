@@ -33,7 +33,7 @@ class StatusSessionAction extends AbstractStatusAction
         return in_array($status, [
             Session::PAYMENT_STATUS_NO_PAYMENT_REQUIRED,
             Session::PAYMENT_STATUS_UNPAID,
-        ]);
+        ], true);
     }
 
     public function getSupportedObjectName(): string

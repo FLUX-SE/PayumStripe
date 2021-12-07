@@ -39,7 +39,7 @@ class StatusSubscriptionAction extends AbstractStatusAction
         return in_array($status, [
             Subscription::STATUS_ACTIVE,
             Subscription::STATUS_TRIALING,
-        ]);
+        ], true);
     }
 
     protected function isCanceledStatus(string $status): bool
@@ -47,14 +47,12 @@ class StatusSubscriptionAction extends AbstractStatusAction
         return in_array($status, [
             Subscription::STATUS_INCOMPLETE_EXPIRED, // Customer use the "cancel_url" after 23h timeout (weird but possible)
             Subscription::STATUS_CANCELED,
-        ]);
+        ], true);
     }
 
     protected function isNewStatus(string $status): bool
     {
-        return in_array($status, [
-            Subscription::STATUS_INCOMPLETE, // Customer use the "cancel_url"
-        ]);
+        return $status === Subscription::STATUS_INCOMPLETE;
     }
 
     public function getSupportedObjectName(): string
