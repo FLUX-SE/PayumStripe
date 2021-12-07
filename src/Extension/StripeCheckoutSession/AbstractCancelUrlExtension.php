@@ -11,6 +11,7 @@ use Payum\Core\Extension\Context;
 use Payum\Core\Extension\ExtensionInterface;
 use Payum\Core\Request\GetStatusInterface;
 use Payum\Core\Request\Sync;
+use Payum\Core\Security\TokenAggregateInterface;
 use Stripe\Exception\ApiErrorException;
 
 abstract class AbstractCancelUrlExtension implements ExtensionInterface
@@ -33,9 +34,13 @@ abstract class AbstractCancelUrlExtension implements ExtensionInterface
             return;
         }
 
-        /** @var mixed|GetStatusInterface $request */
+        /** @var mixed|GetStatusInterface|TokenAggregateInterface $request */
         $request = $context->getRequest();
         if (false === $request instanceof GetStatusInterface) {
+            return;
+        }
+
+        if (false === $request instanceof TokenAggregateInterface) {
             return;
         }
 
