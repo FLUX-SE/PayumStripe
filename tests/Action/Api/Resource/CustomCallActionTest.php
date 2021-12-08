@@ -17,6 +17,7 @@ use FluxSE\PayumStripe\Request\Api\Resource\CancelPaymentIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\CancelSetupIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\CancelSubscription;
 use FluxSE\PayumStripe\Request\Api\Resource\CapturePaymentIntent;
+use FluxSE\PayumStripe\Request\Api\Resource\CustomCallInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\ExpireSession;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -53,6 +54,8 @@ final class CustomCallActionTest extends TestCase
     /**
      * @dataProvider requestList
      *
+     * @param class-string|RetrieveResourceActionInterface $customCallActionClass
+     * @param class-string|AbstractCustomCall $customCallRequestClass
      * @param class-string|ApiResource $customCallClass
      */
     public function testShouldCallCustom(
@@ -99,7 +102,7 @@ final class CustomCallActionTest extends TestCase
                     json_encode([
                         'object' => $customCallClass::OBJECT_NAME,
                         'id' => $id,
-                    ]),
+                    ], JSON_THROW_ON_ERROR),
                     200,
                     [],
                 ],

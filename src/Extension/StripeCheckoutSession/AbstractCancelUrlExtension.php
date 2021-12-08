@@ -6,9 +6,10 @@ namespace FluxSE\PayumStripe\Extension\StripeCheckoutSession;
 
 use ArrayAccess;
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractCustomCall;
-use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Extension\Context;
 use Payum\Core\Extension\ExtensionInterface;
+use Payum\Core\GatewayInterface;
+use Payum\Core\Request\GetHttpRequest;
 use Payum\Core\Request\GetStatusInterface;
 use Payum\Core\Security\TokenAggregateInterface;
 use Stripe\Exception\ApiErrorException;
@@ -39,31 +40,29 @@ abstract class AbstractCancelUrlExtension implements ExtensionInterface
             return;
         }
 
-        if (false === $request instanceof TokenAggregateInterface) {
-            return;
-        }
-
-        // Avoid processing custom GetStatusInterface requests
-        // outside a Payum controller consuming a token
-        if (null === $request->getToken()) {
-            return;
-        }
-
         if (false === $request->isNew()) {
             return;
         }
 
-        if (false === $request->getModel() instanceof ArrayAccess) {
+        $model = $request->getModel();
+        if (false === $model instanceof ArrayAccess) {
             return;
         }
 
-        $model = ArrayObject::ensureArrayObject($request->getModel());
         if ($this->getSupportedObjectName() !== $model->offsetGet('object')) {
             return;
         }
 
-        $id = $model->offsetGet('id');
         $gateway = $context->getGateway();
+
+        // Avoid processing custom GetStatusInterface requests outside
+        // a Payum controller consuming a token
+        if (false === $this->isDuringCancelUrlCall($request, $gateway)) {
+            return;
+        }
+
+        /** @var string|null $id */
+        $id = $model->offsetGet('id');
         $cancelRequest = $this->createNewRequest($id);
         try {
             $gateway->execute($cancelRequest);
@@ -73,6 +72,31 @@ abstract class AbstractCancelUrlExtension implements ExtensionInterface
 
         // Cancel the payment
         $request->markCanceled();
+    }
+
+    /**
+     * @param GetStatusInterface|TokenAggregateInterface $request
+     */
+    protected function isDuringCancelUrlCall(GetStatusInterface $request, GatewayInterface $gateway): bool
+    {
+        if (false === $request instanceof TokenAggregateInterface) {
+            return false;
+        }
+
+        $token = $request->getToken();
+        if (null === $token) {
+            return false;
+        }
+
+        $targetUrl = $token->getTargetUrl() ?? '';
+        if (empty($targetUrl)) {
+            return false;
+        }
+
+        $getHttpRequest = new GetHttpRequest();
+        $gateway->execute($getHttpRequest);
+
+        return false !== strpos($targetUrl, $getHttpRequest->uri);
     }
 
     abstract public function getSupportedObjectName(): string;
