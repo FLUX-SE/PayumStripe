@@ -105,7 +105,7 @@ final class CancelUrlExtensionTest extends TestCase
             ->method('execute')
             ->withConsecutive(
                 [$this->isInstanceOf(GetHttpRequest::class)],
-                [$this->isInstanceOf($requestClass)],
+                [$this->isInstanceOf($requestClass)]
             )
             ->willReturnOnConsecutiveCalls(
                 $this->returnCallback(function (GetHttpRequest $request) use ($uri) {
@@ -286,7 +286,7 @@ final class CancelUrlExtensionTest extends TestCase
             ->method('execute')
             ->withConsecutive(
                 [$this->isInstanceOf(GetHttpRequest::class)],
-                [$this->isInstanceOf($requestClass)],
+                [$this->isInstanceOf($requestClass)]
             )
             ->willReturnOnConsecutiveCalls(
                 $this->returnCallback(function (GetHttpRequest $request) use ($uri) {
