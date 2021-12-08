@@ -61,8 +61,8 @@ abstract class AbstractCancelUrlExtension implements ExtensionInterface
             return;
         }
 
-        /** @var string|null $id */
-        $id = $model->offsetGet('id');
+        /** @var string $id */
+        $id = $model->offsetGet('id') ?? '';
         $cancelRequest = $this->createNewRequest($id);
         try {
             $gateway->execute($cancelRequest);
@@ -74,9 +74,6 @@ abstract class AbstractCancelUrlExtension implements ExtensionInterface
         $request->markCanceled();
     }
 
-    /**
-     * @param GetStatusInterface|TokenAggregateInterface $request
-     */
     protected function isDuringCancelUrlCall(GetStatusInterface $request, GatewayInterface $gateway): bool
     {
         if (false === $request instanceof TokenAggregateInterface) {

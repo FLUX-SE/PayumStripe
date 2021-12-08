@@ -33,15 +33,15 @@ final class CancelUrlExtensionTest extends TestCase
      * @dataProvider extensionList
      *
      * @param class-string|AbstractCancelUrlExtension $extensionClass
-     * @param class-string|ApiResource $apiResourceClass
-     * @param class-string|CustomCallInterface $requestClass
+     * @param class-string|ApiResource                $apiResourceClass
+     * @param class-string|CustomCallInterface        $requestClass
      */
     public function testOnExecute(
         string $extensionClass,
         string $apiResourceClass,
         string $requestClass
     ): void {
-        $request =  new GetHumanStatus([]);
+        $request = new GetHumanStatus([]);
 
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock->expects($this->never())
@@ -58,15 +58,15 @@ final class CancelUrlExtensionTest extends TestCase
      * @dataProvider extensionList
      *
      * @param class-string|AbstractCancelUrlExtension $extensionClass
-     * @param class-string|ApiResource $apiResourceClass
-     * @param class-string|CustomCallInterface $requestClass
+     * @param class-string|ApiResource                $apiResourceClass
+     * @param class-string|CustomCallInterface        $requestClass
      */
     public function testOnPreExecute(
         string $extensionClass,
         string $apiResourceClass,
         string $requestClass
     ): void {
-        $request =  new GetHumanStatus([]);
+        $request = new GetHumanStatus([]);
 
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock->expects($this->never())
@@ -83,15 +83,14 @@ final class CancelUrlExtensionTest extends TestCase
      * @dataProvider extensionList
      *
      * @param class-string|AbstractCancelUrlExtension $extensionClass
-     * @param class-string|ApiResource $apiResourceClass
-     * @param class-string|CustomCallInterface $requestClass
+     * @param class-string|ApiResource                $apiResourceClass
+     * @param class-string|CustomCallInterface        $requestClass
      */
     public function testOnPostExecute(
         string $extensionClass,
         string $apiResourceClass,
         string $requestClass
     ): void {
-
         $model = [
             'id' => 'pi_1',
             'object' => $apiResourceClass::OBJECT_NAME,
@@ -132,8 +131,8 @@ final class CancelUrlExtensionTest extends TestCase
      * @dataProvider extensionList
      *
      * @param class-string|AbstractCancelUrlExtension $extensionClass
-     * @param class-string|ApiResource $apiResourceClass
-     * @param class-string|CustomCallInterface $requestClass
+     * @param class-string|ApiResource                $apiResourceClass
+     * @param class-string|CustomCallInterface        $requestClass
      */
     public function testOnPostExecuteDoNothing(
         string $extensionClass,
@@ -183,7 +182,7 @@ final class CancelUrlExtensionTest extends TestCase
         $extension->onPostExecute($context);
 
         $model = [
-            'object' => $apiResourceClass::OBJECT_NAME
+            'object' => $apiResourceClass::OBJECT_NAME,
         ];
         $request->setModel($model);
 
@@ -216,8 +215,8 @@ final class CancelUrlExtensionTest extends TestCase
      * @dataProvider extensionList
      *
      * @param class-string|AbstractCancelUrlExtension $extensionClass
-     * @param class-string|ApiResource $apiResourceClass
-     * @param class-string|CustomCallInterface $requestClass
+     * @param class-string|ApiResource                $apiResourceClass
+     * @param class-string|CustomCallInterface        $requestClass
      */
     public function testOnPostExecuteExecuteGetHttpRequestButNothingElse(
         string $extensionClass,
@@ -225,7 +224,7 @@ final class CancelUrlExtensionTest extends TestCase
         string $requestClass
     ): void {
         $model = [
-            'object' => $apiResourceClass::OBJECT_NAME
+            'object' => $apiResourceClass::OBJECT_NAME,
         ];
 
         $wrongUri = '/done.php?payum_token=321-cba';
@@ -260,8 +259,8 @@ final class CancelUrlExtensionTest extends TestCase
      * @dataProvider extensionList
      *
      * @param class-string|AbstractCancelUrlExtension $extensionClass
-     * @param class-string|ApiResource $apiResourceClass
-     * @param class-string|CustomCallInterface $requestClass
+     * @param class-string|ApiResource                $apiResourceClass
+     * @param class-string|CustomCallInterface        $requestClass
      */
     public function testOnPostExecuteThrowApiErrorExceptionOnSecondExecute(
         string $extensionClass,
