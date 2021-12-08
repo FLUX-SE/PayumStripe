@@ -101,7 +101,7 @@ final class CustomCallActionTest extends TestCase
                     json_encode([
                         'object' => $customCallClass::OBJECT_NAME,
                         'id' => $id,
-                    ], JSON_THROW_ON_ERROR),
+                    ]),
                     200,
                     [],
                 ],
