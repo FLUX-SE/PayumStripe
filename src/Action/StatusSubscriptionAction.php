@@ -52,7 +52,7 @@ class StatusSubscriptionAction extends AbstractStatusAction
 
     protected function isNewStatus(string $status): bool
     {
-        return $status === Subscription::STATUS_INCOMPLETE;
+        return Subscription::STATUS_INCOMPLETE === $status;
     }
 
     public function getSupportedObjectName(): string

@@ -10,7 +10,6 @@ use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Extension\Context;
 use Payum\Core\Extension\ExtensionInterface;
 use Payum\Core\Request\GetStatusInterface;
-use Payum\Core\Request\Sync;
 use Payum\Core\Security\TokenAggregateInterface;
 use Stripe\Exception\ApiErrorException;
 

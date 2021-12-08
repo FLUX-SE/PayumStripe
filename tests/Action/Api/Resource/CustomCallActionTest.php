@@ -24,6 +24,7 @@ use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
 use Stripe\ApiRequestor;
 use Stripe\ApiResource;
+use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
 use Stripe\SetupIntent;
 use Stripe\Stripe;
@@ -125,7 +126,7 @@ final class CustomCallActionTest extends TestCase
         return [
             [['post', '/cancel'], CancelPaymentIntentAction::class, CancelPaymentIntent::class, PaymentIntent::class],
             [['post', '/cancel'], CancelSetupIntentAction::class, CancelSetupIntent::class, SetupIntent::class],
-            [['post', '/expire'], ExpireSessionAction::class, ExpireSession::class, Subscription::class],
+            [['post', '/expire'], ExpireSessionAction::class, ExpireSession::class, Session::class],
             [['delete', null], CancelSubscriptionAction::class, CancelSubscription::class, Subscription::class],
             [['post', '/capture'], CapturePaymentIntentAction::class, CapturePaymentIntent::class, PaymentIntent::class],
         ];

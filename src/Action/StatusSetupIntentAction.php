@@ -45,7 +45,7 @@ class StatusSetupIntentAction extends AbstractStatusAction
      */
     protected function isCanceledStatus(string $status): bool
     {
-        return $status === SetupIntent::STATUS_CANCELED;
+        return SetupIntent::STATUS_CANCELED === $status;
     }
 
     protected function isNewStatus(string $status): bool

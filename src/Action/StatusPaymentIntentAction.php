@@ -51,7 +51,7 @@ class StatusPaymentIntentAction extends AbstractStatusAction
      */
     protected function isCanceledStatus(string $status): bool
     {
-        return $status === PaymentIntent::STATUS_CANCELED;
+        return PaymentIntent::STATUS_CANCELED === $status;
     }
 
     protected function isNewStatus(string $status): bool

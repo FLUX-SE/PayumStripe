@@ -13,9 +13,8 @@ use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Api\StripeCheckoutSessionApi;
 use FluxSE\PayumStripe\Api\StripeCheckoutSessionApiInterface;
 use FluxSE\PayumStripe\Extension\StripeCheckoutSession\CancelUrlCancelPaymentIntentExtension;
-use FluxSE\PayumStripe\Extension\StripeCheckoutSession\CancelUrlExpireSessionExtension;
 use FluxSE\PayumStripe\Extension\StripeCheckoutSession\CancelUrlCancelSetupIntentExtension;
-use FluxSE\PayumStripe\Extension\StripeCheckoutSession\AfterCaptureCancelSubscriptionExtension;
+use FluxSE\PayumStripe\Extension\StripeCheckoutSession\CancelUrlExpireSessionExtension;
 use Payum\Core\Bridge\Spl\ArrayObject;
 
 final class StripeCheckoutSessionGatewayFactory extends AbstractStripeGatewayFactory
