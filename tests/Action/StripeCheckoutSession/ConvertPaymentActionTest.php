@@ -51,7 +51,7 @@ final class ConvertPaymentActionTest extends TestCase
         $apiMock
             ->expects($this->once())
             ->method('getPaymentMethodTypes')
-            ->willReturn(['card'])
+            ->willReturn([])
         ;
 
         $action->setApiClass(KeysAwareInterface::class);
@@ -73,7 +73,7 @@ final class ConvertPaymentActionTest extends TestCase
         $this->assertArrayHasKey('amount', $details['line_items'][0]);
         $this->assertArrayHasKey('currency', $details['line_items'][0]);
         $this->assertArrayHasKey('quantity', $details['line_items'][0]);
-        $this->assertArrayHasKey('payment_method_types', $details);
+        $this->assertArrayNotHasKey('payment_method_types', $details);
 
         $this->assertEquals('test@domain.tld', $details['customer_email']);
         $this->assertEquals('the description', $details['line_items'][0]['name']);
@@ -101,7 +101,7 @@ final class ConvertPaymentActionTest extends TestCase
         $apiMock
             ->expects($this->once())
             ->method('getPaymentMethodTypes')
-            ->willReturn(['card'])
+            ->willReturn([])
         ;
 
         $action->setApiClass(KeysAwareInterface::class);
@@ -135,6 +135,16 @@ final class ConvertPaymentActionTest extends TestCase
 
         $action = new ConvertPaymentAction();
 
+        $apiMock = $this->createApiMock(false);
+        $apiMock
+            ->expects($this->once())
+            ->method('getPaymentMethodTypes')
+            ->willReturn([])
+        ;
+
+        $action->setApiClass(KeysAwareInterface::class);
+        $action->setApi($apiMock);
+
         $supports = $action->supports($request);
         $this->assertTrue($supports);
 
@@ -167,7 +177,7 @@ final class ConvertPaymentActionTest extends TestCase
         $apiMock
             ->expects($this->once())
             ->method('getPaymentMethodTypes')
-            ->willReturn(['card'])
+            ->willReturn([])
         ;
 
         $action->setApiClass(KeysAwareInterface::class);
@@ -205,7 +215,7 @@ final class ConvertPaymentActionTest extends TestCase
         $apiMock
             ->expects($this->once())
             ->method('getPaymentMethodTypes')
-            ->willReturn(['card'])
+            ->willReturn([])
         ;
 
         $action->setApiClass(KeysAwareInterface::class);
