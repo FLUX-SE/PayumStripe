@@ -12,9 +12,9 @@ final class RenderStripeJs extends Generic
     /** @var string */
     private $actionUrl;
 
-    public function __construct(ApiResource $paymentIntent, string $actionUrl)
+    public function __construct(ApiResource $apiResource, string $actionUrl)
     {
-        parent::__construct($paymentIntent);
+        parent::__construct($apiResource);
         $this->actionUrl = $actionUrl;
     }
 
