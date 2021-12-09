@@ -1,4 +1,6 @@
 {# @var model \Stripe\PaymentIntent #}
+{# @var publishable_key string #}
+{# @var action_url string #}
 {% extends layout ?: "@PayumCore/layout.html.twig" %}
 
 {% block payum_stripejs_head %}
@@ -9,15 +11,11 @@
     {{ parent() }}
 
     <form id="payment-form">
-        <div id="payment-element">
-            <!-- Elements will create form elements here -->
-        </div>
+        <div id="payment-element"></div>
 
         <button type="submit" disabled>Pay</button>
 
-        <div id="error-message" class="hidden">
-            <!-- Display error message to your customers here -->
-        </div>
+        <div id="error-message" class="hidden"></div>
     </form>
 {% endblock %}
 
@@ -43,17 +41,13 @@
 
         var elements = stripe.elements(options);
 
-        if (typeof confirmCardPaymentData === 'undefined') {
-            window.confirmCardPaymentData = {};
+        if (typeof confirmPaymentOptions === 'undefined') {
+            window.confirmPaymentOptions = {};
         }
 
-        if (typeof confirmCardPaymentOptions === 'undefined') {
-            window.confirmCardPaymentOptions = {};
-        }
-
-        confirmCardPaymentData.elements = elements;
+        confirmPaymentOptions.elements = elements;
         var action_url = '{{ action_url|default('') }}';
-        confirmCardPaymentData.confirmParams = {
+        confirmPaymentOptions.confirmParams = {
             return_url: action_url ?? window.location.href,
         };
 
@@ -61,7 +55,7 @@
             changeLoadingState(true);
             hideError();
 
-            stripe.confirmPayment(confirmCardPaymentData, confirmCardPaymentOptions)
+            stripe.confirmPayment(confirmPaymentOptions)
                 .then(function (e) {
                     if (e) {
                         changeLoadingState(false);
