@@ -43,8 +43,11 @@ final class ConvertPaymentAction implements ActionInterface, ApiAwareInterface, 
             ]);
         }
 
-        if (false === $details->offsetExists('payment_method_types')) {
-            $details->offsetSet('payment_method_types', $this->api->getPaymentMethodTypes());
+        $paymentMethodTypes = $this->api->getPaymentMethodTypes();
+        if (
+            $paymentMethodTypes !== [] && false === $details->offsetExists('payment_method_types')
+        ) {
+            $details->offsetSet('payment_method_types', $paymentMethodTypes);
         }
 
         $request->setResult($details);
