@@ -1,3 +1,9 @@
+# UPGRADE FROM `v2.0.4` TO `v2.0.5`
+
+**BC BREAK**: `@FluxSEPayumStripe/Action/stripeJsPaymentIntent.html.twig` is now using the new Payment Element instead
+of the card element. See [this documentation](https://stripe.com/docs/payments/payment-element/migration) to migrate if
+you made some JS customisations on this template.
+
 # UPGRADE FROM `v2.0.3` TO `v2.0.4`
 
 - twig template `@FluxSEPayumStripe/Action/redirectToCheckout.html.twig` has been removed, the library will now make 
