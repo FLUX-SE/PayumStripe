@@ -34,8 +34,8 @@ final class ConvertPaymentAction implements ActionInterface, ApiAwareInterface, 
         }
 
         if (
-            false === $details->offsetExists('line_items')
-            && $details->offsetGet('mode') !== Session::MODE_SETUP
+            Session::MODE_SETUP !== $details->offsetGet('mode')
+            && false === $details->offsetExists('line_items')
         ) {
             $details->offsetSet('line_items', [
                 [
@@ -49,7 +49,8 @@ final class ConvertPaymentAction implements ActionInterface, ApiAwareInterface, 
 
         $paymentMethodTypes = $this->api->getPaymentMethodTypes();
         if (
-            $paymentMethodTypes !== [] && false === $details->offsetExists('payment_method_types')
+            [] !== $paymentMethodTypes
+            && false === $details->offsetExists('payment_method_types')
         ) {
             $details->offsetSet('payment_method_types', $paymentMethodTypes);
         }
