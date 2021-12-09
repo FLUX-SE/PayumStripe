@@ -13,6 +13,7 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Model\PaymentInterface;
 use Payum\Core\Request\Convert;
+use Stripe\Checkout\Session;
 
 final class ConvertPaymentAction implements ActionInterface, ApiAwareInterface, GatewayAwareInterface
 {
@@ -32,7 +33,10 @@ final class ConvertPaymentAction implements ActionInterface, ApiAwareInterface, 
             $details->offsetSet('customer_email', $payment->getClientEmail());
         }
 
-        if (false === $details->offsetExists('line_items')) {
+        if (
+            false === $details->offsetExists('line_items')
+            && $details->offsetGet('mode') !== Session::MODE_SETUP
+        ) {
             $details->offsetSet('line_items', [
                 [
                     'name' => $payment->getDescription(),
