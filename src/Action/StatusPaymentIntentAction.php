@@ -51,9 +51,7 @@ class StatusPaymentIntentAction extends AbstractStatusAction
      */
     protected function isCanceledStatus(string $status): bool
     {
-        return in_array($status, [
-            PaymentIntent::STATUS_CANCELED,
-        ]);
+        return PaymentIntent::STATUS_CANCELED === $status;
     }
 
     protected function isNewStatus(string $status): bool
@@ -62,7 +60,7 @@ class StatusPaymentIntentAction extends AbstractStatusAction
             PaymentIntent::STATUS_REQUIRES_PAYMENT_METHOD, // Customer use the "cancel_url"
             PaymentIntent::STATUS_REQUIRES_CONFIRMATION,
             PaymentIntent::STATUS_REQUIRES_ACTION,
-        ]);
+        ], true);
     }
 
     public function getSupportedObjectName(): string

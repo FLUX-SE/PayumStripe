@@ -53,7 +53,7 @@ class StatusAction implements ActionInterface
             Subscription::OBJECT_NAME,
             Refund::OBJECT_NAME,
         ];
-        if (false === in_array($model->offsetGet('object'), $allowedObjectName)) {
+        if (false === in_array($model->offsetGet('object'), $allowedObjectName, true)) {
             $request->markFailed();
 
             return;

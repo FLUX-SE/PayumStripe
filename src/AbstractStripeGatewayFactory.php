@@ -10,6 +10,7 @@ use FluxSE\PayumStripe\Action\Api\Resource\AllCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllCustomerAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllTaxRateAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CancelPaymentIntentAction;
+use FluxSE\PayumStripe\Action\Api\Resource\CancelSetupIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CancelSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CapturePaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateCouponAction;
@@ -24,6 +25,7 @@ use FluxSE\PayumStripe\Action\Api\Resource\CreateSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateTaxRateAction;
 use FluxSE\PayumStripe\Action\Api\Resource\DeleteCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\DeletePlanAction;
+use FluxSE\PayumStripe\Action\Api\Resource\ExpireSessionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveChargeAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveCustomerAction;
@@ -87,6 +89,7 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
             'payum.action.all_coupon' => new AllCouponAction(),
             'payum.action.all_tax_rate' => new AllTaxRateAction(),
             'payum.action.cancel_payment_intent' => new CancelPaymentIntentAction(),
+            'payum.action.cancel_setup_intent' => new CancelSetupIntentAction(),
             'payum.action.cancel_subscription' => new CancelSubscriptionAction(),
             'payum.action.capture_payment_intent' => new CapturePaymentIntentAction(),
             'payum.action.create_coupon' => new CreateCouponAction(),
@@ -101,6 +104,7 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
             'payum.action.create_tax_rate' => new CreateTaxRateAction(),
             'payum.action.delete_coupon' => new DeleteCouponAction(),
             'payum.action.delete_plan' => new DeletePlanAction(),
+            'payum.action.expire_session' => new ExpireSessionAction(),
             'payum.action.retrieve_charge' => new RetrieveChargeAction(),
             'payum.action.retrieve_coupon' => new RetrieveCouponAction(),
             'payum.action.retrieve_customer' => new RetrieveCustomerAction(),

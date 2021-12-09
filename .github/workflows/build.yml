@@ -1,13 +1,22 @@
 name: Build
 
 on:
-    push: ~
-    pull_request: ~
+    push:
+        branches-ignore:
+            - 'dependabot/**'
+        paths-ignore:
+            - "docs/**"
+            - "*.md"
+    pull_request:
+        paths-ignore:
+            - "docs/**"
+            - "*.md"
     release:
         types: [created]
     schedule:
         -
             cron: "0 1 * * 6" # Run at 1am every Saturday
+    workflow_dispatch: ~
 
 jobs:
     tests:
@@ -18,7 +27,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: [7.2, 7.3, 7.4, 8.0]
+                php: [7.2, 7.3, 7.4, 8.0, 8.1]
 
         steps:
             -
