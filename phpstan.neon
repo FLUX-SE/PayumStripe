@@ -2,7 +2,3 @@ parameters:
     reportUnmatchedIgnoredErrors: false
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
-
-    ignoreErrors:
-        # https://github.com/stripe/stripe-php/pull/1215
-        - '/Method FluxSE\\PayumStripe\\Action\\Api\\Resource\\ExpireSessionAction::expireSession\(\) should return Stripe\\Checkout\\Session but returns Stripe\\Session\./'
