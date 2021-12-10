@@ -7,6 +7,7 @@ namespace FluxSE\PayumStripe\Action\StripeCheckoutSession;
 use ArrayObject;
 use FluxSE\PayumStripe\Action\AbstractCaptureAction;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateSession;
+use FluxSE\PayumStripe\Request\CaptureAuthorized;
 use FluxSE\PayumStripe\Request\StripeCheckoutSession\Api\RedirectToCheckout;
 use Payum\Core\Request\Generic;
 use Payum\Core\Security\TokenInterface;
@@ -81,5 +82,16 @@ class CaptureAction extends AbstractCaptureAction
     {
         $redirectToCheckout = new RedirectToCheckout($captureResource->toArray());
         $this->gateway->execute($redirectToCheckout);
+    }
+
+    protected function processNotNew(ArrayObject $model, Generic $request): void
+    {
+        parent::processNotNew($model, $request);
+
+        // Specific case of authorized payments being captured
+        // If it isn't an authorized PaymentIntent then nothing is done
+        $captureAuthorizedRequest = new CaptureAuthorized($this->getRequestToken($request));
+        $captureAuthorizedRequest->setModel($model);
+        $this->gateway->execute($captureAuthorizedRequest);
     }
 }

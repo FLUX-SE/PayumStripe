@@ -6,7 +6,6 @@ namespace FluxSE\PayumStripe\Action;
 
 use ArrayAccess;
 use ArrayObject as BaseArrayObject;
-use FluxSE\PayumStripe\Request\CaptureAuthorized;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -33,31 +32,32 @@ abstract class AbstractCaptureAction implements ActionInterface, GatewayAwareInt
             // 0. Create another token to allow payment webhooks to use `Notify`
             $this->embedNotifyTokenHash($model, $request);
 
-            // 1. Use the capture URL to `Sync` the payment
-            //    after the customer get back from Stripe Checkout Session
-            // 2. Create a new `Session`
+            // 1. Create a new `ApiResource` object
+            //    - [stripe_checkout_session] : A `Session` object
+            //    - [stripe_js] : A `PaymentIntent` object
             $apiResource = $this->createApiResource($model, $request);
             $model->exchangeArray($apiResource->toArray());
 
-            // 3. [stripe_checkout_session] A `Session` object synced to one of those objects :
-            //      - `PaymentIntent`
-            //      - `SetupIntent`
-            //      - `Subscription`
-            //    (legacy Stripe payments were storing `Charge` object)
+            // 2. Retrieve the `PaymentIntent`|`SetupIntent`|`Session` object and update it from Stripe API
+            //    - [stripe_checkout_session] : A `Session` object synced to one of those objects :
+            //      - mode = "payment" => `PaymentIntent`
+            //      - mode = "setup" => `SetupIntent`
+            //      - mode = "subscription" => `Session` (because there is no SubscriptionIntent)
+            //    - [stripe_js] : A `PaymentIntent` object refreshed
             $this->gateway->execute(new Sync($model));
 
-            // 4. Display the page to redirect to Stripe Checkout portal
+            // 3. Render a template or make a redirection :
+            //    - [stripe_checkout_session] : Redirect to the Stripe portal
+            //    - [stripe_js] : Render a template
             $this->render($apiResource, $request);
         } else {
-            // 0. Retrieve the `PaymentIntent`|`SetupIntent`|`Subscription` object and update it
-            $this->gateway->execute(new Sync($model));
-
-            // 1. Specific case of authorized payments being captured
-            // If it isn't an authorized PaymentIntent then nothing is done
-            $captureAuthorizedRequest = new CaptureAuthorized($this->getRequestToken($request));
-            $captureAuthorizedRequest->setModel($model);
-            $this->gateway->execute($captureAuthorizedRequest);
+            $this->processNotNew($model, $request);
         }
+    }
+
+    protected function processNotNew(BaseArrayObject $model, Generic $request): void
+    {
+        $this->gateway->execute(new Sync($model));
     }
 
     abstract protected function createApiResource(BaseArrayObject $model, Generic $request): ApiResource;
