@@ -38,7 +38,7 @@ composer require  php-http/guzzle6-adapter
  - [Stripe Checkout Session](docs/stripe-checkout-session/README.md)
 
    Support :
-   - ["One-time payments"](https://stripe.com/docs/payments/checkout/one-time)
+   - ["One-time payments"](https://stripe.com/docs/payments/accept-a-payment)
    - ["Place a hold on a card" (Authorize)](https://stripe.com/docs/payments/capture-later)
    - ["Subscription"](https://stripe.com/docs/payments/checkout/subscriptions/starting)
    - ["Set up future payments"](https://stripe.com/docs/payments/save-and-reuse#checkout)

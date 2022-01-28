@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace FluxSE\PayumStripe;
 
 use FluxSE\PayumStripe\Action\StripeCheckoutSession\Api\RedirectToCheckoutAction;
+use FluxSE\PayumStripe\Action\StripeCheckoutSession\Api\WebhookEvent\CheckoutSessionAsyncPaymentFailedAction;
+use FluxSE\PayumStripe\Action\StripeCheckoutSession\Api\WebhookEvent\CheckoutSessionAsyncPaymentSucceededAction;
 use FluxSE\PayumStripe\Action\StripeCheckoutSession\Api\WebhookEvent\CheckoutSessionCompletedAction;
 use FluxSE\PayumStripe\Action\StripeCheckoutSession\AuthorizeAction;
 use FluxSE\PayumStripe\Action\StripeCheckoutSession\CaptureAction;
@@ -30,6 +32,8 @@ final class StripeCheckoutSessionGatewayFactory extends AbstractStripeGatewayFac
 
             // Webhook event resolver
             'payum.action.checkout_session_completed' => new CheckoutSessionCompletedAction(),
+            'payum.action.checkout_session_async_payment_failed' => new CheckoutSessionAsyncPaymentFailedAction(),
+            'payum.action.checkout_session_async_payment_succeeded' => new CheckoutSessionAsyncPaymentSucceededAction(),
 
             // Actions
             'payum.action.capture' => new CaptureAction(),

@@ -22,7 +22,7 @@ trait EmbeddableTokenTrait
      *  - or its `PaymentIntent` can be canceled.
      *  - or its `SetupIntent` can be canceled.
      *
-     * So the token hash have to be stored both on `Session` metadata and other mode metadata
+     * The token hash have to be stored both on `Session` metadata and other mode metadata
      */
     public function embedNotifyTokenHash(ArrayObject $model, Generic $request): TokenInterface
     {

@@ -6,7 +6,6 @@ use FluxSE\PayumStripe\Action\SyncAction;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrievePaymentIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSession;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSetupIntent;
-use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSubscription;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
 use Payum\Core\Exception\LogicException;
@@ -73,16 +72,49 @@ final class SyncActionTest extends TestCase
         $action->execute($request);
     }
 
-    private function retrieveSubscriptionFromModel(array $model): void
+    private function retrieveSessionAndThenAPaymentIntentFromModel(array $model): void
+    {
+        $gatewayMock = $this->createGatewayMock();
+        $gatewayMock
+            ->expects($this->exactly(2))
+            ->method('execute')
+            ->withConsecutive(
+                [$this->isInstanceOf(RetrieveSession::class)],
+                [$this->isInstanceOf(RetrievePaymentIntent::class)]
+            )
+            ->willReturnOnConsecutiveCalls(
+                $this->returnCallback(function (RetrieveSession $request) use ($model) {
+                    $this->assertIsString($request->getModel());
+                    $request->setApiResource(Session::constructFrom($model));
+                }),
+                $this->returnCallback(function (RetrievePaymentIntent $request) {
+                    $this->assertIsString($request->getModel());
+                    $request->setApiResource(new PaymentIntent());
+                })
+            )
+        ;
+
+        $action = new SyncAction();
+        $action->setGateway($gatewayMock);
+
+        $request = new Sync($model);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+    }
+
+    private function retrieveSessionForASubscriptionFromModel(array $model): void
     {
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock
             ->expects($this->once())
             ->method('execute')
-            ->with($this->isInstanceOf(RetrieveSubscription::class))
-            ->willReturnCallback(function (RetrieveSubscription $request) {
+            ->with($this->isInstanceOf(RetrieveSession::class))
+            ->willReturnCallback(function (RetrieveSession $request) use ($model) {
                 $this->assertIsString($request->getModel());
-                $request->setApiResource(new Subscription());
+                $request->setApiResource(Session::constructFrom($model));
             })
         ;
 
@@ -121,6 +153,39 @@ final class SyncActionTest extends TestCase
         $action->execute($request);
     }
 
+    private function retrieveSessionAndThenASetupIntentFromModel(array $model): void
+    {
+        $gatewayMock = $this->createGatewayMock();
+        $gatewayMock
+            ->expects($this->exactly(2))
+            ->method('execute')
+            ->withConsecutive(
+                [$this->isInstanceOf(RetrieveSession::class)],
+                [$this->isInstanceOf(RetrieveSetupIntent::class)]
+            )
+            ->willReturnOnConsecutiveCalls(
+                $this->returnCallback(function (RetrieveSession $request) use ($model) {
+                    $this->assertIsString($request->getModel());
+                    $request->setApiResource(Session::constructFrom($model));
+                }),
+                $this->returnCallback(function (RetrieveSetupIntent $request) {
+                    $this->assertIsString($request->getModel());
+                    $request->setApiResource(new SetupIntent());
+                })
+            )
+        ;
+
+        $action = new SyncAction();
+        $action->setGateway($gatewayMock);
+
+        $request = new Sync($model);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+    }
+
     public function testShouldRetrievePaymentIntentWhenSessionObjectContainsPaymentIntentId(): void
     {
         $model = [
@@ -129,7 +194,7 @@ final class SyncActionTest extends TestCase
             PaymentIntent::OBJECT_NAME => 'pi_0001',
         ];
 
-        $this->retrievePaymentIntentFromModel($model);
+        $this->retrieveSessionAndThenAPaymentIntentFromModel($model);
     }
 
     public function testShouldRetrieveAPaymentIntentFromAPaymentIntentObject(): void
@@ -150,17 +215,7 @@ final class SyncActionTest extends TestCase
             Subscription::OBJECT_NAME => 'sub_0001',
         ];
 
-        $this->retrieveSubscriptionFromModel($model);
-    }
-
-    public function testShouldRetrieveASubscriptionFromASubscriptionObject(): void
-    {
-        $model = [
-            'object' => Subscription::OBJECT_NAME,
-            'id' => 'sub_0001',
-        ];
-
-        $this->retrieveSubscriptionFromModel($model);
+        $this->retrieveSessionForASubscriptionFromModel($model);
     }
 
     public function testShouldRetrieveSetupIntentWhenSessionObjectContainsSetupIntentId(): void
@@ -171,7 +226,7 @@ final class SyncActionTest extends TestCase
             SetupIntent::OBJECT_NAME => 'si_0001',
         ];
 
-        $this->retrieveSetupIntentFromModel($model);
+        $this->retrieveSessionAndThenASetupIntentFromModel($model);
     }
 
     public function testShouldRetrieveASetupIntentFromASetupIntentObject(): void

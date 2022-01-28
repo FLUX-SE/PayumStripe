@@ -23,7 +23,7 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
         RequestNotSupportedException::assertSupports($this, $request);
 
         // 0. Retrieve the Session|PaymentIntent|SetupIntent into the WebhookEvent
-        /** @var StripeObject $sessionModeObject */
+        /** @var StripeObject $sessionModeObject it can't be null here, already checked by the `supports` method */
         $sessionModeObject = $this->retrieveSessionModeObject($request);
 
         // 1. Retrieve the token hash into the metadata
@@ -33,7 +33,7 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
         // 2. Try to found the Token
         $token = $this->findTokenByHash($tokenHash);
 
-        // 3. Execute a notify with the retrieved token
+        // 3. Execute a `Notify` with the retrieved token
         $this->gateway->execute(new Notify($token));
     }
 

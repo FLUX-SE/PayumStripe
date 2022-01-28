@@ -12,7 +12,6 @@ use Payum\Core\Request\GetStatusInterface;
 use Stripe\PaymentIntent;
 use Stripe\Refund;
 use Stripe\SetupIntent;
-use Stripe\Subscription;
 
 class StatusAction implements ActionInterface
 {
@@ -20,7 +19,6 @@ class StatusAction implements ActionInterface
      * This action is the last one to be executed if the object found is not one of the supported ones.
      *
      * @see StatusSetupIntentAction for SetupIntent status changes
-     * @see StatusSubscriptionAction for SubscriptionIntent status changes
      * @see StatusRefundAction for RefundIntent status changes
      * @see StatusPaymentIntentAction for PaymentIntent status changes
      */
@@ -44,13 +42,12 @@ class StatusAction implements ActionInterface
             return;
         }
 
-        // PaymentIntent, Subscription, SetupIntent and Refund are the only object allowed here
+        // PaymentIntent, SetupIntent and Refund are the only object allowed here
         // if it's a Session this means the process has been stop somewhere and the
         // payment has to be retried so mark it as failed to allow retrying it
         $allowedObjectName = [
             PaymentIntent::OBJECT_NAME,
             SetupIntent::OBJECT_NAME,
-            Subscription::OBJECT_NAME,
             Refund::OBJECT_NAME,
         ];
         if (false === in_array($model->offsetGet('object'), $allowedObjectName, true)) {
