@@ -68,7 +68,7 @@ jobs:
 
             -
                 name: PHPStan analysis
-                run: vendor/bin/phpstan analyse -c phpstan.neon -l max src/
+                run: vendor/bin/phpstan analyse -l max src/
 
             -
                 name: Run PHPUnit

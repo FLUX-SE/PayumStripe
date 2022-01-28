@@ -1,3 +1,17 @@
+# UPGRADE FROM `v2.0.5` TO `v2.0.6`
+
+_[STRIPE_CHECKOUT_SESSION]_
+
+**BC BREAK**: `FluxSE\PayumStripe\Action\StatusSubscriptionAction` has been removed because it doesn't reflect
+if a subscription has been paid or not, the `Session` will be used instead to know if the payment is paid.
+
+To complete this removal two Stripe webhook events need to be listen now (only for modes : "payment" and "subscription") :
+
+ - `checkout.session.async_payment_failed`
+ - `checkout.session.async_payment_succeeded`
+
+NB: The mode "setup" still need `setup_intent.canceled` and `setup_intent.succeeded`
+
 # UPGRADE FROM `v2.0.4` TO `v2.0.5`
 
 **BC BREAK**: `@FluxSEPayumStripe/Action/stripeJsPaymentIntent.html.twig` is now using the new Payment Element instead

@@ -45,10 +45,9 @@ class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterfac
              * Tip: This also allow other webhook consumers to process this $request if
              *      they are supporting the same type of `ResolveWebhookEvent` request
              */
-            $signatureResults = implode(', ', $this->signatureVerificationErrors);
+            $signatureResults = implode("\n", $this->signatureVerificationErrors);
             $subException = RequestNotSupportedException::create($request);
-            throw new RequestNotSupportedException(sprintf('Unable to resolve the webhook event payload with
-                    one of your webhook secret keys ! Signature results : %s', $signatureResults), 0, $subException);
+            throw new RequestNotSupportedException(sprintf('Unable to resolve the webhook event payload with any of your webhook secret keys !%s%s', "\n", $signatureResults), 0, $subException);
         }
 
         $request->setEventWrapper($eventWrapper);
@@ -64,8 +63,8 @@ class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterfac
          * @see \Payum\Core\Bridge\Symfony\Action\GetHttpRequestAction::updateRequest()
          */
         if (
-            isset($httpRequest->headers)
-            && count($httpRequest->headers) > 0
+            property_exists($httpRequest, 'headers')
+            && is_array($httpRequest->headers)
             && isset($httpRequest->headers['stripe-signature'])
         ) {
             return current($httpRequest->headers['stripe-signature']);
@@ -94,7 +93,7 @@ class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterfac
                 $this->gateway->execute($eventRequest);
             } catch (SignatureVerificationException $e) {
                 $this->signatureVerificationErrors[] = sprintf(
-                    '%s : %s',
+                    '- Tried with "%s" : "%s"',
                     $webhookSecretKey,
                     $e->getMessage()
                 );

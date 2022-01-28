@@ -31,7 +31,7 @@ class NotifyAction implements ActionInterface, GatewayAwareInterface
     }
 
     /**
-     * All webhooks will be handle by this method.
+     * All webhooks will be handled by this method.
      */
     private function executeWebhook(): void
     {

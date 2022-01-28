@@ -5,15 +5,19 @@ declare(strict_types=1);
 namespace Tests\FluxSE\PayumStripe\Request\Api\Resource;
 
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractAll;
+use FluxSE\PayumStripe\Request\Api\Resource\AllCoupon;
 use FluxSE\PayumStripe\Request\Api\Resource\AllCustomer;
 use FluxSE\PayumStripe\Request\Api\Resource\AllInterface;
+use FluxSE\PayumStripe\Request\Api\Resource\AllInvoice;
 use FluxSE\PayumStripe\Request\Api\Resource\AllTaxRate;
 use FluxSE\PayumStripe\Request\Api\Resource\OptionsAwareInterface;
 use LogicException;
 use Payum\Core\Request\Generic;
 use PHPUnit\Framework\TestCase;
 use Stripe\Collection;
+use Stripe\Coupon;
 use Stripe\Customer;
+use Stripe\Invoice;
 use Stripe\TaxRate;
 
 final class AllTest extends TestCase
@@ -98,7 +102,9 @@ final class AllTest extends TestCase
     public function requestList(): array
     {
         return [
+            [AllCoupon::class, Coupon::class],
             [AllCustomer::class, Customer::class],
+            [AllInvoice::class, Invoice::class],
             [AllTaxRate::class, TaxRate::class],
         ];
     }

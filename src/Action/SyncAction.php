@@ -9,7 +9,6 @@ use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrievePaymentIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSession;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSetupIntent;
-use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSubscription;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\LogicException;
@@ -20,7 +19,6 @@ use Payum\Core\Request\Sync;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
 use Stripe\SetupIntent;
-use Stripe\Subscription;
 
 class SyncAction implements ActionInterface, GatewayAwareInterface
 {
@@ -31,7 +29,6 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
      */
     protected $sessionModes = [
         PaymentIntent::OBJECT_NAME => RetrievePaymentIntent::class,
-        Subscription::OBJECT_NAME => RetrieveSubscription::class,
         SetupIntent::OBJECT_NAME => RetrieveSetupIntent::class,
     ];
 
@@ -66,21 +63,14 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         $model->exchangeArray($sessionModeObject->toArray());
     }
 
-    private function syncSession(ArrayObject $model): void
+    protected function syncSession(ArrayObject $model): void
     {
         $objectName = (string) $model->offsetGet('object');
         if (Session::OBJECT_NAME !== $objectName) {
             return;
         }
 
-        // Needed only for subscription mode
-        if (null !== $this->findSessionModeIdInSession($model)) {
-            // so it's needed to skip this method when retrievable id is founded
-            return;
-        }
-
-        // if not, retrieve the newest session from its id
-        $sessionRequest = new RetrieveSession($model->offsetGet('id'));
+        $sessionRequest = new RetrieveSession((string) $model->offsetGet('id'));
         $this->gateway->execute($sessionRequest);
         $session = $sessionRequest->getApiResource();
 
@@ -97,21 +87,21 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         return $this->findSessionModeIdInModeObject($model);
     }
 
-    private function findSessionModeIdInSession(ArrayObject $model): ?RetrieveInterface
+    protected function findSessionModeIdInSession(ArrayObject $model): ?RetrieveInterface
     {
         foreach ($this->sessionModes as $sessionObject => $retrieveRequest) {
-            $sessionModeId = $model->offsetGet($sessionObject);
+            $sessionModeId = (string) $model->offsetGet($sessionObject);
             if (empty($sessionModeId)) {
                 continue;
             }
 
-            return new $retrieveRequest((string) $sessionModeId);
+            return new $retrieveRequest($sessionModeId);
         }
 
         return null;
     }
 
-    private function findSessionModeIdInModeObject(ArrayObject $model): ?RetrieveInterface
+    protected function findSessionModeIdInModeObject(ArrayObject $model): ?RetrieveInterface
     {
         $objectName = (string) $model->offsetGet('object');
         foreach ($this->sessionModes as $sessionModeObject => $retrieveRequest) {
@@ -119,9 +109,9 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
                 continue;
             }
 
-            $sessionModeId = $model->offsetGet('id');
+            $sessionModeId = (string) $model->offsetGet('id');
 
-            return new $retrieveRequest((string) $sessionModeId);
+            return new $retrieveRequest($sessionModeId);
         }
 
         return null;

@@ -8,6 +8,7 @@ use FluxSE\PayumStripe\Action\Api\ConstructEventAction;
 use FluxSE\PayumStripe\Action\Api\ResolveWebhookEventAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllCustomerAction;
+use FluxSE\PayumStripe\Action\Api\Resource\AllInvoiceAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllTaxRateAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CancelPaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CancelSetupIntentAction;
@@ -57,7 +58,6 @@ use FluxSE\PayumStripe\Action\StatusPaymentIntentAction;
 use FluxSE\PayumStripe\Action\StatusRefundAction;
 use FluxSE\PayumStripe\Action\StatusSessionAction;
 use FluxSE\PayumStripe\Action\StatusSetupIntentAction;
-use FluxSE\PayumStripe\Action\StatusSubscriptionAction;
 use FluxSE\PayumStripe\Action\SyncAction;
 use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -75,7 +75,6 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
             'payum.action.session_status' => new StatusSessionAction(),
             'payum.action.payment_intent_status' => new StatusPaymentIntentAction(),
             'payum.action.setup_intent_status' => new StatusSetupIntentAction(),
-            'payum.action.subscription_status' => new StatusSubscriptionAction(),
             'payum.action.refund_status' => new StatusRefundAction(),
             'payum.action.status' => new StatusAction(),
             'payum.action.sync' => new SyncAction(),
@@ -86,6 +85,7 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
     {
         return [
             'payum.action.all_customer' => new AllCustomerAction(),
+            'payum.action.all_invoice' => new AllInvoiceAction(),
             'payum.action.all_coupon' => new AllCouponAction(),
             'payum.action.all_tax_rate' => new AllTaxRateAction(),
             'payum.action.cancel_payment_intent' => new CancelPaymentIntentAction(),
