@@ -80,11 +80,16 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
     protected function findRetrievableSessionModeObject(ArrayObject $model): ?RetrieveInterface
     {
         $objectName = (string) $model->offsetGet('object');
-        if (Session::OBJECT_NAME === $objectName) {
-            return $this->findSessionModeIdInSession($model);
+        if (Session::OBJECT_NAME !== $objectName) {
+            return $this->findSessionModeIdInModeObject($model);
         }
 
-        return $this->findSessionModeIdInModeObject($model);
+        $mode = (string) $model->offsetGet('mode');
+        if (Session::MODE_SUBSCRIPTION === $mode) {
+            return null;
+        }
+
+        return $this->findSessionModeIdInSession($model);
     }
 
     protected function findSessionModeIdInSession(ArrayObject $model): ?RetrieveInterface

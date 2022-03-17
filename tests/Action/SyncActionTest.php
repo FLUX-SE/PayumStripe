@@ -207,12 +207,22 @@ final class SyncActionTest extends TestCase
         $this->retrievePaymentIntentFromModel($model);
     }
 
-    public function testShouldRetrieveSubscriptionWhenSessionObjectContainsSubscriptionId(): void
+    public function testShouldRetrieveSessionWhenSessionObjectDoesntHaveAnySessionMode(): void
     {
         $model = [
             'object' => Session::OBJECT_NAME,
             'id' => 'sess_0001',
-            Subscription::OBJECT_NAME => 'sub_0001',
+        ];
+
+        $this->retrieveSessionForASubscriptionFromModel($model);
+    }
+
+    public function testShouldRetrieveSessionWhenSessionObjectContainsSubscriptionModeSubscription(): void
+    {
+        $model = [
+            'object' => Session::OBJECT_NAME,
+            'id' => 'sess_0001',
+            'mode' => Session::MODE_SUBSCRIPTION,
         ];
 
         $this->retrieveSessionForASubscriptionFromModel($model);
