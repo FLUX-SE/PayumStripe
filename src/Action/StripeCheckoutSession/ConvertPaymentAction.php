@@ -43,10 +43,12 @@ final class ConvertPaymentAction implements ActionInterface, ApiAwareInterface, 
             $priceData = [
                 'currency' => $payment->getCurrencyCode(),
                 'unit_amount' => $payment->getTotalAmount(),
+                'product_data' => [
+                    'name' => $payment->getDescription(),
+                ]
             ];
             $details->offsetSet('line_items', [
                 [
-                    'description' => $payment->getDescription(),
                     'price_data' => $priceData,
                 ],
             ]);

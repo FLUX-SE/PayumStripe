@@ -11,6 +11,7 @@ use Payum\Core\Model\Payment;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\Convert;
 use PHPUnit\Framework\TestCase;
+use Stripe\Checkout\Session;
 use Tests\FluxSE\PayumStripe\Action\Api\ApiAwareActionTestTrait;
 
 final class ConvertPaymentActionTest extends TestCase
@@ -67,19 +68,24 @@ final class ConvertPaymentActionTest extends TestCase
         $this->assertNotEmpty($details);
         $this->assertArrayHasKey('customer_email', $details);
         $this->assertArrayHasKey('line_items', $details);
+        $this->assertArrayHasKey('mode', $details);
         $this->assertIsArray($details['line_items']);
         $this->assertIsArray($details['line_items'][0]);
-        $this->assertArrayHasKey('name', $details['line_items'][0]);
-        $this->assertArrayHasKey('amount', $details['line_items'][0]);
-        $this->assertArrayHasKey('currency', $details['line_items'][0]);
-        $this->assertArrayHasKey('quantity', $details['line_items'][0]);
+        $this->assertArrayHasKey('price_data', $details['line_items'][0]);
+        $this->assertIsArray($details['line_items'][0]['price_data']);
+        $this->assertArrayHasKey('unit_amount', $details['line_items'][0]['price_data']);
+        $this->assertArrayHasKey('currency', $details['line_items'][0]['price_data']);
+        $this->assertArrayHasKey('product_data', $details['line_items'][0]['price_data']);
+        $this->assertIsArray($details['line_items'][0]['price_data']['product_data']);
+        $this->assertArrayHasKey('name', $details['line_items'][0]['price_data']['product_data']);
+
         $this->assertArrayNotHasKey('payment_method_types', $details);
 
         $this->assertEquals('test@domain.tld', $details['customer_email']);
-        $this->assertEquals('the description', $details['line_items'][0]['name']);
-        $this->assertEquals(123, $details['line_items'][0]['amount']);
-        $this->assertEquals('USD', $details['line_items'][0]['currency']);
-        $this->assertEquals(1, $details['line_items'][0]['quantity']);
+        $this->assertEquals(Session::MODE_PAYMENT, $details['mode']);
+        $this->assertEquals(123, $details['line_items'][0]['price_data']['unit_amount']);
+        $this->assertEquals('USD', $details['line_items'][0]['price_data']['currency']);
+        $this->assertEquals('the description', $details['line_items'][0]['price_data']['product_data']['name']);
     }
 
     public function testShouldNotOverwriteAlreadySetExtraDetails(): void
