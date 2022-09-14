@@ -23,7 +23,9 @@ abstract class AbstractUpdate extends Generic implements UpdateInterface
 
     public function getId(): string
     {
-        return (string) $this->getModel();
+        /** @var string $model */
+        $model = $this->getModel();
+        return $model;
     }
 
     public function setId(string $id): void

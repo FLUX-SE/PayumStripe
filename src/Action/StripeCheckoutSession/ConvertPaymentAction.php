@@ -20,6 +20,9 @@ final class ConvertPaymentAction implements ActionInterface, ApiAwareInterface, 
     use GatewayAwareTrait;
     use StripeCheckoutSessionApiAwareTrait;
 
+    /**
+     * @param Convert $request
+     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -76,10 +79,6 @@ final class ConvertPaymentAction implements ActionInterface, ApiAwareInterface, 
         }
 
         $payment = $request->getSource();
-        if (false === $payment instanceof PaymentInterface) {
-            return false;
-        }
-
-        return true;
+        return false !== $payment instanceof PaymentInterface;
     }
 }

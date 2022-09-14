@@ -14,7 +14,7 @@ use Stripe\Webhook;
 class ConstructEventAction implements ActionInterface
 {
     /**
-     * {@inheritdoc}
+     * @param ConstructEvent $request
      *
      * @throws SignatureVerificationException
      */

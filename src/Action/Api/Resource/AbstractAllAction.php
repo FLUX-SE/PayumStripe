@@ -17,6 +17,9 @@ abstract class AbstractAllAction implements AllResourceActionInterface
     use StripeApiAwareTrait;
     use ResourceAwareActionTrait;
 
+    /**
+     * @param AllInterface $request
+     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);

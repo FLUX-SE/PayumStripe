@@ -22,6 +22,9 @@ abstract class AbstractCaptureAction implements ActionInterface, GatewayAwareInt
     use GatewayAwareTrait;
     use EmbeddableTokenTrait;
 
+    /**
+     * @param Capture $request
+     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);

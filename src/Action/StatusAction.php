@@ -21,6 +21,8 @@ class StatusAction implements ActionInterface
      * @see StatusSetupIntentAction for SetupIntent status changes
      * @see StatusRefundAction for RefundIntent status changes
      * @see StatusPaymentIntentAction for PaymentIntent status changes
+     *
+     * @param GetStatusInterface $request
      */
     public function execute($request): void
     {

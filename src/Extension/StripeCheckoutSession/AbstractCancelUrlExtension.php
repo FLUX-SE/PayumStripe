@@ -85,7 +85,7 @@ abstract class AbstractCancelUrlExtension implements ExtensionInterface
             return false;
         }
 
-        $targetUrl = $token->getTargetUrl() ?? '';
+        $targetUrl = $token->getTargetUrl();
         if (empty($targetUrl)) {
             return false;
         }

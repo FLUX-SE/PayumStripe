@@ -18,11 +18,13 @@ abstract class AbstractDeleteAction implements DeleteResourceActionInterface
     use StripeApiAwareTrait;
     use ResourceAwareActionTrait;
 
+    /**
+     * @param DeleteInterface $request
+     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        /** @var DeleteInterface $request */
         $apiResource = $this->deleteApiResource($request);
 
         $request->setApiResource($apiResource);

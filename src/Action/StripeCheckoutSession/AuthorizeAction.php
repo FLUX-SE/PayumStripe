@@ -32,6 +32,7 @@ final class AuthorizeAction extends CaptureAction
     {
         parent::embedOnModeData($model, $token, $modeDataKey);
 
+        /** @var array $embeddedModeData */
         $embeddedModeData = $model->offsetGet($modeDataKey);
         $embeddedModeData['capture_method'] = 'manual';
         $model->offsetSet($modeDataKey, $embeddedModeData);

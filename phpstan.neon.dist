@@ -2,3 +2,33 @@ parameters:
     reportUnmatchedIgnoredErrors: false
     checkMissingIterableValueType: false
     checkGenericClassInNonGenericObjectType: false
+
+    paths:
+        - src
+
+    ignoreErrors:
+        -
+            message: '/Parameter #1 \$input of method Payum\\Core\\Bridge\\Spl\\ArrayObject::defaults\(\) expects array|Traversable, mixed given\./'
+            path: src/AbstractStripeGatewayFactory.php
+        -
+            message: '/Parameter #1 \$required of method Payum\\Core\\Bridge\\Spl\\ArrayObject::validateNotEmpty\(\) expects array, mixed given\./'
+            path: src/AbstractStripeGatewayFactory.php
+        -
+            message: '/Parameter #2 \$arr2 of function array_replace expects array, mixed given\./'
+            path: src/AbstractStripeGatewayFactory.php
+        -
+            message: '/Parameter #[12] \$[^ ]+ of class FluxSE\\PayumStripe\\Api\\StripeCheckoutSessionApi constructor expects string, mixed given\./'
+            paths:
+                - src/StripeCheckoutSessionGatewayFactory.php
+                - src/StripeJsGatewayFactory.php
+        -
+            message: '/Parameter #3 \$webhookSecretKeys of class FluxSE\\PayumStripe\\Api\\StripeCheckoutSessionApi constructor expects array<string>, mixed given\./'
+            paths:
+                - src/StripeCheckoutSessionGatewayFactory.php
+                - src/StripeJsGatewayFactory.php
+        -
+            message: '/Parameter #4 \$paymentMethodTypes of class FluxSE\\PayumStripe\\Api\\StripeCheckoutSessionApi constructor expects array, mixed given\./'
+            path: src/StripeCheckoutSessionGatewayFactory.php
+        -
+            message: '/Parameter #1 \$templateName of class FluxSE\\PayumStripe\\Action\\StripeJs\\Api\\RenderStripeJsAction constructor expects string, mixed given\./'
+            path: src/StripeJsGatewayFactory.php

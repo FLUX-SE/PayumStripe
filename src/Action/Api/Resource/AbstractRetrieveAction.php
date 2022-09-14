@@ -17,11 +17,13 @@ abstract class AbstractRetrieveAction implements RetrieveResourceActionInterface
     use StripeApiAwareTrait;
     use ResourceAwareActionTrait;
 
+    /**
+     * @param RetrieveInterface $request
+     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        /** @var RetrieveInterface $request */
         $apiResource = $this->retrieveApiResource($request);
 
         $request->setApiResource($apiResource);

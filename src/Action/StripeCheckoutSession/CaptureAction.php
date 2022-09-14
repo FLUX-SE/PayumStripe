@@ -40,6 +40,7 @@ class CaptureAction extends AbstractCaptureAction
 
     public function embedOnModeData(ArrayObject $model, TokenInterface $token, string $modeDataKey): void
     {
+        /** @var array|null $embeddedModeData */
         $embeddedModeData = $model->offsetGet($modeDataKey);
         if (null === $embeddedModeData) {
             $embeddedModeData = [];

@@ -23,6 +23,9 @@ final class StripeWebhookTestAction extends AbstractWebhookEventAction
         ];
     }
 
+    /**
+     * @param WebhookEvent $request
+     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -30,6 +33,9 @@ final class StripeWebhookTestAction extends AbstractWebhookEventAction
         throw new HttpResponse('Webhook test succeeded !');
     }
 
+    /**
+     * @param WebhookEvent $request
+     */
     public function supports($request): bool
     {
         if (false === parent::supports($request)) {

@@ -32,17 +32,23 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
         SetupIntent::OBJECT_NAME => RetrieveSetupIntent::class,
     ];
 
+    /**
+     * @param Sync $request
+     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
+
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        $objectName = (string) $model->offsetGet('object');
+        /** @var string|null $objectName */
+        $objectName = $model->offsetGet('object');
         if (empty($objectName)) {
             throw new LogicException('The synced object must have an "object" attribute !');
         }
 
-        $id = (string) $model->offsetGet('id');
+        /** @var string|null $id */
+        $id = $model->offsetGet('id');
         if (empty($id)) {
             throw new LogicException('The synced object must have a retrievable "id" attribute !');
         }
@@ -65,12 +71,15 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
 
     protected function syncSession(ArrayObject $model): void
     {
-        $objectName = (string) $model->offsetGet('object');
+        /** @var string|null $objectName */
+        $objectName = $model->offsetGet('object');
         if (Session::OBJECT_NAME !== $objectName) {
             return;
         }
 
-        $sessionRequest = new RetrieveSession((string) $model->offsetGet('id'));
+        /** @var string|null $id */
+        $id = $model->offsetGet('id');
+        $sessionRequest = new RetrieveSession((string) $id);
         $this->gateway->execute($sessionRequest);
         $session = $sessionRequest->getApiResource();
 
@@ -79,12 +88,14 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
 
     protected function findRetrievableSessionModeObject(ArrayObject $model): ?RetrieveInterface
     {
-        $objectName = (string) $model->offsetGet('object');
+        /** @var string|null $objectName */
+        $objectName = $model->offsetGet('object');
         if (Session::OBJECT_NAME !== $objectName) {
             return $this->findSessionModeIdInModeObject($model);
         }
 
-        $mode = (string) $model->offsetGet('mode');
+        /** @var string|null $mode */
+        $mode = $model->offsetGet('mode');
         if (Session::MODE_SUBSCRIPTION === $mode) {
             return null;
         }
@@ -94,13 +105,16 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
 
     protected function findSessionModeIdInSession(ArrayObject $model): ?RetrieveInterface
     {
-        foreach ($this->sessionModes as $sessionObject => $retrieveRequest) {
-            $sessionModeId = (string) $model->offsetGet($sessionObject);
+        foreach ($this->sessionModes as $sessionObject => $retrieveRequestClass) {
+            /** @var string|null $sessionModeId */
+            $sessionModeId = $model->offsetGet($sessionObject);
             if (empty($sessionModeId)) {
                 continue;
             }
 
-            return new $retrieveRequest($sessionModeId);
+            /** @var RetrieveInterface $retrieveRequest */
+            $retrieveRequest = new $retrieveRequestClass($sessionModeId);
+            return $retrieveRequest;
         }
 
         return null;
@@ -108,15 +122,19 @@ class SyncAction implements ActionInterface, GatewayAwareInterface
 
     protected function findSessionModeIdInModeObject(ArrayObject $model): ?RetrieveInterface
     {
-        $objectName = (string) $model->offsetGet('object');
-        foreach ($this->sessionModes as $sessionModeObject => $retrieveRequest) {
+        /** @var string|null $objectName */
+        $objectName = $model->offsetGet('object');
+        foreach ($this->sessionModes as $sessionModeObject => $retrieveRequestClass) {
             if ($sessionModeObject !== $objectName) {
                 continue;
             }
 
-            $sessionModeId = (string) $model->offsetGet('id');
+            /** @var string|null $sessionModeId */
+            $sessionModeId = $model->offsetGet('id');
 
-            return new $retrieveRequest($sessionModeId);
+            /** @var RetrieveInterface $retrieveRequest */
+            $retrieveRequest = new $retrieveRequestClass((string)$sessionModeId);
+            return $retrieveRequest;
         }
 
         return null;
