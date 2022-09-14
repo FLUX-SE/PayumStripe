@@ -39,6 +39,6 @@ class ConstructEventAction implements ActionInterface
     {
         return $request instanceof ConstructEvent
             && is_string($request->getModel())
-            ;
+        ;
     }
 }

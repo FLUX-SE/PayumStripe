@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\FluxSE\PayumStripe\Stripe;
 
-use function in_array;
-use function json_encode;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
@@ -13,6 +11,8 @@ use Stripe\ApiRequestor;
 use Stripe\HttpClient\ClientInterface;
 use Stripe\HttpClient\CurlClient;
 use Stripe\Stripe;
+use function in_array;
+use function json_encode;
 use function strtolower;
 
 /**
@@ -42,7 +42,9 @@ trait StripeApiTestHelper
      * Returns a mock object for the specified class.
      *
      * @psalm-template RealInstanceType of object
+     *
      * @psalm-param class-string<RealInstanceType> $originalClassName
+     *
      * @psalm-return MockObject&RealInstanceType
      */
     abstract protected function createMock(string $originalClassName): MockObject;
@@ -174,7 +176,7 @@ trait StripeApiTestHelper
         if (null === $base) {
             $base = Stripe::$apiBase;
         }
-        $absUrl = $base.$path;
+        $absUrl = $base . $path;
 
         return $this->clientMock
             ->expects(TestCase::once())
@@ -196,6 +198,6 @@ trait StripeApiTestHelper
                 null === $params ? TestCase::anything() : TestCase::identicalTo($params),
                 TestCase::identicalTo($hasFile)
             )
-            ;
+        ;
     }
 }

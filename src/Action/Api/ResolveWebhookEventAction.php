@@ -113,6 +113,6 @@ class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterfac
     {
         return $request instanceof ResolveWebhookEvent
             && EventWrapperInterface::class === $request->getTo()
-            ;
+        ;
     }
 }

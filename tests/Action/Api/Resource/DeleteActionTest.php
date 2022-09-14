@@ -75,13 +75,13 @@ final class DeleteActionTest extends TestCase
             ->method('request')
             ->withConsecutive([
                 'get',
-                Stripe::$apiBase.$resourceUrl,
+                Stripe::$apiBase . $resourceUrl,
                 $this->anything(),
                 $this->anything(),
                 false,
             ], [
                 'delete',
-                Stripe::$apiBase.$resourceUrl,
+                Stripe::$apiBase . $resourceUrl,
                 $this->anything(),
                 $this->anything(),
                 false,

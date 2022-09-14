@@ -164,7 +164,7 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
         }
 
         $config->offsetSet('payum.paths', array_replace([
-            'FluxSEPayumStripe' => __DIR__.'/Resources/views',
+            'FluxSEPayumStripe' => __DIR__ . '/Resources/views',
         ], $config['payum.paths'] ?: []));
     }
 

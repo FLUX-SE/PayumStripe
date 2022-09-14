@@ -24,7 +24,7 @@ final class StripeJsPaymentIntentTest extends TestCase
     {
         $rc = new ReflectionClass($class);
 
-        return dirname($rc->getFileName()).'/Resources/views';
+        return dirname($rc->getFileName()) . '/Resources/views';
     }
 
     /**

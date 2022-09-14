@@ -97,7 +97,7 @@ final class CancelUrlExtensionTest extends TestCase
         ];
         $uri = '/done.php?payum_token=123_45678-90abcdefghijklmnopqrstuvwxyz-ABCD';
         $token = new Token();
-        $token->setTargetUrl('https://localhost'.$uri);
+        $token->setTargetUrl('https://localhost' . $uri);
 
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock
@@ -230,7 +230,7 @@ final class CancelUrlExtensionTest extends TestCase
         $wrongUri = '/done.php?payum_token=321-cba';
         $uri = '/done.php?payum_token=123_ABC';
         $token = new Token();
-        $token->setTargetUrl('https://localhost'.$wrongUri);
+        $token->setTargetUrl('https://localhost' . $wrongUri);
 
         $request = new GetHumanStatus($token);
         $request->markNew();
@@ -274,7 +274,7 @@ final class CancelUrlExtensionTest extends TestCase
 
         $uri = '/done.php?payum_token=123_ABC';
         $token = new Token();
-        $token->setTargetUrl('https://localhost'.$uri);
+        $token->setTargetUrl('https://localhost' . $uri);
 
         $request = new GetHumanStatus($token);
         $request->markNew();

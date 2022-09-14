@@ -6,7 +6,7 @@ use PhpCsFixer\Fixer\Phpdoc\NoBlankLinesAfterPhpdocFixer;
 use PhpCsFixer\Fixer\Phpdoc\NoEmptyPhpdocFixer;
 use PhpCsFixer\Fixer\Phpdoc\NoSuperfluousPhpdocTagsFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocIndentFixer;
-use PhpCsFixer\Fixer\Phpdoc\PhpdocInlineTagFixer;
+use PhpCsFixer\Fixer\Phpdoc\PhpdocInlineTagNormalizerFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocNoAccessFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocNoAliasTagFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocNoEmptyReturnFixer;
@@ -21,13 +21,12 @@ use PhpCsFixer\Fixer\Phpdoc\PhpdocTypesFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocTypesOrderFixer;
 use PhpCsFixer\Fixer\Phpdoc\PhpdocVarWithoutNameFixer;
 use PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+use Symplify\EasyCodingStandard\Config\ECSConfig;
 
-return static function (ContainerConfigurator $containerConfigurator): void {
-    $containerConfigurator->import(__DIR__.'/vendor/symplify/easy-coding-standard/config/set/psr12.php');
-    $containerConfigurator->import(__DIR__.'/vendor/symplify/easy-coding-standard/config/set/symfony.php');
+return static function (ECSConfig $ECSConfig): void {
+    $ECSConfig->import('vendor/symplify/easy-coding-standard/config/set/psr12.php');
 
-    $services = $containerConfigurator->services();
+    $services = $ECSConfig->services();
 
     $services->set(BlankLineAfterOpeningTagFixer::class);
 
@@ -35,7 +34,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(NoBlankLinesAfterPhpdocFixer::class);
     $services->set(NoEmptyPhpdocFixer::class);
     $services->set(PhpdocIndentFixer::class);
-    $services->set(PhpdocInlineTagFixer::class);
+    $services->set(PhpdocInlineTagNormalizerFixer::class);
     $services->set(PhpdocNoAccessFixer::class);
     $services->set(PhpdocNoAliasTagFixer::class);
     $services->set(PhpdocNoEmptyReturnFixer::class);
