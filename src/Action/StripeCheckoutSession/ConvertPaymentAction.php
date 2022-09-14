@@ -37,12 +37,17 @@ final class ConvertPaymentAction implements ActionInterface, ApiAwareInterface, 
             Session::MODE_SETUP !== $details->offsetGet('mode')
             && false === $details->offsetExists('line_items')
         ) {
+            // required since the new Price API appears
+            $details->offsetSet('mode', Session::MODE_PAYMENT);
+
+            $priceData = [
+                'currency' => $payment->getCurrencyCode(),
+                'unit_amount' => $payment->getTotalAmount(),
+            ];
             $details->offsetSet('line_items', [
                 [
-                    'name' => $payment->getDescription(),
-                    'amount' => $payment->getTotalAmount(),
-                    'currency' => $payment->getCurrencyCode(),
-                    'quantity' => 1,
+                    'description' => $payment->getDescription(),
+                    'price_data' => $priceData,
                 ],
             ]);
         }
