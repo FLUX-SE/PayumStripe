@@ -240,6 +240,47 @@ final class ConvertPaymentActionTest extends TestCase
         $this->assertEquals([], $details['line_items']);
     }
 
+    public function testPaymentMethodTypes(): void
+    {
+        $payment = new Payment();
+        $payment->setDetails([
+            'customer_email' => '',
+            'line_items' => [],
+        ]);
+
+        $request = new Convert($payment, 'array');
+
+        $action = new ConvertPaymentAction();
+
+        $apiMock = $this->createApiMock(false);
+        $apiMock
+            ->expects($this->once())
+            ->method('getPaymentMethodTypes')
+            ->willReturn([
+                'test'
+            ])
+        ;
+
+        $action->setApiClass(KeysAwareInterface::class);
+        $action->setApi($apiMock);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $details = $request->getResult();
+
+        $this->assertNotEmpty($details);
+
+        $this->assertArrayHasKey('line_items', $details);
+        $this->assertEquals([], $details['line_items']);
+        $this->assertArrayHasKey('customer_email', $details);
+        $this->assertEquals('', $details['customer_email']);
+        $this->assertArrayHasKey('payment_method_types', $details);
+        $this->assertEquals(['test'], $details['payment_method_types']);
+    }
+
     protected function getApiClass(): string
     {
         return StripeCheckoutSessionApiInterface::class;
