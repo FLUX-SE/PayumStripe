@@ -85,13 +85,13 @@ final class CustomCallActionTest extends TestCase
             ->method('request')
             ->withConsecutive([
                 'get',
-                Stripe::$apiBase.$resourceUrl,
+                Stripe::$apiBase . $resourceUrl,
                 $this->anything(),
                 $this->anything(),
                 false,
             ], [
                 $customCall[0],
-                Stripe::$apiBase.sprintf('%s%s', $resourceUrl, $customCall[1]),
+                Stripe::$apiBase . sprintf('%s%s', $resourceUrl, $customCall[1]),
                 $this->anything(),
                 $this->anything(),
                 false,

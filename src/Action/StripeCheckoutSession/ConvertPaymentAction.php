@@ -20,6 +20,9 @@ final class ConvertPaymentAction implements ActionInterface, ApiAwareInterface, 
     use GatewayAwareTrait;
     use StripeCheckoutSessionApiAwareTrait;
 
+    /**
+     * @param Convert $request
+     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -37,12 +40,19 @@ final class ConvertPaymentAction implements ActionInterface, ApiAwareInterface, 
             Session::MODE_SETUP !== $details->offsetGet('mode')
             && false === $details->offsetExists('line_items')
         ) {
+            // required since the new Price API appears
+            $details->offsetSet('mode', Session::MODE_PAYMENT);
+
+            $priceData = [
+                'currency' => $payment->getCurrencyCode(),
+                'unit_amount' => $payment->getTotalAmount(),
+                'product_data' => [
+                    'name' => $payment->getDescription(),
+                ]
+            ];
             $details->offsetSet('line_items', [
                 [
-                    'name' => $payment->getDescription(),
-                    'amount' => $payment->getTotalAmount(),
-                    'currency' => $payment->getCurrencyCode(),
-                    'quantity' => 1,
+                    'price_data' => $priceData,
                 ],
             ]);
         }
@@ -69,10 +79,6 @@ final class ConvertPaymentAction implements ActionInterface, ApiAwareInterface, 
         }
 
         $payment = $request->getSource();
-        if (false === $payment instanceof PaymentInterface) {
-            return false;
-        }
-
-        return true;
+        return false !== $payment instanceof PaymentInterface;
     }
 }

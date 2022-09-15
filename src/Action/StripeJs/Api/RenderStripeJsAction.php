@@ -58,7 +58,7 @@ final class RenderStripeJsAction implements ActionInterface, ApiAwareInterface, 
             return false;
         }
 
-        return $request->getApiResource() instanceof  $this->apiResourceClass;
+        return $request->getApiResource() instanceof $this->apiResourceClass;
     }
 
     public function getTemplateName(): string

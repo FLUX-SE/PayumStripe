@@ -28,6 +28,7 @@ trait EmbeddableTokenTrait
     {
         $metadata = [];
         if ($model->offsetExists('metadata')) {
+            /** @var array $metadata */
             $metadata = $model->offsetGet('metadata');
         }
 

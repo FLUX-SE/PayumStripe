@@ -24,6 +24,9 @@ class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterfac
     /** @var string[] */
     protected $signatureVerificationErrors = [];
 
+    /**
+     * @param ResolveWebhookEvent $request
+     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -113,6 +116,6 @@ class ResolveWebhookEventAction implements ActionInterface, GatewayAwareInterfac
     {
         return $request instanceof ResolveWebhookEvent
             && EventWrapperInterface::class === $request->getTo()
-            ;
+        ;
     }
 }

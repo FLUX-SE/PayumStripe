@@ -17,7 +17,9 @@ abstract class AbstractDelete extends AbstractRetrieve implements DeleteInterfac
 
     public function getId(): string
     {
-        return (string) $this->getModel();
+        /** @var string $model */
+        $model = $this->getModel();
+        return $model;
     }
 
     public function setId(string $id): void

@@ -47,7 +47,7 @@ final class ConstructEventActionTest extends TestCase
 
         $webhookSecretKey = 'whsec_test';
 
-        $payload = file_get_contents(__DIR__.'/../../Resources/Webhooks/checkout-session-completed.json');
+        $payload = file_get_contents(__DIR__ . '/../../Resources/Webhooks/checkout-session-completed.json');
 
         $signedPayload = sprintf('%s.%s', $now, $payload);
         $signature = hash_hmac('sha256', $signedPayload, $webhookSecretKey);

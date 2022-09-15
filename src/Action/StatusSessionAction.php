@@ -16,8 +16,14 @@ class StatusSessionAction extends AbstractStatusAction
 {
     public function isMarkedStatus(GetStatusInterface $request, ArrayObject $model): bool
     {
-        $status = (string) $model->offsetGet('status');
-        $paymentStatus = (string) $model->offsetGet('payment_status');
+        /** @var string|null $status */
+        $status = $model->offsetGet('status');
+        if (null === $status) {
+            return false;
+        }
+
+        /** @var string $paymentStatus */
+        $paymentStatus = $model->offsetGet('payment_status');
 
         if ($this->isCaptureStatus($status, $paymentStatus)) {
             $request->markCaptured();

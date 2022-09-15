@@ -26,6 +26,7 @@ abstract class AbstractPaymentIntentAwareAction implements ActionInterface, Gate
             return null;
         }
 
+        /** @var string|null $id */
         $id = $model['id'] ?? null;
         if (empty($id)) {
             return null;

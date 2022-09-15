@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Action\Api\WebhookEvent;
 
+use ArrayAccess;
 use FluxSE\PayumStripe\Request\Api\WebhookEvent\WebhookEvent;
 use FluxSE\PayumStripe\Token\TokenHashKeysInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -18,6 +19,9 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
 {
     use GatewayAwareTrait;
 
+    /**
+     * @param WebhookEvent $request
+     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -66,6 +70,7 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
 
     private function retrieveTokenHash(StripeObject $sessionModeObject): ?string
     {
+        /** @var ArrayAccess|null $metadata */
         $metadata = $sessionModeObject->offsetGet('metadata');
         if (null === $metadata) {
             return null;
@@ -95,6 +100,9 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
         return $getTokenRequest->getToken();
     }
 
+    /**
+     * @param WebhookEvent $request
+     */
     public function supports($request): bool
     {
         if (false === parent::supports($request)) {
@@ -107,10 +115,6 @@ abstract class AbstractPaymentAction extends AbstractWebhookEventAction implemen
         }
 
         $tokenHash = $this->retrieveTokenHash($sessionModeObject);
-        if (null === $tokenHash) {
-            return false;
-        }
-
-        return true;
+        return null !== $tokenHash;
     }
 }

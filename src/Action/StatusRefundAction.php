@@ -12,7 +12,12 @@ class StatusRefundAction extends AbstractStatusAction
 {
     public function isMarkedStatus(GetStatusInterface $request, ArrayObject $model): bool
     {
-        $status = (string) $model->offsetGet('status');
+        /** @var string|null $status */
+        $status = $model->offsetGet('status');
+        if (null === $status) {
+            return false;
+        }
+
         if (Refund::STATUS_CANCELED === $status) {
             $request->markCanceled();
 

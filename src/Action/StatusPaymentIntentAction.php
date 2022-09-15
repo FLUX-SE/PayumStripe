@@ -12,7 +12,12 @@ class StatusPaymentIntentAction extends AbstractStatusAction
 {
     public function isMarkedStatus(GetStatusInterface $request, ArrayObject $model): bool
     {
-        $status = (string) $model->offsetGet('status');
+        /** @var string|null $status */
+        $status = $model->offsetGet('status');
+        if (null === $status) {
+            return false;
+        }
+
         if (PaymentIntent::STATUS_SUCCEEDED === $status) {
             $request->markCaptured();
 

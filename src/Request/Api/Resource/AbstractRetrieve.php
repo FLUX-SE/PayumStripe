@@ -22,7 +22,9 @@ abstract class AbstractRetrieve extends Generic implements RetrieveInterface
      */
     public function getId(): string
     {
-        return (string) $this->getModel();
+        /** @var string $model */
+        $model = $this->getModel();
+        return $model;
     }
 
     /**

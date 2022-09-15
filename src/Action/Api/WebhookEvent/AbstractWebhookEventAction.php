@@ -29,6 +29,6 @@ abstract class AbstractWebhookEventAction implements ActionInterface
             return false;
         }
 
-        return in_array($eventWrapper->getEvent()->type, $this->getSupportedEventTypes());
+        return in_array($eventWrapper->getEvent()->type, $this->getSupportedEventTypes(), true);
     }
 }

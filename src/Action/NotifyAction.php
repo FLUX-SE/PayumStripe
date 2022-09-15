@@ -18,6 +18,9 @@ class NotifyAction implements ActionInterface, GatewayAwareInterface
 {
     use GatewayAwareTrait;
 
+    /**
+     * @param Notify $request
+     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);

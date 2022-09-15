@@ -141,8 +141,8 @@ final class CaptureActionTest extends TestCase
 
         /** @var ArrayObject $resultModel */
         $resultModel = $request->getModel();
-        $this->assertTrue($resultModel->offsetExists($objectName.'_data'));
-        $data = $resultModel->offsetGet($objectName.'_data');
+        $this->assertTrue($resultModel->offsetExists($objectName . '_data'));
+        $data = $resultModel->offsetGet($objectName . '_data');
         $this->assertArrayHasKey('metadata', $data);
         $this->assertArrayHasKey('token_hash', $data['metadata']);
         $this->assertEquals($token->getHash(), $data['metadata']['token_hash']);

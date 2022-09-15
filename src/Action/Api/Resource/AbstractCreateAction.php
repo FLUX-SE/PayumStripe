@@ -17,11 +17,13 @@ abstract class AbstractCreateAction implements CreateResourceActionInterface
     use StripeApiAwareTrait;
     use ResourceAwareActionTrait;
 
+    /**
+     * @param CreateInterface $request
+     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        /** @var CreateInterface $request */
         $apiResource = $this->createApiResource($request);
 
         $request->setApiResource($apiResource);

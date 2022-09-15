@@ -12,6 +12,9 @@ use Payum\Core\Reply\HttpRedirect;
 
 final class RedirectToCheckoutAction implements ActionInterface
 {
+    /**
+     * @param RedirectToCheckout $request
+     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -19,7 +22,9 @@ final class RedirectToCheckoutAction implements ActionInterface
         /** @var ArrayAccess $model */
         $model = $request->getModel();
         if ($model->offsetExists('url')) {
-            throw new HttpRedirect($model->offsetGet('url'));
+            /** @var string $url */
+            $url = $model->offsetGet('url');
+            throw new HttpRedirect($url);
         }
 
         throw RequestNotSupportedException::create($request);

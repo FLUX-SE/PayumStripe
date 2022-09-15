@@ -14,7 +14,7 @@ use Stripe\Webhook;
 class ConstructEventAction implements ActionInterface
 {
     /**
-     * {@inheritdoc}
+     * @param ConstructEvent $request
      *
      * @throws SignatureVerificationException
      */
@@ -39,6 +39,6 @@ class ConstructEventAction implements ActionInterface
     {
         return $request instanceof ConstructEvent
             && is_string($request->getModel())
-            ;
+        ;
     }
 }

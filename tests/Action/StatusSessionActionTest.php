@@ -52,6 +52,37 @@ final class StatusSessionActionTest extends TestCase
         $this->assertFalse($support);
     }
 
+    public function testMarkNewIdStatusDifferentFromOpen(): void
+    {
+        $gatewayMock = $this->createGatewayMock();
+        $gatewayMock
+            ->expects($this->once())
+            ->method('execute')
+            ->with($this->isInstanceOf(Sync::class))
+        ;
+
+        $action = new StatusSessionAction();
+        $action->setGateway($gatewayMock);
+
+        $action = new StatusSessionAction();
+        $action->setGateway($gatewayMock);
+
+        $model = [
+            'object' => Session::OBJECT_NAME,
+            'status' => 'test',
+            'payment_status' => '',
+        ];
+
+        $request = new GetHumanStatus($model);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $this->assertTrue($request->isUnknown());
+    }
+
     public function testShouldMarkUnknownIfNoStatusIsFound(): void
     {
         $gatewayMock = $this->createGatewayMock();

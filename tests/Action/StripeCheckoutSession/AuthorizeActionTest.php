@@ -142,8 +142,8 @@ final class AuthorizeActionTest extends TestCase
         /** @var ArrayObject $resultModel */
         $resultModel = $request->getModel();
         $objectName = PaymentIntent::OBJECT_NAME;
-        $this->assertTrue($resultModel->offsetExists($objectName.'_data'));
-        $data = $resultModel->offsetGet($objectName.'_data');
+        $this->assertTrue($resultModel->offsetExists($objectName . '_data'));
+        $data = $resultModel->offsetGet($objectName . '_data');
         $this->assertArrayHasKey('capture_method', $data);
         $this->assertEquals('manual', $data['capture_method']);
         $this->assertArrayHasKey('metadata', $data);
