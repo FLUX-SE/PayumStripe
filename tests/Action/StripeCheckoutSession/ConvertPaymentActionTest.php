@@ -72,6 +72,7 @@ final class ConvertPaymentActionTest extends TestCase
         $this->assertIsArray($details['line_items']);
         $this->assertIsArray($details['line_items'][0]);
         $this->assertArrayHasKey('price_data', $details['line_items'][0]);
+        $this->assertArrayHasKey('quantity', $details['line_items'][0]);
         $this->assertIsArray($details['line_items'][0]['price_data']);
         $this->assertArrayHasKey('unit_amount', $details['line_items'][0]['price_data']);
         $this->assertArrayHasKey('currency', $details['line_items'][0]['price_data']);
@@ -83,6 +84,7 @@ final class ConvertPaymentActionTest extends TestCase
 
         $this->assertEquals('test@domain.tld', $details['customer_email']);
         $this->assertEquals(Session::MODE_PAYMENT, $details['mode']);
+        $this->assertEquals(1, $details['line_items'][0]['quantity']);
         $this->assertEquals(123, $details['line_items'][0]['price_data']['unit_amount']);
         $this->assertEquals('USD', $details['line_items'][0]['price_data']['currency']);
         $this->assertEquals('the description', $details['line_items'][0]['price_data']['product_data']['name']);

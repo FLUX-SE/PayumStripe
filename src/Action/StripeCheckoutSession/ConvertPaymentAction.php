@@ -52,6 +52,7 @@ final class ConvertPaymentAction implements ActionInterface, ApiAwareInterface, 
             ];
             $details->offsetSet('line_items', [
                 [
+                    'quantity' => 1,
                     'price_data' => $priceData,
                 ],
             ]);
