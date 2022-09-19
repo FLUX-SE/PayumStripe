@@ -7,6 +7,7 @@ use FluxSE\PayumStripe\Extension\StripeCheckoutSession\AbstractCancelUrlExtensio
 use FluxSE\PayumStripe\Extension\StripeCheckoutSession\CancelUrlCancelPaymentIntentExtension;
 use FluxSE\PayumStripe\Extension\StripeCheckoutSession\CancelUrlCancelSetupIntentExtension;
 use FluxSE\PayumStripe\Extension\StripeCheckoutSession\CancelUrlExpireSessionExtension;
+use FluxSE\PayumStripe\Request\Api\Resource\AllSession;
 use FluxSE\PayumStripe\Request\Api\Resource\CancelPaymentIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\CancelSetupIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\CustomCallInterface;
@@ -20,6 +21,7 @@ use Payum\Core\Request\Sync;
 use PHPUnit\Framework\TestCase;
 use Stripe\ApiResource;
 use Stripe\Checkout\Session;
+use Stripe\Collection;
 use Stripe\Exception\UnknownApiErrorException;
 use Stripe\PaymentIntent;
 use Stripe\SetupIntent;
@@ -99,18 +101,30 @@ final class CancelUrlExtensionTest extends TestCase
         $token = new Token();
         $token->setTargetUrl('https://localhost' . $uri);
 
+        $isCancelPaymentIntent = $extensionClass === CancelUrlCancelPaymentIntentExtension::class;
+
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock
-            ->expects($this->exactly(2))
+            ->expects($this->exactly($isCancelPaymentIntent ? 3 : 2))
             ->method('execute')
             ->withConsecutive(
                 [$this->isInstanceOf(GetHttpRequest::class)],
-                [$this->isInstanceOf($requestClass)]
+                $isCancelPaymentIntent ? [$this->isInstanceOf(AllSession::class)] : [$this->isInstanceOf($requestClass)],
+                $isCancelPaymentIntent ? [$this->isInstanceOf($requestClass)] : []
             )
             ->willReturnOnConsecutiveCalls(
                 $this->returnCallback(function (GetHttpRequest $request) use ($uri) {
                     $request->uri = $uri;
-                })
+                }),
+                $isCancelPaymentIntent ? $this->returnCallback(function (AllSession $request) {
+                    $sessions = Collection::constructFrom(['data' => [
+                        [
+                            'id' => 'cs_1',
+                            'object' => Session::OBJECT_NAME,
+                        ]
+                    ]]);
+                    $request->setApiResources($sessions);
+                }) : null
             )
         ;
 
@@ -280,19 +294,31 @@ final class CancelUrlExtensionTest extends TestCase
         $request->markNew();
         $request->setModel($model);
 
+        $isCancelPaymentIntent = $extensionClass === CancelUrlCancelPaymentIntentExtension::class;
+
         $gatewayMock = $this->createGatewayMock();
         $gatewayMock
-            ->expects($this->exactly(2))
+            ->expects($this->exactly($isCancelPaymentIntent ? 3 : 2))
             ->method('execute')
             ->withConsecutive(
                 [$this->isInstanceOf(GetHttpRequest::class)],
-                [$this->isInstanceOf($requestClass)]
+                $isCancelPaymentIntent ? [$this->isInstanceOf(AllSession::class)] : [$this->isInstanceOf($requestClass)],
+                $isCancelPaymentIntent ? [$this->isInstanceOf($requestClass)] : []
             )
             ->willReturnOnConsecutiveCalls(
                 $this->returnCallback(function (GetHttpRequest $request) use ($uri) {
                     $request->uri = $uri;
                 }),
-                $this->throwException(new UnknownApiErrorException('An exception !'))
+                $isCancelPaymentIntent ? $this->returnCallback(function (AllSession $request) {
+                    $sessions = Collection::constructFrom(['data' => [
+                        [
+                            'id' => 'cs_1',
+                            'object' => Session::OBJECT_NAME,
+                        ]
+                    ]]);
+                    $request->setApiResources($sessions);
+                }) : $this->throwException(new UnknownApiErrorException('An exception !')),
+                $isCancelPaymentIntent ? $this->throwException(new UnknownApiErrorException('An exception !')) : null
             )
         ;
 
@@ -304,10 +330,55 @@ final class CancelUrlExtensionTest extends TestCase
         $extension->onPostExecute($context);
     }
 
+    public function testNullReturnOnCreateNewRequest(): void
+    {
+        $extensionClass = CancelUrlCancelPaymentIntentExtension::class;
+        $apiResourceClass = PaymentIntent::class;
+
+        $model = [
+            'id' => 'pi_1',
+            'object' => $apiResourceClass::OBJECT_NAME,
+        ];
+        $uri = '/done.php?payum_token=123_45678-90abcdefghijklmnopqrstuvwxyz-ABCD';
+        $token = new Token();
+        $token->setTargetUrl('https://localhost' . $uri);
+
+        $gatewayMock = $this->createGatewayMock();
+        $gatewayMock
+            ->expects($this->exactly(2))
+            ->method('execute')
+            ->withConsecutive(
+                [$this->isInstanceOf(GetHttpRequest::class)],
+                [$this->isInstanceOf(AllSession::class)]
+            )
+            ->willReturnOnConsecutiveCalls(
+                $this->returnCallback(function (GetHttpRequest $request) use ($uri) {
+                    $request->uri = $uri;
+                }),
+                $this->returnCallback(function (AllSession $request) {
+                    $sessions = Collection::constructFrom(['data' => []]);
+                    $request->setApiResources($sessions);
+                })
+            )
+        ;
+
+        $request = new GetHumanStatus($token);
+        $request->markNew();
+        $request->setModel($model);
+
+        $context = new Context($gatewayMock, $request, []);
+
+        /** @var AbstractCancelUrlExtension $extension */
+        $extension = new $extensionClass();
+        $extension->onPostExecute($context);
+
+        $this->assertTrue($request->isCanceled());
+    }
+
     public function extensionList(): array
     {
         return [
-            [CancelUrlCancelPaymentIntentExtension::class, PaymentIntent::class, CancelPaymentIntent::class],
+            [CancelUrlCancelPaymentIntentExtension::class, PaymentIntent::class, ExpireSession::class],
             [CancelUrlCancelSetupIntentExtension::class, SetupIntent::class, CancelSetupIntent::class],
             [CancelUrlExpireSessionExtension::class, Session::class, ExpireSession::class],
         ];
