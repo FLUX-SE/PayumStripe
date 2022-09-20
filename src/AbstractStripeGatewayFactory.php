@@ -9,6 +9,7 @@ use FluxSE\PayumStripe\Action\Api\ResolveWebhookEventAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllCustomerAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllInvoiceAction;
+use FluxSE\PayumStripe\Action\Api\Resource\AllSessionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllTaxRateAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CancelPaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CancelSetupIntentAction;
@@ -88,6 +89,7 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
             'payum.action.all_invoice' => new AllInvoiceAction(),
             'payum.action.all_coupon' => new AllCouponAction(),
             'payum.action.all_tax_rate' => new AllTaxRateAction(),
+            'payum.action.all_session' => new AllSessionAction(),
             'payum.action.cancel_payment_intent' => new CancelPaymentIntentAction(),
             'payum.action.cancel_setup_intent' => new CancelSetupIntentAction(),
             'payum.action.cancel_subscription' => new CancelSubscriptionAction(),

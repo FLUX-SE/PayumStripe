@@ -63,11 +63,13 @@ abstract class AbstractCancelUrlExtension implements ExtensionInterface
 
         /** @var string $id */
         $id = $model->offsetGet('id') ?? '';
-        $cancelRequest = $this->createNewRequest($id);
-        try {
-            $gateway->execute($cancelRequest);
-        } catch (ApiErrorException $e) {
-            // Failsafe
+        $cancelRequest = $this->createNewRequest($id, $context);
+        if (null !== $cancelRequest) {
+            try {
+                $gateway->execute($cancelRequest);
+            } catch (ApiErrorException $e) {
+                // Failsafe
+            }
         }
 
         // Cancel the payment
@@ -98,5 +100,5 @@ abstract class AbstractCancelUrlExtension implements ExtensionInterface
 
     abstract public function getSupportedObjectName(): string;
 
-    abstract public function createNewRequest(string $id): AbstractCustomCall;
+    abstract public function createNewRequest(string $id, Context $context): ?AbstractCustomCall;
 }

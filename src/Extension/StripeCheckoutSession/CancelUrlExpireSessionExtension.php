@@ -6,6 +6,7 @@ namespace FluxSE\PayumStripe\Extension\StripeCheckoutSession;
 
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractCustomCall;
 use FluxSE\PayumStripe\Request\Api\Resource\ExpireSession;
+use Payum\Core\Extension\Context;
 use Stripe\Checkout\Session;
 
 final class CancelUrlExpireSessionExtension extends AbstractCancelUrlExtension
@@ -15,7 +16,7 @@ final class CancelUrlExpireSessionExtension extends AbstractCancelUrlExtension
         return Session::OBJECT_NAME;
     }
 
-    public function createNewRequest(string $id): AbstractCustomCall
+    public function createNewRequest(string $id, Context $context): ?AbstractCustomCall
     {
         return new ExpireSession($id);
     }

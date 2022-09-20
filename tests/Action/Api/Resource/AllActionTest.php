@@ -9,6 +9,7 @@ use FluxSE\PayumStripe\Action\Api\Resource\AllCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllCustomerAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllInvoiceAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllResourceActionInterface;
+use FluxSE\PayumStripe\Action\Api\Resource\AllSessionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllTaxRateAction;
 use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractAll;
@@ -16,6 +17,7 @@ use FluxSE\PayumStripe\Request\Api\Resource\AllCoupon;
 use FluxSE\PayumStripe\Request\Api\Resource\AllCustomer;
 use FluxSE\PayumStripe\Request\Api\Resource\AllInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AllInvoice;
+use FluxSE\PayumStripe\Request\Api\Resource\AllSession;
 use FluxSE\PayumStripe\Request\Api\Resource\AllTaxRate;
 use LogicException;
 use Payum\Core\Action\ActionInterface;
@@ -23,6 +25,7 @@ use Payum\Core\ApiAwareInterface;
 use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
 use Stripe\ApiResource;
+use Stripe\Checkout\Session;
 use Stripe\Coupon;
 use Stripe\Customer;
 use Stripe\Invoice;
@@ -137,6 +140,7 @@ final class AllActionTest extends TestCase
             [AllCustomerAction::class, AllCustomer::class, Customer::class],
             [AllInvoiceAction::class, AllInvoice::class, Invoice::class],
             [AllTaxRateAction::class, AllTaxRate::class, TaxRate::class],
+            [AllSessionAction::class, AllSession::class, Session::class],
         ];
     }
 }

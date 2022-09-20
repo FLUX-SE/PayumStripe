@@ -6,6 +6,7 @@ namespace FluxSE\PayumStripe\Extension\StripeCheckoutSession;
 
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractCustomCall;
 use FluxSE\PayumStripe\Request\Api\Resource\CancelSetupIntent;
+use Payum\Core\Extension\Context;
 use Stripe\SetupIntent;
 
 final class CancelUrlCancelSetupIntentExtension extends AbstractCancelUrlExtension
@@ -15,7 +16,7 @@ final class CancelUrlCancelSetupIntentExtension extends AbstractCancelUrlExtensi
         return SetupIntent::OBJECT_NAME;
     }
 
-    public function createNewRequest(string $id): AbstractCustomCall
+    public function createNewRequest(string $id, Context $context): ?AbstractCustomCall
     {
         return new CancelSetupIntent($id);
     }
