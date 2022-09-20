@@ -47,6 +47,10 @@ final class CancelUrlCancelPaymentIntentExtension extends AbstractCancelUrlExten
             return null;
         }
 
+        if (Session::STATUS_OPEN !== $session->status) {
+            return null;
+        }
+
         return new ExpireSession($session->id);
     }
 }

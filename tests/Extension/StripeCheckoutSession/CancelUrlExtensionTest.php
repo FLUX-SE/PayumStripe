@@ -121,6 +121,7 @@ final class CancelUrlExtensionTest extends TestCase
                         [
                             'id' => 'cs_1',
                             'object' => Session::OBJECT_NAME,
+                            'status' => Session::STATUS_OPEN,
                         ]
                     ]]);
                     $request->setApiResources($sessions);
@@ -314,6 +315,7 @@ final class CancelUrlExtensionTest extends TestCase
                         [
                             'id' => 'cs_1',
                             'object' => Session::OBJECT_NAME,
+                            'status' => Session::STATUS_OPEN,
                         ]
                     ]]);
                     $request->setApiResources($sessions);
@@ -357,6 +359,57 @@ final class CancelUrlExtensionTest extends TestCase
                 }),
                 $this->returnCallback(function (AllSession $request) {
                     $sessions = Collection::constructFrom(['data' => []]);
+                    $request->setApiResources($sessions);
+                })
+            )
+        ;
+
+        $request = new GetHumanStatus($token);
+        $request->markNew();
+        $request->setModel($model);
+
+        $context = new Context($gatewayMock, $request, []);
+
+        /** @var AbstractCancelUrlExtension $extension */
+        $extension = new $extensionClass();
+        $extension->onPostExecute($context);
+
+        $this->assertTrue($request->isCanceled());
+    }
+
+    public function testNullReturnOnCreateNewRequestWhileStatusIsNotOpen(): void
+    {
+        $extensionClass = CancelUrlCancelPaymentIntentExtension::class;
+        $apiResourceClass = PaymentIntent::class;
+
+        $model = [
+            'id' => 'pi_1',
+            'object' => $apiResourceClass::OBJECT_NAME,
+        ];
+        $uri = '/done.php?payum_token=123_45678-90abcdefghijklmnopqrstuvwxyz-ABCD';
+        $token = new Token();
+        $token->setTargetUrl('https://localhost' . $uri);
+
+        $gatewayMock = $this->createGatewayMock();
+        $gatewayMock
+            ->expects($this->exactly(2))
+            ->method('execute')
+            ->withConsecutive(
+                [$this->isInstanceOf(GetHttpRequest::class)],
+                [$this->isInstanceOf(AllSession::class)]
+            )
+            ->willReturnOnConsecutiveCalls(
+                $this->returnCallback(function (GetHttpRequest $request) use ($uri) {
+                    $request->uri = $uri;
+                }),
+                $this->returnCallback(function (AllSession $request) {
+                    $sessions = Collection::constructFrom(['data' => [
+                        [
+                            'id' => 'cs_1',
+                            'object' => Session::OBJECT_NAME,
+                            'status' => Session::STATUS_EXPIRED,
+                        ]
+                    ]]);
                     $request->setApiResources($sessions);
                 })
             )
