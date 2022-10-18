@@ -182,6 +182,9 @@ final class StripeGatewayFactoryTest extends TestCase
         ];
     }
 
+    /**
+     * @todo how deep to check the config ?
+     */
     public function testShouldConfigContainFactoryNameAndTitleForCheckoutSession(): void
     {
         $factory = new StripeCheckoutSessionGatewayFactory();
@@ -197,7 +200,10 @@ final class StripeGatewayFactoryTest extends TestCase
         $this->assertEquals('Stripe Checkout Session', $config['payum.factory_title']);
     }
 
-    public function testShouldConfigContainFactoryNameAndTitle(): void
+    /**
+     * @todo how deep to check the config ?
+     */
+    public function testShouldConfigContainFactoryNameAndTitleForStripeJs(): void
     {
         $factory = new StripeJsGatewayFactory();
 

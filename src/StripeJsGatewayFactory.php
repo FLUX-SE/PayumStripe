@@ -17,8 +17,6 @@ final class StripeJsGatewayFactory extends AbstractStripeGatewayFactory
 {
     protected function populateConfig(ArrayObject $config): void
     {
-        parent::populateConfig($config);
-
         $config->defaults([
             // Factories
             'payum.factory_name' => 'stripe_js',
@@ -38,6 +36,8 @@ final class StripeJsGatewayFactory extends AbstractStripeGatewayFactory
                 );
             },
         ]);
+
+        parent::populateConfig($config);
     }
 
     protected function initApi(ArrayObject $config): KeysAwareInterface
