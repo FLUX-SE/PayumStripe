@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Tests\FluxSE\PayumStripe;
 
 use FluxSE\PayumStripe\AbstractStripeGatewayFactory;
+use FluxSE\PayumStripe\Action as GlobalAction;
+use FluxSE\PayumStripe\Action\StripeCheckoutSession;
+use FluxSE\PayumStripe\Action\StripeJs;
 use FluxSE\PayumStripe\Action\StripeJs\Api\RenderStripeJsAction;
 use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Api\StripeCheckoutSessionApiInterface;
@@ -15,6 +18,8 @@ use Payum\Core\Exception\LogicException;
 use Payum\Core\GatewayFactoryInterface;
 use PHPUnit\Framework\TestCase;
 use Stripe\PaymentIntent;
+
+use function strpos;
 
 final class StripeGatewayFactoryTest extends TestCase
 {
@@ -182,10 +187,7 @@ final class StripeGatewayFactoryTest extends TestCase
         ];
     }
 
-    /**
-     * @todo how deep to check the config ?
-     */
-    public function testShouldConfigContainFactoryNameAndTitleForCheckoutSession(): void
+    public function testConfigurationForCheckoutSession(): void
     {
         $factory = new StripeCheckoutSessionGatewayFactory();
 
@@ -198,12 +200,22 @@ final class StripeGatewayFactoryTest extends TestCase
 
         $this->assertArrayHasKey('payum.factory_title', $config);
         $this->assertEquals('Stripe Checkout Session', $config['payum.factory_title']);
+
+        $actualActions = $this->configuredPayumActions($config);
+
+        $this->assertArrayHasKey('payum.action.capture', $actualActions);
+        $this->assertEquals(new StripeCheckoutSession\CaptureAction(), $actualActions['payum.action.capture']);
+        $this->assertArrayHasKey('payum.action.authorize', $actualActions);
+        $this->assertEquals(new StripeCheckoutSession\AuthorizeAction(), $actualActions['payum.action.authorize']);
+        $this->assertArrayHasKey('payum.action.convert_payment', $actualActions);
+        $this->assertEquals(new StripeCheckoutSession\ConvertPaymentAction(), $actualActions['payum.action.convert_payment']);
+        $this->assertArrayHasKey('payum.action.redirect_to_checkout', $actualActions);
+        $this->assertEquals(new StripeCheckoutSession\Api\RedirectToCheckoutAction(), $actualActions['payum.action.redirect_to_checkout']);
+        $this->assertArrayHasKey('payum.action.cancel.payment_intent.automatic', $actualActions);
+        $this->assertEquals(new StripeCheckoutSession\CancelAction(), $actualActions['payum.action.cancel.payment_intent.automatic']);
     }
 
-    /**
-     * @todo how deep to check the config ?
-     */
-    public function testShouldConfigContainFactoryNameAndTitleForStripeJs(): void
+    public function testConfigurationForStripeJs(): void
     {
         $factory = new StripeJsGatewayFactory();
 
@@ -217,10 +229,34 @@ final class StripeGatewayFactoryTest extends TestCase
         $this->assertArrayHasKey('payum.factory_title', $config);
         $this->assertEquals('Stripe JS', $config['payum.factory_title']);
 
+        $actualActions = $this->configuredPayumActions($config);
+
+        $this->assertArrayHasKey('payum.action.cancel.payment_intent.manual', $actualActions);
+        $this->assertEquals(new GlobalAction\CancelAction(), $actualActions['payum.action.cancel.payment_intent.manual']);
+        $this->assertArrayHasKey('payum.action.capture', $actualActions);
+        $this->assertEquals(new StripeJs\CaptureAction(), $actualActions['payum.action.capture']);
+        $this->assertArrayHasKey('payum.action.authorize', $actualActions);
+        $this->assertEquals(new StripeJs\AuthorizeAction(), $actualActions['payum.action.authorize']);
+        $this->assertArrayHasKey('payum.action.convert_payment', $actualActions);
+        $this->assertEquals(new StripeJs\ConvertPaymentAction(), $actualActions['payum.action.convert_payment']);
+        $this->assertArrayHasKey('payum.action.render_stripe_js.payment_intent', $actualActions);
+        $this->assertEquals($config['payum.template.render_stripe_js.payment_intent'], $config['payum.template.render_stripe_js.payment_intent']);
         /** @var RenderStripeJsAction $payAction */
         $payAction = $config['payum.action.render_stripe_js.payment_intent'](ArrayObject::ensureArrayObject($config));
         $this->assertInstanceOf(RenderStripeJsAction::class, $payAction);
         $this->assertEquals(PaymentIntent::class, $payAction->getApiResourceClass());
         $this->assertEquals($config['payum.template.render_stripe_js.payment_intent'], $payAction->getTemplateName());
+    }
+
+    private function configuredPayumActions(array $config): array
+    {
+        $actions = [];
+        foreach ($config as $key => $value) {
+            if (strpos($key, 'payum.action.') === 0) {
+                $actions[$key] = $value;
+            }
+        }
+
+        return $actions;
     }
 }

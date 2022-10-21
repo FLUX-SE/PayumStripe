@@ -71,7 +71,7 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
     protected function getDefaultActions(): array
     {
         return [
-            'payum.action.cancel' => new CancelAction(),
+            'payum.action.cancel.payment_intent.manual' => new CancelAction(),
             'payum.action.refund' => new RefundAction(),
             'payum.action.capture_authorized' => new CaptureAuthorizedAction(),
             'payum.action.notify_unsafe' => new NotifyAction(),

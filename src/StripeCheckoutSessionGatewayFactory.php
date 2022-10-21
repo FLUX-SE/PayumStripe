@@ -39,7 +39,7 @@ final class StripeCheckoutSessionGatewayFactory extends AbstractStripeGatewayFac
             'payum.action.authorize' => new AuthorizeAction(),
             'payum.action.convert_payment' => new ConvertPaymentAction(),
             'payum.action.redirect_to_checkout' => new RedirectToCheckoutAction(),
-            'payum.action.cancel' => new CancelAction(),
+            'payum.action.cancel.payment_intent.automatic' => new CancelAction(),
 
             // Extensions
             'payum.extension.after_capture_cancel_payment_intent' => new CancelUrlCancelPaymentIntentExtension(),
