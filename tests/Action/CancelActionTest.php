@@ -36,20 +36,22 @@ final class CancelActionTest extends TestCase
         $this->assertInstanceOf(GenericTokenFactoryAwareInterface::class, $action);
     }
 
-    public function testShouldSupportOnlyCancelWithAnArrayAccessModel(): void
+    public function testShouldSupportOnlyCancelWithAnArrayAccessModelWithCaptureMethodManual(): void
     {
         $action = new CancelAction();
 
-        $this->assertTrue($action->supports(new Cancel([])));
+        $this->assertTrue($action->supports(new Cancel(['capture_method' => 'manual'])));
+        $this->assertFalse($action->supports(new Cancel(['capture_method' => 'automatic'])));
+        $this->assertFalse($action->supports(new Cancel([])));
         $this->assertFalse($action->supports(new Cancel(null)));
-        $this->assertFalse($action->supports(new Authorize(null)));
+        $this->assertFalse($action->supports(new Authorize(['capture_method' => 'manual'])));
     }
 
     public function testShouldDoNothingWhenRequiredModelInfoAreNotAvailable(): void
     {
         $action = new CancelAction();
 
-        $model = [];
+        $model = ['capture_method' => 'manual'];
         $request = new Cancel($model);
         $supports = $action->supports($request);
         $this->assertTrue($supports);
@@ -57,6 +59,7 @@ final class CancelActionTest extends TestCase
 
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
+            'capture_method' => 'manual',
         ];
         $request = new Cancel($model);
         $supports = $action->supports($request);
@@ -65,6 +68,7 @@ final class CancelActionTest extends TestCase
 
         $model = [
             'object' => SetupIntent::OBJECT_NAME,
+            'capture_method' => 'manual',
         ];
         $request = new Cancel($model);
         $supports = $action->supports($request);
@@ -74,6 +78,7 @@ final class CancelActionTest extends TestCase
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
             'id' => '',
+            'capture_method' => 'manual',
         ];
         $request = new Cancel($model);
         $supports = $action->supports($request);
@@ -88,6 +93,7 @@ final class CancelActionTest extends TestCase
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
             'id' => 'pi_0000',
+            'capture_method' => 'manual',
         ];
         $request = new Cancel($model);
 
@@ -104,6 +110,7 @@ final class CancelActionTest extends TestCase
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
             'id' => 'pi_0000',
+            'capture_method' => 'manual',
         ];
 
         $token = new Token();

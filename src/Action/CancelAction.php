@@ -51,6 +51,12 @@ final class CancelAction extends AbstractPaymentIntentAwareAction
             return false;
         }
 
-        return $request->getModel() instanceof ArrayAccess;
+        $model = $request->getModel();
+        if (!$model instanceof ArrayAccess) {
+            return false;
+        }
+
+        // if capture_method=manual it means the payment intent was created from a checkout session with authorization
+        return $model->offsetExists('capture_method') && $model->offsetGet('capture_method') === 'manual';
     }
 }
