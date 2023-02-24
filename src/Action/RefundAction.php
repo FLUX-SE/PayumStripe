@@ -7,13 +7,20 @@ namespace FluxSE\PayumStripe\Action;
 use ArrayObject;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateRefund;
 use FluxSE\PayumStripe\Token\TokenHashKeysInterface;
+use Payum\Core\Action\ActionInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Payum\Core\GatewayAwareInterface;
+use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Refund;
+use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Stripe\PaymentIntent;
 use Stripe\Refund as StripeRefund;
 
-final class RefundAction extends AbstractPaymentIntentAwareAction
+final class RefundAction implements ActionInterface, GatewayAwareInterface, GenericTokenFactoryAwareInterface
 {
+    use GatewayAwareTrait;
+    use EmbeddableTokenTrait;
+
     /**
      * @param Refund $request
      */
