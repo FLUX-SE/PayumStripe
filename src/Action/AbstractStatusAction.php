@@ -28,6 +28,12 @@ abstract class AbstractStatusAction implements ActionInterface, GatewayAwareInte
 
         $syncRequest = new Sync($model);
         $this->gateway->execute($syncRequest);
+        
+        if (false === $this->supports($request)) {
+            $this->gateway->execute($request);
+
+            return;
+        }
 
         if (null !== $model->offsetGet('error')) {
             $request->markFailed();
