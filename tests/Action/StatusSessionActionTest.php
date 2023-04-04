@@ -7,6 +7,7 @@ use FluxSE\PayumStripe\Request\Api\Resource\AllInvoice;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrievePaymentIntent;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
+use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayInterface;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\GetBinaryStatus;
@@ -522,5 +523,46 @@ final class StatusSessionActionTest extends TestCase
         $action->execute($request);
 
         $this->assertTrue($request->isPending());
+    }
+
+    public function testSyncIsBringingADifferentObject(): void
+    {
+        $gatewayMock = $this->createGatewayMock();
+        $gatewayMock
+            ->expects($this->exactly(2))
+            ->method('execute')
+            ->willReturnOnConsecutiveCalls(
+                $this->returnCallback(function (Sync $request) {
+                    $model = ArrayObject::ensureArrayObject($request->getModel());
+                    $model->exchangeArray([
+                        'object' => PaymentIntent::OBJECT_NAME,
+                        'status' => PaymentIntent::STATUS_CANCELED,
+                    ]);
+                }),
+                null
+            )
+        ;
+
+        $action = new StatusSessionAction();
+        $action->setGateway($gatewayMock);
+
+        // The model here have to be an object to be aware of the Sync exchangeArray
+        // @todo maybe it's required to support only ArrayObject here
+        $model = ArrayObject::ensureArrayObject([
+            'object' => Session::OBJECT_NAME,
+            'status' => Session::STATUS_OPEN,
+            'payment_status' => Session::PAYMENT_STATUS_UNPAID,
+            'payment_intent' => 'null',
+        ]);
+
+        $request = new GetHumanStatus($model);
+        $initialStatus = $request->getValue();
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $this->assertEquals($initialStatus, $request->getValue());
     }
 }
