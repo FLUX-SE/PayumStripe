@@ -15,9 +15,6 @@ use FluxSE\PayumStripe\Action\StripeCheckoutSession\ConvertPaymentAction;
 use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Api\StripeCheckoutSessionApi;
 use FluxSE\PayumStripe\Api\StripeCheckoutSessionApiInterface;
-use FluxSE\PayumStripe\Extension\StripeCheckoutSession\CancelUrlCancelPaymentIntentExtension;
-use FluxSE\PayumStripe\Extension\StripeCheckoutSession\CancelUrlCancelSetupIntentExtension;
-use FluxSE\PayumStripe\Extension\StripeCheckoutSession\CancelUrlExpireSessionExtension;
 use Payum\Core\Bridge\Spl\ArrayObject;
 
 final class StripeCheckoutSessionGatewayFactory extends AbstractStripeGatewayFactory
@@ -42,9 +39,6 @@ final class StripeCheckoutSessionGatewayFactory extends AbstractStripeGatewayFac
             'payum.action.cancel.payment_intent.automatic' => new CancelAction(),
 
             // Extensions
-            'payum.extension.after_capture_cancel_payment_intent' => new CancelUrlCancelPaymentIntentExtension(),
-            'payum.extension.after_capture_cancel_setup_intent' => new CancelUrlCancelSetupIntentExtension(),
-            'payum.extension.after_capture_expire_session' => new CancelUrlExpireSessionExtension(),
         ]);
 
         parent::populateConfig($config);
