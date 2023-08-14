@@ -11,6 +11,7 @@ use FluxSE\PayumStripe\Request\CaptureAuthorized;
 use FluxSE\PayumStripe\Request\StripeJs\Api\RenderStripeJs;
 use Payum\Core\Request\Generic;
 use Stripe\ApiResource;
+use Stripe\PaymentIntent;
 
 class CaptureAction extends AbstractCaptureAction
 {
@@ -25,7 +26,7 @@ class CaptureAction extends AbstractCaptureAction
     protected function render(ApiResource $captureResource, Generic $request): void
     {
         $token = $this->getRequestToken($request);
-        $actionUrl = $token->getAfterUrl();
+        $actionUrl = $token->getTargetUrl();
 
         $renderRequest = new RenderStripeJs($captureResource, $actionUrl);
         $this->gateway->execute($renderRequest);
@@ -35,10 +36,19 @@ class CaptureAction extends AbstractCaptureAction
     {
         parent::processNotNew($model, $request);
 
-        // Specific case of authorized payments being captured
-        // If it isn't an authorized PaymentIntent then nothing is done
-        $captureAuthorizedRequest = new CaptureAuthorized($this->getRequestToken($request));
-        $captureAuthorizedRequest->setModel($model);
-        $this->gateway->execute($captureAuthorizedRequest);
+        $this->capturesIfPaymentIntentStatusCapture($model, $request);
+    }
+
+    protected function capturesIfPaymentIntentStatusCapture(ArrayObject $model, Generic $request): void
+    {
+        if (
+            PaymentIntent::OBJECT_NAME === $model->offsetGet('object')
+            && PaymentIntent::STATUS_REQUIRES_CAPTURE === $model->offsetGet('status')
+        ) {
+            // Specific case of authorized payments being captured
+            $captureAuthorizedRequest = new CaptureAuthorized($this->getRequestToken($request));
+            $captureAuthorizedRequest->setModel($model);
+            $this->gateway->execute($captureAuthorizedRequest);
+        }
     }
 }

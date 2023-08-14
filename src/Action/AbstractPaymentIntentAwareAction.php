@@ -21,7 +21,8 @@ abstract class AbstractPaymentIntentAwareAction implements ActionInterface, Gate
     public function preparePaymentIntent(Generic $request): ?PaymentIntent
     {
         $model = ArrayObject::ensureArrayObject($request->getModel());
-        $object = $model['object'] ?? null;
+        /** @var string|null $object */
+        $object = $model->offsetGet('object');
         if (PaymentIntent::OBJECT_NAME !== $object) {
             return null;
         }

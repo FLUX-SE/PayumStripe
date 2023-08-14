@@ -41,6 +41,8 @@ use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSetupIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdateCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdatePaymentIntentAction;
+use FluxSE\PayumStripe\Action\Api\Resource\UpdateSessionAction;
+use FluxSE\PayumStripe\Action\Api\Resource\UpdateSetupIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdateSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\AuthorizedPaymentIntentCanceledAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\AuthorizedPaymentIntentManuallyCanceledAction;
@@ -52,7 +54,9 @@ use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentSucceededFromAuthori
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\SetupIntentCanceledAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\SetupIntentSucceededAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\StripeWebhookTestAction;
-use FluxSE\PayumStripe\Action\CancelAction;
+use FluxSE\PayumStripe\Action\CancelPaymentIntentAction as MainCancelPaymentIntentAction;
+use FluxSE\PayumStripe\Action\CancelSetupIntentAction as MainCancelSetupIntentAction;
+use FluxSE\PayumStripe\Action\CancelSessionAction as MainCancelSessionAction;
 use FluxSE\PayumStripe\Action\CaptureAuthorizedAction;
 use FluxSE\PayumStripe\Action\NotifyAction;
 use FluxSE\PayumStripe\Action\RefundAction;
@@ -71,7 +75,9 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
     protected function getDefaultActions(): array
     {
         return [
-            'payum.action.cancel.payment_intent.manual' => new CancelAction(),
+            'payum.action.cancel.payment_intent.manual' => new MainCancelPaymentIntentAction(),
+            'payum.action.cancel.setup_intent.manual' => new MainCancelSetupIntentAction(),
+            'payum.action.cancel.session.manual' => new MainCancelSessionAction(),
             'payum.action.refund' => new RefundAction(),
             'payum.action.capture_authorized' => new CaptureAuthorizedAction(),
             'payum.action.notify_unsafe' => new NotifyAction(),
@@ -122,6 +128,8 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
             'payum.action.retrieve_subscription' => new RetrieveSubscriptionAction(),
             'payum.action.update_coupon' => new UpdateCouponAction(),
             'payum.action.update_payment_intent' => new UpdatePaymentIntentAction(),
+            'payum.action.update_setup_intent' => new UpdateSetupIntentAction(),
+            'payum.action.update_session' => new UpdateSessionAction(),
             'payum.action.update_subscription' => new UpdateSubscriptionAction(),
         ];
     }

@@ -6,6 +6,7 @@ namespace FluxSE\PayumStripe\Action\StripeCheckoutSession;
 
 use ArrayAccess;
 use ArrayObject;
+use FluxSE\PayumStripe\Action\AbstractCaptureAction;
 use LogicException;
 use Payum\Core\Request\Authorize;
 use Payum\Core\Request\Generic;
@@ -36,6 +37,13 @@ final class AuthorizeAction extends CaptureAction
         $embeddedModeData = $model->offsetGet($modeDataKey);
         $embeddedModeData['capture_method'] = 'manual';
         $model->offsetSet($modeDataKey, $embeddedModeData);
+    }
+
+    /**
+     * We are not willing to capture the PaymentIntent here
+     */
+    protected function capturesIfPaymentIntentStatusCapture(ArrayObject $model, Generic $request): void
+    {
     }
 
     public function supports($request): bool

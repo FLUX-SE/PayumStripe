@@ -20,14 +20,8 @@ final class CaptureAuthorizedAction extends AbstractPaymentIntentAwareAction
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
+        /** @var PaymentIntent $paymentIntent can't be null here already checked by the supports method */
         $paymentIntent = $this->preparePaymentIntent($request);
-        if (null === $paymentIntent) {
-            return;
-        }
-
-        if (PaymentIntent::STATUS_REQUIRES_CAPTURE !== $paymentIntent->status) {
-            return;
-        }
 
         $captureRequest = new CapturePaymentIntent($paymentIntent->id);
         $this->gateway->execute($captureRequest);
@@ -54,6 +48,15 @@ final class CaptureAuthorizedAction extends AbstractPaymentIntentAwareAction
             return false;
         }
 
-        return $request->getModel() instanceof ArrayObject;
+        $model = $request->getModel();
+        if (false === $model instanceof ArrayObject) {
+            return false;
+        }
+
+        if (PaymentIntent::OBJECT_NAME !== $model->offsetGet('object')) {
+            return false;
+        }
+
+        return PaymentIntent::STATUS_REQUIRES_CAPTURE === $model->offsetGet('status');
     }
 }

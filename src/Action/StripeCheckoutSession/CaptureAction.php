@@ -9,18 +9,21 @@ use FluxSE\PayumStripe\Action\AbstractCaptureAction;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateSession;
 use FluxSE\PayumStripe\Request\CaptureAuthorized;
 use FluxSE\PayumStripe\Request\StripeCheckoutSession\Api\RedirectToCheckout;
+use Payum\Core\Request\Cancel;
 use Payum\Core\Request\Generic;
+use Payum\Core\Request\Sync;
 use Payum\Core\Security\TokenInterface;
 use Stripe\ApiResource;
 use Stripe\Checkout\Session;
+use Stripe\PaymentIntent;
 
 class CaptureAction extends AbstractCaptureAction
 {
     protected function createApiResource(ArrayObject $model, Generic $request): ApiResource
     {
         $token = $this->getRequestToken($request);
-        $model->offsetSet('success_url', $token->getAfterUrl());
-        $model->offsetSet('cancel_url', $token->getAfterUrl());
+        $model->offsetSet('success_url', $token->getTargetUrl());
+        $model->offsetSet('cancel_url', $token->getTargetUrl());
 
         $createRequest = new CreateSession($model->getArrayCopy());
         $this->gateway->execute($createRequest);
@@ -89,10 +92,28 @@ class CaptureAction extends AbstractCaptureAction
     {
         parent::processNotNew($model, $request);
 
-        // Specific case of authorized payments being captured
-        // If it isn't an authorized PaymentIntent then nothing is done
-        $captureAuthorizedRequest = new CaptureAuthorized($this->getRequestToken($request));
-        $captureAuthorizedRequest->setModel($model);
-        $this->gateway->execute($captureAuthorizedRequest);
+        $this->cancelCheckoutSession($model);
+
+        $this->capturesIfPaymentIntentStatusCapture($model, $request);
+    }
+
+    protected function cancelCheckoutSession(ArrayObject $model): void
+    {
+        // At this specific moment we are coming back from a CheckoutSession
+        // We can then Make the Checkout Session expires
+        $this->gateway->execute(new Cancel($model));
+    }
+
+    protected function capturesIfPaymentIntentStatusCapture(ArrayObject $model, Generic $request): void
+    {
+        if (
+            PaymentIntent::OBJECT_NAME === $model->offsetGet('object')
+            && PaymentIntent::STATUS_REQUIRES_CAPTURE === $model->offsetGet('status')
+        ) {
+            // Specific case of authorized payments being captured
+            $captureAuthorizedRequest = new CaptureAuthorized($this->getRequestToken($request));
+            $captureAuthorizedRequest->setModel($model);
+            $this->gateway->execute($captureAuthorizedRequest);
+        }
     }
 }

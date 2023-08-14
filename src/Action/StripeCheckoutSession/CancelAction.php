@@ -6,7 +6,6 @@ namespace FluxSE\PayumStripe\Action\StripeCheckoutSession;
 
 use ArrayAccess;
 use FluxSE\PayumStripe\Request\Api\Resource\AllSession;
-use FluxSE\PayumStripe\Request\Api\Resource\ExpireSession;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -14,6 +13,7 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Request\Cancel;
 use Stripe\Checkout\Session;
+use Stripe\PaymentIntent;
 
 class CancelAction implements ActionInterface, GatewayAwareInterface
 {
@@ -29,7 +29,7 @@ class CancelAction implements ActionInterface, GatewayAwareInterface
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
         // @link https://stripe.com/docs/api/payment_intents/cancel
-        // > You cannot cancel the PaymentIntent for a Checkout Session.
+        // > You cannot cancel the PaymentIntent created by a Checkout Session.
         // > Expire the Checkout Session instead.
         $allSessionRequest = new AllSession(
             [
@@ -44,11 +44,7 @@ class CancelAction implements ActionInterface, GatewayAwareInterface
             return;
         }
 
-        if ($session->status !== Session::STATUS_OPEN) {
-            return;
-        }
-
-        $this->gateway->execute(new ExpireSession($session->id));
+        $this->gateway->execute(new Cancel($session->toArray()));
     }
 
     public function supports($request): bool
@@ -59,6 +55,10 @@ class CancelAction implements ActionInterface, GatewayAwareInterface
 
         $model = $request->getModel();
         if (!$model instanceof ArrayAccess) {
+            return false;
+        }
+
+        if (PaymentIntent::OBJECT_NAME !== $model->offsetGet('object')) {
             return false;
         }
 

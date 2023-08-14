@@ -11,7 +11,7 @@ use Payum\Core\Request\Generic;
 use Payum\Core\Security\TokenInterface;
 
 /**
- * For more information about Stripe Authorize payments :.
+ * For more information about Stripe Authorize payments:
  *
  * @see https://stripe.com/docs/payments/capture-later
  */
@@ -22,6 +22,13 @@ final class AuthorizeAction extends CaptureAction
         $model->offsetSet('capture_method', 'manual');
 
         return parent::embedNotifyTokenHash($model, $request);
+    }
+
+    /**
+     * We are not willing to capture the PaymentIntent here
+     */
+    protected function capturesIfPaymentIntentStatusCapture(ArrayObject $model, Generic $request): void
+    {
     }
 
     public function supports($request): bool
