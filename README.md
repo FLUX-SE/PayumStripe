@@ -27,7 +27,7 @@ composer require flux-se/payum-stripe
 ```
 
 Choose one of [php-http/client-implementation](https://packagist.org/providers/php-http/client-implementation),
-the most used is [php-http/guzzle6-adapter](https://packagist.org/packages/php-http/guzzle6-adapter)
+the most used is [php-http/guzzle7-adapter](https://packagist.org/packages/php-http/guzzle6-adapter)
 
 ```bash
 composer require  php-http/guzzle6-adapter
