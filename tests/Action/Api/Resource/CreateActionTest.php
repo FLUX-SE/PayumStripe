@@ -8,6 +8,8 @@ use FluxSE\PayumStripe\Action\Api\Resource\CreateCustomerAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreatePaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreatePaymentMethodAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreatePlanAction;
+use FluxSE\PayumStripe\Action\Api\Resource\CreatePriceAction;
+use FluxSE\PayumStripe\Action\Api\Resource\CreateProductAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateRefundAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateResourceActionInterface;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateSessionAction;
@@ -22,6 +24,8 @@ use FluxSE\PayumStripe\Request\Api\Resource\CreateInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\CreatePaymentIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\CreatePaymentMethod;
 use FluxSE\PayumStripe\Request\Api\Resource\CreatePlan;
+use FluxSE\PayumStripe\Request\Api\Resource\CreatePrice;
+use FluxSE\PayumStripe\Request\Api\Resource\CreateProduct;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateRefund;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateSession;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateSetupIntent;
@@ -40,6 +44,8 @@ use Stripe\Issuing\CardDetails;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
 use Stripe\Plan;
+use Stripe\Price;
+use Stripe\Product;
 use Stripe\Refund;
 use Stripe\Service\AbstractService;
 use Stripe\SetupIntent;
@@ -145,6 +151,8 @@ final class CreateActionTest extends TestCase
             [CreatePaymentIntentAction::class, CreatePaymentIntent::class, PaymentIntent::class],
             [CreatePaymentMethodAction::class, CreatePaymentMethod::class, PaymentMethod::class],
             [CreatePlanAction::class, CreatePlan::class, Plan::class],
+            [CreatePriceAction::class, CreatePrice::class, Price::class],
+            [CreateProductAction::class, CreateProduct::class, Product::class],
             [CreateRefundAction::class, CreateRefund::class, Refund::class],
             [CreateSetupIntentAction::class, CreateSetupIntent::class, SetupIntent::class],
             [CreateSubscriptionAction::class, CreateSubscription::class, Subscription::class],

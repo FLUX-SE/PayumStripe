@@ -5,6 +5,9 @@ namespace Tests\FluxSE\PayumStripe\Action\Api\Resource;
 use FluxSE\PayumStripe\Action\Api\Resource\AbstractUpdateAction;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdateCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdatePaymentIntentAction;
+use FluxSE\PayumStripe\Action\Api\Resource\UpdatePlanAction;
+use FluxSE\PayumStripe\Action\Api\Resource\UpdatePriceAction;
+use FluxSE\PayumStripe\Action\Api\Resource\UpdateProductAction;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdateResourceActionInterface;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdateSubscriptionAction;
 use FluxSE\PayumStripe\Api\KeysAwareInterface;
@@ -12,6 +15,9 @@ use FluxSE\PayumStripe\Request\Api\Resource\AbstractUpdate;
 use FluxSE\PayumStripe\Request\Api\Resource\UpdateCoupon;
 use FluxSE\PayumStripe\Request\Api\Resource\UpdateInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\UpdatePaymentIntent;
+use FluxSE\PayumStripe\Request\Api\Resource\UpdatePlan;
+use FluxSE\PayumStripe\Request\Api\Resource\UpdatePrice;
+use FluxSE\PayumStripe\Request\Api\Resource\UpdateProduct;
 use FluxSE\PayumStripe\Request\Api\Resource\UpdateSubscription;
 use LogicException;
 use Payum\Core\Action\ActionInterface;
@@ -22,6 +28,9 @@ use Stripe\ApiResource;
 use Stripe\Coupon;
 use Stripe\Issuing\CardDetails;
 use Stripe\PaymentIntent;
+use Stripe\Plan;
+use Stripe\Price;
+use Stripe\Product;
 use Stripe\Service\AbstractService;
 use Stripe\StripeClient;
 use Stripe\Subscription;
@@ -127,6 +136,9 @@ final class UpdateActionTest extends TestCase
         return [
             [UpdateCouponAction::class, UpdateCoupon::class, Coupon::class],
             [UpdatePaymentIntentAction::class, UpdatePaymentIntent::class, PaymentIntent::class],
+            [UpdatePlanAction::class, UpdatePlan::class, Plan::class],
+            [UpdatePriceAction::class, UpdatePrice::class, Price::class],
+            [UpdateProductAction::class, UpdateProduct::class, Product::class],
             [UpdateSubscriptionAction::class, UpdateSubscription::class, Subscription::class],
         ];
     }

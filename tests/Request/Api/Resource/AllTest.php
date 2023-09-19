@@ -9,6 +9,9 @@ use FluxSE\PayumStripe\Request\Api\Resource\AllCoupon;
 use FluxSE\PayumStripe\Request\Api\Resource\AllCustomer;
 use FluxSE\PayumStripe\Request\Api\Resource\AllInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AllInvoice;
+use FluxSE\PayumStripe\Request\Api\Resource\AllPlan;
+use FluxSE\PayumStripe\Request\Api\Resource\AllPrice;
+use FluxSE\PayumStripe\Request\Api\Resource\AllProduct;
 use FluxSE\PayumStripe\Request\Api\Resource\AllSession;
 use FluxSE\PayumStripe\Request\Api\Resource\AllTaxRate;
 use FluxSE\PayumStripe\Request\Api\Resource\OptionsAwareInterface;
@@ -20,6 +23,9 @@ use Stripe\Collection;
 use Stripe\Coupon;
 use Stripe\Customer;
 use Stripe\Invoice;
+use Stripe\Plan;
+use Stripe\Price;
+use Stripe\Product;
 use Stripe\TaxRate;
 
 final class AllTest extends TestCase
@@ -107,6 +113,9 @@ final class AllTest extends TestCase
             [AllCoupon::class, Coupon::class],
             [AllCustomer::class, Customer::class],
             [AllInvoice::class, Invoice::class],
+            [AllPlan::class, Plan::class],
+            [AllPrice::class, Price::class],
+            [AllProduct::class, Product::class],
             [AllTaxRate::class, TaxRate::class],
             [AllSession::class, Session::class],
         ];

@@ -10,6 +10,7 @@ use FluxSE\PayumStripe\Action\Api\Resource\RetrieveInvoiceAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrievePaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrievePaymentMethodAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrievePlanAction;
+use FluxSE\PayumStripe\Action\Api\Resource\RetrievePriceAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveProductAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveResourceActionInterface;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSessionAction;
@@ -25,6 +26,7 @@ use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInvoice;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrievePaymentIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrievePaymentMethod;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrievePlan;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrievePrice;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveProduct;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSession;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSetupIntent;
@@ -44,6 +46,7 @@ use Stripe\Issuing\CardDetails;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
 use Stripe\Plan;
+use Stripe\Price;
 use Stripe\Product;
 use Stripe\Service\AbstractService;
 use Stripe\SetupIntent;
@@ -154,6 +157,7 @@ final class RetrieveActionTest extends TestCase
             [RetrievePaymentIntentAction::class, RetrievePaymentIntent::class, PaymentIntent::class],
             [RetrievePaymentMethodAction::class, RetrievePaymentMethod::class, PaymentMethod::class],
             [RetrievePlanAction::class, RetrievePlan::class, Plan::class],
+            [RetrievePriceAction::class, RetrievePrice::class, Price::class],
             [RetrieveProductAction::class, RetrieveProduct::class, Product::class],
             [RetrieveSessionAction::class, RetrieveSession::class, Session::class],
             [RetrieveSetupIntentAction::class, RetrieveSetupIntent::class, SetupIntent::class],

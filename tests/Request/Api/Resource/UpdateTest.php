@@ -8,12 +8,20 @@ use FluxSE\PayumStripe\Request\Api\Resource\AbstractUpdate;
 use FluxSE\PayumStripe\Request\Api\Resource\OptionsAwareInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\ResourceAwareInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\UpdateInterface;
+use FluxSE\PayumStripe\Request\Api\Resource\UpdatePaymentIntent;
+use FluxSE\PayumStripe\Request\Api\Resource\UpdatePlan;
+use FluxSE\PayumStripe\Request\Api\Resource\UpdatePrice;
+use FluxSE\PayumStripe\Request\Api\Resource\UpdateProduct;
 use FluxSE\PayumStripe\Request\Api\Resource\UpdateSubscription;
 use LogicException;
 use Payum\Core\Request\Generic;
 use PHPUnit\Framework\TestCase;
 use Stripe\ApiOperations\Update;
 use Stripe\ApiResource;
+use Stripe\PaymentIntent;
+use Stripe\Plan;
+use Stripe\Price;
+use Stripe\Product;
 use Stripe\Subscription;
 
 final class UpdateTest extends TestCase
@@ -110,6 +118,10 @@ final class UpdateTest extends TestCase
     public function requestList(): array
     {
         return [
+            [UpdatePaymentIntent::class, PaymentIntent::class],
+            [UpdatePlan::class, Plan::class],
+            [UpdatePrice::class, Price::class],
+            [UpdateProduct::class, Product::class],
             [UpdateSubscription::class, Subscription::class],
         ];
     }

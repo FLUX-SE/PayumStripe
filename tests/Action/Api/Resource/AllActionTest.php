@@ -8,6 +8,9 @@ use FluxSE\PayumStripe\Action\Api\Resource\AbstractAllAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllCustomerAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllInvoiceAction;
+use FluxSE\PayumStripe\Action\Api\Resource\AllPlanAction;
+use FluxSE\PayumStripe\Action\Api\Resource\AllPriceAction;
+use FluxSE\PayumStripe\Action\Api\Resource\AllProductAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllResourceActionInterface;
 use FluxSE\PayumStripe\Action\Api\Resource\AllSessionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllTaxRateAction;
@@ -17,6 +20,9 @@ use FluxSE\PayumStripe\Request\Api\Resource\AllCoupon;
 use FluxSE\PayumStripe\Request\Api\Resource\AllCustomer;
 use FluxSE\PayumStripe\Request\Api\Resource\AllInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AllInvoice;
+use FluxSE\PayumStripe\Request\Api\Resource\AllPlan;
+use FluxSE\PayumStripe\Request\Api\Resource\AllPrice;
+use FluxSE\PayumStripe\Request\Api\Resource\AllProduct;
 use FluxSE\PayumStripe\Request\Api\Resource\AllSession;
 use FluxSE\PayumStripe\Request\Api\Resource\AllTaxRate;
 use LogicException;
@@ -29,6 +35,9 @@ use Stripe\Checkout\Session;
 use Stripe\Coupon;
 use Stripe\Customer;
 use Stripe\Invoice;
+use Stripe\Plan;
+use Stripe\Price;
+use Stripe\Product;
 use Stripe\Service\AbstractService;
 use Stripe\StripeClient;
 use Stripe\TaxRate;
@@ -142,6 +151,9 @@ final class AllActionTest extends TestCase
             [AllCouponAction::class, AllCoupon::class, Coupon::class],
             [AllCustomerAction::class, AllCustomer::class, Customer::class],
             [AllInvoiceAction::class, AllInvoice::class, Invoice::class],
+            [AllPlanAction::class, AllPlan::class, Plan::class],
+            [AllPriceAction::class, AllPrice::class, Price::class],
+            [AllProductAction::class, AllProduct::class, Product::class],
             [AllTaxRateAction::class, AllTaxRate::class, TaxRate::class],
             [AllSessionAction::class, AllSession::class, Session::class],
         ];

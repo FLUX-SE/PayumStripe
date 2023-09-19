@@ -5,12 +5,14 @@ namespace Tests\FluxSE\PayumStripe\Action\Api\Resource;
 use FluxSE\PayumStripe\Action\Api\Resource\AbstractDeleteAction;
 use FluxSE\PayumStripe\Action\Api\Resource\DeleteCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\DeletePlanAction;
+use FluxSE\PayumStripe\Action\Api\Resource\DeleteProductAction;
 use FluxSE\PayumStripe\Action\Api\Resource\DeleteResourceActionInterface;
 use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractDelete;
 use FluxSE\PayumStripe\Request\Api\Resource\DeleteCoupon;
 use FluxSE\PayumStripe\Request\Api\Resource\DeleteInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\DeletePlan;
+use FluxSE\PayumStripe\Request\Api\Resource\DeleteProduct;
 use LogicException;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -22,6 +24,7 @@ use Stripe\Coupon;
 use Stripe\Issuing\Card;
 use Stripe\Issuing\CardDetails;
 use Stripe\Plan;
+use Stripe\Product;
 use Stripe\Service\AbstractService;
 use Stripe\Stripe;
 use Stripe\StripeClient;
@@ -154,6 +157,7 @@ final class DeleteActionTest extends TestCase
         return [
             [DeleteCouponAction::class, DeleteCoupon::class, Coupon::class],
             [DeletePlanAction::class, DeletePlan::class, Plan::class],
+            [DeleteProductAction::class, DeleteProduct::class, Product::class],
         ];
     }
 }
