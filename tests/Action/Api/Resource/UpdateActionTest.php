@@ -32,6 +32,12 @@ use Stripe\Plan;
 use Stripe\Price;
 use Stripe\Product;
 use Stripe\Service\AbstractService;
+use Stripe\Service\CouponService;
+use Stripe\Service\PaymentIntentService;
+use Stripe\Service\PlanService;
+use Stripe\Service\PriceService;
+use Stripe\Service\ProductService;
+use Stripe\Service\SubscriptionService;
 use Stripe\StripeClient;
 use Stripe\Subscription;
 use Tests\FluxSE\PayumStripe\Action\Api\ApiAwareActionTestTrait;
@@ -63,12 +69,14 @@ final class UpdateActionTest extends TestCase
     public function testShouldUpdateAPaymentIntent(
         string $updateActionClass,
         string $updateRequestClass,
-        string $updateClass
+        string $updateClass,
+        string $serviceClass
     ): void {
         $id = 'pi_1';
         $parameters = [];
 
         $apiMock = $this->createApiMock();
+        $stripeClient = $apiMock->getStripeClient();
 
         /** @var AbstractUpdateAction $action */
         $action = new $updateActionClass();
@@ -99,6 +107,9 @@ final class UpdateActionTest extends TestCase
 
         $action->execute($request);
         $this->assertInstanceOf($updateClass, $request->getApiResource());
+
+        $service = $action->getStripeService($stripeClient);
+        $this->assertInstanceOf($serviceClass, $service);
     }
 
     public function testShouldThrowExceptionIfApiResourceClassIsNotCreatable(): void
@@ -134,12 +145,12 @@ final class UpdateActionTest extends TestCase
     public function requestList(): array
     {
         return [
-            [UpdateCouponAction::class, UpdateCoupon::class, Coupon::class],
-            [UpdatePaymentIntentAction::class, UpdatePaymentIntent::class, PaymentIntent::class],
-            [UpdatePlanAction::class, UpdatePlan::class, Plan::class],
-            [UpdatePriceAction::class, UpdatePrice::class, Price::class],
-            [UpdateProductAction::class, UpdateProduct::class, Product::class],
-            [UpdateSubscriptionAction::class, UpdateSubscription::class, Subscription::class],
+            [UpdateCouponAction::class, UpdateCoupon::class, Coupon::class, CouponService::class],
+            [UpdatePaymentIntentAction::class, UpdatePaymentIntent::class, PaymentIntent::class, PaymentIntentService::class],
+            [UpdatePlanAction::class, UpdatePlan::class, Plan::class, PlanService::class],
+            [UpdatePriceAction::class, UpdatePrice::class, Price::class, PriceService::class],
+            [UpdateProductAction::class, UpdateProduct::class, Product::class, ProductService::class],
+            [UpdateSubscriptionAction::class, UpdateSubscription::class, Subscription::class, SubscriptionService::class],
         ];
     }
 }

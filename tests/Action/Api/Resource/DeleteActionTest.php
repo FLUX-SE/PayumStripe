@@ -26,6 +26,9 @@ use Stripe\Issuing\CardDetails;
 use Stripe\Plan;
 use Stripe\Product;
 use Stripe\Service\AbstractService;
+use Stripe\Service\CouponService;
+use Stripe\Service\PlanService;
+use Stripe\Service\ProductService;
 use Stripe\Stripe;
 use Stripe\StripeClient;
 use Tests\FluxSE\PayumStripe\Action\Api\ApiAwareActionTestTrait;
@@ -57,11 +60,13 @@ final class DeleteActionTest extends TestCase
     public function testShouldBeDeleted(
         string $deleteActionClass,
         string $deleteRequestClass,
-        string $deleteClass
+        string $deleteClass,
+        string $serviceClass
     ): void {
         $id = 'pi_1';
 
         $apiMock = $this->createApiMock();
+        $stripeClient = $apiMock->getStripeClient();
 
         /** @var AbstractDeleteAction $action */
         $action = new $deleteActionClass();
@@ -115,6 +120,9 @@ final class DeleteActionTest extends TestCase
 
         $action->execute($request);
         $this->assertInstanceOf($deleteClass, $request->getApiResource());
+
+        $service = $action->getStripeService($stripeClient);
+        $this->assertInstanceOf($serviceClass, $service);
     }
 
     /**
@@ -155,9 +163,9 @@ final class DeleteActionTest extends TestCase
     public function requestList(): array
     {
         return [
-            [DeleteCouponAction::class, DeleteCoupon::class, Coupon::class],
-            [DeletePlanAction::class, DeletePlan::class, Plan::class],
-            [DeleteProductAction::class, DeleteProduct::class, Product::class],
+            [DeleteCouponAction::class, DeleteCoupon::class, Coupon::class, CouponService::class],
+            [DeletePlanAction::class, DeletePlan::class, Plan::class, PlanService::class],
+            [DeleteProductAction::class, DeleteProduct::class, Product::class, ProductService::class],
         ];
     }
 }
