@@ -8,11 +8,16 @@ use FluxSE\PayumStripe\Request\Api\Resource\CancelSetupIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\CustomCallInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInterface;
 use Stripe\ApiResource;
+use Stripe\Service\AbstractService;
 use Stripe\SetupIntent;
+use Stripe\StripeClient;
 
 final class CancelSetupIntentAction extends AbstractRetrieveAction
 {
-    protected $apiResourceClass = SetupIntent::class;
+    public function getStripeService(StripeClient $stripeClient): AbstractService
+    {
+        return $stripeClient->setupIntents;
+    }
 
     public function supportAlso(RetrieveInterface $request): bool
     {

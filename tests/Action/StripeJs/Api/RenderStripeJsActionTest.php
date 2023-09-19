@@ -83,7 +83,7 @@ final class RenderStripeJsActionTest extends TestCase
                 $request->setResult('');
             });
 
-        $apiMock = $this->createApiMock(false);
+        $apiMock = $this->createApiMock();
         $apiMock
             ->expects($this->once())
             ->method('getPublishableKey')

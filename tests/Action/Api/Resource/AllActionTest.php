@@ -29,7 +29,8 @@ use Stripe\Checkout\Session;
 use Stripe\Coupon;
 use Stripe\Customer;
 use Stripe\Invoice;
-use Stripe\Issuing\CardDetails;
+use Stripe\Service\AbstractService;
+use Stripe\StripeClient;
 use Stripe\TaxRate;
 use Tests\FluxSE\PayumStripe\Action\Api\ApiAwareActionTestTrait;
 use Tests\FluxSE\PayumStripe\Stripe\StripeApiTestHelper;
@@ -68,7 +69,6 @@ final class AllActionTest extends TestCase
         $action = new $allActionClass();
         $action->setApiClass(KeysAwareInterface::class);
         $action->setApi($apiMock);
-        $this->assertEquals($allClass, $action->getApiResourceClass());
 
         /** @var AbstractAll $request */
         $request = new $allRequestClass();
@@ -115,10 +115,13 @@ final class AllActionTest extends TestCase
             {
                 return true;
             }
-        };
 
-        $action->setApiResourceClass(CardDetails::class);
-        $this->assertEquals(CardDetails::class, $action->getApiResourceClass());
+            public function getStripeService(StripeClient $stripeClient): AbstractService
+            {
+                return new class($stripeClient) extends AbstractService {
+                };
+            }
+        };
 
         $request = new class() extends AbstractAll {
         };

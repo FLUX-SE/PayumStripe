@@ -9,10 +9,15 @@ use FluxSE\PayumStripe\Request\Api\Resource\CustomCallInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInterface;
 use Stripe\ApiResource;
 use Stripe\PaymentIntent;
+use Stripe\Service\AbstractService;
+use Stripe\StripeClient;
 
 final class CancelPaymentIntentAction extends AbstractRetrieveAction
 {
-    protected $apiResourceClass = PaymentIntent::class;
+    public function getStripeService(StripeClient $stripeClient): AbstractService
+    {
+        return $stripeClient->paymentIntents;
+    }
 
     public function supportAlso(RetrieveInterface $request): bool
     {

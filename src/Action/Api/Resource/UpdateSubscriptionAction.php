@@ -6,11 +6,15 @@ namespace FluxSE\PayumStripe\Action\Api\Resource;
 
 use FluxSE\PayumStripe\Request\Api\Resource\UpdateInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\UpdateSubscription;
-use Stripe\Subscription;
+use Stripe\Service\AbstractService;
+use Stripe\StripeClient;
 
 final class UpdateSubscriptionAction extends AbstractUpdateAction
 {
-    protected $apiResourceClass = Subscription::class;
+    public function getStripeService(StripeClient $stripeClient): AbstractService
+    {
+        return $stripeClient->subscriptions;
+    }
 
     public function supportAlso(UpdateInterface $request): bool
     {

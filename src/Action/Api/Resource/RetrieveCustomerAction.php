@@ -6,11 +6,15 @@ namespace FluxSE\PayumStripe\Action\Api\Resource;
 
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveCustomer;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInterface;
-use Stripe\Customer;
+use Stripe\Service\AbstractService;
+use Stripe\StripeClient;
 
 final class RetrieveCustomerAction extends AbstractRetrieveAction
 {
-    protected $apiResourceClass = Customer::class;
+    public function getStripeService(StripeClient $stripeClient): AbstractService
+    {
+        return $stripeClient->customers;
+    }
 
     public function supportAlso(RetrieveInterface $request): bool
     {

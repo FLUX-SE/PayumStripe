@@ -9,8 +9,10 @@ use FluxSE\PayumStripe\Action as GlobalAction;
 use FluxSE\PayumStripe\Action\StripeCheckoutSession;
 use FluxSE\PayumStripe\Action\StripeJs;
 use FluxSE\PayumStripe\Action\StripeJs\Api\RenderStripeJsAction;
-use FluxSE\PayumStripe\Api\KeysAwareInterface;
+use FluxSE\PayumStripe\Api\StripeCheckoutSessionApi;
 use FluxSE\PayumStripe\Api\StripeCheckoutSessionApiInterface;
+use FluxSE\PayumStripe\Api\StripeClientAwareInterface;
+use FluxSE\PayumStripe\Api\StripeJsApi;
 use FluxSE\PayumStripe\StripeCheckoutSessionGatewayFactory;
 use FluxSE\PayumStripe\StripeJsGatewayFactory;
 use Payum\Core\Bridge\Spl\ArrayObject;
@@ -18,7 +20,6 @@ use Payum\Core\Exception\LogicException;
 use Payum\Core\GatewayFactoryInterface;
 use PHPUnit\Framework\TestCase;
 use Stripe\PaymentIntent;
-
 use function strpos;
 
 final class StripeGatewayFactoryTest extends TestCase
@@ -175,8 +176,9 @@ final class StripeGatewayFactoryTest extends TestCase
             ],
             'payment_method_types' => ['card'],
         ]);
+        $newCredentials->defaults($config);
         $api = $config['payum.api']($newCredentials);
-        $this->assertInstanceOf(KeysAwareInterface::class, $api);
+        $this->assertInstanceOf(StripeClientAwareInterface::class, $api);
     }
 
     public function gatewayList(): array
@@ -189,7 +191,14 @@ final class StripeGatewayFactoryTest extends TestCase
 
     public function testConfigurationForCheckoutSession(): void
     {
-        $factory = new StripeCheckoutSessionGatewayFactory();
+        $defaults = [
+            'publishable_key' => '12345',
+            'secret_key' => '12345',
+            'webhook_secret_keys' => [
+                '12345'
+            ],
+        ];
+        $factory = new StripeCheckoutSessionGatewayFactory($defaults);
 
         $config = $factory->createConfig();
 
@@ -213,11 +222,21 @@ final class StripeGatewayFactoryTest extends TestCase
         $this->assertEquals(new StripeCheckoutSession\Api\RedirectToCheckoutAction(), $actualActions['payum.action.redirect_to_checkout']);
         $this->assertArrayHasKey('payum.action.cancel.payment_intent.automatic', $actualActions);
         $this->assertEquals(new StripeCheckoutSession\CancelAction(), $actualActions['payum.action.cancel.payment_intent.automatic']);
+
+        $api = $config['payum.api'](ArrayObject::ensureArrayObject($config));
+        $this->assertInstanceOf(StripeCheckoutSessionApi::class, $api);
     }
 
     public function testConfigurationForStripeJs(): void
     {
-        $factory = new StripeJsGatewayFactory();
+        $defaults = [
+            'publishable_key' => '12345',
+            'secret_key' => '12345',
+            'webhook_secret_keys' => [
+                '12345'
+            ],
+        ];
+        $factory = new StripeJsGatewayFactory($defaults);
 
         $config = $factory->createConfig();
 
@@ -244,8 +263,10 @@ final class StripeGatewayFactoryTest extends TestCase
         /** @var RenderStripeJsAction $payAction */
         $payAction = $config['payum.action.render_stripe_js.payment_intent'](ArrayObject::ensureArrayObject($config));
         $this->assertInstanceOf(RenderStripeJsAction::class, $payAction);
-        $this->assertEquals(PaymentIntent::class, $payAction->getApiResourceClass());
         $this->assertEquals($config['payum.template.render_stripe_js.payment_intent'], $payAction->getTemplateName());
+
+        $api = $config['payum.api'](ArrayObject::ensureArrayObject($config));
+        $this->assertInstanceOf(StripeJsApi::class, $api);
     }
 
     private function configuredPayumActions(array $config): array

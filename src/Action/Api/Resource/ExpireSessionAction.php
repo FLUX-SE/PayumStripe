@@ -9,10 +9,15 @@ use FluxSE\PayumStripe\Request\Api\Resource\ExpireSession;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInterface;
 use Stripe\ApiResource;
 use Stripe\Checkout\Session;
+use Stripe\Service\AbstractService;
+use Stripe\StripeClient;
 
 final class ExpireSessionAction extends AbstractRetrieveAction
 {
-    protected $apiResourceClass = Session::class;
+    public function getStripeService(StripeClient $stripeClient): AbstractService
+    {
+        return $stripeClient->checkout->sessions;
+    }
 
     public function supportAlso(RetrieveInterface $request): bool
     {

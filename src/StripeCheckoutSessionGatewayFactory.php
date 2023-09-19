@@ -64,6 +64,9 @@ final class StripeCheckoutSessionGatewayFactory extends AbstractStripeGatewayFac
             $config['publishable_key'],
             $config['secret_key'],
             $config['webhook_secret_keys'],
+            $config['client_id'],
+            $config['stripe_account'],
+            $config['stripe_version'],
             $config['payment_method_types']
         );
     }

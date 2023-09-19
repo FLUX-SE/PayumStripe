@@ -71,7 +71,6 @@ final class CustomCallActionTest extends TestCase
         $action = new $customCallActionClass();
         $action->setApiClass(KeysAwareInterface::class);
         $action->setApi($apiMock);
-        $this->assertEquals($customCallClass, $action->getApiResourceClass());
 
         /** @var AbstractCustomCall $request */
         $request = new $customCallRequestClass($id);

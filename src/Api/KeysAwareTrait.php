@@ -8,8 +8,10 @@ trait KeysAwareTrait
 {
     /** @var string[] */
     private $webhookSecretKeys;
+
     /** @var string */
     private $publishable;
+
     /** @var string */
     private $secret;
 
@@ -43,7 +45,7 @@ trait KeysAwareTrait
 
     public function hasWebhookSecretKey(string $webhookSecretKey): bool
     {
-        return in_array($webhookSecretKey, $this->webhookSecretKeys);
+        return in_array($webhookSecretKey, $this->webhookSecretKeys, true);
     }
 
     public function addWebhookSecretKey(string $webhookSecretKey): void

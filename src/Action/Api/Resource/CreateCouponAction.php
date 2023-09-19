@@ -6,11 +6,15 @@ namespace FluxSE\PayumStripe\Action\Api\Resource;
 
 use FluxSE\PayumStripe\Request\Api\Resource\CreateCoupon;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateInterface;
-use Stripe\Coupon;
+use Stripe\Service\AbstractService;
+use Stripe\StripeClient;
 
 final class CreateCouponAction extends AbstractCreateAction
 {
-    protected $apiResourceClass = Coupon::class;
+    public function getStripeService(StripeClient $stripeClient): AbstractService
+    {
+        return $stripeClient->coupons;
+    }
 
     public function supportAlso(CreateInterface $request): bool
     {

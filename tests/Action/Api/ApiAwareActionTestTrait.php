@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\FluxSE\PayumStripe\Action\Api;
 
-use FluxSE\PayumStripe\Api\KeysAwareInterface;
+use FluxSE\PayumStripe\Api\StripeClientAwareInterface;
 use PHPUnit\Framework\MockObject\MockObject;
+use Stripe\Service\AbstractService;
+use Stripe\StripeClient;
 
 trait ApiAwareActionTestTrait
 {
@@ -21,25 +23,23 @@ trait ApiAwareActionTestTrait
     abstract protected function createMock(string $originalClassName): MockObject;
 
     /**
-     * @return MockObject&KeysAwareInterface
+     * @return MockObject&StripeClientAwareInterface
      */
-    protected function createApiMock(bool $shouldGetSecretKey = true): KeysAwareInterface
+    protected function createApiMock(): StripeClientAwareInterface
     {
+        $stripeClient = new StripeClient('sk_test_123');
         $apiMock = $this->createMock($this->getApiClass());
 
-        if ($shouldGetSecretKey) {
-            $apiMock
-                ->expects($this->atLeastOnce())
-                ->method('getSecretKey')
-                ->willReturn('sk_test_123')
-            ;
-        }
+        $apiMock
+            ->method('getStripeClient')
+            ->willReturn($stripeClient)
+        ;
 
         return $apiMock;
     }
 
     protected function getApiClass(): string
     {
-        return KeysAwareInterface::class;
+        return StripeClientAwareInterface::class;
     }
 }

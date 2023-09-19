@@ -6,11 +6,15 @@ namespace FluxSE\PayumStripe\Action\Api\Resource;
 
 use FluxSE\PayumStripe\Request\Api\Resource\CreateCustomer;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateInterface;
-use Stripe\Customer;
+use Stripe\Service\AbstractService;
+use Stripe\StripeClient;
 
 final class CreateCustomerAction extends AbstractCreateAction
 {
-    protected $apiResourceClass = Customer::class;
+    public function getStripeService(StripeClient $stripeClient): AbstractService
+    {
+        return $stripeClient->customers;
+    }
 
     public function supportAlso(CreateInterface $request): bool
     {

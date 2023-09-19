@@ -8,10 +8,7 @@ use FluxSE\PayumStripe\Action\Api\StripeApiAwareTrait;
 use FluxSE\PayumStripe\Request\Api\Resource\DeleteInterface;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Stripe\ApiOperations\Delete;
-use Stripe\ApiOperations\Retrieve;
 use Stripe\ApiResource;
-use Stripe\Stripe;
 
 abstract class AbstractDeleteAction implements DeleteResourceActionInterface
 {
@@ -32,24 +29,20 @@ abstract class AbstractDeleteAction implements DeleteResourceActionInterface
 
     public function deleteApiResource(DeleteInterface $request): ApiResource
     {
-        $apiResourceClass = $this->getApiResourceClass();
-        if (false === method_exists($apiResourceClass, 'retrieve')) {
-            throw new LogicException(sprintf('This class "%s" is not an instance of "%s" !', $apiResourceClass, Retrieve::class));
+        $service = $this->getService();
+        if (false === method_exists($service, 'retrieve')) {
+            throw new LogicException('This Stripe service does not have "retrieve" method !');
         }
 
-        if (false === method_exists($apiResourceClass, 'delete')) {
-            throw new LogicException(sprintf('This class "%s" is not an instance of "%s" !', $apiResourceClass, Delete::class));
+        if (false === method_exists($service, 'delete')) {
+            throw new LogicException('This Stripe service does not have "delete" method !');
         }
 
-        Stripe::setApiKey($this->api->getSecretKey());
-
-        /** @see Retrieve::retrieve() */
-        $apiResource = $apiResourceClass::retrieve(
+        $apiResource = $service->retrieve(
             $request->getId(),
             $request->getOptions()
         );
 
-        /* @see Delete::delete() */
         return $apiResource->delete();
     }
 

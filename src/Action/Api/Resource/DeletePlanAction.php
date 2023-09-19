@@ -6,11 +6,15 @@ namespace FluxSE\PayumStripe\Action\Api\Resource;
 
 use FluxSE\PayumStripe\Request\Api\Resource\DeleteInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\DeletePlan;
-use Stripe\Plan;
+use Stripe\Service\AbstractService;
+use Stripe\StripeClient;
 
 final class DeletePlanAction extends AbstractDeleteAction
 {
-    protected $apiResourceClass = Plan::class;
+    public function getStripeService(StripeClient $stripeClient): AbstractService
+    {
+        return $stripeClient->plans;
+    }
 
     public function supportAlso(DeleteInterface $request): bool
     {

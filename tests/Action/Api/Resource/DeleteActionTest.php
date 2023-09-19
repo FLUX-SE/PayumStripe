@@ -22,7 +22,9 @@ use Stripe\Coupon;
 use Stripe\Issuing\Card;
 use Stripe\Issuing\CardDetails;
 use Stripe\Plan;
+use Stripe\Service\AbstractService;
 use Stripe\Stripe;
+use Stripe\StripeClient;
 use Tests\FluxSE\PayumStripe\Action\Api\ApiAwareActionTestTrait;
 use Tests\FluxSE\PayumStripe\Stripe\StripeApiTestHelper;
 
@@ -62,7 +64,6 @@ final class DeleteActionTest extends TestCase
         $action = new $deleteActionClass();
         $action->setApiClass(KeysAwareInterface::class);
         $action->setApi($apiMock);
-        $this->assertEquals($deleteClass, $action->getApiResourceClass());
 
         /** @var AbstractDelete $request */
         $request = new $deleteRequestClass($id);
@@ -124,10 +125,13 @@ final class DeleteActionTest extends TestCase
             {
                 return true;
             }
-        };
 
-        $action->setApiResourceClass($faultClass);
-        $this->assertEquals($faultClass, $action->getApiResourceClass());
+            public function getStripeService(StripeClient $stripeClient): AbstractService
+            {
+                return new class() extends AbstractService {
+                };
+            }
+        };
 
         $request = new class($id) extends AbstractDelete {
         };

@@ -45,7 +45,9 @@ use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
 use Stripe\Plan;
 use Stripe\Product;
+use Stripe\Service\AbstractService;
 use Stripe\SetupIntent;
+use Stripe\StripeClient;
 use Stripe\Subscription;
 use Tests\FluxSE\PayumStripe\Action\Api\ApiAwareActionTestTrait;
 use Tests\FluxSE\PayumStripe\Stripe\StripeApiTestHelper;
@@ -86,7 +88,6 @@ final class RetrieveActionTest extends TestCase
         $action = new $retrieveActionClass();
         $action->setApiClass(KeysAwareInterface::class);
         $action->setApi($apiMock);
-        $this->assertEquals($retrieveClass, $action->getApiResourceClass());
 
         /** @var AbstractRetrieve $request */
         $request = new $retrieveRequestClass($id);
@@ -122,10 +123,13 @@ final class RetrieveActionTest extends TestCase
             {
                 return true;
             }
-        };
 
-        $action->setApiResourceClass(CardDetails::class);
-        $this->assertEquals(CardDetails::class, $action->getApiResourceClass());
+            public function getStripeService(StripeClient $stripeClient): AbstractService
+            {
+                return new class() extends AbstractService {
+                };
+            }
+        };
 
         $request = new class($id) extends AbstractRetrieve {
         };

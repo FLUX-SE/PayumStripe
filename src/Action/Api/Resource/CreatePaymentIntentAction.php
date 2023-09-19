@@ -6,11 +6,15 @@ namespace FluxSE\PayumStripe\Action\Api\Resource;
 
 use FluxSE\PayumStripe\Request\Api\Resource\CreateInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\CreatePaymentIntent;
-use Stripe\PaymentIntent;
+use Stripe\Service\AbstractService;
+use Stripe\StripeClient;
 
 final class CreatePaymentIntentAction extends AbstractCreateAction
 {
-    protected $apiResourceClass = PaymentIntent::class;
+    public function getStripeService(StripeClient $stripeClient): AbstractService
+    {
+        return $stripeClient->paymentIntents;
+    }
 
     public function supportAlso(CreateInterface $request): bool
     {

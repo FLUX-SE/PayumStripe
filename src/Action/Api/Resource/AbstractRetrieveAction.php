@@ -8,9 +8,7 @@ use FluxSE\PayumStripe\Action\Api\StripeApiAwareTrait;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInterface;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Stripe\ApiOperations\Retrieve;
 use Stripe\ApiResource;
-use Stripe\Stripe;
 
 abstract class AbstractRetrieveAction implements RetrieveResourceActionInterface
 {
@@ -31,15 +29,12 @@ abstract class AbstractRetrieveAction implements RetrieveResourceActionInterface
 
     public function retrieveApiResource(RetrieveInterface $request): ApiResource
     {
-        $apiResourceClass = $this->getApiResourceClass();
-        if (false === method_exists($apiResourceClass, 'retrieve')) {
-            throw new LogicException(sprintf('This class "%s" is not an instance of "%s" !', $apiResourceClass, Retrieve::class));
+        $service = $this->getService();
+        if (false === method_exists($service, 'retrieve')) {
+            throw new LogicException('This Stripe service does not have "retrieve" method !');
         }
 
-        Stripe::setApiKey($this->api->getSecretKey());
-
-        /* @see Retrieve::retrieve() */
-        return $apiResourceClass::retrieve(
+        return $service->retrieve(
             $request->getId(),
             $request->getOptions()
         );
