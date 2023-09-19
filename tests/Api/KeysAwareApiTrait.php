@@ -4,25 +4,8 @@ declare(strict_types=1);
 
 namespace Tests\FluxSE\PayumStripe\Api;
 
-use FluxSE\PayumStripe\Api\KeysAwareInterface;
-use ReflectionClass;
-
-trait KeysAwareApiTest
+trait KeysAwareApiTrait
 {
-    abstract protected function getApiClass(): string;
-
-    protected function getReflectionApiClass(): ReflectionClass
-    {
-        return new ReflectionClass($this->getApiClass());
-    }
-
-    public function test__construct(): void
-    {
-        $api = $this->getReflectionApiClass()->newInstance('', '');
-
-        $this->assertInstanceOf(KeysAwareInterface::class, $api);
-    }
-
     public function testHasWebhookSecretKey(): void
     {
         $api = $this->getReflectionApiClass()->newInstance('', '', ['webhookKey1']);
