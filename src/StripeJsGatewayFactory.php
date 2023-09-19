@@ -10,6 +10,7 @@ use FluxSE\PayumStripe\Action\StripeJs\CaptureAction;
 use FluxSE\PayumStripe\Action\StripeJs\ConvertPaymentAction;
 use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Api\StripeCheckoutSessionApi;
+use FluxSE\PayumStripe\Api\StripeJsApi;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Stripe\PaymentIntent;
 
@@ -42,10 +43,13 @@ final class StripeJsGatewayFactory extends AbstractStripeGatewayFactory
 
     protected function initApi(ArrayObject $config): KeysAwareInterface
     {
-        return new StripeCheckoutSessionApi(
+        return new StripeJsApi(
             $config['publishable_key'],
             $config['secret_key'],
-            $config['webhook_secret_keys']
+            $config['webhook_secret_keys'],
+            $config['client_id'],
+            $config['stripe_account'],
+            $config['stripe_version']
         );
     }
 }

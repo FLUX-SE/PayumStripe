@@ -17,17 +17,32 @@ parameters:
             message: '/Parameter #2 (\$arr2|\.\.\.\$replacements) of function array_replace expects array, mixed given\./'
             path: src/AbstractStripeGatewayFactory.php
         -
-            message: '/Parameter #[12] \$[^ ]+ of class FluxSE\\PayumStripe\\Api\\StripeCheckoutSessionApi constructor expects string, mixed given\./'
+            message: '/Parameter #[12] \$[^ ]+ of class FluxSE\\PayumStripe\\Api\\Stripe(CheckoutSession|Js)Api constructor expects string, mixed given\./'
             paths:
                 - src/StripeCheckoutSessionGatewayFactory.php
                 - src/StripeJsGatewayFactory.php
         -
-            message: '/Parameter #3 \$webhookSecretKeys of class FluxSE\\PayumStripe\\Api\\StripeCheckoutSessionApi constructor expects array<string>, mixed given\./'
+            message: '/Parameter #3 \$webhookSecretKeys of class FluxSE\\PayumStripe\\Api\\Stripe(CheckoutSession|Js)Api constructor expects array<string>, mixed given\./'
             paths:
                 - src/StripeCheckoutSessionGatewayFactory.php
                 - src/StripeJsGatewayFactory.php
         -
-            message: '/Parameter #4 \$paymentMethodTypes of class FluxSE\\PayumStripe\\Api\\StripeCheckoutSessionApi constructor expects array, mixed given\./'
+            message: '/Parameter #4 \$clientId of class FluxSE\\PayumStripe\\Api\\Stripe(CheckoutSession|Js)Api constructor expects string\|null, mixed given\./'
+            paths:
+                - src/StripeCheckoutSessionGatewayFactory.php
+                - src/StripeJsGatewayFactory.php
+        -
+            message: '/Parameter #5 \$stripeAccount of class FluxSE\\PayumStripe\\Api\\Stripe(CheckoutSession|Js)Api constructor expects string\|null, mixed given\./'
+            paths:
+                - src/StripeCheckoutSessionGatewayFactory.php
+                - src/StripeJsGatewayFactory.php
+        -
+            message: '/Parameter #6 \$stripeVersion of class FluxSE\\PayumStripe\\Api\\Stripe(CheckoutSession|Js)Api constructor expects string, mixed given\./'
+            paths:
+                - src/StripeCheckoutSessionGatewayFactory.php
+                - src/StripeJsGatewayFactory.php
+        -
+            message: '/Parameter #7 \$paymentMethodTypes of class FluxSE\\PayumStripe\\Api\\StripeCheckoutSessionApi constructor expects array, mixed given\./'
             path: src/StripeCheckoutSessionGatewayFactory.php
         -
             message: '/Parameter #1 \$templateName of class FluxSE\\PayumStripe\\Action\\StripeJs\\Api\\RenderStripeJsAction constructor expects string, mixed given\./'

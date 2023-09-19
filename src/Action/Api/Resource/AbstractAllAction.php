@@ -8,9 +8,7 @@ use FluxSE\PayumStripe\Action\Api\StripeApiAwareTrait;
 use FluxSE\PayumStripe\Request\Api\Resource\AllInterface;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Stripe\ApiOperations\All;
 use Stripe\Collection;
-use Stripe\Stripe;
 
 abstract class AbstractAllAction implements AllResourceActionInterface
 {
@@ -34,15 +32,12 @@ abstract class AbstractAllAction implements AllResourceActionInterface
      */
     public function allApiResource(AllInterface $request): Collection
     {
-        $apiResourceClass = $this->getApiResourceClass();
-        if (false === method_exists($apiResourceClass, 'all')) {
-            throw new LogicException(sprintf('This class "%s" is not an instance of "%s" !', $apiResourceClass, All::class));
+        $service = $this->getService();
+        if (false === method_exists($service, 'all')) {
+            throw new LogicException('This Stripe service does not have "all" method !');
         }
 
-        Stripe::setApiKey($this->api->getSecretKey());
-
-        /* @see All::all() */
-        return $apiResourceClass::all(
+        return $service->all(
             $request->getParameters(),
             $request->getOptions()
         );

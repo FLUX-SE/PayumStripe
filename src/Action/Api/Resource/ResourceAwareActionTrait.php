@@ -4,18 +4,24 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Action\Api\Resource;
 
+use FluxSE\PayumStripe\Api\StripeClientAwareInterface;
+use Payum\Core\Exception\LogicException;
+use Stripe\Service\AbstractService;
+use Stripe\StripeClient;
+
+/**
+ * @property StripeClientAwareInterface $api
+ */
 trait ResourceAwareActionTrait
 {
-    /** @var string */
-    protected $apiResourceClass = '';
+    abstract public function getStripeService(StripeClient $stripeClient): AbstractService;
 
-    public function getApiResourceClass(): string
+    protected function getService(): AbstractService
     {
-        return $this->apiResourceClass;
-    }
+        if (null === $this->api) {
+            throw new LogicException('Api class not found !');
+        }
 
-    public function setApiResourceClass(string $apiResourceClass): void
-    {
-        $this->apiResourceClass = $apiResourceClass;
+        return $this->getStripeService($this->api->getStripeClient());
     }
 }

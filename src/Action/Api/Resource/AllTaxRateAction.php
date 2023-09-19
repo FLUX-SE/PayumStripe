@@ -6,11 +6,15 @@ namespace FluxSE\PayumStripe\Action\Api\Resource;
 
 use FluxSE\PayumStripe\Request\Api\Resource\AllInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AllTaxRate;
-use Stripe\TaxRate;
+use Stripe\Service\AbstractService;
+use Stripe\StripeClient;
 
 final class AllTaxRateAction extends AbstractAllAction
 {
-    protected $apiResourceClass = TaxRate::class;
+    public function getStripeService(StripeClient $stripeClient): AbstractService
+    {
+        return $stripeClient->taxRates;
+    }
 
     public function supportAlso(AllInterface $request): bool
     {

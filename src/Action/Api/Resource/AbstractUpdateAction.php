@@ -8,9 +8,7 @@ use FluxSE\PayumStripe\Action\Api\StripeApiAwareTrait;
 use FluxSE\PayumStripe\Request\Api\Resource\UpdateInterface;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Stripe\ApiOperations\Update;
 use Stripe\ApiResource;
-use Stripe\Stripe;
 
 abstract class AbstractUpdateAction implements UpdateResourceActionInterface
 {
@@ -31,15 +29,13 @@ abstract class AbstractUpdateAction implements UpdateResourceActionInterface
 
     public function updateApiResource(UpdateInterface $request): ApiResource
     {
-        $apiResourceClass = $this->getApiResourceClass();
-        if (false === method_exists($apiResourceClass, 'update')) {
-            throw new LogicException(sprintf('This class "%s" is not an instance of "%s" !', $apiResourceClass, Update::class));
+        $service = $this->getService();
+
+        if (false === method_exists($service, 'update')) {
+            throw new LogicException('This Stripe service does not have "update" method !');
         }
 
-        Stripe::setApiKey($this->api->getSecretKey());
-
-        /* @see Update::update() */
-        return $apiResourceClass::update(
+        return $service->update(
             $request->getId(),
             $request->getParameters(),
             $request->getOptions()

@@ -6,11 +6,15 @@ namespace FluxSE\PayumStripe\Action\Api\Resource;
 
 use FluxSE\PayumStripe\Request\Api\Resource\UpdateInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\UpdatePaymentIntent;
-use Stripe\PaymentIntent;
+use Stripe\Service\AbstractService;
+use Stripe\StripeClient;
 
 final class UpdatePaymentIntentAction extends AbstractUpdateAction
 {
-    protected $apiResourceClass = PaymentIntent::class;
+    public function getStripeService(StripeClient $stripeClient): AbstractService
+    {
+        return $stripeClient->paymentIntents;
+    }
 
     public function supportAlso(UpdateInterface $request): bool
     {

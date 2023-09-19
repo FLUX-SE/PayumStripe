@@ -8,6 +8,8 @@ use FluxSE\PayumStripe\Action\Api\Resource\CreateCustomerAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreatePaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreatePaymentMethodAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreatePlanAction;
+use FluxSE\PayumStripe\Action\Api\Resource\CreatePriceAction;
+use FluxSE\PayumStripe\Action\Api\Resource\CreateProductAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateRefundAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateResourceActionInterface;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateSessionAction;
@@ -22,6 +24,8 @@ use FluxSE\PayumStripe\Request\Api\Resource\CreateInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\CreatePaymentIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\CreatePaymentMethod;
 use FluxSE\PayumStripe\Request\Api\Resource\CreatePlan;
+use FluxSE\PayumStripe\Request\Api\Resource\CreatePrice;
+use FluxSE\PayumStripe\Request\Api\Resource\CreateProduct;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateRefund;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateSession;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateSetupIntent;
@@ -40,8 +44,24 @@ use Stripe\Issuing\CardDetails;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
 use Stripe\Plan;
+use Stripe\Price;
+use Stripe\Product;
 use Stripe\Refund;
+use Stripe\Service\AbstractService;
+use Stripe\Service\Checkout\SessionService;
+use Stripe\Service\CouponService;
+use Stripe\Service\CustomerService;
+use Stripe\Service\PaymentIntentService;
+use Stripe\Service\PaymentMethodService;
+use Stripe\Service\PlanService;
+use Stripe\Service\PriceService;
+use Stripe\Service\ProductService;
+use Stripe\Service\RefundService;
+use Stripe\Service\SetupIntentService;
+use Stripe\Service\SubscriptionService;
+use Stripe\Service\TaxRateService;
 use Stripe\SetupIntent;
+use Stripe\StripeClient;
 use Stripe\Subscription;
 use Stripe\TaxRate;
 use Tests\FluxSE\PayumStripe\Action\Api\ApiAwareActionTestTrait;
@@ -73,16 +93,17 @@ final class CreateActionTest extends TestCase
     public function testShouldCreateAnApiRessource(
         string $createActionClass,
         string $createRequestClass,
-        string $createClass
+        string $createClass,
+        string $serviceClass
     ): void {
         $model = [];
 
         $apiMock = $this->createApiMock();
+        $stripeClient = $apiMock->getStripeClient();
 
         /** @var AbstractCreateAction $action */
         $action = new $createActionClass();
         $action->setApiClass(KeysAwareInterface::class);
-        $this->assertEquals($createClass, $action->getApiResourceClass());
         $action->setApi($apiMock);
 
         /** @var AbstractCreate $request */
@@ -109,6 +130,9 @@ final class CreateActionTest extends TestCase
 
         $action->execute($request);
         $this->assertInstanceOf($createClass, $request->getApiResource());
+
+        $service = $action->getStripeService($stripeClient);
+        $this->assertInstanceOf($serviceClass, $service);
     }
 
     public function testShouldThrowExceptionIfApiResourceClassIsNotCreatable(): void
@@ -119,10 +143,13 @@ final class CreateActionTest extends TestCase
             {
                 return true;
             }
-        };
 
-        $action->setApiResourceClass(CardDetails::class);
-        $this->assertEquals(CardDetails::class, $action->getApiResourceClass());
+            public function getStripeService(StripeClient $stripeClient): AbstractService
+            {
+                return new class() extends AbstractService {
+                };
+            }
+        };
 
         $request = new class($model) extends AbstractCreate {
         };
@@ -135,16 +162,18 @@ final class CreateActionTest extends TestCase
     public function requestList(): array
     {
         return [
-            [CreateCouponAction::class, CreateCoupon::class, Coupon::class],
-            [CreateCustomerAction::class, CreateCustomer::class, Customer::class],
-            [CreateSessionAction::class, CreateSession::class, Session::class],
-            [CreatePaymentIntentAction::class, CreatePaymentIntent::class, PaymentIntent::class],
-            [CreatePaymentMethodAction::class, CreatePaymentMethod::class, PaymentMethod::class],
-            [CreatePlanAction::class, CreatePlan::class, Plan::class],
-            [CreateRefundAction::class, CreateRefund::class, Refund::class],
-            [CreateSetupIntentAction::class, CreateSetupIntent::class, SetupIntent::class],
-            [CreateSubscriptionAction::class, CreateSubscription::class, Subscription::class],
-            [CreateTaxRateAction::class, CreateTaxRate::class, TaxRate::class],
+            [CreateCouponAction::class, CreateCoupon::class, Coupon::class, CouponService::class],
+            [CreateCustomerAction::class, CreateCustomer::class, Customer::class, CustomerService::class],
+            [CreateSessionAction::class, CreateSession::class, Session::class, SessionService::class],
+            [CreatePaymentIntentAction::class, CreatePaymentIntent::class, PaymentIntent::class, PaymentIntentService::class],
+            [CreatePaymentMethodAction::class, CreatePaymentMethod::class, PaymentMethod::class, PaymentMethodService::class],
+            [CreatePlanAction::class, CreatePlan::class, Plan::class, PlanService::class],
+            [CreatePriceAction::class, CreatePrice::class, Price::class, PriceService::class],
+            [CreateProductAction::class, CreateProduct::class, Product::class, ProductService::class],
+            [CreateRefundAction::class, CreateRefund::class, Refund::class, RefundService::class],
+            [CreateSetupIntentAction::class, CreateSetupIntent::class, SetupIntent::class, SetupIntentService::class],
+            [CreateSubscriptionAction::class, CreateSubscription::class, Subscription::class, SubscriptionService::class],
+            [CreateTaxRateAction::class, CreateTaxRate::class, TaxRate::class, TaxRateService::class],
         ];
     }
 }

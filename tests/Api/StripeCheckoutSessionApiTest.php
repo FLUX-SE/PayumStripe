@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 final class StripeCheckoutSessionApiTest extends TestCase
 {
-    use KeysAwareApiTest;
+    use StripeClientAwareApiTrait;
 
     protected function getApiClass(): string
     {

@@ -10,6 +10,7 @@ use FluxSE\PayumStripe\Action\Api\Resource\RetrieveInvoiceAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrievePaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrievePaymentMethodAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrievePlanAction;
+use FluxSE\PayumStripe\Action\Api\Resource\RetrievePriceAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveProductAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveResourceActionInterface;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSessionAction;
@@ -25,6 +26,7 @@ use FluxSE\PayumStripe\Request\Api\Resource\RetrieveInvoice;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrievePaymentIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrievePaymentMethod;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrievePlan;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrievePrice;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveProduct;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSession;
 use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSetupIntent;
@@ -44,8 +46,23 @@ use Stripe\Issuing\CardDetails;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
 use Stripe\Plan;
+use Stripe\Price;
 use Stripe\Product;
+use Stripe\Service\AbstractService;
+use Stripe\Service\ChargeService;
+use Stripe\Service\Checkout\SessionService;
+use Stripe\Service\CouponService;
+use Stripe\Service\CustomerService;
+use Stripe\Service\InvoiceService;
+use Stripe\Service\PaymentIntentService;
+use Stripe\Service\PaymentMethodService;
+use Stripe\Service\PlanService;
+use Stripe\Service\PriceService;
+use Stripe\Service\ProductService;
+use Stripe\Service\SetupIntentService;
+use Stripe\Service\SubscriptionService;
 use Stripe\SetupIntent;
+use Stripe\StripeClient;
 use Stripe\Subscription;
 use Tests\FluxSE\PayumStripe\Action\Api\ApiAwareActionTestTrait;
 use Tests\FluxSE\PayumStripe\Stripe\StripeApiTestHelper;
@@ -76,17 +93,18 @@ final class RetrieveActionTest extends TestCase
     public function testShouldBeRetrieved(
         string $retrieveActionClass,
         string $retrieveRequestClass,
-        string $retrieveClass
+        string $retrieveClass,
+        string $serviceClass
     ): void {
         $id = 'pi_1';
 
         $apiMock = $this->createApiMock();
+        $stripeClient = $apiMock->getStripeClient();
 
         /** @var AbstractRetrieveAction $action */
         $action = new $retrieveActionClass();
         $action->setApiClass(KeysAwareInterface::class);
         $action->setApi($apiMock);
-        $this->assertEquals($retrieveClass, $action->getApiResourceClass());
 
         /** @var AbstractRetrieve $request */
         $request = new $retrieveRequestClass($id);
@@ -112,6 +130,9 @@ final class RetrieveActionTest extends TestCase
 
         $action->execute($request);
         $this->assertInstanceOf($retrieveClass, $request->getApiResource());
+
+        $service = $action->getStripeService($stripeClient);
+        $this->assertInstanceOf($serviceClass, $service);
     }
 
     public function testShouldThrowExceptionIfApiResourceClassIsNotCreatable(): void
@@ -122,10 +143,13 @@ final class RetrieveActionTest extends TestCase
             {
                 return true;
             }
-        };
 
-        $action->setApiResourceClass(CardDetails::class);
-        $this->assertEquals(CardDetails::class, $action->getApiResourceClass());
+            public function getStripeService(StripeClient $stripeClient): AbstractService
+            {
+                return new class() extends AbstractService {
+                };
+            }
+        };
 
         $request = new class($id) extends AbstractRetrieve {
         };
@@ -143,17 +167,18 @@ final class RetrieveActionTest extends TestCase
     public function requestList(): array
     {
         return [
-            [RetrieveChargeAction::class, RetrieveCharge::class, Charge::class],
-            [RetrieveCouponAction::class, RetrieveCoupon::class, Coupon::class],
-            [RetrieveCustomerAction::class, RetrieveCustomer::class, Customer::class],
-            [RetrieveInvoiceAction::class, RetrieveInvoice::class, Invoice::class],
-            [RetrievePaymentIntentAction::class, RetrievePaymentIntent::class, PaymentIntent::class],
-            [RetrievePaymentMethodAction::class, RetrievePaymentMethod::class, PaymentMethod::class],
-            [RetrievePlanAction::class, RetrievePlan::class, Plan::class],
-            [RetrieveProductAction::class, RetrieveProduct::class, Product::class],
-            [RetrieveSessionAction::class, RetrieveSession::class, Session::class],
-            [RetrieveSetupIntentAction::class, RetrieveSetupIntent::class, SetupIntent::class],
-            [RetrieveSubscriptionAction::class, RetrieveSubscription::class, Subscription::class],
+            [RetrieveChargeAction::class, RetrieveCharge::class, Charge::class, ChargeService::class],
+            [RetrieveCouponAction::class, RetrieveCoupon::class, Coupon::class, CouponService::class],
+            [RetrieveCustomerAction::class, RetrieveCustomer::class, Customer::class, CustomerService::class],
+            [RetrieveInvoiceAction::class, RetrieveInvoice::class, Invoice::class, InvoiceService::class],
+            [RetrievePaymentIntentAction::class, RetrievePaymentIntent::class, PaymentIntent::class, PaymentIntentService::class],
+            [RetrievePaymentMethodAction::class, RetrievePaymentMethod::class, PaymentMethod::class, PaymentMethodService::class],
+            [RetrievePlanAction::class, RetrievePlan::class, Plan::class, PlanService::class],
+            [RetrievePriceAction::class, RetrievePrice::class, Price::class, PriceService::class],
+            [RetrieveProductAction::class, RetrieveProduct::class, Product::class, ProductService::class],
+            [RetrieveSessionAction::class, RetrieveSession::class, Session::class, SessionService::class],
+            [RetrieveSetupIntentAction::class, RetrieveSetupIntent::class, SetupIntent::class, SetupIntentService::class],
+            [RetrieveSubscriptionAction::class, RetrieveSubscription::class, Subscription::class, SubscriptionService::class],
         ];
     }
 }

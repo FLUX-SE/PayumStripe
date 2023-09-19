@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Api;
 
+use Stripe\Util\ApiVersion;
+
 final class StripeCheckoutSessionApi implements StripeCheckoutSessionApiInterface
 {
-    use KeysAwareTrait {
-        KeysAwareTrait::__construct as private __keysAwareTraitConstruct;
+    use StripeClientAwareTrait {
+        StripeClientAwareTrait::__construct as private __stripeClientAwareTraitConstruct;
     }
 
     use PaymentMethodTypesAwareTrait {
@@ -21,9 +23,19 @@ final class StripeCheckoutSessionApi implements StripeCheckoutSessionApiInterfac
         string $publishable,
         string $secret,
         array $webhookSecretKeys = [],
+        ?string $clientId = null,
+        ?string $stripeAccount = null,
+        string $stripeVersion = ApiVersion::CURRENT,
         array $paymentMethodTypes = self::DEFAULT_PAYMENT_METHOD_TYPES
     ) {
-        $this->__keysAwareTraitConstruct($publishable, $secret, $webhookSecretKeys);
+        $this->__stripeClientAwareTraitConstruct(
+            $publishable,
+            $secret,
+            $webhookSecretKeys,
+            $clientId,
+            $stripeAccount,
+            $stripeVersion
+        );
         $this->__paymentMethodTypesAwareTraitConstruct($paymentMethodTypes);
     }
 }

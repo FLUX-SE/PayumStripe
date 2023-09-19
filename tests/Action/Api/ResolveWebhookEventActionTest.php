@@ -43,7 +43,7 @@ final class ResolveWebhookEventActionTest extends TestCase
             ->method('execute')
             ->with($this->isInstanceOf(GetHttpRequest::class));
 
-        $apiMock = $this->createApiMock(false);
+        $apiMock = $this->createApiMock();
 
         $action->setApiClass(KeysAwareInterface::class);
         $action->setGateway($gatewayMock);
@@ -81,7 +81,7 @@ final class ResolveWebhookEventActionTest extends TestCase
                 $this->throwException(SignatureVerificationException::factory(''))
             );
 
-        $apiMock = $this->createApiMock(false);
+        $apiMock = $this->createApiMock();
         $apiMock
             ->expects($this->once())
             ->method('getWebhookSecretKeys')
@@ -131,7 +131,7 @@ final class ResolveWebhookEventActionTest extends TestCase
                 })
             );
 
-        $apiMock = $this->createApiMock(false);
+        $apiMock = $this->createApiMock();
         $apiMock
             ->expects($this->once())
             ->method('getWebhookSecretKeys')
@@ -182,7 +182,7 @@ final class ResolveWebhookEventActionTest extends TestCase
                 })
             );
 
-        $apiMock = $this->createApiMock(false);
+        $apiMock = $this->createApiMock();
         $apiMock
             ->expects($this->once())
             ->method('getWebhookSecretKeys')
@@ -230,7 +230,7 @@ final class ResolveWebhookEventActionTest extends TestCase
                 })
             );
 
-        $apiMock = $this->createApiMock(false);
+        $apiMock = $this->createApiMock();
         $apiMock
             ->expects($this->once())
             ->method('getWebhookSecretKeys')

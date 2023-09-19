@@ -48,7 +48,7 @@ final class ConvertPaymentActionTest extends TestCase
 
         $action = new ConvertPaymentAction();
 
-        $apiMock = $this->createApiMock(false);
+        $apiMock = $this->createApiMock();
         $apiMock
             ->expects($this->once())
             ->method('getPaymentMethodTypes')
@@ -105,7 +105,7 @@ final class ConvertPaymentActionTest extends TestCase
 
         $action = new ConvertPaymentAction();
 
-        $apiMock = $this->createApiMock(false);
+        $apiMock = $this->createApiMock();
         $apiMock
             ->expects($this->once())
             ->method('getPaymentMethodTypes')
@@ -143,7 +143,7 @@ final class ConvertPaymentActionTest extends TestCase
 
         $action = new ConvertPaymentAction();
 
-        $apiMock = $this->createApiMock(false);
+        $apiMock = $this->createApiMock();
         $apiMock
             ->expects($this->once())
             ->method('getPaymentMethodTypes')
@@ -181,7 +181,7 @@ final class ConvertPaymentActionTest extends TestCase
 
         $action = new ConvertPaymentAction();
 
-        $apiMock = $this->createApiMock(false);
+        $apiMock = $this->createApiMock();
         $apiMock
             ->expects($this->once())
             ->method('getPaymentMethodTypes')
@@ -219,7 +219,7 @@ final class ConvertPaymentActionTest extends TestCase
 
         $action = new ConvertPaymentAction();
 
-        $apiMock = $this->createApiMock(false);
+        $apiMock = $this->createApiMock();
         $apiMock
             ->expects($this->once())
             ->method('getPaymentMethodTypes')
@@ -254,7 +254,7 @@ final class ConvertPaymentActionTest extends TestCase
 
         $action = new ConvertPaymentAction();
 
-        $apiMock = $this->createApiMock(false);
+        $apiMock = $this->createApiMock();
         $apiMock
             ->expects($this->once())
             ->method('getPaymentMethodTypes')

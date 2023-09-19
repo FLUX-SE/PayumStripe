@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 
 final class StripeJsApiTest extends TestCase
 {
-    use KeysAwareApiTest;
+    use StripeClientAwareApiTrait;
 
     protected function getApiClass(): string
     {

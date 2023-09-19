@@ -5,12 +5,14 @@ namespace Tests\FluxSE\PayumStripe\Action\Api\Resource;
 use FluxSE\PayumStripe\Action\Api\Resource\AbstractDeleteAction;
 use FluxSE\PayumStripe\Action\Api\Resource\DeleteCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\DeletePlanAction;
+use FluxSE\PayumStripe\Action\Api\Resource\DeleteProductAction;
 use FluxSE\PayumStripe\Action\Api\Resource\DeleteResourceActionInterface;
 use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AbstractDelete;
 use FluxSE\PayumStripe\Request\Api\Resource\DeleteCoupon;
 use FluxSE\PayumStripe\Request\Api\Resource\DeleteInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\DeletePlan;
+use FluxSE\PayumStripe\Request\Api\Resource\DeleteProduct;
 use LogicException;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -22,7 +24,13 @@ use Stripe\Coupon;
 use Stripe\Issuing\Card;
 use Stripe\Issuing\CardDetails;
 use Stripe\Plan;
+use Stripe\Product;
+use Stripe\Service\AbstractService;
+use Stripe\Service\CouponService;
+use Stripe\Service\PlanService;
+use Stripe\Service\ProductService;
 use Stripe\Stripe;
+use Stripe\StripeClient;
 use Tests\FluxSE\PayumStripe\Action\Api\ApiAwareActionTestTrait;
 use Tests\FluxSE\PayumStripe\Stripe\StripeApiTestHelper;
 
@@ -52,17 +60,18 @@ final class DeleteActionTest extends TestCase
     public function testShouldBeDeleted(
         string $deleteActionClass,
         string $deleteRequestClass,
-        string $deleteClass
+        string $deleteClass,
+        string $serviceClass
     ): void {
         $id = 'pi_1';
 
         $apiMock = $this->createApiMock();
+        $stripeClient = $apiMock->getStripeClient();
 
         /** @var AbstractDeleteAction $action */
         $action = new $deleteActionClass();
         $action->setApiClass(KeysAwareInterface::class);
         $action->setApi($apiMock);
-        $this->assertEquals($deleteClass, $action->getApiResourceClass());
 
         /** @var AbstractDelete $request */
         $request = new $deleteRequestClass($id);
@@ -111,6 +120,9 @@ final class DeleteActionTest extends TestCase
 
         $action->execute($request);
         $this->assertInstanceOf($deleteClass, $request->getApiResource());
+
+        $service = $action->getStripeService($stripeClient);
+        $this->assertInstanceOf($serviceClass, $service);
     }
 
     /**
@@ -124,10 +136,13 @@ final class DeleteActionTest extends TestCase
             {
                 return true;
             }
-        };
 
-        $action->setApiResourceClass($faultClass);
-        $this->assertEquals($faultClass, $action->getApiResourceClass());
+            public function getStripeService(StripeClient $stripeClient): AbstractService
+            {
+                return new class() extends AbstractService {
+                };
+            }
+        };
 
         $request = new class($id) extends AbstractDelete {
         };
@@ -148,8 +163,9 @@ final class DeleteActionTest extends TestCase
     public function requestList(): array
     {
         return [
-            [DeleteCouponAction::class, DeleteCoupon::class, Coupon::class],
-            [DeletePlanAction::class, DeletePlan::class, Plan::class],
+            [DeleteCouponAction::class, DeleteCoupon::class, Coupon::class, CouponService::class],
+            [DeletePlanAction::class, DeletePlan::class, Plan::class, PlanService::class],
+            [DeleteProductAction::class, DeleteProduct::class, Product::class, ProductService::class],
         ];
     }
 }

@@ -8,6 +8,9 @@ use FluxSE\PayumStripe\Action\Api\Resource\AbstractAllAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllCustomerAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllInvoiceAction;
+use FluxSE\PayumStripe\Action\Api\Resource\AllPlanAction;
+use FluxSE\PayumStripe\Action\Api\Resource\AllPriceAction;
+use FluxSE\PayumStripe\Action\Api\Resource\AllProductAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllResourceActionInterface;
 use FluxSE\PayumStripe\Action\Api\Resource\AllSessionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllTaxRateAction;
@@ -17,6 +20,9 @@ use FluxSE\PayumStripe\Request\Api\Resource\AllCoupon;
 use FluxSE\PayumStripe\Request\Api\Resource\AllCustomer;
 use FluxSE\PayumStripe\Request\Api\Resource\AllInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\AllInvoice;
+use FluxSE\PayumStripe\Request\Api\Resource\AllPlan;
+use FluxSE\PayumStripe\Request\Api\Resource\AllPrice;
+use FluxSE\PayumStripe\Request\Api\Resource\AllProduct;
 use FluxSE\PayumStripe\Request\Api\Resource\AllSession;
 use FluxSE\PayumStripe\Request\Api\Resource\AllTaxRate;
 use LogicException;
@@ -29,7 +35,19 @@ use Stripe\Checkout\Session;
 use Stripe\Coupon;
 use Stripe\Customer;
 use Stripe\Invoice;
-use Stripe\Issuing\CardDetails;
+use Stripe\Plan;
+use Stripe\Price;
+use Stripe\Product;
+use Stripe\Service\AbstractService;
+use Stripe\Service\Checkout\SessionService;
+use Stripe\Service\CouponService;
+use Stripe\Service\CustomerService;
+use Stripe\Service\InvoiceService;
+use Stripe\Service\PlanService;
+use Stripe\Service\PriceService;
+use Stripe\Service\ProductService;
+use Stripe\Service\TaxRateService;
+use Stripe\StripeClient;
 use Stripe\TaxRate;
 use Tests\FluxSE\PayumStripe\Action\Api\ApiAwareActionTestTrait;
 use Tests\FluxSE\PayumStripe\Stripe\StripeApiTestHelper;
@@ -60,15 +78,16 @@ final class AllActionTest extends TestCase
     public function testShouldAllAPaymentIntent(
         string $allActionClass,
         string $allRequestClass,
-        string $allClass
+        string $allClass,
+        string $serviceClass
     ): void {
         $apiMock = $this->createApiMock();
+        $stripeClient = $apiMock->getStripeClient();
 
         /** @var AbstractAllAction $action */
         $action = new $allActionClass();
         $action->setApiClass(KeysAwareInterface::class);
         $action->setApi($apiMock);
-        $this->assertEquals($allClass, $action->getApiResourceClass());
 
         /** @var AbstractAll $request */
         $request = new $allRequestClass();
@@ -106,6 +125,9 @@ final class AllActionTest extends TestCase
 
         $action->execute($request);
         $this->assertContainsOnlyInstancesOf($allClass, $request->getApiResources());
+
+        $service = $action->getStripeService($stripeClient);
+        $this->assertInstanceOf($serviceClass, $service);
     }
 
     public function testShouldThrowExceptionIfApiResourceClassIsNotCreatable(): void
@@ -115,10 +137,13 @@ final class AllActionTest extends TestCase
             {
                 return true;
             }
-        };
 
-        $action->setApiResourceClass(CardDetails::class);
-        $this->assertEquals(CardDetails::class, $action->getApiResourceClass());
+            public function getStripeService(StripeClient $stripeClient): AbstractService
+            {
+                return new class($stripeClient) extends AbstractService {
+                };
+            }
+        };
 
         $request = new class() extends AbstractAll {
         };
@@ -136,11 +161,14 @@ final class AllActionTest extends TestCase
     public function requestList(): array
     {
         return [
-            [AllCouponAction::class, AllCoupon::class, Coupon::class],
-            [AllCustomerAction::class, AllCustomer::class, Customer::class],
-            [AllInvoiceAction::class, AllInvoice::class, Invoice::class],
-            [AllTaxRateAction::class, AllTaxRate::class, TaxRate::class],
-            [AllSessionAction::class, AllSession::class, Session::class],
+            [AllCouponAction::class, AllCoupon::class, Coupon::class, CouponService::class],
+            [AllCustomerAction::class, AllCustomer::class, Customer::class, CustomerService::class],
+            [AllInvoiceAction::class, AllInvoice::class, Invoice::class, InvoiceService::class],
+            [AllPlanAction::class, AllPlan::class, Plan::class, PlanService::class],
+            [AllPriceAction::class, AllPrice::class, Price::class, PriceService::class],
+            [AllProductAction::class, AllProduct::class, Product::class, ProductService::class],
+            [AllTaxRateAction::class, AllTaxRate::class, TaxRate::class, TaxRateService::class],
+            [AllSessionAction::class, AllSession::class, Session::class, SessionService::class],
         ];
     }
 }

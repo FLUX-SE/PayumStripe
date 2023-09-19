@@ -6,11 +6,15 @@ namespace FluxSE\PayumStripe\Action\Api\Resource;
 
 use FluxSE\PayumStripe\Request\Api\Resource\UpdateCoupon;
 use FluxSE\PayumStripe\Request\Api\Resource\UpdateInterface;
-use Stripe\Coupon;
+use Stripe\Service\AbstractService;
+use Stripe\StripeClient;
 
 final class UpdateCouponAction extends AbstractUpdateAction
 {
-    protected $apiResourceClass = Coupon::class;
+    public function getStripeService(StripeClient $stripeClient): AbstractService
+    {
+        return $stripeClient->coupons;
+    }
 
     public function supportAlso(UpdateInterface $request): bool
     {

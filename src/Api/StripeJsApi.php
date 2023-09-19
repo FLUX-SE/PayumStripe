@@ -6,5 +6,5 @@ namespace FluxSE\PayumStripe\Api;
 
 final class StripeJsApi implements StripeJsApiInterface
 {
-    use KeysAwareTrait;
+    use StripeClientAwareTrait;
 }

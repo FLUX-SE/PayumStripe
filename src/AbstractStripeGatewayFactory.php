@@ -65,6 +65,7 @@ use FluxSE\PayumStripe\Action\SyncAction;
 use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\GatewayFactory;
+use Stripe\Util\ApiVersion;
 
 abstract class AbstractStripeGatewayFactory extends GatewayFactory
 {
@@ -182,6 +183,9 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
             'publishable_key' => '',
             'secret_key' => '',
             'webhook_secret_keys' => [],
+            'client_id' => null,
+            'stripe_account' => null,
+            'stripe_version' => ApiVersion::CURRENT,
         ];
     }
 

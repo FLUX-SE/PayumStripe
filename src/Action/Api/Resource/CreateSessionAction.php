@@ -6,11 +6,15 @@ namespace FluxSE\PayumStripe\Action\Api\Resource;
 
 use FluxSE\PayumStripe\Request\Api\Resource\CreateInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\CreateSession;
-use Stripe\Checkout\Session;
+use Stripe\Service\AbstractService;
+use Stripe\StripeClient;
 
 final class CreateSessionAction extends AbstractCreateAction
 {
-    protected $apiResourceClass = Session::class;
+    public function getStripeService(StripeClient $stripeClient): AbstractService
+    {
+        return $stripeClient->checkout->sessions;
+    }
 
     public function supportAlso(CreateInterface $request): bool
     {
