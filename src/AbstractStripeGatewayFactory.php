@@ -9,6 +9,9 @@ use FluxSE\PayumStripe\Action\Api\ResolveWebhookEventAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllCustomerAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllInvoiceAction;
+use FluxSE\PayumStripe\Action\Api\Resource\AllPlanAction;
+use FluxSE\PayumStripe\Action\Api\Resource\AllPriceAction;
+use FluxSE\PayumStripe\Action\Api\Resource\AllProductAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllSessionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\AllTaxRateAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CancelPaymentIntentAction;
@@ -20,6 +23,8 @@ use FluxSE\PayumStripe\Action\Api\Resource\CreateCustomerAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreatePaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreatePaymentMethodAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreatePlanAction;
+use FluxSE\PayumStripe\Action\Api\Resource\CreatePriceAction;
+use FluxSE\PayumStripe\Action\Api\Resource\CreateProductAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateRefundAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateSessionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateSetupIntentAction;
@@ -27,6 +32,7 @@ use FluxSE\PayumStripe\Action\Api\Resource\CreateSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\CreateTaxRateAction;
 use FluxSE\PayumStripe\Action\Api\Resource\DeleteCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\DeletePlanAction;
+use FluxSE\PayumStripe\Action\Api\Resource\DeleteProductAction;
 use FluxSE\PayumStripe\Action\Api\Resource\ExpireSessionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveChargeAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveCouponAction;
@@ -35,12 +41,16 @@ use FluxSE\PayumStripe\Action\Api\Resource\RetrieveInvoiceAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrievePaymentIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrievePaymentMethodAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrievePlanAction;
+use FluxSE\PayumStripe\Action\Api\Resource\RetrievePriceAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveProductAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSessionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSetupIntentAction;
 use FluxSE\PayumStripe\Action\Api\Resource\RetrieveSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdateCouponAction;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdatePaymentIntentAction;
+use FluxSE\PayumStripe\Action\Api\Resource\UpdatePlanAction;
+use FluxSE\PayumStripe\Action\Api\Resource\UpdatePriceAction;
+use FluxSE\PayumStripe\Action\Api\Resource\UpdateProductAction;
 use FluxSE\PayumStripe\Action\Api\Resource\UpdateSubscriptionAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\AuthorizedPaymentIntentCanceledAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\AuthorizedPaymentIntentManuallyCanceledAction;
@@ -88,11 +98,14 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
     protected function getDefaultApiResources(): array
     {
         return [
+            'payum.action.all_coupon' => new AllCouponAction(),
             'payum.action.all_customer' => new AllCustomerAction(),
             'payum.action.all_invoice' => new AllInvoiceAction(),
-            'payum.action.all_coupon' => new AllCouponAction(),
-            'payum.action.all_tax_rate' => new AllTaxRateAction(),
+            'payum.action.all_plan' => new AllPlanAction(),
+            'payum.action.all_price' => new AllPriceAction(),
+            'payum.action.all_product' => new AllProductAction(),
             'payum.action.all_session' => new AllSessionAction(),
+            'payum.action.all_tax_rate' => new AllTaxRateAction(),
             'payum.action.cancel_payment_intent' => new CancelPaymentIntentAction(),
             'payum.action.cancel_setup_intent' => new CancelSetupIntentAction(),
             'payum.action.cancel_subscription' => new CancelSubscriptionAction(),
@@ -102,13 +115,16 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
             'payum.action.create_payment_intent' => new CreatePaymentIntentAction(),
             'payum.action.create_payment_method' => new CreatePaymentMethodAction(),
             'payum.action.create_plan' => new CreatePlanAction(),
+            'payum.action.create_price' => new CreatePriceAction(),
+            'payum.action.create_product' => new CreateProductAction(),
             'payum.action.create_refund' => new CreateRefundAction(),
-            'payum.action.create_setup_intent' => new CreateSetupIntentAction(),
             'payum.action.create_session' => new CreateSessionAction(),
+            'payum.action.create_setup_intent' => new CreateSetupIntentAction(),
             'payum.action.create_subscription' => new CreateSubscriptionAction(),
             'payum.action.create_tax_rate' => new CreateTaxRateAction(),
             'payum.action.delete_coupon' => new DeleteCouponAction(),
             'payum.action.delete_plan' => new DeletePlanAction(),
+            'payum.action.delete_product' => new DeleteProductAction(),
             'payum.action.expire_session' => new ExpireSessionAction(),
             'payum.action.retrieve_charge' => new RetrieveChargeAction(),
             'payum.action.retrieve_coupon' => new RetrieveCouponAction(),
@@ -117,12 +133,16 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
             'payum.action.retrieve_payment_intent' => new RetrievePaymentIntentAction(),
             'payum.action.retrieve_payment_method' => new RetrievePaymentMethodAction(),
             'payum.action.retrieve_plan' => new RetrievePlanAction(),
+            'payum.action.retrieve_price' => new RetrievePriceAction(),
             'payum.action.retrieve_product' => new RetrieveProductAction(),
             'payum.action.retrieve_session' => new RetrieveSessionAction(),
             'payum.action.retrieve_setup_intent' => new RetrieveSetupIntentAction(),
             'payum.action.retrieve_subscription' => new RetrieveSubscriptionAction(),
             'payum.action.update_coupon' => new UpdateCouponAction(),
             'payum.action.update_payment_intent' => new UpdatePaymentIntentAction(),
+            'payum.action.update_plan' => new UpdatePlanAction(),
+            'payum.action.update_price' => new UpdatePriceAction(),
+            'payum.action.update_product' => new UpdateProductAction(),
             'payum.action.update_subscription' => new UpdateSubscriptionAction(),
         ];
     }
