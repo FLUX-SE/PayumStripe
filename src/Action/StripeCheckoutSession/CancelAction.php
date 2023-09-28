@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace FluxSE\PayumStripe\Action\StripeCheckoutSession;
 
 use ArrayAccess;
-use FluxSE\PayumStripe\Request\Api\Resource\AllSession;
 use FluxSE\PayumStripe\Request\Api\Resource\ExpireSession;
+use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSession;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -28,27 +28,13 @@ class CancelAction implements ActionInterface, GatewayAwareInterface
 
         $model = ArrayObject::ensureArrayObject($request->getModel());
 
-        // @link https://stripe.com/docs/api/payment_intents/cancel
-        // > You cannot cancel the PaymentIntent for a Checkout Session.
-        // > Expire the Checkout Session instead.
-        $allSessionRequest = new AllSession(
-            [
-                'payment_intent' => $model['id'],
-            ]
-        );
-        $this->gateway->execute($allSessionRequest);
-
-        $sessions = $allSessionRequest->getApiResources();
-        $session = $sessions->first();
-        if (!$session instanceof Session) {
+        if ($model['status'] !== Session::STATUS_OPEN) {
             return;
         }
 
-        if ($session->status !== Session::STATUS_OPEN) {
-            return;
-        }
-
-        $this->gateway->execute(new ExpireSession($session->id));
+        /** @var string $id */
+        $id = $model['id'];
+        $this->gateway->execute(new ExpireSession($id));
     }
 
     public function supports($request): bool
@@ -62,7 +48,6 @@ class CancelAction implements ActionInterface, GatewayAwareInterface
             return false;
         }
 
-        // if capture_method=automatic it means the payment intent was created from a checkout session without authorization
-        return $model->offsetExists('capture_method') && $model->offsetGet('capture_method') === 'automatic';
+        return $model->offsetExists('object') && $model->offsetGet('object') === Session::OBJECT_NAME;
     }
 }
