@@ -12,6 +12,7 @@ use Payum\Core\Request\GetHumanStatus;
 use Payum\Core\Request\Sync;
 use PHPUnit\Framework\TestCase;
 use Stripe\PaymentIntent;
+use Stripe\StripeObject;
 
 final class StatusPaymentIntentActionTest extends TestCase
 {
@@ -161,7 +162,27 @@ final class StatusPaymentIntentActionTest extends TestCase
         $this->assertTrue($request->isCanceled());
     }
 
-    public function testShouldMarkAsCanceledIfIsAPaymentIntentObjectAndStatusRequiresPaymentMethod(): void
+    public function testShouldMarkAsCanceledIfIsAPaymentIntentObjectAndStatusRequiresPaymentMethodWithError(): void
+    {
+        $action = $this->createStatusWithGateway();
+
+        $model = [
+            'object' => PaymentIntent::OBJECT_NAME,
+            'status' => PaymentIntent::STATUS_REQUIRES_PAYMENT_METHOD,
+            'last_payment_error' => new StripeObject(),
+        ];
+
+        $request = new GetHumanStatus($model);
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $this->assertTrue($request->isCanceled());
+    }
+
+    public function testShouldMarkAsNewIfIsAPaymentIntentObjectAndStatusRequiresPaymentMethod(): void
     {
         $action = $this->createStatusWithGateway();
 

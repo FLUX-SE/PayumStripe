@@ -6,7 +6,9 @@ namespace FluxSE\PayumStripe\Action;
 
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Request\GetStatusInterface;
+use Stripe\PaymentIntent;
 use Stripe\SetupIntent;
+use Stripe\StripeObject;
 
 class StatusSetupIntentAction extends AbstractStatusAction
 {
@@ -30,7 +32,7 @@ class StatusSetupIntentAction extends AbstractStatusAction
             return true;
         }
 
-        if ($this->isCanceledStatus($status)) {
+        if ($this->isCanceledStatus($status) || $this->isSpecialCanceledStatus($model)) {
             $request->markCanceled();
 
             return true;
@@ -46,7 +48,7 @@ class StatusSetupIntentAction extends AbstractStatusAction
     }
 
     /**
-     * @see https://stripe.com/docs/payments/intents#payment-intent
+     * @see https://stripe.com/docs/payments/setupintents/lifecycle
      */
     protected function isCanceledStatus(string $status): bool
     {
@@ -60,6 +62,27 @@ class StatusSetupIntentAction extends AbstractStatusAction
             SetupIntent::STATUS_REQUIRES_CONFIRMATION,
             SetupIntent::STATUS_REQUIRES_ACTION,
         ], true);
+    }
+
+
+
+    /**
+     * @see https://stripe.com/docs/payments/setupintents/lifecycle
+     */
+    protected function isSpecialCanceledStatus(ArrayObject $model): bool
+    {
+        /** @var string|null $status */
+        $status = $model->offsetGet('status');
+        /** @var null|StripeObject $lastPaymentError */
+        $lastPaymentError = $model->offsetGet('last_setup_error');
+
+        if (SetupIntent::STATUS_REQUIRES_PAYMENT_METHOD === $status) {
+            if (null !== $lastPaymentError) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public function getSupportedObjectName(): string

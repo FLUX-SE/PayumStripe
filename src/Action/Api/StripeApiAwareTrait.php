@@ -9,6 +9,7 @@ use Payum\Core\ApiAwareTrait;
 
 /**
  * @property StripeClientAwareInterface $api
+ * @property string $apiClass
  */
 trait StripeApiAwareTrait
 {
