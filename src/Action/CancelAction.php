@@ -26,6 +26,10 @@ final class CancelAction extends AbstractPaymentIntentAwareAction
             return;
         }
 
+        if (PaymentIntent::STATUS_CANCELED === $paymentIntent->status) {
+            return;
+        }
+
         $cancelRequest = new CancelPaymentIntent($paymentIntent->id);
         $this->gateway->execute($cancelRequest);
 
