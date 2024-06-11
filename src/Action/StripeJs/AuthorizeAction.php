@@ -9,6 +9,7 @@ use ArrayObject;
 use Payum\Core\Request\Authorize;
 use Payum\Core\Request\Generic;
 use Payum\Core\Security\TokenInterface;
+use Stripe\PaymentIntent;
 
 /**
  * For more information about Stripe Authorize payments :.
@@ -19,7 +20,7 @@ final class AuthorizeAction extends CaptureAction
 {
     public function embedNotifyTokenHash(ArrayObject $model, Generic $request): TokenInterface
     {
-        $model->offsetSet('capture_method', 'manual');
+        $model->offsetSet('capture_method', PaymentIntent::CAPTURE_METHOD_MANUAL);
 
         return parent::embedNotifyTokenHash($model, $request);
     }
