@@ -221,7 +221,9 @@ final class StripeGatewayFactoryTest extends TestCase
         $this->assertArrayHasKey('payum.action.redirect_to_checkout', $actualActions);
         $this->assertEquals(new StripeCheckoutSession\Api\RedirectToCheckoutAction(), $actualActions['payum.action.redirect_to_checkout']);
         $this->assertArrayHasKey('payum.action.cancel.payment_intent.automatic', $actualActions);
-        $this->assertEquals(new StripeCheckoutSession\CancelAction(), $actualActions['payum.action.cancel.payment_intent.automatic']);
+        $this->assertEquals(new StripeCheckoutSession\LegacyCancelAction(), $actualActions['payum.action.cancel.payment_intent.automatic']);
+        $this->assertArrayHasKey('payum.action.cancel.checkout_session', $actualActions);
+        $this->assertEquals(new StripeCheckoutSession\CancelAction(), $actualActions['payum.action.cancel.checkout_session']);
 
         $api = $config['payum.api'](ArrayObject::ensureArrayObject($config));
         $this->assertInstanceOf(StripeCheckoutSessionApi::class, $api);

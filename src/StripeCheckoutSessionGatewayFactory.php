@@ -12,6 +12,7 @@ use FluxSE\PayumStripe\Action\StripeCheckoutSession\AuthorizeAction;
 use FluxSE\PayumStripe\Action\StripeCheckoutSession\CancelAction;
 use FluxSE\PayumStripe\Action\StripeCheckoutSession\CaptureAction;
 use FluxSE\PayumStripe\Action\StripeCheckoutSession\ConvertPaymentAction;
+use FluxSE\PayumStripe\Action\StripeCheckoutSession\LegacyCancelAction;
 use FluxSE\PayumStripe\Api\KeysAwareInterface;
 use FluxSE\PayumStripe\Api\StripeCheckoutSessionApi;
 use FluxSE\PayumStripe\Api\StripeCheckoutSessionApiInterface;
@@ -39,7 +40,8 @@ final class StripeCheckoutSessionGatewayFactory extends AbstractStripeGatewayFac
             'payum.action.authorize' => new AuthorizeAction(),
             'payum.action.convert_payment' => new ConvertPaymentAction(),
             'payum.action.redirect_to_checkout' => new RedirectToCheckoutAction(),
-            'payum.action.cancel.payment_intent.automatic' => new CancelAction(),
+            'payum.action.cancel.payment_intent.automatic' => new LegacyCancelAction(),
+            'payum.action.cancel.checkout_session' => new CancelAction(),
 
             // Extensions
             'payum.extension.after_capture_cancel_payment_intent' => new CancelUrlCancelPaymentIntentExtension(),
