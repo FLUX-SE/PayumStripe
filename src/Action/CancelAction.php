@@ -26,10 +26,6 @@ final class CancelAction extends AbstractPaymentIntentAwareAction
             return;
         }
 
-        if (PaymentIntent::STATUS_CANCELED === $paymentIntent->status) {
-            return;
-        }
-
         $cancelRequest = new CancelPaymentIntent($paymentIntent->id);
         $this->gateway->execute($cancelRequest);
 
@@ -60,7 +56,11 @@ final class CancelAction extends AbstractPaymentIntentAwareAction
             return false;
         }
 
-        // if capture_method=manual it means the payment intent was created from a checkout session with authorization
-        return $model->offsetExists('capture_method') && $model->offsetGet('capture_method') === 'manual';
+        if (!$model->offsetExists('object') || $model->offsetGet('object') !== PaymentIntent::OBJECT_NAME) {
+            return false;
+        }
+
+        // if capture_method=manual it means the payment intent was created with authorization
+        return $model->offsetExists('capture_method') && $model->offsetGet('capture_method') === PaymentIntent::CAPTURE_METHOD_MANUAL;
     }
 }
