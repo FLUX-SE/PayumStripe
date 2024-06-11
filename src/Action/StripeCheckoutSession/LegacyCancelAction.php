@@ -68,6 +68,6 @@ class LegacyCancelAction implements ActionInterface, GatewayAwareInterface
         }
 
         // if capture_method=automatic it means the payment intent was created from a checkout session without authorization
-        return $model->offsetExists('capture_method') && $model->offsetGet('capture_method') === 'automatic';
+        return $model->offsetExists('capture_method') && $model->offsetGet('capture_method') === PaymentIntent::CAPTURE_METHOD_AUTOMATIC;
     }
 }

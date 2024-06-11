@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace FluxSE\PayumStripe\Action\Api\WebhookEvent;
 
 use Stripe\Event;
+use Stripe\PaymentIntent;
 
 final class PaymentIntentCanceledFromAuthorizeAction extends AbstractPaymentIntentAction
 {
@@ -17,6 +18,6 @@ final class PaymentIntentCanceledFromAuthorizeAction extends AbstractPaymentInte
 
     protected function getSupportedCaptureMethod(): string
     {
-        return 'manual';
+        return PaymentIntent::CAPTURE_METHOD_MANUAL;
     }
 }

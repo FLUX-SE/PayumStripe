@@ -10,6 +10,7 @@ use LogicException;
 use Payum\Core\Request\Authorize;
 use Payum\Core\Request\Generic;
 use Payum\Core\Security\TokenInterface;
+use Stripe\PaymentIntent;
 
 /**
  * For more information about Stripe Authorize payments :.
@@ -34,7 +35,7 @@ final class AuthorizeAction extends CaptureAction
 
         /** @var array $embeddedModeData */
         $embeddedModeData = $model->offsetGet($modeDataKey);
-        $embeddedModeData['capture_method'] = 'manual';
+        $embeddedModeData['capture_method'] = PaymentIntent::CAPTURE_METHOD_MANUAL;
         $model->offsetSet($modeDataKey, $embeddedModeData);
     }
 

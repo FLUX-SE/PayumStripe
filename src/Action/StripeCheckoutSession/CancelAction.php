@@ -6,7 +6,6 @@ namespace FluxSE\PayumStripe\Action\StripeCheckoutSession;
 
 use ArrayAccess;
 use FluxSE\PayumStripe\Request\Api\Resource\ExpireSession;
-use FluxSE\PayumStripe\Request\Api\Resource\RetrieveSession;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\RequestNotSupportedException;
