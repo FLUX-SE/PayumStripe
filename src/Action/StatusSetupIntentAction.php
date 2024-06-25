@@ -6,7 +6,6 @@ namespace FluxSE\PayumStripe\Action;
 
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Request\GetStatusInterface;
-use Stripe\PaymentIntent;
 use Stripe\SetupIntent;
 use Stripe\StripeObject;
 

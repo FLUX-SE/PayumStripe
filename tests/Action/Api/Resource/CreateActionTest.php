@@ -40,7 +40,6 @@ use Stripe\ApiResource;
 use Stripe\Checkout\Session;
 use Stripe\Coupon;
 use Stripe\Customer;
-use Stripe\Issuing\CardDetails;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
 use Stripe\Plan;

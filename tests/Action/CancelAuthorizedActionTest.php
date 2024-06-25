@@ -20,7 +20,6 @@ use Payum\Core\Security\GenericTokenFactoryInterface;
 use Payum\Core\Storage\IdentityInterface;
 use PHPUnit\Framework\TestCase;
 use Stripe\PaymentIntent;
-use Stripe\SetupIntent;
 
 final class CancelAuthorizedActionTest extends TestCase
 {
