@@ -40,7 +40,10 @@ class CancelAction implements ActionInterface, GatewayAwareInterface
 
     private function cancelPaymentIntent(ArrayObject $model): void
     {
-        if ($model['status'] !== PaymentIntent::STATUS_CANCELED) {
+        if ($model['status'] === PaymentIntent::STATUS_CANCELED) {
+            return;
+        }
+        if ($model['status'] === PaymentIntent::STATUS_SUCCEEDED) {
             return;
         }
 
@@ -51,7 +54,11 @@ class CancelAction implements ActionInterface, GatewayAwareInterface
 
     private function cancelSetupIntent(ArrayObject $model): void
     {
-        if ($model['status'] !== SetupIntent::STATUS_CANCELED) {
+        if ($model['status'] === SetupIntent::STATUS_CANCELED) {
+            return;
+        }
+
+        if ($model['status'] === SetupIntent::STATUS_SUCCEEDED) {
             return;
         }
 
