@@ -22,7 +22,7 @@ use PHPUnit\Framework\TestCase;
 use Stripe\PaymentIntent;
 use Stripe\SetupIntent;
 
-final class CancelActionTest extends TestCase
+final class CancelAuthorizedActionTest extends TestCase
 {
     use GatewayAwareTestTrait;
 
