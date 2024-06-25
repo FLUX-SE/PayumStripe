@@ -1,3 +1,7 @@
+# UPGRADE FROM `v2.0.15` TO `v2.0.16`
+
+**BC BREAK**: `FluxSE\PayumStripe\Action\CancelAction` has been renamed to `CancelAuthorizedAction`.
+
 # UPGRADE FROM `v2.0.5` TO `v2.0.6`
 
 _[STRIPE_CHECKOUT_SESSION]_

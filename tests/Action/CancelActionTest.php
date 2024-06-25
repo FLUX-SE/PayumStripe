@@ -3,7 +3,7 @@
 namespace Tests\FluxSE\PayumStripe\Action;
 
 use ArrayObject;
-use FluxSE\PayumStripe\Action\CancelAction;
+use FluxSE\PayumStripe\Action\CancelAuthorizedAction;
 use FluxSE\PayumStripe\Request\Api\Resource\CancelPaymentIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\UpdatePaymentIntent;
 use LogicException;
@@ -28,7 +28,7 @@ final class CancelActionTest extends TestCase
 
     public function testShouldImplements(): void
     {
-        $action = new CancelAction();
+        $action = new CancelAuthorizedAction();
 
         $this->assertInstanceOf(GatewayAwareInterface::class, $action);
         $this->assertInstanceOf(ActionInterface::class, $action);
@@ -38,7 +38,7 @@ final class CancelActionTest extends TestCase
 
     public function testShouldSupportOnlyCancelWithAnArrayAccessModelWithCaptureMethodManual(): void
     {
-        $action = new CancelAction();
+        $action = new CancelAuthorizedAction();
 
         $this->assertTrue($action->supports(new Cancel(['object' => PaymentIntent::OBJECT_NAME, 'capture_method' => PaymentIntent::CAPTURE_METHOD_MANUAL])));
         $this->assertFalse($action->supports(new Cancel(['object' => PaymentIntent::OBJECT_NAME, 'capture_method' => PaymentIntent::CAPTURE_METHOD_AUTOMATIC])));
@@ -49,7 +49,7 @@ final class CancelActionTest extends TestCase
 
     public function testShouldDoNothingWhenRequiredModelInfoAreNotAvailable(): void
     {
-        $action = new CancelAction();
+        $action = new CancelAuthorizedAction();
 
         $model = ['capture_method' => PaymentIntent::CAPTURE_METHOD_MANUAL];
         $request = new Cancel($model);
@@ -78,7 +78,7 @@ final class CancelActionTest extends TestCase
 
     public function testShouldThrowAnExceptionWhenNoTokenIsProvided(): void
     {
-        $action = new CancelAction();
+        $action = new CancelAuthorizedAction();
 
         $model = [
             'object' => PaymentIntent::OBJECT_NAME,
@@ -152,7 +152,7 @@ final class CancelActionTest extends TestCase
             ->willReturn($notifyToken)
         ;
 
-        $action = new CancelAction();
+        $action = new CancelAuthorizedAction();
 
         $action->setGateway($gatewayMock);
         $action->setGenericTokenFactory($genericGatewayFactory);
