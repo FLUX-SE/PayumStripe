@@ -6,7 +6,6 @@ namespace Tests\FluxSE\PayumStripe\Action\Api;
 
 use FluxSE\PayumStripe\Api\StripeClientAwareInterface;
 use PHPUnit\Framework\MockObject\MockObject;
-use Stripe\Service\AbstractService;
 use Stripe\StripeClient;
 
 trait ApiAwareActionTestTrait

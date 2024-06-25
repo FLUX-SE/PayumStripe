@@ -8,7 +8,6 @@ use FluxSE\PayumStripe\Extension\StripeCheckoutSession\CancelUrlCancelPaymentInt
 use FluxSE\PayumStripe\Extension\StripeCheckoutSession\CancelUrlCancelSetupIntentExtension;
 use FluxSE\PayumStripe\Extension\StripeCheckoutSession\CancelUrlExpireSessionExtension;
 use FluxSE\PayumStripe\Request\Api\Resource\AllSession;
-use FluxSE\PayumStripe\Request\Api\Resource\CancelPaymentIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\CancelSetupIntent;
 use FluxSE\PayumStripe\Request\Api\Resource\CustomCallInterface;
 use FluxSE\PayumStripe\Request\Api\Resource\ExpireSession;

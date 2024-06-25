@@ -42,7 +42,6 @@ use Stripe\Checkout\Session;
 use Stripe\Coupon;
 use Stripe\Customer;
 use Stripe\Invoice;
-use Stripe\Issuing\CardDetails;
 use Stripe\PaymentIntent;
 use Stripe\PaymentMethod;
 use Stripe\Plan;

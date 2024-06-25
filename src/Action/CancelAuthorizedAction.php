@@ -12,7 +12,7 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Request\Cancel;
 use Stripe\PaymentIntent;
 
-final class CancelAction extends AbstractPaymentIntentAwareAction
+final class CancelAuthorizedAction extends AbstractPaymentIntentAwareAction
 {
     /**
      * @param Cancel $request
@@ -60,7 +60,11 @@ final class CancelAction extends AbstractPaymentIntentAwareAction
             return false;
         }
 
+        if (!$model->offsetExists('capture_method')) {
+            return false;
+        }
+
         // if capture_method=manual it means the payment intent was created with authorization
-        return $model->offsetExists('capture_method') && $model->offsetGet('capture_method') === PaymentIntent::CAPTURE_METHOD_MANUAL;
+        return $model->offsetGet('capture_method') === PaymentIntent::CAPTURE_METHOD_MANUAL;
     }
 }

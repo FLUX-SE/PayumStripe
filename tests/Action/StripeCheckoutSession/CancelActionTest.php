@@ -3,14 +3,11 @@
 namespace Tests\FluxSE\PayumStripe\Action\StripeCheckoutSession;
 
 use FluxSE\PayumStripe\Action\StripeCheckoutSession\CancelAction;
-use FluxSE\PayumStripe\Request\Api\Resource\AllSession;
 use FluxSE\PayumStripe\Request\Api\Resource\ExpireSession;
 use Payum\Core\Action\ActionInterface;
-use Payum\Core\Request\Authorize;
 use Payum\Core\Request\Cancel;
 use PHPUnit\Framework\TestCase;
 use Stripe\Checkout\Session;
-use Stripe\Collection;
 use Tests\FluxSE\PayumStripe\Action\GatewayAwareTestTrait;
 
 final class CancelActionTest extends TestCase

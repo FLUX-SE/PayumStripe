@@ -40,7 +40,11 @@ final class CaptureAuthorizedActionTest extends TestCase
     {
         $action = new CaptureAuthorizedAction();
 
-        $this->assertTrue($action->supports(new CaptureAuthorized([])));
+        $model = [
+            'object' => PaymentIntent::OBJECT_NAME,
+        ];
+        $this->assertTrue($action->supports(new CaptureAuthorized($model)));
+        $this->assertFalse($action->supports(new CaptureAuthorized([])));
         $this->assertFalse($action->supports(new CaptureAuthorized(null)));
         $this->assertFalse($action->supports(new Capture(null)));
         $this->assertFalse($action->supports(new Authorize(null)));
@@ -50,7 +54,9 @@ final class CaptureAuthorizedActionTest extends TestCase
     {
         $action = new CaptureAuthorizedAction();
 
-        $model = [];
+        $model = [
+            'object' => PaymentIntent::OBJECT_NAME,
+        ];
         $request = new CaptureAuthorized($model);
         $supports = $action->supports($request);
         $this->assertTrue($supports);

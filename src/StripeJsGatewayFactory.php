@@ -6,10 +6,10 @@ namespace FluxSE\PayumStripe;
 
 use FluxSE\PayumStripe\Action\StripeJs\Api\RenderStripeJsAction;
 use FluxSE\PayumStripe\Action\StripeJs\AuthorizeAction;
+use FluxSE\PayumStripe\Action\StripeJs\CancelAction;
 use FluxSE\PayumStripe\Action\StripeJs\CaptureAction;
 use FluxSE\PayumStripe\Action\StripeJs\ConvertPaymentAction;
 use FluxSE\PayumStripe\Api\KeysAwareInterface;
-use FluxSE\PayumStripe\Api\StripeCheckoutSessionApi;
 use FluxSE\PayumStripe\Api\StripeJsApi;
 use Payum\Core\Bridge\Spl\ArrayObject;
 use Stripe\PaymentIntent;
@@ -29,6 +29,7 @@ final class StripeJsGatewayFactory extends AbstractStripeGatewayFactory
             // Actions
             'payum.action.capture' => new CaptureAction(),
             'payum.action.authorize' => new AuthorizeAction(),
+            'payum.action.cancel' => new CancelAction(),
             'payum.action.convert_payment' => new ConvertPaymentAction(),
             'payum.action.render_stripe_js.payment_intent' => function (ArrayObject $config) {
                 return new RenderStripeJsAction(

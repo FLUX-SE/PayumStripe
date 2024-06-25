@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace FluxSE\PayumStripe\Action;
 
+use ArrayAccess;
 use ArrayObject;
 use FluxSE\PayumStripe\Request\Api\Resource\CapturePaymentIntent;
 use FluxSE\PayumStripe\Request\CaptureAuthorized;
@@ -54,6 +55,15 @@ final class CaptureAuthorizedAction extends AbstractPaymentIntentAwareAction
             return false;
         }
 
-        return $request->getModel() instanceof ArrayObject;
+        $model = $request->getModel();
+        if (!$model instanceof ArrayAccess) {
+            return false;
+        }
+
+        if (!$model->offsetExists('object')) {
+            return false;
+        }
+
+        return $model->offsetGet('object') === PaymentIntent::OBJECT_NAME;
     }
 }

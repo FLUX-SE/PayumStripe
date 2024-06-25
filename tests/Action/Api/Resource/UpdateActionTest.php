@@ -26,7 +26,6 @@ use Payum\Core\GatewayInterface;
 use PHPUnit\Framework\TestCase;
 use Stripe\ApiResource;
 use Stripe\Coupon;
-use Stripe\Issuing\CardDetails;
 use Stripe\PaymentIntent;
 use Stripe\Plan;
 use Stripe\Price;

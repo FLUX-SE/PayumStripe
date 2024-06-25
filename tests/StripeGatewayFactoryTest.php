@@ -19,7 +19,6 @@ use Payum\Core\Bridge\Spl\ArrayObject;
 use Payum\Core\Exception\LogicException;
 use Payum\Core\GatewayFactoryInterface;
 use PHPUnit\Framework\TestCase;
-use Stripe\PaymentIntent;
 use function strpos;
 
 final class StripeGatewayFactoryTest extends TestCase
@@ -212,6 +211,10 @@ final class StripeGatewayFactoryTest extends TestCase
 
         $actualActions = $this->configuredPayumActions($config);
 
+        $this->assertArrayHasKey('payum.action.cancel.payment_intent.manual', $actualActions);
+        $this->assertEquals(new GlobalAction\CancelAuthorizedAction(), $actualActions['payum.action.cancel.payment_intent.manual']);
+        $this->assertArrayHasKey('payum.action.capture_authorized', $actualActions);
+        $this->assertEquals(new GlobalAction\CaptureAuthorizedAction(), $actualActions['payum.action.capture_authorized']);
         $this->assertArrayHasKey('payum.action.capture', $actualActions);
         $this->assertEquals(new StripeCheckoutSession\CaptureAction(), $actualActions['payum.action.capture']);
         $this->assertArrayHasKey('payum.action.authorize', $actualActions);
@@ -253,11 +256,15 @@ final class StripeGatewayFactoryTest extends TestCase
         $actualActions = $this->configuredPayumActions($config);
 
         $this->assertArrayHasKey('payum.action.cancel.payment_intent.manual', $actualActions);
-        $this->assertEquals(new GlobalAction\CancelAction(), $actualActions['payum.action.cancel.payment_intent.manual']);
+        $this->assertEquals(new GlobalAction\CancelAuthorizedAction(), $actualActions['payum.action.cancel.payment_intent.manual']);
+        $this->assertArrayHasKey('payum.action.capture_authorized', $actualActions);
+        $this->assertEquals(new GlobalAction\CaptureAuthorizedAction(), $actualActions['payum.action.capture_authorized']);
         $this->assertArrayHasKey('payum.action.capture', $actualActions);
         $this->assertEquals(new StripeJs\CaptureAction(), $actualActions['payum.action.capture']);
         $this->assertArrayHasKey('payum.action.authorize', $actualActions);
         $this->assertEquals(new StripeJs\AuthorizeAction(), $actualActions['payum.action.authorize']);
+        $this->assertArrayHasKey('payum.action.cancel', $actualActions);
+        $this->assertEquals(new StripeJs\CancelAction(), $actualActions['payum.action.cancel']);
         $this->assertArrayHasKey('payum.action.convert_payment', $actualActions);
         $this->assertEquals(new StripeJs\ConvertPaymentAction(), $actualActions['payum.action.convert_payment']);
         $this->assertArrayHasKey('payum.action.render_stripe_js.payment_intent', $actualActions);

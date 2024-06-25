@@ -62,7 +62,7 @@ use FluxSE\PayumStripe\Action\Api\WebhookEvent\PaymentIntentSucceededFromAuthori
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\SetupIntentCanceledAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\SetupIntentSucceededAction;
 use FluxSE\PayumStripe\Action\Api\WebhookEvent\StripeWebhookTestAction;
-use FluxSE\PayumStripe\Action\CancelAction;
+use FluxSE\PayumStripe\Action\CancelAuthorizedAction;
 use FluxSE\PayumStripe\Action\CaptureAuthorizedAction;
 use FluxSE\PayumStripe\Action\NotifyAction;
 use FluxSE\PayumStripe\Action\RefundAction;
@@ -82,7 +82,7 @@ abstract class AbstractStripeGatewayFactory extends GatewayFactory
     protected function getDefaultActions(): array
     {
         return [
-            'payum.action.cancel.payment_intent.manual' => new CancelAction(),
+            'payum.action.cancel.payment_intent.manual' => new CancelAuthorizedAction(),
             'payum.action.refund' => new RefundAction(),
             'payum.action.capture_authorized' => new CaptureAuthorizedAction(),
             'payum.action.notify_unsafe' => new NotifyAction(),
