@@ -73,9 +73,7 @@ final class ResolveWebhookEventActionTest extends TestCase
             )
             ->willReturnOnConsecutiveCalls(
                 $this->returnCallback(function (GetHttpRequest $request) {
-                    $request->headers = [
-                        'stripe-signature' => ['stripeSignature'],
-                    ];
+                    $_SERVER['HTTP_STRIPE_SIGNATURE'] = 'stripeSignature';
                     $request->content = 'stripeContent';
                 }),
                 $this->throwException(SignatureVerificationException::factory(''))
@@ -115,9 +113,7 @@ final class ResolveWebhookEventActionTest extends TestCase
             )
             ->willReturnOnConsecutiveCalls(
                 $this->returnCallback(function (GetHttpRequest $request) {
-                    $request->headers = [
-                        'stripe-signature' => ['stripeSignature'],
-                    ];
+                    $_SERVER['HTTP_STRIPE_SIGNATURE'] = 'stripeSignature';
                     $request->content = 'stripeContent';
                 }),
                 $this->returnCallback(function (ConstructEvent $request) {
