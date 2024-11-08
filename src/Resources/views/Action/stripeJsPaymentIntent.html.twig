@@ -122,13 +122,9 @@
     </style>
 {% endblock %}
 
-{% block payum_vendor_javascripts %}
-    {{ parent() }}
-    {{ block('payum_javascripts_stripejs_global') }}
-{% endblock %}
-
 {% block payum_javascripts %}
     {{ parent() }}
+    {{ block('payum_javascripts_stripejs_global') }}
     {{ block('payum_javascripts_stripejs_appearance') }}
     {{ block('payum_javascripts_stripejs_common') }}
 {% endblock %}
