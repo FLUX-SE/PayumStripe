@@ -63,6 +63,36 @@ abstract class AbstractCaptureAction implements ActionInterface, GatewayAwareInt
         $this->gateway->execute(new Sync($model));
     }
 
+    /**
+     * @return array<string, mixed>
+     */
+    protected function getApiResourceOptions(Generic $request): array
+    {
+        $options = [];
+
+        $idempotencyKey = $this->getIdempotencyKey($request);
+        if (null !== $idempotencyKey) {
+            $options['idempotency_key'] = $idempotencyKey;
+        }
+
+        return $options;
+    }
+
+    protected function getIdempotencyKey(Generic $request): ?string
+    {
+        $token = $request->getToken();
+        if (null === $token) {
+            return null;
+        }
+
+        $id = (string) $token->getDetails()->getId();
+        if ('' === $id) {
+            return null;
+        }
+
+        return md5($id);
+    }
+
     abstract protected function createApiResource(BaseArrayObject $model, Generic $request): ApiResource;
 
     abstract protected function render(ApiResource $captureResource, Generic $request): void;

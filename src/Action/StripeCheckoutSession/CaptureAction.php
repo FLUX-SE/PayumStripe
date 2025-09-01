@@ -22,7 +22,10 @@ class CaptureAction extends AbstractCaptureAction
         $model->offsetSet('success_url', $token->getAfterUrl());
         $model->offsetSet('cancel_url', $token->getAfterUrl());
 
-        $createRequest = new CreateSession($model->getArrayCopy());
+        $createRequest = new CreateSession(
+            $model->getArrayCopy(),
+            $this->getApiResourceOptions($request)
+        );
         $this->gateway->execute($createRequest);
 
         return $createRequest->getApiResource();

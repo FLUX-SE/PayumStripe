@@ -16,7 +16,10 @@ class CaptureAction extends AbstractCaptureAction
 {
     protected function createApiResource(ArrayObject $model, Generic $request): ApiResource
     {
-        $createRequest = new CreatePaymentIntent($model->getArrayCopy());
+        $createRequest = new CreatePaymentIntent(
+            $model->getArrayCopy(),
+            $this->getApiResourceOptions($request)
+        );
         $this->gateway->execute($createRequest);
 
         return $createRequest->getApiResource();

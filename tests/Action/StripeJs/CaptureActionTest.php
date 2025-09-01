@@ -52,10 +52,19 @@ final class CaptureActionTest extends TestCase
         $gatewayMock
             ->expects($this->exactly(2))
             ->method('execute')
-            ->withConsecutive(
-                [$this->isInstanceOf(Sync::class)],
-                [$this->isInstanceOf(CaptureAuthorized::class)]
-            )
+            ->with($this->callback(function ($arg) {
+                static $callCount = 0;
+                $callCount++;
+
+                switch ($callCount) {
+                    case 1:
+                        return $arg instanceof Sync;
+                    case 2:
+                        return $arg instanceof CaptureAuthorized;
+                    default:
+                        return false;
+                }
+            }))
         ;
 
         $token = new Token();
@@ -96,13 +105,26 @@ final class CaptureActionTest extends TestCase
         $gatewayMock
             ->expects($this->exactly(3))
             ->method('execute')
-            ->withConsecutive(
-                [$this->isInstanceOf(CreatePaymentIntent::class)],
-                [$this->isInstanceOf(Sync::class)],
-                [$this->isInstanceOf(RenderStripeJs::class)]
-            )
+            ->with($this->callback(function ($arg) {
+                static $callCount = 0;
+                $callCount++;
+
+                switch ($callCount) {
+                    case 1:
+                        return $arg instanceof CreatePaymentIntent;
+                    case 2:
+                        return $arg instanceof Sync;
+                    case 3:
+                        return $arg instanceof RenderStripeJs;
+                    default:
+                        return false;
+                }
+            }))
             ->willReturnOnConsecutiveCalls(
                 $this->returnCallback(function (CreatePaymentIntent $request) {
+                    $this->assertEquals([
+                        'idempotency_key' => md5(1),
+                    ], $request->getOptions());
                     $this->assertInstanceOf(ArrayObject::class, $request->getModel());
                     $request->setApiResource(new PaymentIntent('pi_0001'));
                 }),

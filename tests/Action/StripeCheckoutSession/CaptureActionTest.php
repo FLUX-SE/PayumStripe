@@ -55,10 +55,19 @@ final class CaptureActionTest extends TestCase
         $gatewayMock
             ->expects($this->exactly(2))
             ->method('execute')
-            ->withConsecutive(
-                [$this->isInstanceOf(Sync::class)],
-                [$this->isInstanceOf(CaptureAuthorized::class)]
-            )
+            ->with($this->callback(function ($request) {
+                static $callCount = 0;
+                $callCount++;
+
+                switch ($callCount) {
+                    case 1:
+                        return $request instanceof Sync;
+                    case 2:
+                        return $request instanceof CaptureAuthorized;
+                    default:
+                        return false;
+                }
+            }))
         ;
 
         $token = new Token();
@@ -99,13 +108,26 @@ final class CaptureActionTest extends TestCase
         $gatewayMock
             ->expects($this->exactly(3))
             ->method('execute')
-            ->withConsecutive(
-                [$this->isInstanceOf(CreateSession::class)],
-                [$this->isInstanceOf(Sync::class)],
-                [$this->isInstanceOf(RedirectToCheckout::class)]
-            )
+            ->with($this->callback(function ($request) {
+                static $callCount = 0;
+                $callCount++;
+
+                switch ($callCount) {
+                    case 1:
+                        return $request instanceof CreateSession;
+                    case 2:
+                        return $request instanceof Sync;
+                    case 3:
+                        return $request instanceof RedirectToCheckout;
+                    default:
+                        return false;
+                }
+            }))
             ->willReturnOnConsecutiveCalls(
                 $this->returnCallback(function (CreateSession $request) {
+                    $this->assertEquals([
+                        'idempotency_key' => md5(1),
+                    ], $request->getOptions());
                     $this->assertInstanceOf(ArrayObject::class, $request->getModel());
                     $request->setApiResource(new Session('sess_0001'));
                 }),
