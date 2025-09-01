@@ -283,6 +283,29 @@ final class ConvertPaymentActionTest extends TestCase
         $this->assertEquals(['test'], $details['payment_method_types']);
     }
 
+    public function testAlreadyExistingObject(): void
+    {
+        $payment = new Payment();
+        $details = [
+            'id' => 'cs_test_1',
+        ];
+        $payment->setDetails($details);
+
+        $request = new Convert($payment, 'array');
+
+        $action = new ConvertPaymentAction();
+
+        $supports = $action->supports($request);
+        $this->assertTrue($supports);
+
+        $action->execute($request);
+
+        $detailsResult = $request->getResult();
+
+        $this->assertNotEmpty($detailsResult);
+        $this->assertEqualsCanonicalizing($details, (array) $detailsResult);
+    }
+
     protected function getApiClass(): string
     {
         return StripeCheckoutSessionApiInterface::class;

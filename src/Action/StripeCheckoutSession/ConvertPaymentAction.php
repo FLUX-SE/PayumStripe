@@ -32,6 +32,12 @@ final class ConvertPaymentAction implements ActionInterface, ApiAwareInterface, 
 
         $details = ArrayObject::ensureArrayObject($payment->getDetails());
 
+        $id = $details->offsetGet('id');
+        if (is_string($id) && $id !== '') {
+            $request->setResult($details);
+            return;
+        }
+
         if (false === $details->offsetExists('customer_email')) {
             $details->offsetSet('customer_email', $payment->getClientEmail());
         }
