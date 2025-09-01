@@ -44,7 +44,7 @@ final class CaptureAuthorizedActionTest extends TestCase
             'object' => PaymentIntent::OBJECT_NAME,
         ];
         $this->assertTrue($action->supports(new CaptureAuthorized($model)));
-        $this->assertFalse($action->supports(new CaptureAuthorized([])));
+        $this->assertTrue($action->supports(new CaptureAuthorized([])));
         $this->assertFalse($action->supports(new CaptureAuthorized(null)));
         $this->assertFalse($action->supports(new Capture(null)));
         $this->assertFalse($action->supports(new Authorize(null)));

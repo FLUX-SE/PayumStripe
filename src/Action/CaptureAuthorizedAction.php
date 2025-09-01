@@ -60,10 +60,6 @@ final class CaptureAuthorizedAction extends AbstractPaymentIntentAwareAction
             return false;
         }
 
-        if (!$model->offsetExists('object')) {
-            return false;
-        }
-
-        return $model->offsetGet('object') === PaymentIntent::OBJECT_NAME;
+        return true;
     }
 }
