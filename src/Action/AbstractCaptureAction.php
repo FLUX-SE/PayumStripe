@@ -85,7 +85,12 @@ abstract class AbstractCaptureAction implements ActionInterface, GatewayAwareInt
             return null;
         }
 
-        $id = (string) $token->getDetails()->getId();
+        $id = $token->getDetails()->getId();
+        if (false === is_scalar($id)) {
+            return null;
+        }
+
+        $id = (string) $id;
         if ('' === $id) {
             return null;
         }
