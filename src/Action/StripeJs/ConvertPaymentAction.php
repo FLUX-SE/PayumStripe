@@ -27,6 +27,12 @@ final class ConvertPaymentAction implements ActionInterface
 
         $details = ArrayObject::ensureArrayObject($payment->getDetails());
 
+        $id = $details->offsetGet('id');
+        if (is_string($id) && $id !== '') {
+            $request->setResult($details);
+            return;
+        }
+
         $details->offsetSet('amount', $payment->getTotalAmount());
         $details->offsetSet('currency', $payment->getCurrencyCode());
 
