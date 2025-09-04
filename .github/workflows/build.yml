@@ -22,12 +22,27 @@ jobs:
     tests:
         runs-on: ubuntu-latest
 
-        name: "PHP ${{ matrix.php }}"
+        name: "PHP ${{ matrix.php-version }} / Stripe ${{ matrix.stripe-version }}"
 
         strategy:
             fail-fast: false
             matrix:
-                php: [7.2, 7.3, 7.4, 8.0, 8.1]
+                php-version:
+                    - 7.2
+                    - 7.3
+                    - 7.4
+                    - 8.0
+                    - 8.1
+                    - 8.2
+                    - 8.3
+                    - 8.4
+                stripe-version:
+                    - 12
+                    - 13
+                    - 14
+                    - 15
+                    - 16
+                    - 17
 
         steps:
             -
@@ -37,7 +52,7 @@ jobs:
                 name: Setup PHP
                 uses: shivammathur/setup-php@v2
                 with:
-                    php-version: "${{ matrix.php }}"
+                    php-version: "${{ matrix.php-version }}"
                     coverage: xdebug
 
             -
@@ -50,9 +65,13 @@ jobs:
                 uses: actions/cache@v3
                 with:
                     path: ${{ steps.composer-cache.outputs.dir }}
-                    key: ${{ runner.os }}-php-${{ matrix.php }}-composer-${{ hashFiles('**/composer.json **/composer.lock') }}
+                    key: ${{ runner.os }}-php-${{ matrix.php-version }}-stripe-${{ matrix.stripe-version }}-composer-${{ hashFiles('**/composer.json **/composer.lock') }}
                     restore-keys: |
-                        ${{ runner.os }}-php-${{ matrix.php }}-composer-
+                      ${{ runner.os }}-php-${{ matrix.php-version }}-stripe-${{ matrix.stripe-version }}-composer-
+
+            -
+                name: Require Stripe version
+                run: composer require stripe/stripe-php:^${{ matrix.stripe-version }} --no-interaction --no-update
 
             -
                 name: Install PHP dependencies

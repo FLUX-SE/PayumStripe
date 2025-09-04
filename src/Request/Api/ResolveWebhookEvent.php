@@ -10,7 +10,7 @@ use Payum\Core\Security\TokenInterface;
 
 final class ResolveWebhookEvent extends Convert
 {
-    public function __construct(TokenInterface $token = null)
+    public function __construct(?TokenInterface $token = null)
     {
         parent::__construct(null, EventWrapperInterface::class, $token);
     }
